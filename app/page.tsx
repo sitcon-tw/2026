@@ -75,7 +75,9 @@ export default function Home() {
     setIsSlotMachineSpinning(true);
 
     const spinDuration = 2000; // 2秒
-    const spinInterval = 100; // 每100ms更換一次
+    // 根據設備調整動畫頻率，手機使用較慢的頻率
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const spinInterval = isMobile ? 150 : 100; // 手機150ms，桌面100ms
     const totalSpins = spinDuration / spinInterval;
     let currentSpin = 0;
 
@@ -247,7 +249,7 @@ export default function Home() {
 
                   <div className="flex items-center justify-center">
                     <div className="bg-zinc-700 rounded-lg px-6 py-4 border-2 border-zinc-600">
-                      <div className={`text-3xl font-bold text-center min-w-[80px] transition-all duration-100 ${isSlotMachineSpinning ? 'animate-pulse text-yellow-400' : 'text-white'}`}>
+                      <div className={`text-3xl font-bold text-center w-[80px] font-mono slot-machine-display ${isSlotMachineSpinning ? 'text-yellow-400' : 'text-white'}`}>
                         {slotMachineDisplay}
                       </div>
                     </div>
