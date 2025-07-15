@@ -109,3 +109,24 @@ body {
     animation-duration: 0.01s !important;
   }
 }
+
+/* 老虎機動畫優化 */
+.slot-machine-display {
+  /* 硬體加速 */
+  transform: translate3d(0, 0, 0);
+  /* 優化渲染性能 */
+  backface-visibility: hidden;
+  /* 字體平滑 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* 防止字體模糊 */
+  text-rendering: optimizeSpeed;
+}
+
+/* 手機版額外優化 */
+@media (max-width: 768px) {
+  .slot-machine-display {
+    /* 手機上使用較少的變換效果 */
+    will-change: color;
+  }
+}
