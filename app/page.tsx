@@ -74,7 +74,6 @@ export default function Home() {
 
     setIsSlotMachineSpinning(true);
 
-    // 創建轉輪動畫效果
     const spinDuration = 2000; // 2秒
     const spinInterval = 100; // 每100ms更換一次
     const totalSpins = spinDuration / spinInterval;
@@ -135,6 +134,7 @@ export default function Home() {
             href="https://forms.gle/rr93tuxJ9m9uStDf9"
             target="_blank"
             rel="noopener noreferrer"
+            prefetch={false}
             className="px-6 md:px-8 py-3 md:py-4 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
           >
             <Users className="w-4 h-4 md:w-5 md:h-5" />
@@ -145,6 +145,7 @@ export default function Home() {
             href="https://groups.google.com/g/sitcon-general/"
             target="_blank"
             rel="noopener noreferrer"
+            prefetch={false}
             className="px-6 md:px-8 py-3 md:py-4 border border-white/20 text-white rounded-lg font-medium hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
           >
             <Mail className="w-4 h-4 md:w-5 md:h-5" />
@@ -197,6 +198,7 @@ export default function Home() {
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      prefetch={false}
                       className="text-center px-3 py-2.5 bg-zinc-800 hover:bg-zinc-700 rounded-md border border-zinc-600 hover:border-blue-400 transition-all duration-200 text-sm font-medium min-h-[40px] flex items-center justify-center"
                     >
                       {item.year}
@@ -210,6 +212,7 @@ export default function Home() {
                 <div className="bg-zinc-800 rounded-md p-3">
                   <Link
                     href="mailto:contact@sitcon.org"
+                    prefetch={false}
                     className="text-blue-400 hover:text-blue-300 transition-colors text-sm font-medium break-all"
                   >
                     contact@sitcon.org
@@ -226,6 +229,7 @@ export default function Home() {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      prefetch={false}
                       className="flex items-center gap-2 px-3 py-2.5 bg-zinc-800 hover:bg-zinc-700 rounded-md transition-colors text-sm font-medium min-h-[40px]"
                     >
                       <FontAwesomeIcon icon={social.icon} className="w-4 h-4 flex-shrink-0" />
