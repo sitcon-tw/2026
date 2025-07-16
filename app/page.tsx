@@ -41,9 +41,18 @@ export default function Home() {
     console.log('%cHey! 發現了隱藏的控制台彩蛋！🎉', 'background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 18px; font-weight: bold; padding: 10px;');
   }, []);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [isSlotMachineSpinning, setIsSlotMachineSpinning] = useState(false);
   const [selectedYear, setSelectedYear] = useState("2024");
   const [slotMachineDisplay, setSlotMachineDisplay] = useState("2024");
+
+  const closeModal = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsAboutOpen(false);
+      setIsClosing(false);
+    }, 300); // 動畫持續時間
+  };
 
   const years = [
     { year: "2013", url: "https://sitcon.org/2013" },
@@ -170,12 +179,22 @@ export default function Home() {
       </div>
 
       {isAboutOpen && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-zinc-900 rounded-lg max-w-2xl w-full max-h-[90vh] md:max-h-[80vh] overflow-y-auto">
+        <div 
+          className={`fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 ${
+            isClosing ? 'modal-backdrop-exit' : 'modal-backdrop-enter'
+          }`}
+          onClick={closeModal}
+        >
+          <div 
+            className={`bg-zinc-900 rounded-lg max-w-2xl w-full max-h-[90vh] md:max-h-[80vh] overflow-y-auto ${
+              isClosing ? 'modal-content-exit' : 'modal-content-enter'
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="p-4 md:p-6 border-b border-zinc-700 flex justify-between items-center">
               <h2 className="text-xl md:text-2xl font-bold text-white">關於 SITCON</h2>
               <button
-                onClick={() => setIsAboutOpen(false)}
+                onClick={closeModal}
                 className="p-2 hover:bg-zinc-800 rounded-full transition-colors"
                 title="關閉對話框"
                 aria-label="關閉對話框"
