@@ -332,7 +332,7 @@ export default function Home() {
                       target="_blank"
                       rel="noopener noreferrer"
                       prefetch={false}
-                      className="text-center px-3 py-2.5 bg-zinc-800 hover:bg-zinc-700 rounded-md border border-zinc-600 hover:border-blue-400 transition-all duration-200 text-sm font-medium min-h-[40px] flex items-center justify-center"
+                      className="text-center px-3 py-2.5 bg-zinc-800 hover:bg-zinc-700 rounded-md transition-all duration-200 text-sm font-medium min-h-[40px] flex items-center justify-center"
                     >
                       {item.year}
                     </Link>
