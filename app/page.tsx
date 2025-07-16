@@ -377,7 +377,7 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <h3 className="text-base md:text-lg font-semibold text-white mb-3">年會時光機 🎰</h3>
+                <h3 className="text-base md:text-lg font-semibold text-white mb-3">年會時光機</h3>
                 <div className="bg-zinc-800 rounded-lg p-4 space-y-4">
                   <p className="text-sm text-gray-400 text-center">
                     想回顧哪一年的 SITCON？來抽抽看吧！
