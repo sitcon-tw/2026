@@ -45,6 +45,37 @@ export default function Home() {
   const [isSlotMachineSpinning, setIsSlotMachineSpinning] = useState(false);
   const [selectedYear, setSelectedYear] = useState("2024");
   const [slotMachineDisplay, setSlotMachineDisplay] = useState("2024");
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // 更新時間
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000 * 60); // 每分鐘更新一次
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // 計算時間軸數據
+  const calculateTimelineData = () => {
+    const startDate = new Date('2025-07-13');
+    const endDate = new Date('2026-03-28');
+    const now = new Date();
+
+    const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const remainingDays = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    const progressDays = totalDays - remainingDays;
+    const progressPercentage = Math.max(0, Math.min(100, (progressDays / totalDays) * 100));
+
+    return {
+      totalDays,
+      remainingDays: Math.max(0, remainingDays),
+      progressPercentage,
+      isEventPassed: now > endDate
+    };
+  };
+
+  const timelineData = calculateTimelineData();
 
   const closeModal = () => {
     setIsClosing(true);
@@ -170,6 +201,81 @@ export default function Home() {
             <Info className="w-4 h-4 md:w-5 md:h-5" />
             關於 SITCON
           </button>
+        </div>
+
+        {/* 時間軸 */}
+        <div className="w-full max-w-2xl mx-auto animate-fade-in-up animation-delay-1000">
+          <div className="timeline-card rounded-lg p-4 md:p-6 space-y-4">
+            {/* 標題 */}
+            {/* 
+            <div className="text-center space-y-2">
+              <h3 className="text-lg md:text-xl font-bold text-white">
+                🚀 距離 SITCON 2026 還有
+              </h3>
+              {timelineData.isEventPassed ? (
+                <p className="text-2xl md:text-3xl font-bold text-green-400">
+                  🎉 年會已結束！
+                </p>
+              ) : (
+                <p className="text-2xl md:text-3xl font-bold text-blue-400 timeline-number">
+                  {timelineData.remainingDays} 天
+                </p>
+              )}
+            </div>
+            */}
+
+            {/* 進度條 */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs md:text-sm text-gray-400">
+                <span>2025/7/13</span>
+                <span>{timelineData.progressPercentage.toFixed(1)}%</span>
+                <span>2026/3/28</span>
+              </div>
+              
+              <div className="w-full bg-zinc-800 rounded-full h-2 md:h-3 timeline-progress-bar">
+                <div 
+                  className="h-full progress-gradient rounded-full transition-all duration-1000 ease-out"
+                  style={{ width: `${timelineData.progressPercentage}%` }}
+                />
+              </div>
+              
+              
+              <div className="flex justify-between text-xs text-gray-500">
+                <span>籌備開始</span>
+                <span className="text-center">
+                  {timelineData.isEventPassed ? '已完成' : '進行中'}
+                </span>
+                <span>年會舉辦</span>
+              </div> 
+            </div>
+            
+
+            {/* 詳細資訊 */}
+            {/* 
+            {!timelineData.isEventPassed && (
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-center">
+                 <div className="space-y-1">
+                   <p className="text-xs text-gray-400">總籌備時間</p>
+                   <p className="text-sm font-semibold text-white timeline-number">{timelineData.totalDays} 天</p>
+                 </div>
+                 <div className="space-y-1">
+                   <p className="text-xs text-gray-400">已籌備時間</p>
+                   <p className="text-sm font-semibold text-green-400 timeline-number">
+                     {timelineData.totalDays - timelineData.remainingDays} 天
+                   </p>
+                 </div>
+                 <div className="space-y-1">
+                   <p className="text-xs text-gray-400">剩餘時間</p>
+                   <p className="text-sm font-semibold text-orange-400 timeline-number">
+                     {timelineData.remainingDays} 天
+                   </p>
+                 </div>
+               </div>
+                
+            )}
+               */}
+          </div>
         </div>
       </div>
 
