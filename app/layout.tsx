@@ -8,7 +8,9 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Metadata } from "next";
 config.autoAddCss = false;
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"], variable: "--font-inter"
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const image = "https://sitcon.org/2026/og.png";
@@ -99,7 +101,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <html lang="zh-TW">
+    <html lang="zh-TW" >
       <GoogleTagManager gtmId="GTM-NPVBCDZ" />
       <head>
         <script
@@ -119,11 +121,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet" />
       </head>
       <body
-        className={`${inter.className} antialiased bg-black text-white`}
-        style={{ fontFamily: "'Noto Sans TC', sans-serif" }}
+        className={`${inter.variable} antialiased bg-black text-white`}
       >
         {children}
       </body>
-    </html>
+    </html >
   );
 } 
