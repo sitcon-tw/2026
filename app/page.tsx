@@ -185,9 +185,10 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             prefetch={false}
-            className="px-6 md:px-8 py-3 md:py-4 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
+            className="liquid-glass-btn primary large"
+            aria-label="工人預約跳坑 - 開啟新視窗"
           >
-            <Users className="w-4 h-4 md:w-5 md:h-5" />
+            <Users />
             工人預約跳坑
           </Link>
 
@@ -196,17 +197,19 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             prefetch={false}
-            className="px-6 md:px-8 py-3 md:py-4 border border-white/20 text-white rounded-lg font-medium hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
+            className="liquid-glass-btn secondary large"
+            aria-label="郵件論壇 - 開啟新視窗"
           >
-            <Mail className="w-4 h-4 md:w-5 md:h-5" />
+            <Mail />
             郵件論壇
           </Link>
 
           <button
             onClick={() => setIsAboutOpen(true)}
-            className="px-6 md:px-8 py-3 md:py-4 border border-white/20 text-white rounded-lg font-medium hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
+            className="liquid-glass-btn secondary large"
+            aria-label="關於 SITCON - 開啟對話框"
           >
-            <Info className="w-4 h-4 md:w-5 md:h-5" />
+            <Info />
             關於 SITCON
           </button>
         </div>
@@ -307,11 +310,11 @@ export default function Home() {
               <h2 className="text-xl md:text-2xl font-bold text-white">關於 SITCON</h2>
               <button
                 onClick={closeModal}
-                className="p-2 hover:bg-zinc-800 rounded-full transition-colors"
+                className="liquid-glass-btn icon-only"
                 title="關閉對話框"
                 aria-label="關閉對話框"
               >
-                <X className="w-5 h-5" />
+                <X />
               </button>
             </div>
 
@@ -332,7 +335,8 @@ export default function Home() {
                       target="_blank"
                       rel="noopener noreferrer"
                       prefetch={false}
-                      className="text-center px-3 py-2.5 bg-zinc-800 hover:bg-zinc-700 rounded-md border border-zinc-600 hover:border-blue-400 transition-all duration-200 text-sm font-medium min-h-[40px] flex items-center justify-center"
+                      className="liquid-glass-btn secondary small"
+                      aria-label={`前往 ${item.year} 年會網站`}
                     >
                       {item.year}
                     </Link>
@@ -363,9 +367,10 @@ export default function Home() {
                       target="_blank"
                       rel="noopener noreferrer"
                       prefetch={false}
-                      className="flex items-center gap-2 px-3 py-2.5 bg-zinc-800 hover:bg-zinc-700 rounded-md transition-colors text-sm font-medium min-h-[40px]"
+                      className="liquid-glass-btn secondary small"
+                      aria-label={`${social.name} 社群媒體頁面`}
                     >
-                      <FontAwesomeIcon icon={social.icon} className="w-4 h-4 flex-shrink-0" />
+                      <FontAwesomeIcon icon={social.icon} className="fa-icon" />
                       <span className="truncate">{social.name}</span>
                     </Link>
                   ))}
@@ -390,20 +395,19 @@ export default function Home() {
                     <button
                       onClick={spinSlotMachine}
                       disabled={isSlotMachineSpinning}
-                      className={`flex-1 px-4 py-2.5 rounded-md font-medium transition-all duration-200 flex items-center justify-center gap-2 ${isSlotMachineSpinning
-                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                        : 'bg-yellow-600 hover:bg-yellow-500 text-white'
-                        }`}
+                      className={`liquid-glass-btn flex-1 ${isSlotMachineSpinning ? '' : 'primary'}`}
+                      aria-label={isSlotMachineSpinning ? '正在轉動中' : '隨機抽取年份'}
                     >
-                      <Dices className="w-4 h-4" />
+                      <Dices />
                       {isSlotMachineSpinning ? '轉動中...' : '隨機抽取'}
                     </button>
 
                     <button
                       onClick={goToSelectedYear}
-                      className="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-md font-medium transition-all duration-200 flex items-center justify-center gap-2"
+                      className="liquid-glass-btn primary flex-1"
+                      aria-label={`前往 ${selectedYear} 年會網站`}
                     >
-                      <ExternalLink className="w-4 h-4" />
+                      <ExternalLink />
                       前往 {selectedYear}
                     </button>
                   </div>
