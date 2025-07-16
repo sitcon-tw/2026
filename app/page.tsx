@@ -165,7 +165,15 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 md:w-5 md:h-5" />
-              <span className="text-center">中央研究院人文社會科學館</span>
+              <Link
+                href="https://maps.google.com?q=中央研究院人文社會科學館"
+                target="_blank"
+                rel="noopener noreferrer"
+                prefetch={false}
+                className="text-center hover:text-blue-400 transition-colors cursor-pointer underline decoration-dotted underline-offset-2"
+              >
+                中央研究院人文社會科學館
+              </Link>
             </div>
           </div>
         </div>
@@ -204,8 +212,8 @@ export default function Home() {
         </div>
 
         {/* 時間軸 */}
-        <div className="w-full max-w-2xl mx-auto animate-fade-in-up animation-delay-1000">
-          <div className="timeline-card rounded-lg p-4 md:p-6 space-y-4">
+        <div className="flex justify-center animate-fade-in-up animation-delay-1000 px-4">
+          <div className="timeline-card rounded-lg p-4 md:p-6 space-y-4 w-full sm:w-auto sm:min-w-[450px] md:min-w-[575px]">
             {/* 標題 */}
             {/* 
             <div className="text-center space-y-2">
@@ -231,24 +239,24 @@ export default function Home() {
                 <span>{timelineData.progressPercentage.toFixed(1)}%</span>
                 <span>2026/3/28</span>
               </div>
-              
+
               <div className="w-full bg-zinc-800 rounded-full h-2 md:h-3 timeline-progress-bar">
-                <div 
+                <div
                   className="h-full progress-gradient rounded-full transition-all duration-1000 ease-out"
                   style={{ width: `${timelineData.progressPercentage}%` }}
                 />
               </div>
-              
-              
+
+
               <div className="flex justify-between text-xs text-gray-500">
                 <span>籌備開始</span>
                 <span className="text-center">
                   {timelineData.isEventPassed ? '已完成' : '進行中'}
                 </span>
                 <span>年會舉辦</span>
-              </div> 
+              </div>
             </div>
-            
+
 
             {/* 詳細資訊 */}
             {/* 
@@ -285,16 +293,14 @@ export default function Home() {
       </div>
 
       {isAboutOpen && (
-        <div 
-          className={`fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 ${
-            isClosing ? 'modal-backdrop-exit' : 'modal-backdrop-enter'
-          }`}
+        <div
+          className={`fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 ${isClosing ? 'modal-backdrop-exit' : 'modal-backdrop-enter'
+            }`}
           onClick={closeModal}
         >
-          <div 
-            className={`bg-zinc-900 rounded-lg max-w-2xl w-full max-h-[90vh] md:max-h-[80vh] overflow-y-auto ${
-              isClosing ? 'modal-content-exit' : 'modal-content-enter'
-            }`}
+          <div
+            className={`bg-zinc-900 rounded-lg max-w-2xl w-full max-h-[90vh] md:max-h-[80vh] overflow-y-auto ${isClosing ? 'modal-content-exit' : 'modal-content-enter'
+              }`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 md:p-6 border-b border-zinc-700 flex justify-between items-center">
