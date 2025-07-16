@@ -1,9 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, MapPin, Users, Mail, Info, X, Dices, ExternalLink } from "lucide-react";
+import { Calendar, MapPin, Users, Mail, Info, X, Dices, ExternalLink, Clock, Star } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebook, faYoutube, faInstagram, faThreads, faFlickr, faTelegram } from "@fortawesome/free-brands-svg-icons";
+import {
+  faFacebook,
+  faYoutube,
+  faInstagram,
+  faThreads,
+  faFlickr,
+  faTelegram,
+} from "@fortawesome/free-brands-svg-icons";
 import { useState, useEffect } from "react";
 
 export default function Home() {
@@ -29,16 +36,17 @@ export default function Home() {
     
     `;
 
-    const styles = [
-      'color: #00ff88; font-weight: bold; font-size: 14px; text-shadow: 0 0 10px #00ff88;',
-    ];
+    const styles = ["color: #00ff88; font-weight: bold; font-size: 14px; text-shadow: 0 0 10px #00ff88;"];
 
     console.log(sitconAsciiArt, ...styles);
 
     // 額外的彩色訊息
-    console.log('%c🎰 試試看年會時光機功能！', 'color: #ffd700; font-size: 16px; font-weight: bold;');
+    console.log("%c🎰 試試看年會時光機功能！", "color: #ffd700; font-size: 16px; font-weight: bold;");
     // 隱藏彩蛋訊息
-    console.log('%cHey! 發現了隱藏的控制台彩蛋！🎉', 'background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 18px; font-weight: bold; padding: 10px;');
+    console.log(
+      "%cHey! 發現了隱藏的控制台彩蛋！🎉",
+      "background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 18px; font-weight: bold; padding: 10px;"
+    );
   }, []);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -58,8 +66,8 @@ export default function Home() {
 
   // 計算時間軸數據
   const calculateTimelineData = () => {
-    const startDate = new Date('2025-07-13');
-    const endDate = new Date('2026-03-28');
+    const startDate = new Date("2025-07-13");
+    const endDate = new Date("2026-03-28");
     const now = new Date();
 
     const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
@@ -71,11 +79,26 @@ export default function Home() {
       totalDays,
       remainingDays: Math.max(0, remainingDays),
       progressPercentage,
-      isEventPassed: now > endDate
+      isEventPassed: now > endDate,
     };
   };
 
   const timelineData = calculateTimelineData();
+
+  // 最近活動資料
+  const recentEvents = [
+    {
+      id: 1,
+      title: "SITCON 2026 BoF 定期聚",
+      date: "2025-08-09",
+      time: "18:00",
+      location: "臺灣師範大學",
+      description: "想更了解 SITCON 或參與 2026 的籌備嗎？歡迎來聊聊！",
+      type: "meeting",
+      status: "upcoming",
+      link: "https://forms.gle/rr93tuxJ9m9uStDf9",
+    },
+  ];
 
   const closeModal = () => {
     setIsClosing(true);
@@ -116,7 +139,7 @@ export default function Home() {
 
     const spinDuration = 2000; // 2秒
     // 根據設備調整動畫頻率，手機使用較慢的頻率
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
     const spinInterval = isMobile ? 100 : 50; // 手機150ms，桌面100ms
     const totalSpins = spinDuration / spinInterval;
     let currentSpin = 0;
@@ -138,9 +161,9 @@ export default function Home() {
   };
 
   const goToSelectedYear = () => {
-    const yearData = years.find(y => y.year === selectedYear);
+    const yearData = years.find((y) => y.year === selectedYear);
     if (yearData) {
-      window.open(yearData.url, '_blank');
+      window.open(yearData.url, "_blank");
     }
   };
 
@@ -155,9 +178,7 @@ export default function Home() {
 
         {/* Subtitle */}
         <div className="space-y-3 md:space-y-4 animate-fade-in-up animation-delay-300">
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-300">
-            學生計算機年會
-          </p>
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-300">學生計算機年會</p>
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 text-base md:text-lg text-gray-400">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4 md:w-5 md:h-5" />
@@ -250,16 +271,12 @@ export default function Home() {
                 />
               </div>
 
-
               <div className="flex justify-between text-xs text-gray-500">
                 <span>籌備開始</span>
-                <span className="text-center">
-                  {timelineData.isEventPassed ? '已完成' : '進行中'}
-                </span>
+                <span className="text-center">{timelineData.isEventPassed ? "已完成" : "進行中"}</span>
                 <span>年會舉辦</span>
               </div>
             </div>
-
 
             {/* 詳細資訊 */}
             {/* 
@@ -288,22 +305,132 @@ export default function Home() {
                */}
           </div>
         </div>
+
+        {/* 最近活動 */}
+        <div className="flex justify-center animate-fade-in-up animation-delay-1200 px-4">
+          <div className="timeline-card rounded-lg p-4 md:p-6 space-y-4 w-full max-w-4xl">
+            <div className="text-center space-y-2">
+              <h3 className="text-lg md:text-xl font-bold text-white flex items-center justify-center gap-2">
+                <Star className="w-5 h-5" />
+                最近活動
+              </h3>
+              <p className="text-sm text-gray-400">掌握最新 SITCON 活動資訊</p>
+            </div>
+
+            <div className="space-y-3">
+              {recentEvents.map((event) => (
+                <div
+                  key={event.id}
+                  className={`bg-zinc-800/50 backdrop-blur-sm rounded-lg p-4 border border-zinc-700/50 hover:border-zinc-600/50 transition-all duration-300 ${
+                    event.status === "upcoming" ? "border-l-4 border-l-blue-500" : "border-l-4 border-l-gray-600"
+                  }`}
+                >
+                  <div className="space-y-3">
+                    {/* Title and Status Badge */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-white text-sm md:text-base leading-tight text-left">
+                          {event.title}
+                        </h4>
+                      </div>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
+                          event.status === "upcoming"
+                            ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                            : "bg-gray-600/20 text-gray-400 border border-gray-600/30"
+                        }`}
+                      >
+                        {event.status === "upcoming" ? "即將舉行" : "已結束"}
+                      </span>
+                    </div>
+
+                    {/* Description */}
+                    <div className="text-left">
+                      <p className="text-gray-300 text-xs md:text-sm leading-relaxed">{event.description}</p>
+                    </div>
+
+                    {/* Date, Time, Location - Mobile Optimized */}
+                    <div className="space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-4">
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <Calendar className="w-3 h-3 flex-shrink-0" />
+                        <span>
+                          {(() => {
+                            const date = new Date(event.date);
+                            const year = date.getFullYear();
+                            const month = date.getMonth() + 1;
+                            const day = date.getDate();
+                            return `${year} 年 ${month} 月 ${day} 日`;
+                          })()}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <Clock className="w-3 h-3 flex-shrink-0" />
+                        <span>{event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <MapPin className="w-3 h-3 flex-shrink-0" />
+                        <span>{event.location}</span>
+                      </div>
+                    </div>
+
+                    {/* Action Button */}
+                    {event.link && event.link !== "#" && (
+                      <div className="flex justify-end pt-1">
+                        <Link
+                          href={event.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          prefetch={false}
+                          className="liquid-glass-btn secondary small"
+                          aria-label={`前往 ${event.title}`}
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          <span className="hidden sm:inline">前往</span>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center pt-2">
+              <Link
+                href="https://groups.google.com/g/sitcon-general/"
+                target="_blank"
+                rel="noopener noreferrer"
+                prefetch={false}
+                className="text-blue-400 hover:text-blue-300 transition-colors text-sm underline decoration-dotted underline-offset-2"
+              >
+                訂閱郵件論壇獲取更多活動資訊 →
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/2 rounded-full blur-3xl" style={{ animation: 'subtlePulse 4s ease-in-out infinite' }}></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/2 rounded-full blur-3xl" style={{ animation: 'subtlePulse 4s ease-in-out infinite 2s' }}></div>
+        <div
+          className="absolute -top-40 -right-40 w-80 h-80 bg-white/2 rounded-full blur-3xl"
+          style={{ animation: "subtlePulse 4s ease-in-out infinite" }}
+        ></div>
+        <div
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/2 rounded-full blur-3xl"
+          style={{ animation: "subtlePulse 4s ease-in-out infinite 2s" }}
+        ></div>
       </div>
 
       {isAboutOpen && (
         <div
-          className={`fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 ${isClosing ? 'modal-backdrop-exit' : 'modal-backdrop-enter'
-            }`}
+          className={`fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 ${
+            isClosing ? "modal-backdrop-exit" : "modal-backdrop-enter"
+          }`}
           onClick={closeModal}
         >
           <div
-            className={`bg-zinc-900 rounded-lg max-w-2xl w-full max-h-[90vh] md:max-h-[80vh] overflow-y-auto ${isClosing ? 'modal-content-exit' : 'modal-content-enter'
-              }`}
+            className={`bg-zinc-900 rounded-lg max-w-2xl w-full max-h-[90vh] md:max-h-[80vh] overflow-y-auto ${
+              isClosing ? "modal-content-exit" : "modal-content-enter"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 md:p-6 border-b border-zinc-700 flex justify-between items-center">
@@ -321,7 +448,8 @@ export default function Home() {
             <div className="p-4 md:p-6 space-y-5">
               <div>
                 <p className="text-gray-300 leading-relaxed text-sm md:text-base">
-                  學生計算機年會（Students' Information Technology Conference）自 2012 年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神，希望引領更多學子踏入資訊的殿堂，更冀望所有對資訊有興趣的學生，能夠在年會裏齊聚一堂，彼此激盪、傳承、啟發，達到「學以致用、教學相長」的實際展現。
+                  學生計算機年會（Students' Information Technology Conference）自 2012
+                  年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神，希望引領更多學子踏入資訊的殿堂，更冀望所有對資訊有興趣的學生，能夠在年會裏齊聚一堂，彼此激盪、傳承、啟發，達到「學以致用、教學相長」的實際展現。
                 </p>
               </div>
 
@@ -379,13 +507,15 @@ export default function Home() {
               <div>
                 <h3 className="text-base md:text-lg font-semibold text-white mb-3">年會時光機</h3>
                 <div className="bg-zinc-800 rounded-lg p-4 space-y-4">
-                  <p className="text-sm text-gray-400 text-center">
-                    想回顧哪一年的 SITCON？來抽抽看吧！
-                  </p>
+                  <p className="text-sm text-gray-400 text-center">想回顧哪一年的 SITCON？來抽抽看吧！</p>
 
                   <div className="flex items-center justify-center">
                     <div className="bg-zinc-700 rounded-lg px-6 py-4 border-2 border-zinc-600">
-                      <div className={`text-3xl font-bold text-center w-[80px] font-mono transition-all slot-machine-display ${isSlotMachineSpinning ? 'text-yellow-400 blur-sm' : 'text-white'}`}>
+                      <div
+                        className={`text-3xl font-bold text-center w-[80px] font-mono transition-all slot-machine-display ${
+                          isSlotMachineSpinning ? "text-yellow-400 blur-sm" : "text-white"
+                        }`}
+                      >
                         {slotMachineDisplay}
                       </div>
                     </div>
@@ -395,11 +525,11 @@ export default function Home() {
                     <button
                       onClick={spinSlotMachine}
                       disabled={isSlotMachineSpinning}
-                      className={`liquid-glass-btn flex-1 ${isSlotMachineSpinning ? '' : 'primary'}`}
-                      aria-label={isSlotMachineSpinning ? '正在轉動中' : '隨機抽取年份'}
+                      className={`liquid-glass-btn flex-1 ${isSlotMachineSpinning ? "" : "primary"}`}
+                      aria-label={isSlotMachineSpinning ? "正在轉動中" : "隨機抽取年份"}
                     >
                       <Dices />
-                      {isSlotMachineSpinning ? '轉動中...' : '隨機抽取'}
+                      {isSlotMachineSpinning ? "轉動中..." : "隨機抽取"}
                     </button>
 
                     <button
@@ -419,4 +549,4 @@ export default function Home() {
       )}
     </div>
   );
-} 
+}
