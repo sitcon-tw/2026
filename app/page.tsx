@@ -204,7 +204,7 @@ export default function Home() {
 
           <button
             onClick={() => setIsAboutOpen(true)}
-            className="px-6 md:px-8 py-3 md:py-4 border border-white/20 text-white rounded-lg font-medium hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
+            className="px-6 md:px-8 py-3 md:py-4 border border-white/20 text-white rounded-lg font-medium hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base cursor-pointer"
           >
             <Info className="w-4 h-4 md:w-5 md:h-5" />
             關於 SITCON
@@ -372,7 +372,7 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <h3 className="text-base md:text-lg font-semibold text-white mb-3">年會時光機 🎰</h3>
+                <h3 className="text-base md:text-lg font-semibold text-white mb-3">年會時光機</h3>
                 <div className="bg-zinc-800 rounded-lg p-4 space-y-4">
                   <p className="text-sm text-gray-400 text-center">
                     想回顧哪一年的 SITCON？來抽抽看吧！
@@ -390,7 +390,7 @@ export default function Home() {
                     <button
                       onClick={spinSlotMachine}
                       disabled={isSlotMachineSpinning}
-                      className={`flex-1 px-4 py-2.5 rounded-md font-medium transition-all duration-200 flex items-center justify-center gap-2 ${isSlotMachineSpinning
+                      className={`flex-1 px-4 py-2.5 rounded-md font-medium transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${isSlotMachineSpinning
                         ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                         : 'bg-yellow-600 hover:bg-yellow-500 text-white'
                         }`}
@@ -401,7 +401,7 @@ export default function Home() {
 
                     <button
                       onClick={goToSelectedYear}
-                      className="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-md font-medium transition-all duration-200 flex items-center justify-center gap-2"
+                      className="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-md font-medium transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <ExternalLink className="w-4 h-4" />
                       前往 {selectedYear}
