@@ -43,8 +43,8 @@ export default function Home() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isSlotMachineSpinning, setIsSlotMachineSpinning] = useState(false);
-  const [selectedYear, setSelectedYear] = useState("2024");
-  const [slotMachineDisplay, setSlotMachineDisplay] = useState("2024");
+  const [selectedYear, setSelectedYear] = useState("2025");
+  const [slotMachineDisplay, setSlotMachineDisplay] = useState("2025");
   const [currentTime, setCurrentTime] = useState(new Date());
 
   // 更新時間
