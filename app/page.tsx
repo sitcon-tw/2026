@@ -185,7 +185,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             prefetch={false}
-            className="px-6 md:px-8 py-3 md:py-4 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
+            className="px-6 md:px-8 py-3 md:py-4 bg-white text-black rounded-lg font-medium hover:bg-white/85 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
           >
             <Users className="w-4 h-4 md:w-5 md:h-5" />
             工人預約跳坑
@@ -196,7 +196,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             prefetch={false}
-            className="px-6 md:px-8 py-3 md:py-4 border border-white/20 text-white rounded-lg font-medium hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
+            className="px-6 md:px-8 py-3 md:py-4 border border-white/20 text-white rounded-lg font-medium hover:bg-white/15 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base"
           >
             <Mail className="w-4 h-4 md:w-5 md:h-5" />
             郵件論壇
@@ -204,7 +204,7 @@ export default function Home() {
 
           <button
             onClick={() => setIsAboutOpen(true)}
-            className="px-6 md:px-8 py-3 md:py-4 border border-white/20 text-white rounded-lg font-medium hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base cursor-pointer"
+            className="px-6 md:px-8 py-3 md:py-4 border border-white/20 text-white rounded-lg font-medium hover:bg-white/15 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-base cursor-pointer"
           >
             <Info className="w-4 h-4 md:w-5 md:h-5" />
             關於 SITCON
