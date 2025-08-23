@@ -10,6 +10,12 @@
     "target_submissions": 150,
     "last_updated": "2025-07-24"
   },
+  "panda_kpi": {
+    "current_amount": 0,
+    "target_amount": 100000,
+    "currency": "TWD",
+    "last_updated": "2025-07-24"
+  },
   "project_info": {
     "github_repo": "sitcon-tw/2026",
     "gitlab_project_id": "sitcon-tw/2026/board",

@@ -16,6 +16,12 @@ interface StatsConfig {
     target_submissions: number;
     last_updated: string;
   };
+  panda_kpi: {
+    current_amount: number;
+    target_amount: number;
+    currency: string;
+    last_updated: string;
+  };
   project_info: {
     github_repo: string;
     gitlab_project_id: string;
@@ -43,6 +49,13 @@ interface StatsData {
     current: number;
     target: number;
     percentage: number;
+    lastUpdated: string;
+  };
+  panda_kpi: {
+    current: number;
+    target: number;
+    percentage: number;
+    currency: string;
     lastUpdated: string;
   };
   github: {
@@ -84,6 +97,13 @@ export default function StatsPage() {
       percentage: 0,
       lastUpdated: "",
     },
+    panda_kpi: {
+      current: 0,
+      target: 0,
+      percentage: 0,
+      currency: "TWD",
+      lastUpdated: "",
+    },
     github: {
       commits: 0,
       isLoading: true,
@@ -111,6 +131,8 @@ export default function StatsPage() {
         const sponsorshipPercentage = (configData.sponsorship.current_amount / configData.sponsorship.target_amount) * 100;
         // 更新 CFP 資料
         const cfpPercentage = (configData.cfp.current_submissions / configData.cfp.target_submissions) * 100;
+        // 更新 Panda KPI 資料
+        const pandaKpiPercentage = (configData.panda_kpi.current_amount / configData.panda_kpi.target_amount) * 100;
         
         setStats(prev => ({
           ...prev,
@@ -126,6 +148,13 @@ export default function StatsPage() {
             target: configData.cfp.target_submissions,
             percentage: cfpPercentage,
             lastUpdated: configData.cfp.last_updated,
+          },
+          panda_kpi: {
+            current: configData.panda_kpi.current_amount,
+            target: configData.panda_kpi.target_amount,
+            percentage: pandaKpiPercentage,
+            currency: configData.panda_kpi.currency,
+            lastUpdated: configData.panda_kpi.last_updated,
           }
         }));
       })
@@ -434,6 +463,43 @@ export default function StatsPage() {
           </div>
         </div>
 
+        {/* Panda 行銷組長 KPI */}
+        <div className="stats-card">
+          <div className="flex items-center gap-3 mb-6">
+            <DollarSign className="w-6 h-6 text-pink-400" />
+            <h2 className="text-xl font-semibold">Panda 行銷組長 KPI</h2>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="text-center">
+              <div className="text-4xl lg:text-6xl font-bold text-pink-400 mb-2">
+                {stats.panda_kpi.current.toLocaleString()} {stats.panda_kpi.currency}
+              </div>
+              <div className="text-text-muted text-sm">
+                目標: {stats.panda_kpi.target.toLocaleString()} {stats.panda_kpi.currency}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-text-secondary">達成率</span>
+                <span className="text-pink-400 font-semibold">{stats.panda_kpi.percentage.toFixed(1)}%</span>
+              </div>
+              
+              <div className="w-full bg-zinc-800 rounded-full h-3">
+                <div
+                  className="h-full bg-gradient-to-r from-pink-500 to-pink-400 rounded-full transition-all duration-1000 ease-out"
+                  style={{ width: `${Math.min(100, stats.panda_kpi.percentage)}%` }}
+                />
+              </div>
+              
+              <div className="text-xs text-text-secondary text-right">
+                最後更新: {stats.panda_kpi.lastUpdated}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* CFP 稿件統計 */}
         <div className="stats-card">
           <div className="flex items-center gap-3 mb-6">
@@ -470,6 +536,8 @@ export default function StatsPage() {
             </div>
           </div>
         </div>
+
+        
 
         {/* GitHub Commits */}
         <div className="stats-card">
