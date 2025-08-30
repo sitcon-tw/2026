@@ -179,7 +179,7 @@ export default function Home() {
               郵件論壇
             </Link>
 
-            <Link
+            {/* <Link
               href="https://hackmd.io/@SITCON/2026-recruit"
               target="_blank"
               rel="noopener noreferrer"
@@ -189,7 +189,7 @@ export default function Home() {
             >
               <Users />
               工人招募資訊
-            </Link>
+            </Link> */}
 
             <button
               onClick={() => setIsAboutOpen(true)}
