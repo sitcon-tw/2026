@@ -56,7 +56,7 @@ function parseICS(icsText: string) {
       // e.g. 20250716T143000Z
       eventDateObj = new Date(dtstart.replace(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/, "$1-$2-$3T$4:$5:$6Z"));
       // 轉為台灣時區
-      
+
     } else if (/^\d{8}$/.test(dtstart)) {
       // e.g. 20250716（整天）
       eventDateObj = new Date(dtstart.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3T00:00:00+08:00"));
@@ -213,74 +213,110 @@ export default function RecentEvents() {
         </div>
 
         <div className="space-y-3">
-          {visibleEvents.map(({ event, status }) => (
-            <div
-              key={event.id}
-              className={`bg-card-background backdrop-blur-sm rounded-lg p-4 border border-card-border hover:border-card-border transition-all duration-300 ${getBorderStyle(status)}`}
-            >
-              <div className="space-y-3">
-                {/* Title and Status Badge */}
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-foreground text-sm md:text-base leading-tight text-left">
-                      {event.title}
-                    </h4>
-                  </div>
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusStyle(status)}`}
-                  >
-                    {getStatusText(status)}
-                  </span>
-                </div>
+          {visibleEvents.map(({ event, status }) => {
+            // 業界常見寫法：先在函式體內計算所需變數，再回傳 JSX
+            const normalizedLocation = (event.location || "").toLowerCase();
+            let hasSafeLink = false;
+            let hasMeetLink = false;
+            try {
+              const urlObj = new URL(event.link);
+              hasSafeLink = urlObj.protocol === "http:" || urlObj.protocol === "https:";
+              hasMeetLink = hasSafeLink && (urlObj.hostname === "meet.google.com" || urlObj.hostname.endsWith(".meet.google.com"));
+            } catch (_) {
+              hasSafeLink = false;
+              hasMeetLink = false;
+            }
+            const isOnline = normalizedLocation.includes("google meet") || hasMeetLink;
 
-                {/* Description */}
-                <div className="text-left">
-                  <p className="text-text-muted text-xs md:text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: event.description }} />
-                </div>
+            let href: string;
+            if (isOnline && hasMeetLink) {
+              href = event.link;
+            } else if (event.location && event.location.trim() !== "") {
+              href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`;
+            } else {
+              href = "https://www.google.com/maps";
+            }
 
-                {/* Date, Time, Location - Mobile Optimized */}
-                <div className="space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-4">
-                  <div className="flex items-center gap-2 text-xs text-text-secondary">
-                    <Calendar className="w-3 h-3 flex-shrink-0" />
-                    <span>
-                      {(() => {
-                        const date = new Date(event.date);
-                        const year = date.getFullYear();
-                        const month = date.getMonth() + 1;
-                        const day = date.getDate();
-                        return `${year} 年 ${month} 月 ${day} 日`;
-                      })()}
+            const locationLinkTitle = isOnline ? "開啟 Google Meet" : `在地圖開啟 ${event.location || "地圖"}`;
+            const locationLinkText = event.location || "地圖";
+
+            return (
+              <div
+                key={event.id}
+                className={`bg-card-background backdrop-blur-sm rounded-lg p-4 border border-card-border hover:border-card-border transition-all duration-300 ${getBorderStyle(status)}`}
+              >
+                <div className="space-y-3">
+                  {/* Title and Status Badge */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-foreground text-sm md:text-base leading-tight text-left">
+                        {event.title}
+                      </h4>
+                    </div>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusStyle(status)}`}
+                    >
+                      {getStatusText(status)}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-text-secondary">
-                    <Clock className="w-3 h-3 flex-shrink-0" />
-                    <span>{event.time}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-text-secondary">
-                    <MapPin className="w-3 h-3 flex-shrink-0" />
-                    <span>{event.location}</span>
-                  </div>
-                </div>
 
-                {/* Action Button */}
-                {event.link && event.link !== "#" && status !== "completed" && (
-                  <div className="flex justify-end pt-1">
-                    <Link
-                      href={event.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      prefetch={false}
-                      className="liquid-glass-btn secondary small"
-                      aria-label={`前往 ${event.title}`}
-                    >
-                      <ExternalLink className="w-3 h-3" />
-                      <span className="hidden sm:inline">前往</span>
-                    </Link>
+                  {/* Description */}
+                  <div className="text-left">
+                    <p className="text-text-muted text-xs md:text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: event.description }} />
                   </div>
-                )}
+
+                  {/* Date, Time, Location - Mobile Optimized */}
+                  <div className="space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-4">
+                    <div className="flex items-center gap-2 text-xs text-text-secondary">
+                      <Calendar className="w-3 h-3 flex-shrink-0" />
+                      <span>
+                        {(() => {
+                          const date = new Date(event.date);
+                          const year = date.getFullYear();
+                          const month = date.getMonth() + 1;
+                          const day = date.getDate();
+                          return `${year} 年 ${month} 月 ${day} 日`;
+                        })()}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-text-secondary">
+                      <Clock className="w-3 h-3 flex-shrink-0" />
+                      <span>{event.time}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-text-secondary">
+                      <MapPin className="w-3 h-3 flex-shrink-0" />
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-blue-400 transition-colors underline decoration-dotted underline-offset-2"
+                        title={locationLinkTitle}
+                      >
+                        {locationLinkText}
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Action Button */}
+                  {event.link && event.link !== "#" && status !== "completed" && (
+                    <div className="flex justify-end pt-1">
+                      <Link
+                        href={event.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        prefetch={false}
+                        className="liquid-glass-btn secondary small"
+                        aria-label={`前往 ${event.title}`}
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        <span className="hidden sm:inline">前往</span>
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
           {loading && (
             <div className="flex justify-center py-6">
               <span className="animate-spin rounded-full border-4 border-gray-300 border-t-blue-500 h-8 w-8 inline-block" />
