@@ -68,18 +68,23 @@ export default function Home() {
   const calculateTimelineData = () => {
     const startDate = new Date("2025-07-13");
     const endDate = new Date("2026-03-28");
+    const cfpDate = new Date("2025-10-12");
     const now = new Date();
 
     const totalDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
     const remainingDays = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     const progressDays = totalDays - remainingDays;
     const progressPercentage = Math.max(0, Math.min(100, (progressDays / totalDays) * 100));
+    const cfpDays = Math.ceil((cfpDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const cfpPercentage = Math.max(0, Math.min(100, (cfpDays / totalDays) * 100));
 
     return {
       totalDays,
       remainingDays: Math.max(0, remainingDays),
       progressPercentage,
+      cfpPercentage,
       isEventPassed: now > endDate,
+      isCfpPassed: now > cfpDate,
     };
   };
 
@@ -212,11 +217,51 @@ export default function Home() {
                   <span>2026/3/28</span>
                 </div>
 
-                <div className="w-full bg-zinc-800 rounded-full h-2 md:h-3 timeline-progress-bar">
+                <div className="relative mb-8">
+                  <div className="w-full bg-zinc-800 rounded-full h-2 md:h-3 timeline-progress-bar">
+                    <div
+                      className="h-full progress-gradient rounded-full transition-all duration-1000 ease-out"
+                      style={{ width: `${timelineData.progressPercentage}%` }}
+                    />
+                  </div>
+
+                  {/* 徵稿開始點（置於進度條外層，避免被裁切）*/}
                   <div
-                    className="h-full progress-gradient rounded-full transition-all duration-1000 ease-out"
-                    style={{ width: `${timelineData.progressPercentage}%` }}
-                  />
+                    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 z-10"
+                    style={{ left: `${timelineData.cfpPercentage}%` }}
+                  >
+                    <div className="relative">
+                      <div
+                        className={`w-4 h-4 md:w-5 md:h-5 rounded-full border shadow-lg backdrop-blur-[1px] ${
+                          timelineData.isCfpPassed
+                            ? "bg-green-400/60 border-green-300/50 ring-4 ring-green-300/20"
+                            : "bg-yellow-400/60 border-yellow-300/50 ring-4 ring-yellow-300/20"
+                        }`}
+                      ></div>
+                      <div
+                        className={`absolute inset-1 md:inset-1.5 rounded-full ${
+                          timelineData.isCfpPassed ? "bg-green-300/70" : "bg-yellow-300/70"
+                        }`}
+                      ></div>
+                    </div>
+                  </div>
+
+                  {/* 徵稿標籤 */}
+                  <div
+                    className="absolute top-full mt-1 -translate-x-1/2 z-10 pointer-events-none"
+                    style={{ left: `${timelineData.cfpPercentage}%` }}
+                  >
+                    <div className="text-[11px] md:text-xs leading-tight text-center whitespace-nowrap drop-shadow-sm">
+                      <div
+                        className={`${
+                          timelineData.isCfpPassed ? "text-green-300" : "text-yellow-300"
+                        } font-medium`}
+                      >
+                        {timelineData.isCfpPassed ? "✓ 徵稿已開始" : "📝 預計徵稿開始"}
+                      </div>
+                      <div className="text-[10px] text-text-secondary opacity-80">2025/10/12</div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex justify-between text-xs text-text-secondary">
