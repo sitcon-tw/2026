@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Calendar, MapPin, Clock, Star, ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
+import { getSortedEvents, getEventStatus, type Event as SortEvent } from "@/lib/sortEvents";
 // @ts-ignore
 // const recentEventsData = require("./recentEvents.json");
 
@@ -83,14 +84,14 @@ function parseICS(icsText: string) {
 }
 
 interface Event {
-  id: number;
+  id: string | number;
   title: string;
   date: string;
   time: string;
-  location: string;
-  description: string;
-  type: string;
-  link: string;
+  location?: string;
+  description?: string;
+  type?: string;
+  link?: string;
   duration?: number; // 活動持續時間（小時），預設 3 小時
 }
 
@@ -107,11 +108,13 @@ export default function RecentEvents() {
       .then(text => {
         const events = parseICS(text);
         if (events.length > 0) {
-          setRecentEvents(events.sort((a, b) => {
-            const dateA = new Date(`${a.date} ${a.time}`);
-            const dateB = new Date(`${b.date} ${b.time}`);
-            return dateB.getTime() - dateA.getTime();
-          }));
+          // 使用新的排序工具函式，優先顯示未來活動
+          const sortedEvents = getSortedEvents(
+            events, 
+            undefined, // 未來活動不限制數量
+            5         // 過去活動最多顯示 5 筆
+          );
+          setRecentEvents(sortedEvents);
         } else {
           setRecentEvents([]);
         }
@@ -124,18 +127,8 @@ export default function RecentEvents() {
   }, []);
 
   // 計算活動狀態
-  const calculateEventStatus = (date: string, time: string, duration: number = 3): EventStatus => {
-    const now = new Date();
-    const eventDateTime = new Date(`${date} ${time}`);
-    const eventEndTime = new Date(eventDateTime.getTime() + duration * 60 * 60 * 1000);
-
-    if (now < eventDateTime) {
-      return "upcoming";
-    } else if (now >= eventDateTime && now <= eventEndTime) {
-      return "ongoing";
-    } else {
-      return "completed";
-    }
+  const calculateEventStatus = (event: Event): EventStatus => {
+    return getEventStatus(event);
   };
 
   // 取得狀態顯示文字
@@ -185,7 +178,7 @@ export default function RecentEvents() {
   // - 已結束：僅在未達 5 筆時補滿至 5 筆
   const eventsWithStatus = recentEvents.map((event) => ({
     event,
-    status: calculateEventStatus(event.date, event.time, event.duration),
+    status: calculateEventStatus(event),
   }));
 
   const nonCompletedEvents = eventsWithStatus
@@ -215,9 +208,11 @@ export default function RecentEvents() {
             let hasSafeLink = false;
             let hasMeetLink = false;
             try {
-              const urlObj = new URL(event.link);
-              hasSafeLink = urlObj.protocol === "http:" || urlObj.protocol === "https:";
-              hasMeetLink = hasSafeLink && (urlObj.hostname === "meet.google.com" || urlObj.hostname.endsWith(".meet.google.com"));
+              if (event.link) {
+                const urlObj = new URL(event.link);
+                hasSafeLink = urlObj.protocol === "http:" || urlObj.protocol === "https:";
+                hasMeetLink = hasSafeLink && (urlObj.hostname === "meet.google.com" || urlObj.hostname.endsWith(".meet.google.com"));
+              }
             } catch (_) {
               hasSafeLink = false;
               hasMeetLink = false;
@@ -225,7 +220,7 @@ export default function RecentEvents() {
             const isOnline = normalizedLocation.includes("google meet") || hasMeetLink;
 
             let href: string;
-            if (isOnline && hasMeetLink) {
+            if (isOnline && hasMeetLink && event.link) {
               href = event.link;
             } else if (event.location && event.location.trim() !== "") {
               href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`;
@@ -257,9 +252,11 @@ export default function RecentEvents() {
                   </div>
 
                   {/* Description */}
-                  <div className="text-left">
-                    <p className="text-text-muted text-xs md:text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: event.description }} />
-                  </div>
+                  {event.description && (
+                    <div className="text-left">
+                      <p className="text-text-muted text-xs md:text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: event.description }} />
+                    </div>
+                  )}
 
                   {/* Date, Time, Location - Mobile Optimized */}
                   <div className="space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-4">
