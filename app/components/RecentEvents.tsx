@@ -188,18 +188,14 @@ export default function RecentEvents() {
     status: calculateEventStatus(event.date, event.time, event.duration),
   }));
 
-  const nonCompletedEvents = eventsWithStatus.filter(
-    ({ status }) => status === "upcoming" || status === "ongoing"
-  );
+  const nonCompletedEvents = eventsWithStatus
+    .filter(({ status }) => status === "upcoming" || status === "ongoing")
+    .sort((a, b) => {
+      const dateA = new Date(`${a.event.date} ${a.event.time}`);
+      const dateB = new Date(`${b.event.date} ${b.event.time}`);
+      return dateA.getTime() - dateB.getTime();
+    });
   const completedEvents = eventsWithStatus.filter(({ status }) => status === "completed");
-
-  const limitedVisibleEvents = [
-    ...nonCompletedEvents,
-    ...completedEvents.slice(0, Math.max(0, 5 - nonCompletedEvents.length)),
-  ];
-
-  const visibleEvents = showAll ? eventsWithStatus : limitedVisibleEvents;
-  const hasMoreToShow = !showAll && visibleEvents.length < eventsWithStatus.length;
 
   return (
     <div className="flex justify-center animate-fade-in-up animation-delay-1200 px-4">
@@ -213,7 +209,7 @@ export default function RecentEvents() {
         </div>
 
         <div className="space-y-3">
-          {visibleEvents.map(({ event, status }) => {
+          {nonCompletedEvents.map(({ event, status }) => {
             // 業界常見寫法：先在函式體內計算所需變數，再回傳 JSX
             const normalizedLocation = (event.location || "").toLowerCase();
             let hasSafeLink = false;
@@ -322,17 +318,121 @@ export default function RecentEvents() {
               <span className="animate-spin rounded-full border-4 border-gray-300 border-t-blue-500 h-8 w-8 inline-block" />
             </div>
           )}
-          {(hasMoreToShow || showAll) && (
+          {completedEvents.length > 0 && (
             <div className="flex justify-center pt-1">
               <button
                 onClick={() => setShowAll((prev) => !prev)}
                 className="liquid-glass-btn secondary small"
-                aria-label={showAll ? "顯示較少" : "顯示更多"}
+                aria-label={showAll ? "隱藏過往活動" : "顯示過往活動"}
               >
-                {showAll ? "顯示較少" : "顯示更多"}
+                {showAll ? "隱藏過往活動" : "顯示過往活動"}
               </button>
             </div>
           )}
+          {showAll && completedEvents.map(({ event, status }) => {
+            // 業界常見寫法：先在函式體內計算所需變數，再回傳 JSX
+            const normalizedLocation = (event.location || "").toLowerCase();
+            let hasSafeLink = false;
+            let hasMeetLink = false;
+            try {
+              const urlObj = new URL(event.link);
+              hasSafeLink = urlObj.protocol === "http:" || urlObj.protocol === "https:";
+              hasMeetLink = hasSafeLink && (urlObj.hostname === "meet.google.com" || urlObj.hostname.endsWith(".meet.google.com"));
+            } catch (_) {
+              hasSafeLink = false;
+              hasMeetLink = false;
+            }
+            const isOnline = normalizedLocation.includes("google meet") || hasMeetLink;
+
+            let href: string;
+            if (isOnline && hasMeetLink) {
+              href = event.link;
+            } else if (event.location && event.location.trim() !== "") {
+              href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`;
+            } else {
+              href = "https://www.google.com/maps";
+            }
+
+            const locationLinkTitle = isOnline ? "開啟 Google Meet" : `在地圖開啟 ${event.location || "地圖"}`;
+            const locationLinkText = event.location || "地圖";
+
+            return (
+              <div
+                key={event.id}
+                className={`bg-card-background backdrop-blur-sm rounded-lg p-4 border border-card-border hover:border-card-border transition-all duration-300 ${getBorderStyle(status)}`}
+              >
+                <div className="space-y-3">
+                  {/* Title and Status Badge */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-foreground text-sm md:text-base leading-tight text-left">
+                        {event.title}
+                      </h4>
+                    </div>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusStyle(status)}`}
+                    >
+                      {getStatusText(status)}
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <div className="text-left">
+                    <p className="text-text-muted text-xs md:text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: event.description }} />
+                  </div>
+
+                  {/* Date, Time, Location - Mobile Optimized */}
+                  <div className="space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-4">
+                    <div className="flex items-center gap-2 text-xs text-text-secondary">
+                      <Calendar className="w-3 h-3 flex-shrink-0" />
+                      <span>
+                        {(() => {
+                          const date = new Date(event.date);
+                          const year = date.getFullYear();
+                          const month = date.getMonth() + 1;
+                          const day = date.getDate();
+                          return `${year} 年 ${month} 月 ${day} 日`;
+                        })()}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-text-secondary">
+                      <Clock className="w-3 h-3 flex-shrink-0" />
+                      <span>{event.time}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-text-secondary">
+                      <MapPin className="w-3 h-3 flex-shrink-0" />
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-blue-400 transition-colors underline decoration-dotted underline-offset-2"
+                        title={locationLinkTitle}
+                      >
+                        {locationLinkText}
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Action Button */}
+                  {event.link && event.link !== "#" && status !== "completed" && (
+                    <div className="flex justify-end pt-1">
+                      <Link
+                        href={event.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        prefetch={false}
+                        className="liquid-glass-btn secondary small"
+                        aria-label={`前往 ${event.title}`}
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        <span className="hidden sm:inline">前往</span>
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         <div className="text-center pt-2">
@@ -349,4 +449,4 @@ export default function RecentEvents() {
       </div>
     </div>
   );
-} 
+}
