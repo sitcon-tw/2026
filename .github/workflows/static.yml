@@ -1,0 +1,60 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set timezone to Asia/Taipei
+        uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: "Asia/Taipei"
+          timezoneMacos: "Asia/Taipei"
+      # - name: Generate Schedule Json
+      #   uses: CCIP-App/schedule-json-generator-action@v2
+      #   with:
+      #     gcp-api-key: ${{ secrets.GCP_API_KEY }}
+      #     spreadsheet-key: "1nb5A8ZdsYEtZh2JrRQS7yp7uu426Ey8tmnZKUzIZOLM"
+      #     default-avatar: "https://sitcon.org/2022/imgs/deafult_avatar.jpg"
+      #     avatar-base-url: "https://sitcon.org/2024/avatar/"
+      #     output-path: ./public/sessions.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      # - name: Generate Session Preview Images
+      #   working-directory: ./utils/preview_generator
+      #   run: |
+      #     npm install
+      #     node index.mjs
+      - name: Install npm packages
+        run: npm install
+      - name: Build Pages
+        run: npm run build
+      # - name: Build Email
+      #   working-directory: ./utils/mail
+      #   run: |
+      #     npm install -E
+      #     npm run export
+      #     cp -r ./out/SITCON-2024.html ../../dist/mail/SITCON-2024.html
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          publish_branch: gh-pages
+          force_orphan: true
