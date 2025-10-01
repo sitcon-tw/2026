@@ -1,63 +1,53 @@
-name: Deploy
+name: Deploy static content to Pages
 
 on:
-  push:
-    branches: main
-  workflow_dispatch:
+    push:
+        branches: ["main"]
+    workflow_dispatch:
+
+permissions:
+    contents: write
+    pages: write
+    id-token: write
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set timezone to Asia/Taipei
-        uses: szenius/set-timezone@v1.2
-        with:
-          timezoneLinux: "Asia/Taipei"
-          timezoneMacos: "Asia/Taipei"
-      # - name: Generate Schedule Json
-      #   uses: CCIP-App/schedule-json-generator-action@v2
-      #   with:
-      #     gcp-api-key: ${{ secrets.GCP_API_KEY }}
-      #     spreadsheet-key: "1nb5A8ZdsYEtZh2JrRQS7yp7uu426Ey8tmnZKUzIZOLM"
-      #     default-avatar: "https://sitcon.org/2022/imgs/deafult_avatar.jpg"
-      #     avatar-base-url: "https://sitcon.org/2024/avatar/"
-      #     output-path: ./public/sessions.json
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
-          path: |
-            ~/.npm
-            ${{ github.workspace }}/.next/cache
-          # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
-          # If source files changed but packages didn't, rebuild from a prior cache.
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Set timezone to Asia/Taipei
+              uses: szenius/set-timezone@v1.2
+              with:
+                  timezoneLinux: "Asia/Taipei"
+                  timezoneMacos: "Asia/Taipei"
 
-      # - name: Generate Session Preview Images
-      #   working-directory: ./utils/preview_generator
-      #   run: |
-      #     npm install
-      #     node index.mjs
-      - name: Install npm packages
-        run: npm install
-      - name: Build Pages
-        run: npm run build
-      # - name: Build Email
-      #   working-directory: ./utils/mail
-      #   run: |
-      #     npm install -E
-      #     npm run export
-      #     cp -r ./out/SITCON-2024.html ../../dist/mail/SITCON-2024.html
-      - name: Deploy to 2026 repo
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-            deploy_key: ${{ secrets.DEPLOY_KEY_2026 }}
-            external_repository: sitcon-tw/2026
-            publish_branch: build
-            publish_dir: ./out
-            destination_dir: ./
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  run_install: false
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Build frontend
+              run: pnpm build
+
+            - name: Deploy into 2026/build branch
+              run: |
+                  git config --global user.name "github-actions[bot]"
+                  git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+                  # clone target repo
+                  git clone --depth=1 --branch=build https://x-access-token:${{ secrets.DEPLOY_KEY_2026 }}@github.com/sitcon-tw/2026 deploy
+
+                  cd deploy
+                  cp -r ../out/* .
+
+                  git add .
+                  git commit -m "Deploy cfs site" || echo "No changes to commit"
+                  git push origin build
