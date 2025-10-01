@@ -40,14 +40,19 @@ jobs:
 
             - name: Deploy into 2026/build branch
               run: |
-                  mkdir deploy
-                  cp -r out/* deploy/
                   git fetch origin build || true
-                  git checkout build || git checkout --orphan build
-                  rm -rf ./*
-                  cp -r deploy/* ./
+                  git worktree add ../deploy build || git checkout --orphan build
+
+                  # 清空舊檔案
+                  rm -rf ../deploy/*
+
+                  # 複製新的 build 輸出
+                  cp -r out/* ../deploy/
+
+                  cd ../deploy
                   git add .
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
                   git commit -m "Deploy home site" || echo "No changes to commit"
                   git push origin build
+
