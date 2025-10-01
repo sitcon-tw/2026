@@ -40,16 +40,13 @@ jobs:
 
             - name: Deploy into 2026/build branch
               run: |
-                  mkdir temp
-                  mv out temp
-                  mv .gitignore temp/out/
-                  git fetch origin build:build
-                  git checkout build
-                  rm -rf _next 404 data stats
-                  mv temp/out/* ./
-                  rm -rf temp
+                  mkdir deploy
+                  cp -r out/* deploy/
+                  git fetch origin build || true
+                  git checkout build || git checkout --orphan build
+                  rm -rf ./*
+                  cp -r ../deploy/* ./
                   git add .
-                  git rm --cached .gitignore
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
                   git commit -m "Deploy home site" || echo "No changes to commit"
