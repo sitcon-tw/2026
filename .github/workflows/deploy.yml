@@ -43,11 +43,12 @@ jobs:
                   git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
                   # clone target repo
-                  git clone --depth=1 --branch=build https://x-access-token:${{ secrets.DEPLOY_KEY_2026 }}@github.com/sitcon-tw/2026 deploy
+                  git clone --depth=1 --branch=build "https://x-access-token:${{ secrets.DEPLOY_KEY_2026 }}@github.com/sitcon-tw/2026.git" deploy
 
                   cd deploy
-                  cp -r ../out/* .
+                  rm -rf _next 404 data stats
+                  cp -r ../out/* ./
 
                   git add .
-                  git commit -m "Deploy cfs site" || echo "No changes to commit"
+                  git commit -m "Deploy home site" || echo "No changes to commit"
                   git push origin build
