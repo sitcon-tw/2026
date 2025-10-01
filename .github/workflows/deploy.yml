@@ -41,12 +41,12 @@ jobs:
             - name: Deploy into 2026/build branch
               run: |
                   mkdir temp
-                  mv out temp/
-                  mv .gitignore temp/
+                  mv out temp
+                  mv .gitignore temp/out/
                   git fetch origin build:build
                   git checkout build
                   rm -rf _next 404 data stats
-                  mv temp/* ./
+                  mv temp/out/* ./
                   rm -rf temp
                   git add .
                   git rm --cached .gitignore
