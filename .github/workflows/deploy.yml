@@ -1,8 +1,8 @@
 name: Deploy
 
 on:
-  # push:
-  #   branches: main
+  push:
+    branches: main
   workflow_dispatch:
 
 jobs:
@@ -53,10 +53,11 @@ jobs:
       #     npm install -E
       #     npm run export
       #     cp -r ./out/SITCON-2024.html ../../dist/mail/SITCON-2024.html
-      - name: Deploy to GitHub Pages
+      - name: Deploy to 2026 repo
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          publish_branch: gh-pages
-          force_orphan: true
+            deploy_key: ${{ secrets.DEPLOY_KEY_2026 }}
+            external_repository: sitcon-tw/2026
+            publish_branch: build
+            publish_dir: ./out
+            destination_dir: ./
