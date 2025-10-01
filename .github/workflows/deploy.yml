@@ -45,7 +45,7 @@ jobs:
                   git fetch origin build || true
                   git checkout build || git checkout --orphan build
                   rm -rf ./*
-                  cp -r ../deploy/* ./
+                  cp -r deploy/* ./
                   git add .
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
