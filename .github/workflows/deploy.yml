@@ -45,7 +45,7 @@ jobs:
                   git fetch origin build:build
                   git checkout build
                   rm -rf _next 404 data stats
-                  mv -r temp/* ./
+                  mv temp/* ./
                   rm -rf temp
                   git add .
                   git commit -m "Deploy home site" || echo "No changes to commit"
