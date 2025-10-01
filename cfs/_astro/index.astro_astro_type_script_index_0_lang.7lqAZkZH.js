@@ -1,0 +1,1 @@
+import"https://font.emtech.cc/emfont.js";emfont.init();const o=()=>{var s=document.querySelectorAll(".aos");s.forEach(t=>{const e=t.getBoundingClientRect(),n=e.bottom<0||e.top>window.innerHeight,i=e.bottom<0;t.classList.toggle("over",i),t.classList.toggle("appeared",!n)})};document.addEventListener("scroll",o);o();
