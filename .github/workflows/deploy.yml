@@ -48,5 +48,7 @@ jobs:
                   mv temp/* ./
                   rm -rf temp
                   git add .
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
                   git commit -m "Deploy home site" || echo "No changes to commit"
                   git push origin build
