@@ -135,9 +135,15 @@ export default function Home() {
             SITCON 2026
           </h1>
 
+          {/* Theme */}
+          <div className="theme-hero animate-fade-in-up">
+            <h2 className="theme-title">Jam the Chaos</h2>
+            <div className="theme-subtitle">在混沌中即興合奏</div>
+          </div>
+
           {/* Subtitle */}
           <div className="space-y-3 md:space-y-4 animate-fade-in-up animation-delay-300">
-            <p className="text-lg sm:text-xl md:text-2xl text-text-muted">學生計算機年會</p>
+            {/* <p className="text-lg sm:text-xl md:text-2xl text-text-muted">學生計算機年會</p> */}
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 text-base md:text-lg text-text-secondary">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 md:w-5 md:h-5" />

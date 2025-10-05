@@ -678,6 +678,107 @@ body {
   }
 }
 
+/* ==================== THEME HERO STYLES ==================== */
+.theme-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.theme-title {
+  position: relative;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+  font-size: clamp(1.75rem, 2.2rem + 1.2vw, 3rem);
+  background: linear-gradient(90deg, #a3e635, #22d3ee, #a78bfa, #22c55e);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleGradientShift 6s ease-in-out infinite;
+  text-shadow: 0 0 20px rgba(34, 197, 94, 0.15), 0 0 32px rgba(59, 130, 246, 0.12);
+}
+
+/* Underline shimmer */
+.theme-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -10px;
+  height: 3px;
+  width: 66%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.8), rgba(255,255,255,0.0)),
+              linear-gradient(90deg, #f97316, #f43f5e, #a78bfa, #22d3ee, #22c55e);
+  background-size: 200% 100%, 150% 100%;
+  background-position: 0% 50%, 0% 50%;
+  mix-blend-mode: screen;
+  filter: blur(0.2px);
+  opacity: 0.85;
+  animation: underlineGlow 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Soft radial glow backdrop */
+.theme-title::before {
+  content: "";
+  position: absolute;
+  inset: -20% -25% -30% -25%;
+  background: radial-gradient(50% 50% at 50% 60%, rgba(56, 189, 248, 0.12) 0%, rgba(167, 139, 250, 0.10) 35%, rgba(34, 197, 94, 0.10) 65%, transparent 80%);
+  filter: blur(30px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes titleGradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes underlineGlow {
+  0%, 100% {
+    background-position: 0% 50%, 0% 50%;
+    opacity: 0.8;
+  }
+  50% {
+    background-position: 100% 50%, 100% 50%;
+    opacity: 1;
+  }
+}
+
+.theme-subtitle {
+  font-size: clamp(1rem, 0.9rem + 0.8vw, 1.5rem);
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.theme-copy {
+  margin-top: 0.5rem;
+  max-width: 48rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.theme-copy p + p {
+  margin-top: 0.25rem;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .theme-title {
+    animation: none !important;
+  }
+
+  .theme-title::after {
+    animation: none !important;
+  }
+}
+
 /* 高DPI螢幕優化 */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
   .liquid-glass-btn {
