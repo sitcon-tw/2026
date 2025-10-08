@@ -126,7 +126,7 @@ export default function Home() {
 
   return (
     <div className="bg-background text-foreground transition-colors duration-300">
-      {/* 第一屏 - SITCON 2026 主要內容 */}
+      {/* SITCON 2026 主要內容 */}
       <div className="min-h-screen flex flex-col items-center justify-center px-4 relative">
         {/* Main Content */}
         <div className="text-center space-y-6 md:space-y-8 animate-fade-in max-w-4xl w-full">
