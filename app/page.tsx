@@ -138,7 +138,6 @@ export default function Home() {
           {/* Theme */}
           <div className="theme-hero animate-fade-in-up">
             <h2 className="theme-title">Jam the Chaos</h2>
-            <div className="theme-subtitle">在混沌中即興合奏</div>
           </div>
 
           {/* Subtitle */}
