@@ -44,7 +44,7 @@ jobs:
                   git worktree add ../deploy build || git checkout --orphan build
 
                   # 清空舊檔案
-                  rm -rf ../deploy/*
+                  rm -rf ../deploy/_next ../deploy/data ../deploy/stats ../deploy/404
 
                   # 複製新的 build 輸出
                   cp -r out/* ../deploy/
