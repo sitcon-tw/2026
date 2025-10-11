@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="zh-Hant"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>SITCON 2026 贊助報價單</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family: "Noto Sans TC","PingFang 					<div class="notes">
+<h3>注意事項</h3> <ul> <li>本報價單僅供參考，實際金額與權益請以正式合約為準</li> <li>標示「包含在XXX級」的項目為贊助方案內含項目，選購方案即可享有該權益</li> <li>部分項目標示「獨家」，採先到先得方式，售完為止</li> <li>請注意各項目的截止日期，逾期可能影響權益提供</li> ${hasNonNumericPrices ? "<li>部分項目包含於贊助方案中，總計僅計算單獨販售項目</li>" : ""}<li>如有任何疑問，歡迎來信 sponsor@sitcon.org 洽詢</li> </ul> </div>rosoft JhengHei", sans-serif;
+line-height: 1.6;color:#333;background:#fff;padding:2rem}.quotation-container{max-width:210mm;margin:0 auto;background:#fff}header{text-align:center;margin-bottom:2rem;padding-bottom:1rem;border-bottom:3px solid #0171e3}h1{font-size:2rem;color:#0171e3;margin-bottom:.5rem}.subtitle{font-size:1rem;color:#666}.quotation-info{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;padding:1rem;background:#f8f9fa;border-radius:8px}.info-item{display:flex;gap:.5rem}.info-label{font-weight:600;color:#555}.items-table{width:100%;border-collapse:collapse;margin-bottom:2rem}.items-table th{background:#0171e3;color:#fff;padding:.75rem;text-align:left;font-weight:600}.items-table td{padding:.75rem;border-bottom:1px solid #ddd}.items-table tr:hover{background:#f8f9fa}.item-image{width:60px;height:60px;object-fit:cover;border-radius:4px}.item-title{font-weight:500}.item-deadline{font-size:.85rem;color:#666;margin-top:.25rem}.quantity-cell,.price-cell,.subtotal-cell{text-align:right;font-weight:500}.price-cell,.subtotal-cell{color:#0171e3}.summary-section{margin-top:2rem;padding:1.5rem;background:#f8f9fa;border-radius:8px}.summary-row{display:flex;justify-content:space-between;font-size:1rem}.summary-row.total{font-size:1.5rem;font-weight:700;color:#0171e3}.summary-note{margin-top:1rem;padding-top:.75rem;font-size:.9rem;color:#666;font-style:italic;border-top:1px solid #ddd}.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #ddd;text-align:center;color:#666;font-size:.9rem}.notes{margin-top:2rem;padding:1rem;background:#fff9e6;border-left:4px solid #ffc107;border-radius:4px}.notes h3{font-size:1rem;margin-bottom:.5rem;color:#856404}.notes ul{list-style:none;padding-left:1rem}.notes li{margin:.25rem 0;color:#856404}.notes li:before{content:"• ";margin-right:.5rem}.empty-state{text-align:center;padding:4rem 2rem;color:#999}.empty-state h2{font-size:1.5rem;margin-bottom:1rem}.empty-state p{font-size:1rem}@media print{body{padding:0}.quotation-container{max-width:100%}.items-table tr:hover{background:transparent!important}@page{margin:1.5cm;size:A4}}@media screen and (max-width: 768px){body{padding:1rem}h1{font-size:1.5rem}.quotation-info{grid-template-columns:1fr}.items-table{font-size:.9rem}.items-table th,.items-table td{padding:.5rem}.item-image{width:40px;height:40px}}
+</style></head> <body> <div class="quotation-container"> <header> <h1>SITCON 2026 贊助報價單</h1> <p class="subtitle">學生計算機年會 Sponsorship Quotation</p> </header> <div id="content"> <!-- Content will be injected by JavaScript --> </div> </div> <script type="module">function m(){if(typeof window>"u")return[];try{const t=localStorage.getItem("interestItems");return t?JSON.parse(t):[]}catch(t){return console.error("Error getting interested items from localStorage:",t),[]}}function f(t){return(t.startsWith("$")||t.startsWith("NT$"))&&parseInt(t.replace(/[NT$,]/g,""))||0}function a(t){return`NT$${t.toLocaleString("zh-TW")}`}function v(t){return t.includes("方案包含項目")||t.includes("Plan Included")}function y(){const t=m(),s=document.getElementById("content");if(!s)return;if(t.length===0){s.innerHTML=`
+						<div class="empty-state">
+							<h2>沒有選擇任何項目</h2>
+							<p>請返回贊助徵求書頁面選擇感興趣的贊助項目</p>
+						</div>
+					`;return}const l=new Date().toLocaleDateString("zh-TW",{year:"numeric",month:"2-digit",day:"2-digit"});let e=0,o=!1;const p=t.map((n,h)=>{const r=n.quantity||1,i=n.price||"",d=v(i);d&&(o=!0);const c=f(i),u=c*r;return e+=u,`
+						<tr>
+							<td>${h+1}</td>
+							<td>
+								<div class="item-title">${n.title}</div>
+								${n.deadline?`<div class="item-deadline">截止日期：${n.deadline}</div>`:""}
+							</td>
+							<td class="quantity-cell">${r}</td>
+							<td class="price-cell">${i||"—"}</td>
+							<td class="subtotal-cell">${!d&&c>0?a(u):i||"—"}</td>
+						</tr>
+					`}).join("");s.innerHTML=`
+					<div class="quotation-info">
+						<div class="info-item">
+							<span class="info-label">報價日期：</span>
+							<span>${l}</span>
+						</div>
+						<div class="info-item">
+							<span class="info-label">聯絡方式：</span>
+							<span>contact@sitcon.org</span>
+						</div>
+						<div class="info-item">
+							<span class="info-label">項目數量：</span>
+							<span>${t.length} 項</span>
+						</div>
+					</div>
+
+					<table class="items-table">
+						<thead>
+							<tr>
+								<th style="width: 60px;">項次</th>
+								<th>項目名稱</th>
+								<th style="width: 60px;">數量</th>
+								<th style="width: 120px;">單價</th>
+								<th style="width: 120px;">小計</th>
+							</tr>
+						</thead>
+						<tbody>
+							${p}
+						</tbody>
+					</table>
+
+					${e>0?`
+					<div class="summary-section">
+						<div class="summary-row total">
+							<span>預估總計（未稅）：</span>
+							<span>${a(e)}</span>
+						</div>
+						<div class="summary-note">
+							* 若需開立統一發票，需另加 5% 營業稅（約 ${a(Math.round(e*.05))}）
+						</div>
+					</div>
+					`:""}
+
+					<div class="notes">
+						<h3>注意事項</h3>
+						<ul>
+							<li>本報價單僅供參考，實際金額與權益請以正式合約為準</li>
+							<li>標示「方案包含項目」的項目為贊助方案內含權益，需選購相應方案</li>
+							<li>部分項目標示「獨家」，採先到先得方式，售完為止</li>
+							<li>請注意各項目的截止日期，逾期可能影響權益提供</li>
+							${o?"<li>部分項目包含於贊助方案中，總計僅計算單獨販售項目與方案費用</li>":""}
+							<li>若需要開立「統一發票」則需額外增加 5% 的營業稅</li>
+							<li>如有任何疑問，歡迎來信 sponsor@sitcon.org 洽詢</li>
+						</ul>
+					</div>
+
+					<div class="footer">
+						<p>SITCON 學生計算機年會 Students' Information Technology Conference</p>
+						<p>本報價單由系統自動生成於 ${l}</p>
+					</div>
+				`}document.addEventListener("DOMContentLoaded",()=>{y(),setTimeout(()=>{window.print()},500)});</script> </body> </html>
