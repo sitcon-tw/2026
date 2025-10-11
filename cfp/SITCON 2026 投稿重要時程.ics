@@ -1,0 +1,69 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ical.marudot.com//iCal Event Maker
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTAMP:20251010T194037Z
+UID:1760123160039-52981@ical.marudot.com
+DTSTART;VALUE=DATE:20251012
+DTEND;VALUE=DATE:20251013
+SUMMARY: 📝 SITCON 2026 開始徵稿
+DESCRIPTION:https://sitcon.org/2026/cfp/\nSITCON 2026 徵稿開跑！\n各式議程全面徵稿，早鳥截止 2025/11/30，最終截止 2026/01/23 23:59。\n現在投稿，站上屬於你的舞台！
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251010T194037Z
+UID:1760120323791-90547@ical.marudot.com
+DTSTART;VALUE=DATE:20251123
+DTEND;VALUE=DATE:20251124
+SUMMARY:⏰ SITCON 2026 早鳥投稿截止倒數一週
+DESCRIPTION:https://sitcon.org/2026/cfp/\n早鳥投稿將於 2025/11/30 （日）23:59 截止！\n\n俗話說得好——「早起的鳥兒有蟲吃」 🍽️\n想搶先獲得回饋、讓稿件更精彩？別錯過早鳥投稿的最後一週！
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251010T194037Z
+UID:1760120328774-16289@ical.marudot.com
+DTSTART;VALUE=DATE:20251127
+DTEND;VALUE=DATE:20251128
+SUMMARY:⚠️ SITCON 2026 早鳥投稿截止倒數三天
+DESCRIPTION:https://sitcon.org/2026/cfp/\n早鳥投稿將於 2025/11/30 （日）23:59 截止！\n\n老話說得好——「機不可失，時不再來」⏰\n早鳥投稿只剩三天，別讓獲得回饋的機會就這樣白白失去～\n稿件送出後都還能編輯內容，趕緊來投稿！
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251010T194037Z
+UID:1760120330750-87310@ical.marudot.com
+DTSTART;VALUE=DATE:20251130
+DTEND;VALUE=DATE:20251201
+SUMMARY:🎯 SITCON 2026 早鳥投稿截止
+DESCRIPTION:https://sitcon.org/2026/cfp/\n早鳥投稿將於今日 23:59 截止，記得送出稿件！\n\n俗話說——「好戲在壓軸」✨\n那就讓你的稿件，成為早鳥壓軸之作吧！
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251010T194037Z
+UID:1760122472992-69351@ical.marudot.com
+DTSTART;VALUE=DATE:20251223
+DTEND;VALUE=DATE:20251224
+SUMMARY:🔔 SITCON 2026 徵稿剩餘一個月
+DESCRIPTION:https://sitcon.org/2026/cfp/\n徵稿將於 2026/01/23（五） 23:59 截止。\n\n古人說得好——「千里之行，始於足下」🏃‍♂️\n想站上屬於你的舞台嗎？現在就是起筆的時候！\nSITCON 2026 徵稿開放中，舞台等你登場。
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251010T194037Z
+UID:1760120477380-41599@ical.marudot.com
+DTSTART;VALUE=DATE:20260116
+DTEND;VALUE=DATE:20260117
+SUMMARY:⏰ SITCON 2026 徵稿截止倒數一週
+DESCRIPTION:https://sitcon.org/2026/cfp/\n徵稿將於 2026/01/23（五） 23:59 截止。\n稿件送出後都還能編輯內容，記得提早送出稿件！\n\n老話一句——「慢工出細活」，但再慢七天就來不及了～\n把握最後的時間，把腦中的靈感化成投稿吧！
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251010T194037Z
+UID:1760120480750-60176@ical.marudot.com
+DTSTART;VALUE=DATE:20260120
+DTEND;VALUE=DATE:20260121
+SUMMARY:⚠️ SITCON 2026 徵稿截止倒數三天
+DESCRIPTION:https://sitcon.org/2026/cfp/\n徵稿將於 2026/01/23（五） 23:59 截止。\n稿件送出後都還能編輯內容，記得提早送出稿件！\n\n有句話說——「臨時抱佛腳」，也能敲出好稿～\n倒數三天，還來得及送出你的靈感結晶！
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251010T194037Z
+UID:1760120482112-83761@ical.marudot.com
+DTSTART;VALUE=DATE:20260123
+DTEND;VALUE=DATE:20260124
+SUMMARY:🚨 SITCON 2026 徵稿截止
+DESCRIPTION:https://sitcon.org/2026/cfp/\n徵稿將於今日 23:59 截止，記得送出稿件！\n\n總召說得好——「好稿不怕磨，只怕忘記交」\n把握最後的上傳時機，快讓你的稿件上場吧！
+END:VEVENT
+END:VCALENDAR
