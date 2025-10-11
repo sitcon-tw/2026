@@ -1,2 +1,21 @@
+# SITCON 2026 CFP Website - Robots.txt
+# Allow all search engines to crawl and index
+
 User-agent: *
-Disallow: /
+Allow: /
+
+# Sitemap location
+Sitemap: https://sitcon.org/2026/cfp/sitemap.xml
+
+# Crawl-delay for politeness (optional, can be removed if not needed)
+Crawl-delay: 1
+
+# Specific rules for common bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
