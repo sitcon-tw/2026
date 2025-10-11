@@ -12,7 +12,6 @@
 
 			// popup 控制
 			const popupCtrl = (id = "", action = "open", updateUrl = true, find) => {
-				
 				const popupBg = find || document.querySelector(`#${id} + .popup-bg`);
 				if (action === "open") {
 					popupBg.style.display = "flex";
