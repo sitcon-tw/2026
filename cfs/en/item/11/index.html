@@ -76,6 +76,13 @@
 
 				// Open popup if state contains popup info
 				if (event.state && event.state.popupId) {
+					// Scroll to Items section if it's an item popup
+					if (event.state.type === "item") {
+						const itemsSection = document.getElementById("items");
+						if (itemsSection) {
+							itemsSection.scrollIntoView({ behavior: "instant" });
+						}
+					}
 					popupCtrl(event.state.popupId, "open", false);
 				} else if (window.location.hash) {
 					// Handle anchor-based popups
@@ -92,6 +99,11 @@
 						const popupId = `item-popup-${itemId}`;
 						const popupElement = document.getElementById(popupId);
 						if (popupElement) {
+							// Scroll to Items section first
+							const itemsSection = document.getElementById("items");
+							if (itemsSection) {
+								itemsSection.scrollIntoView({ behavior: "instant" });
+							}
 							popupCtrl(popupId, "open", false);
 						}
 					}
@@ -113,6 +125,11 @@
 						const popupId = `item-popup-${itemId}`;
 						const popupElement = document.getElementById(popupId);
 						if (popupElement) {
+							// Scroll to Items section first, then open popup
+							const itemsSection = document.getElementById("items");
+							if (itemsSection) {
+								itemsSection.scrollIntoView({ behavior: "instant" });
+							}
 							setTimeout(() => popupCtrl(popupId, "open", false), 100);
 						}
 					}
