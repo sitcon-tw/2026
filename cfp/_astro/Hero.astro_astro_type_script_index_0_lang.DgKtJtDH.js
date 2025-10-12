@@ -1,7 +1,7 @@
-document.addEventListener("astro:page-load",()=>{if(window.location.pathname!="/2026/cfp/")return;const o=document.getElementById("bg"),e=o.getContext("webgl");e||alert("WebGL not supported");const n=`
+document.addEventListener("astro:page-load",()=>{if(window.location.pathname!="/2026/cfp/")return;const t=document.getElementById("bg"),e=t.getContext("webgl");e||alert("WebGL not supported");const u=`
 attribute vec2 a_pos;
 void main() { gl_Position = vec4(a_pos,0.0,1.0); }
-`,v=`
+`,d=`
 precision highp float;
 uniform vec2 u_res;
 uniform float u_time;
@@ -163,4 +163,4 @@ void main(){
 
   gl_FragColor=vec4(clamp(col,0.0,1.0),1.0);
 }
-`;function i(r,m){const a=e.createShader(r);return e.shaderSource(a,m),e.compileShader(a),e.getShaderParameter(a,e.COMPILE_STATUS)||console.error(e.getShaderInfoLog(a)),a}const f=i(e.VERTEX_SHADER,n),u=i(e.FRAGMENT_SHADER,v),t=e.createProgram();e.attachShader(t,f),e.attachShader(t,u),e.linkProgram(t),e.useProgram(t);const b=e.createBuffer();e.bindBuffer(e.ARRAY_BUFFER,b),e.bufferData(e.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),e.STATIC_DRAW);const l=e.getAttribLocation(t,"a_pos");e.enableVertexAttribArray(l),e.vertexAttribPointer(l,2,e.FLOAT,!1,0,0);const d=e.getUniformLocation(t,"u_res"),p=e.getUniformLocation(t,"u_time");function c(){o.width=innerWidth*window.devicePixelRatio,o.height=innerHeight*window.devicePixelRatio,e.viewport(0,0,o.width,o.height),e.uniform2f(d,o.width,o.height)}c(),addEventListener("resize",c);function s(r){e.uniform1f(p,r*.001),e.drawArrays(e.TRIANGLES,0,6),requestAnimationFrame(s)}requestAnimationFrame(s)});
+`;function s(r,l){const a=e.createShader(r);return e.shaderSource(a,l),e.compileShader(a),e.getShaderParameter(a,e.COMPILE_STATUS)||console.error(e.getShaderInfoLog(a)),a}const p=s(e.VERTEX_SHADER,u),m=s(e.FRAGMENT_SHADER,d),o=e.createProgram();e.attachShader(o,p),e.attachShader(o,m),e.linkProgram(o),e.useProgram(o);const h=e.createBuffer();e.bindBuffer(e.ARRAY_BUFFER,h),e.bufferData(e.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),e.STATIC_DRAW);const c=e.getAttribLocation(o,"a_pos");e.enableVertexAttribArray(c),e.vertexAttribPointer(c,2,e.FLOAT,!1,0,0);let i=!1;const g=e.getUniformLocation(o,"u_res"),w=e.getUniformLocation(o,"u_time");function n(){t.width=innerWidth*window.devicePixelRatio,t.height=innerHeight*window.devicePixelRatio,e.viewport(0,0,t.width,t.height),e.uniform2f(g,t.width,t.height)}n(),addEventListener("resize",n);function v(r){e.uniform1f(w,r*.001),e.drawArrays(e.TRIANGLES,0,6),requestAnimationFrame(v)}const f=window.innerHeight,b=new IntersectionObserver(r=>{r.forEach(l=>{l.isIntersecting?i||(i=!0,requestAnimationFrame(v)):i=!1})},{rootMargin:`${f}px 0px ${f}px 0px`,threshold:0});b.observe(t),document.addEventListener("astro:before-preparation",()=>{b.disconnect(),i=!1})});
