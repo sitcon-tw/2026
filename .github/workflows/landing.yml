@@ -1,0 +1,36 @@
+name: Deploy landing site
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Install & Build
+              run: pnpm build
+
+            - name: Deploy to 2026 repo
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  deploy_key: ${{ secrets.DEPLOY_KEY_2026 }}
+                  external_repository: sitcon-tw/2026
+                  publish_branch: build
+                  publish_dir: ./out
+                  destination_dir: landing
