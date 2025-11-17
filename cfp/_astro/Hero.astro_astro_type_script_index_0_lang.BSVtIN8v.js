@@ -1,7 +1,7 @@
-document.addEventListener("astro:page-load",()=>{if(window.location.pathname!="/2026/cfp/")return;const o=document.getElementById("bg"),e=o.getContext("webgl");if(!e){console.log("WebGL not supported");return}const b=`
+document.addEventListener("astro:page-load",()=>{if(window.location.pathname!=="/2026/cfp/"||window.__cfpBgInited)return;window.__cfpBgInited=!0;const a=document.getElementById("bg");if(!a)return;const e=a.getContext("webgl",{antialias:!1,preserveDrawingBuffer:!1});if(!e){console.log("WebGL not supported");return}const g=`
 attribute vec2 a_pos;
 void main() { gl_Position = vec4(a_pos,0.0,1.0); }
-`,d=`
+`,h=`
 precision highp float;
 uniform vec2 u_res;
 uniform float u_time;
@@ -47,34 +47,34 @@ float trapezoidLight(vec2 uv){
   
   // 計算當前點到光束起點的向量
   vec2 toPoint = uv - start;
-  
+
   // 計算點在光束方向上的投影距離
   float projDistance = dot(toPoint, direction);
   
   // 計算點到光束中心線的垂直距離
   vec2 projPoint = start + direction * projDistance;
   float perpDistance = length(uv - projPoint);
-  
+
   // 光束寬度隨距離增加而擴散
   float beamWidth = 0.1 + projDistance * 0.3;
-  
+
   // 檢查是否在光束範圍內
   float inBeam = smoothstep(beamWidth, beamWidth * 0.7, perpDistance);
-  
+
   // 確保只在正確方向上發光（從起點到終點）
   float validRange = smoothstep(-0.1, 0.0, projDistance) * 
                      smoothstep(1.6, 1.4, projDistance);
-  
+
   // 距離衰減：從起點開始衰減
   float distanceFromStart = length(toPoint);
   float decay = exp(-distanceFromStart * 1.2); // 指數衰減
   
   // 額外的柔和衰減
   float softDecay = smoothstep(1.8, 0.2, distanceFromStart);
-  
+
   // 時間變化的強度波動（可選）
   float pulse = 0.8 + 0.2 * sin(u_time * 2.0);
-  
+
   return inBeam * validRange * decay * softDecay * pulse;
 }
 
@@ -99,7 +99,7 @@ void main(){
   pinkPos.x *= aspectRatio; // aspect ratio correction
   float pinkSize = 0.3 * aspectRatio; // 50vw equivalent
   float pinkBlob = softCircle(uv, pinkPos, pinkSize, pinkSize * 0.5);
-  
+
   // Yellow DD8D3E: big width 60vw, static at left 0, bottom 0, shine brightness 60% to 100%
   vec2 yellowPos = vec2(0.32, 0.0); // left 0, bottom 0
   float yellowSize = 1.1; // 60vw equivalent
@@ -113,7 +113,7 @@ void main(){
   vec2 bluePos = vec2(blueCurveX * aspectRatio, blueCurveY);
   float blueSize = 0.22 * aspectRatio; // 30vw equivalent
   float blueBlob = softCircle(uv, bluePos, blueSize, blueSize * 0.5);
-  
+
   // Red C45D3F: width 30vw, left 60%, bottom 0%, shine brightness 60% to 100%
   vec2 redPos = vec2(0.6 * aspectRatio, 0.0); // left 60%, bottom 0%
   float redSize = 0.3 * aspectRatio; // 30vw equivalent
@@ -132,15 +132,15 @@ void main(){
 
   // Layer blobs (z-index consideration: pink is z-index 1, others on top)
   vec3 blob = vec3(0.0);
-  
+
   // Pink first (z-index 1, bottom layer)
   blob += pinkColor * pinkBlob;
-  
+
   // Then others on top
   blob = mix(blob, yellowColor, yellowBlob);
   blob = mix(blob, blueColor, blueBlob);
   blob = mix(blob, redColor, redBlob);
-  
+
   // Total alpha for blending with background
   float totalAlpha = clamp(pinkBlob + yellowBlob + blueBlob + redBlob, 0.0, 1.0);
   col=mix(col, blob, totalAlpha);
@@ -158,9 +158,9 @@ void main(){
   col=mix(col, vec3(0.9,0.95,1.0), beam*0.4);
 
   // ===== Noise =====
-  float g=noise(gl_FragCoord.xy*0.6+u_time*60.0);
-  col+= (g-0.5)*0.04;
+  float n = noise(floor(gl_FragCoord.xy * 0.6) + u_time * 30.0);
+  col += (n - 0.5) * 0.04;
 
   gl_FragColor=vec4(clamp(col,0.0,1.0),1.0);
 }
-`;function s(r,l){const a=e.createShader(r);return e.shaderSource(a,l),e.compileShader(a),e.getShaderParameter(a,e.COMPILE_STATUS)||console.error(e.getShaderInfoLog(a)),a}const p=s(e.VERTEX_SHADER,b),m=s(e.FRAGMENT_SHADER,d),t=e.createProgram();e.attachShader(t,p),e.attachShader(t,m),e.linkProgram(t),e.useProgram(t);const h=e.createBuffer();e.bindBuffer(e.ARRAY_BUFFER,h),e.bufferData(e.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),e.STATIC_DRAW);const c=e.getAttribLocation(t,"a_pos");e.enableVertexAttribArray(c),e.vertexAttribPointer(c,2,e.FLOAT,!1,0,0);let i=!1;const g=e.getUniformLocation(t,"u_res"),w=e.getUniformLocation(t,"u_time");function n(){o.width=innerWidth*window.devicePixelRatio,o.height=innerHeight*window.devicePixelRatio,e.viewport(0,0,o.width,o.height),e.uniform2f(g,o.width,o.height)}n(),addEventListener("resize",n);function v(r){e.uniform1f(w,r*.001),e.drawArrays(e.TRIANGLES,0,6),requestAnimationFrame(v)}const f=window.innerHeight,u=new IntersectionObserver(r=>{r.forEach(l=>{l.isIntersecting?i||(i=!0,requestAnimationFrame(v)):i=!1})},{rootMargin:`${f}px 0px ${f}px 0px`,threshold:0});u.observe(o),document.addEventListener("astro:before-preparation",()=>{u.disconnect(),i=!1})});
+`;function f(i,n){const o=e.createShader(i);return e.shaderSource(o,n),e.compileShader(o),!e.getShaderParameter(o,e.COMPLETE_STATUS)&&!e.getShaderParameter(o,e.COMPILE_STATUS)&&console.error(e.getShaderInfoLog(o)),o}const w=f(e.VERTEX_SHADER,g),x=f(e.FRAGMENT_SHADER,h),t=e.createProgram();e.attachShader(t,w),e.attachShader(t,x),e.linkProgram(t),e.getProgramParameter(t,e.LINK_STATUS)||console.error(e.getProgramInfoLog(t)),e.useProgram(t);const y=e.createBuffer();e.bindBuffer(e.ARRAY_BUFFER,y),e.bufferData(e.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),e.STATIC_DRAW);const v=e.getAttribLocation(t,"a_pos");e.enableVertexAttribArray(v),e.vertexAttribPointer(v,2,e.FLOAT,!1,0,0);const P=e.getUniformLocation(t,"u_res"),S=e.getUniformLocation(t,"u_time");let l=!1,r=null;function u(){const i=a.clientWidth||window.innerWidth,n=a.clientHeight||window.innerHeight,o=.7,m=1,s=Math.floor(i*o*m),c=Math.floor(n*o*m);a.width=s,a.height=c,e.viewport(0,0,s,c),e.uniform2f(P,s,c)}u(),window.addEventListener("resize",u);function d(i){l&&(e.uniform1f(S,i*.001),e.drawArrays(e.TRIANGLES,0,6),r=requestAnimationFrame(d))}const b=window.innerHeight,p=new IntersectionObserver(i=>{i.forEach(n=>{n.isIntersecting?l||(l=!0,r=requestAnimationFrame(d)):l&&(l=!1,r!=null&&(cancelAnimationFrame(r),r=null))})},{rootMargin:`${b}px 0px ${b}px 0px`,threshold:0});p.observe(a),document.addEventListener("astro:before-preparation",()=>{p.disconnect(),l=!1,r!=null&&(cancelAnimationFrame(r),r=null)})});
