@@ -1,1 +1,0 @@
-import{i as t}from"./add-to-cart-handler.L6PMBq8p.js";import"./local-storage.BX_TrTX5.js";import"./plan-helper.C8iL4cXF.js";document.addEventListener("DOMContentLoaded",function(){t({onCardClick:o=>{const p=`item-popup-${o}`;typeof window.popupCtrl=="function"&&window.popupCtrl(p,"open")}})});
