@@ -1,0 +1,62 @@
+---
+import zhHant from "@/i18n/zh-Hant.json";
+
+const navItems = [
+	{ label: zhHant.nav.info, href: "/2026/info" },
+	{ label: zhHant.nav.agenda, href: "/2026/agenda" },
+	{ label: zhHant.nav.venue, href: "/2026/venue" },
+	{ label: zhHant.nav.team, href: "/2026/team" }
+];
+---
+
+<nav>
+	<div class="nav-container">
+		<a href="/2026/" class="logo" aria-label="SITCON 2026"><img src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
+		{
+			navItems.map(item => (
+				<a href={item.href} class="nav-item">
+					{item.label}
+				</a>
+			))
+		}
+	</div>
+</nav>
+
+<style>
+	nav {
+		position: fixed;
+		top: 2rem;
+		left: 0;
+		right: 0;
+		z-index: 1000;
+		padding: 0 2rem;
+	}
+
+	.nav-container {
+		max-width: 1400px;
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+	}
+
+	.nav-item {
+		background-color: #ffd172;
+		color: #2b2e3a;
+		padding: 1rem 2rem;
+		border-radius: 999px;
+		text-decoration: none;
+		font-size: 1.25rem;
+		font-weight: 600;
+		transition: all 0.3s ease;
+	}
+
+	.nav-item:hover {
+		background-color: #ffdc8a;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(255, 209, 114, 0.3);
+	}
+	.logo {
+		margin-right: auto;
+	}
+</style>

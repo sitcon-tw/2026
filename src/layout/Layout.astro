@@ -1,0 +1,227 @@
+---
+import Nav from "@/components/Nav.astro";
+import "lenis/dist/lenis.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+	ogImage?: string;
+}
+
+const {
+	title = "Jam the Chaos - SITCON 2026",
+	description = "SITCON 2026 學生計算機年會徵稿開始！主題「Jam the Chaos」，邀請對資訊技術有熱情的學生投稿分享你的創新想法、專案經驗與技術見解。2026/03/28 於中央研究院人文社會科學館盛大舉辦。",
+	ogImage = "/2026/og-image.webp"
+} = Astro.props;
+
+const siteUrl = "https://sitcon.org/2026/";
+const fullOgImage = new URL(ogImage, siteUrl).toString();
+---
+
+<html lang="zh-Hant-TW" transition:name="root" transition:animate="none">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content="SITCON,學生計算機年會,2026,徵稿,CFP,Call for Proposals,資訊技術,程式設計,開源,學生社群,技術研討會,Jam the Chaos,中央研究院,投稿,演講,工作坊" />
+		<meta name="author" content="SITCON 學生計算機年會籌備團隊" />
+		<meta name="robots" content="index, follow" />
+		<link rel="canonical" href={siteUrl} />
+
+		<link rel="icon" type="image/png" href="/2026/cfp/favicon/favicon-96x96.png" sizes="96x96" />
+		<link rel="icon" type="image/svg+xml" href="/2026/cfp/favicon/favicon.svg" />
+		<link rel="shortcut icon" href="/2026/cfp/favicon/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/2026/cfp/favicon/apple-touch-icon.png" />
+		<meta name="apple-mobile-web-app-title" content="SITCON CFP" />
+		<link rel="manifest" href="/2026/cfp/favicon/site.webmanifest" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={siteUrl} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={fullOgImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content="zh_TW" />
+		<meta property="og:site_name" content="SITCON 學生計算機年會" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={siteUrl} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={fullOgImage} />
+		<meta name="twitter:site" content="@SITCONtw" />
+		<meta name="twitter:creator" content="@SITCONtw" />
+
+		<meta name="theme-color" content="#010121" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<link rel="alternate" hreflang="zh-Hant-TW" href={siteUrl} />
+
+		<link rel="preconnect" href="https://font.emtech.cc" />
+		<link rel="preconnect" href="https://www.googletagmanager.com" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://font.emtech.cc/css/GenKiMinTW" rel="stylesheet" />
+		<link href="https://font.emtech.cc/css/GenKiGothicTW" rel="stylesheet" />
+		<link href="https://font.emtech.cc/css/JetBrainsMono" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
+
+		<script type="application/ld+json" is:inline>
+			{
+				"@context": "https://schema.org",
+				"@type": "Event",
+				"name": "SITCON 2026 學生計算機年會",
+				"description": "學生計算機年會（Students' Information Technology Conference）以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神。2026 年主題「Jam the Chaos」，邀請對資訊技術有熱情的學生投稿分享創新想法、專案經驗與技術見解。",
+				"startDate": "2026-03-28T09:00:00+08:00",
+				"endDate": "2026-03-28T17:00:00+08:00",
+				"eventStatus": "https://schema.org/EventScheduled",
+				"eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+				"location": {
+					"@type": "Place",
+					"name": "中央研究院人文社會科學館",
+					"address": {
+						"@type": "PostalAddress",
+						"streetAddress": "研究院路二段128號",
+						"addressLocality": "南港區",
+						"addressRegion": "台北市",
+						"addressCountry": "TW"
+					}
+				},
+				"image": ["https://sitcon.org/2026/cfp/og-image.webp"],
+				"organizer": {
+					"@type": "Organization",
+					"name": "SITCON 學生計算機年會籌備團隊",
+					"url": "https://sitcon.org"
+				},
+				"offers": {
+					"@type": "Offer",
+					"url": "https://sitcon.org/2026/cfp/",
+					"price": "0",
+					"priceCurrency": "TWD",
+					"availability": "https://schema.org/InStock",
+					"validFrom": "2025-10-01T00:00:00+08:00"
+				},
+				"performer": {
+					"@type": "Organization",
+					"name": "SITCON 學生計算機年會"
+				}
+			}
+		</script>
+		<style is:global>
+			:root {
+				--max-width: 1400px;
+				--white: #ffffff;
+				--black: #000000;
+				--coffee: #3c2d0e;
+			}
+
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			html {
+				scroll-behavior: smooth;
+				scroll-padding-top: 5rem;
+			}
+
+			body {
+				background-color: #a97c21;
+				color: var(--white);
+				font-family: "GenKiGothicTW", sans-serif;
+				font-optical-sizing: auto;
+				font-size: 17px;
+				color: #fff;
+			}
+
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				font-family: "GenKiMinTW", serif;
+				font-weight: normal;
+			}
+
+			code,
+			pre {
+				font-family: "JetBrainsMono", monospace;
+			}
+
+			h2 {
+				font-size: 4rem;
+			}
+
+			p {
+				line-height: 1.5;
+				margin-bottom: 1rem;
+			}
+
+			@media (max-width: 600px) {
+				body {
+					font-size: 16px;
+				}
+			}
+
+			/* i11y */
+			.skip-link {
+				position: absolute;
+				top: -40px;
+				left: 0;
+				background: #000;
+				color: var(--white);
+				padding: 8px 16px;
+				text-decoration: none;
+				z-index: 10000;
+				font-weight: bold;
+			}
+
+			.skip-link:focus {
+				top: 0;
+			}
+		</style>
+		<!-- Google Tag Manager -->
+		<script is:inline>
+			(function (w, d, s, l, i) {
+				w[l] = w[l] || [];
+				w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+				var f = d.getElementsByTagName(s)[0],
+					j = d.createElement(s),
+					dl = l != "dataLayer" ? "&l=" + l : "";
+				j.async = true;
+				j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+				f.parentNode.insertBefore(j, f);
+			})(window, document, "script", "dataLayer", "GTM-NPVBCDZ");
+		</script>
+		<!-- End Google Tag Manager -->
+	</head>
+	<body>
+		<a href="#main-content" class="skip-link">跳至主要內容</a>
+		<Nav />
+		<div id="main-content">
+			<slot />
+		</div>
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPVBCDZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+		<script>
+			import Lenis from "lenis";
+			const lenis = new Lenis({
+				autoRaf: true,
+				anchors: true
+			});
+
+			// document.addEventListener("astro:page-load", () => {
+			// 	if (!window.location.href.includes("#")) lenis.scrollTo(0, { immediate: true });
+			// });
+		</script>
+	</body>
+</html>
