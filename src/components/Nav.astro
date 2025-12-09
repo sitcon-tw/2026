@@ -11,14 +11,19 @@ const navItems = [
 
 <nav>
 	<div class="nav-container">
-		<a href="/2026/" class="logo" aria-label="SITCON 2026"><img src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
-		{
-			navItems.map(item => (
-				<a href={item.href} class="nav-item">
-					{item.label}
-				</a>
-			))
-		}
+		<div class="nav-logo-container">
+			<a href="/2026/" id="logo" aria-label="SITCON 2026"><img id="logo-svg" src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
+			<h1 id="info">28 MARCH 2026<br />National Academy of Taiwan</h1>
+		</div>
+		<div class="nav-items-container">
+			{
+				navItems.map(item => (
+					<a href={item.href} class="nav-item">
+						{item.label}
+					</a>
+				))
+			}
+		</div>
 	</div>
 </nav>
 
@@ -37,11 +42,17 @@ const navItems = [
 		margin: 0 auto;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		gap: 1.25rem;
 	}
 
+	.nav-items-container {
+		display: flex;
+		gap: 1rem;
+	}
+
 	.nav-item {
-		background-color: #ffd172;
+		background-color: #e8bb5f;
 		color: #2b2e3a;
 		padding: 1rem 2rem;
 		border-radius: 999px;
@@ -49,14 +60,39 @@ const navItems = [
 		font-size: 1.25rem;
 		font-weight: 600;
 		transition: all 0.3s ease;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 	}
 
 	.nav-item:hover {
 		background-color: #ffdc8a;
-		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(255, 209, 114, 0.3);
+		transform: translateY(-3px);
+		box-shadow: 0 4px 10px rgba(255, 209, 114, 0.3);
 	}
-	.logo {
-		margin-right: auto;
+
+	#logo-svg {
+		height: 2.5rem;
+		width: auto;
+	}
+
+	#logo {
+		transition: all 0.3s ease;
+	}
+
+	#logo:hover {
+		filter: drop-shadow(0px 5px 10px rgba(255, 209, 114, 0.7));
+		scale: 1.05;
+		transform: translateY(-3px);
+	}
+
+	.nav-logo-container {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.3));
+	}
+
+	#info {
+		font-size: 1rem;
+		font-family: "JetBrainsMono", monospace;
 	}
 </style>
