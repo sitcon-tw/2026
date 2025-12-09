@@ -20,6 +20,7 @@
 - Cannon.js - 物理引擎（分享議程、走進中研院）
 - GSAP.js - 特效
 - Lucide - icon
+- marked - Markdown 解析
 
 ## 提醒事項
 
