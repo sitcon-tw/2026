@@ -1,6 +1,6 @@
 ---
 import zhHant from "@/i18n/zh-Hant.json";
-import { Menu } from "@lucide/astro";
+import { Menu, X } from "@lucide/astro";
 
 const navItems = [
 	{ label: zhHant.nav.info, href: "/2026/info" },
@@ -16,7 +16,8 @@ const navItems = [
 			<a href="/2026/" id="logo" aria-label="SITCON 2026"><img id="logo-svg" src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
 			<h1 id="info">28 MARCH 2026<br />National Academy of Taiwan</h1>
 			<button class="hamburger" aria-expanded="false">
-				<Menu />
+				<Menu id="menu-icon" />
+				<X id="x-icon" />
 			</button>
 		</div>
 		<div class="nav-items-container">
@@ -144,6 +145,22 @@ const navItems = [
 		width: 100%;
 		border-radius: 1rem;
 		box-shadow: none;
+	}
+
+	#x-icon {
+		display: none;
+	}
+
+	#menu-icon {
+		display: block;
+	}
+
+	.nav-container.active #x-icon {
+		display: block;
+	}
+
+	.nav-container.active #menu-icon {
+		display: none;
 	}
 
 	@media (max-width: 1150px) {
