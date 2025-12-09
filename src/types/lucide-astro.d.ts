@@ -9,4 +9,5 @@ declare module "@lucide/astro" {
 	export const ChevronDown: any;
 	export const ChevronLeft: any;
 	export const ChevronRight: any;
+	export const Menu: any;
 }
