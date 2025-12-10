@@ -91,13 +91,50 @@ const navItems = [
 
 	window.addEventListener("resize", () => {
 		if (window.innerWidth > 850) {
+			const navItemsContainer = document.querySelector(".nav-items-container") as HTMLElement;
 			menu.setAttribute("aria-expanded", "false");
 			menu.classList.remove("active");
 			navMenu.classList.remove("active");
-			const navItemsContainer = document.querySelector(".nav-items-container") as HTMLElement;
 			navItemsContainer.style.opacity = "1";
 		}
 	});
+
+	const nav = document.querySelector(".nav-container") as HTMLElement;
+	const scroll = 50;
+	let lastScrollY = 0;
+	let ticking = false;
+
+	function checkScrollDirection() {
+		const currentScrollY = window.scrollY;
+		if (currentScrollY > lastScrollY) {
+			if (currentScrollY - lastScrollY > scroll) {
+				lastScrollY = currentScrollY;
+				gsap.to(nav, { y: -100, duration: 0.3, ease: "power2.out" });
+			}
+		} else if (currentScrollY < lastScrollY) {
+			if (lastScrollY - currentScrollY > scroll) {
+				lastScrollY = currentScrollY;
+				gsap.to(nav, { y: 0, duration: 0.3, ease: "power2.out" });
+			}
+		}
+
+		if (currentScrollY === 0) {
+			gsap.to(nav, { y: 0, duration: 0.3, ease: "power2.out" });
+			lastScrollY = currentScrollY;
+		}
+		ticking = false;
+	}
+
+	window.addEventListener(
+		"scroll",
+		() => {
+			if (!ticking) {
+				ticking = true;
+				window.requestAnimationFrame(checkScrollDirection);
+			}
+		},
+		{ passive: true }
+	);
 </script>
 
 <style>
