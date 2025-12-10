@@ -91,17 +91,10 @@ const navItems = [
 
 	window.addEventListener("resize", () => {
 		if (window.innerWidth > 850) {
-			const navItemsContainer = document.querySelector(".nav-items-container") as HTMLElement;
-			const menuIcon = document.getElementById("menu-icon") as HTMLElement;
-			const xIcon = document.getElementById("x-icon") as HTMLElement;
 			menu.setAttribute("aria-expanded", "false");
 			menu.classList.remove("active");
 			navMenu.classList.remove("active");
-			navItemsContainer.style.opacity = "1";
-			menuIcon.style.display = "block";
-			menuIcon.style.opacity = "1";
-			xIcon.style.display = "none";
-			xIcon.style.opacity = "0";
+			gsap.set([".nav-container", "#menu-icon", "#x-icon"], { clearProps: "all" });
 		}
 	});
 
@@ -239,6 +232,13 @@ const navItems = [
 		box-shadow: none;
 	}
 
+	#x-icon,
+	#menu-icon {
+		width: 2rem;
+		height: 2rem;
+		color: #2b2e3a;
+	}
+
 	#x-icon {
 		display: none;
 		opacity: 0;
@@ -249,30 +249,13 @@ const navItems = [
 		opacity: 1;
 	}
 
-	#x-icon,
-	#menu-icon {
-		width: 2rem;
-		height: 2rem;
-		color: #2b2e3a;
-	}
-
-	@media (max-width: 1150px) {
+	@media (max-width: 75rem) {
 		#info {
 			display: none;
 		}
 	}
 
-	@media (max-width: 450px) {
-		.nav-container.active .nav-items-container {
-			display: flex;
-			flex-wrap: wrap;
-		}
-		nav {
-			padding: 0 1rem;
-		}
-	}
-
-	@media (max-width: 850px) {
+	@media (max-width: 55rem) {
 		.nav-container {
 			background: #e8bb5f;
 			padding: 1rem 2rem;
@@ -286,7 +269,6 @@ const navItems = [
 		.hamburger {
 			display: block;
 		}
-
 		.nav-logo-container {
 			filter: none;
 			justify-content: space-between;
@@ -306,6 +288,16 @@ const navItems = [
 			gap: 1rem;
 			border-radius: 5rem;
 			display: none;
+		}
+	}
+
+	@media (max-width: 30rem) {
+		.nav-container.active .nav-items-container {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		nav {
+			padding: 0 1rem;
 		}
 	}
 </style>
