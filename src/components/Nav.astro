@@ -33,14 +33,60 @@ const navItems = [
 </nav>
 
 <script>
+	import gsap from "gsap";
+
 	const menu = document.querySelector(".hamburger") as HTMLButtonElement;
 	const navMenu = document.querySelector(".nav-container") as HTMLDivElement;
 
+	let animating = false;
+
+	gsap.fromTo(
+		".hamburger",
+		{ scale: 1 },
+		{
+			scale: 1.1,
+			duration: 0.3,
+			paused: true,
+			ease: "power2.out",
+			id: "hoverScale"
+		}
+	);
+
+	const hover = gsap.getById("hoverScale") as gsap.core.Tween;
+
+	menu.addEventListener("mouseenter", () => hover.play());
+	menu.addEventListener("mouseleave", () => hover.reverse());
+
 	menu.addEventListener("click", () => {
-		const isExpanded = menu.getAttribute("aria-expanded") === "true";
-		menu.setAttribute("aria-expanded", String(!isExpanded));
-		menu.classList.toggle("active");
-		navMenu.classList.toggle("active");
+		if (animating) return;
+		animating = true;
+		setTimeout(() => {
+			animating = false;
+		}, 500);
+		const isActive = menu.getAttribute("aria-expanded") === "true";
+		menu.setAttribute("aria-expanded", String(!isActive));
+		if (isActive) {
+			let tl = gsap.timeline();
+
+			gsap.timeline().to("#x-icon", { opacity: 0, y: -2, display: "none", duration: 0.2 }).to("#menu-icon", { opacity: 1, y: 0, display: "block", duration: 0.3 });
+
+			tl.to(".nav-items-container", { opacity: 0, y: -5, duration: 0.2 }).to(".nav-container", { duration: 0.2, height: "4rem", ease: "power2.out" });
+
+			setTimeout(() => {
+				menu.classList.toggle("active");
+				navMenu.classList.toggle("active");
+			}, tl.duration() * 1000);
+		} else {
+			menu.classList.toggle("active");
+			navMenu.classList.toggle("active");
+
+			gsap
+				.timeline()
+				.to("#menu-icon", { opacity: 0, y: -4, display: "none", duration: 0.2 })
+				.fromTo("#x-icon", { opacity: 0, y: 4, display: "none" }, { opacity: 1, y: 0, display: "block", duration: 0.3 });
+
+			gsap.timeline().to(".nav-container", { duration: 0.2, height: "auto", ease: "power2.in" }).fromTo(".nav-items-container", { opacity: 0, y: -5 }, { duration: 0.2, opacity: 1, y: 0 });
+		}
 	});
 
 	window.addEventListener("resize", () => {
@@ -48,6 +94,8 @@ const navItems = [
 			menu.setAttribute("aria-expanded", "false");
 			menu.classList.remove("active");
 			navMenu.classList.remove("active");
+			const navItemsContainer = document.querySelector(".nav-items-container") as HTMLElement;
+			navItemsContainer.style.opacity = "1";
 		}
 	});
 </script>
@@ -102,12 +150,12 @@ const navItems = [
 
 	#logo {
 		transition: all 0.3s ease;
+		transform: translateY(-2px);
 	}
 
 	#logo:hover {
 		filter: drop-shadow(0px 5px 10px rgba(255, 209, 114, 0.7));
-		scale: 1.02;
-		transform: translateY(-3px);
+		scale: 1.04;
 	}
 
 	.nav-logo-container {
@@ -149,18 +197,19 @@ const navItems = [
 
 	#x-icon {
 		display: none;
+		opacity: 0;
 	}
 
 	#menu-icon {
-		display: block;
+		display: flex;
+		opacity: 1;
 	}
 
-	.nav-container.active #x-icon {
-		display: block;
-	}
-
-	.nav-container.active #menu-icon {
-		display: none;
+	#x-icon,
+	#menu-icon {
+		width: 2rem;
+		height: 2rem;
+		color: #2b2e3a;
 	}
 
 	@media (max-width: 1150px) {
@@ -173,9 +222,11 @@ const navItems = [
 		.nav-container {
 			background: #e8bb5f;
 			padding: 1rem 2rem;
-			border-radius: 10rem;
+			border-radius: 2rem;
 			filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.1));
 			flex-direction: column;
+			height: 4rem;
+			overflow: hidden;
 		}
 
 		.hamburger {
@@ -186,6 +237,10 @@ const navItems = [
 			filter: none;
 			justify-content: space-between;
 			width: 100%;
+		}
+
+		#logo:hover {
+			filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.2));
 		}
 
 		#logo-svg {
