@@ -15,7 +15,7 @@ const navItems = [
 		<div class="nav-logo-container">
 			<a href="/2026/" id="logo" aria-label="SITCON 2026"><img id="logo-svg" src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
 			<h1 id="info">28 MARCH 2026<br />National Academy of Taiwan</h1>
-			<button class="hamburger" aria-expanded="false">
+			<button class="hamburger" aria-expanded="false" aria-label={zhHant.nav.openMenu}>
 				<Menu id="menu-icon" />
 				<X id="x-icon" />
 			</button>
@@ -92,10 +92,16 @@ const navItems = [
 	window.addEventListener("resize", () => {
 		if (window.innerWidth > 850) {
 			const navItemsContainer = document.querySelector(".nav-items-container") as HTMLElement;
+			const menuIcon = document.getElementById("menu-icon") as HTMLElement;
+			const xIcon = document.getElementById("x-icon") as HTMLElement;
 			menu.setAttribute("aria-expanded", "false");
 			menu.classList.remove("active");
 			navMenu.classList.remove("active");
 			navItemsContainer.style.opacity = "1";
+			menuIcon.style.display = "block";
+			menuIcon.style.opacity = "1";
+			xIcon.style.display = "none";
+			xIcon.style.opacity = "0";
 		}
 	});
 
@@ -168,7 +174,8 @@ const navItems = [
 		border-radius: 999px;
 		text-decoration: none;
 		font-size: 1.25rem;
-		font-weight: 600;
+		font-family: "GenKiMinTW", sans-serif;
+		font-weight: bold;
 		transition: all 0.3s ease;
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 		text-align: center;
@@ -252,6 +259,16 @@ const navItems = [
 	@media (max-width: 1150px) {
 		#info {
 			display: none;
+		}
+	}
+
+	@media (max-width: 450px) {
+		.nav-container.active .nav-items-container {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		nav {
+			padding: 0 1rem;
 		}
 	}
 
