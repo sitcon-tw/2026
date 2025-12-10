@@ -109,12 +109,12 @@ const navItems = [
 		if (currentScrollY > lastScrollY) {
 			if (currentScrollY - lastScrollY > scroll) {
 				lastScrollY = currentScrollY;
-				gsap.to(nav, { y: -100, duration: 0.3, ease: "power2.out" });
+				gsap.to(nav, { y: -100, opacity: 0, duration: 0.3, ease: "power2.out" });
 			}
 		} else if (currentScrollY < lastScrollY) {
 			if (lastScrollY - currentScrollY > scroll) {
 				lastScrollY = currentScrollY;
-				gsap.to(nav, { y: 0, duration: 0.3, ease: "power2.out" });
+				gsap.to(nav, { y: 0, duration: 0.3, opacity: 1, ease: "power2.out" });
 			}
 		}
 
