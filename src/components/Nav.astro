@@ -194,8 +194,6 @@ const navItems = [
 	.nav-container.active .nav-items-container {
 		background: #e8bb5f;
 		display: grid;
-		gap: 1rem;
-		padding: 1rem;
 		grid-template-columns: 1fr 1fr;
 		width: 100%;
 	}
@@ -265,9 +263,13 @@ const navItems = [
 		}
 
 		.nav-items-container {
-			gap: 1rem;
 			border-radius: 5rem;
 			display: none;
+		}
+
+		.nav-container.active .nav-items-container {
+			padding: 1rem;
+			gap: 1rem;
 		}
 	}
 
