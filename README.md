@@ -156,3 +156,7 @@
 - [ ] Expore View 每次排序隨機
 - [ ] 點擊成員會出現介紹 popup，左邊 Slide In
 - [ ] Grid View 底下選單是 Anchor（像是現在 CFP 那樣），Explore View 底下選單是點下去會篩選
+
+### MISC
+
+- [ ] 文字 Animate on Scroll，效果參考 https://revealanimationhandler.pages.dev/
