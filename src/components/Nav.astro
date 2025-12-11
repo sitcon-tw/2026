@@ -98,42 +98,18 @@ const navItems = [
 		}
 	});
 
+	let lastScroll = 0;
+	let offset = 0;
 	const nav = document.querySelector(".nav-container") as HTMLElement;
-	const scroll = 50;
-	let lastScrollY = 0;
-	let ticking = false;
 
-	function checkScrollDirection() {
-		const currentScrollY = window.scrollY;
-		if (currentScrollY > lastScrollY) {
-			if (currentScrollY - lastScrollY > scroll) {
-				lastScrollY = currentScrollY;
-				gsap.to(nav, { y: -100, opacity: 0, duration: 0.3, ease: "power2.out" });
-			}
-		} else if (currentScrollY < lastScrollY) {
-			if (lastScrollY - currentScrollY > scroll) {
-				lastScrollY = currentScrollY;
-				gsap.to(nav, { y: 0, duration: 0.3, opacity: 1, ease: "power2.out" });
-			}
-		}
+	window.addEventListener("scroll", () => {
+		const delta = window.scrollY - lastScroll;
+		const navHeight = nav.offsetHeight + 32;
 
-		if (currentScrollY === 0) {
-			gsap.to(nav, { y: 0, duration: 0.3, ease: "power2.out" });
-			lastScrollY = currentScrollY;
-		}
-		ticking = false;
-	}
-
-	window.addEventListener(
-		"scroll",
-		() => {
-			if (!ticking) {
-				ticking = true;
-				window.requestAnimationFrame(checkScrollDirection);
-			}
-		},
-		{ passive: true }
-	);
+		offset = Math.min(0, Math.max(-navHeight, offset - delta));
+		nav.style.transform = `translateY(${offset}px)`;
+		lastScroll = window.scrollY;
+	});
 </script>
 
 <style>
