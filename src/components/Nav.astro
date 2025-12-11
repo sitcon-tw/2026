@@ -108,6 +108,7 @@ const navItems = [
 
 		offset = Math.min(0, Math.max(-navHeight, offset - delta));
 		nav.style.transform = `translateY(${offset}px)`;
+		nav.style.opacity = `${1 - Math.abs(offset) / navHeight}`;
 		lastScroll = window.scrollY;
 	});
 </script>
