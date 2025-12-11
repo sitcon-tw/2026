@@ -1,9 +1,9 @@
 ---
 name: ✨ 功能建議
 about: 建議新功能或改進
-title: '[Feature] '
+title: "[Feature] "
 labels: enhancement
-assignees: ''
+assignees: ""
 ---
 
 ## 功能描述

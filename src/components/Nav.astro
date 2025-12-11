@@ -1,5 +1,6 @@
 ---
 import zhHant from "@/i18n/zh-Hant.json";
+import { Menu, X } from "@lucide/astro";
 
 const navItems = [
 	{ label: zhHant.nav.info, href: "/2026/info" },
@@ -11,16 +12,106 @@ const navItems = [
 
 <nav>
 	<div class="nav-container">
-		<a href="/2026/" class="logo" aria-label="SITCON 2026"><img src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
-		{
-			navItems.map(item => (
-				<a href={item.href} class="nav-item">
-					{item.label}
-				</a>
-			))
-		}
+		<div class="nav-logo-container">
+			<a href="/2026/" id="logo" aria-label="SITCON 2026"><img id="logo-svg" src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
+			<h1 id="info">28 MARCH 2026<br />National Academy of Taiwan</h1>
+			<button class="hamburger" aria-expanded="false" aria-label={zhHant.nav.openMenu}>
+				<Menu id="menu-icon" />
+				<X id="x-icon" />
+			</button>
+		</div>
+		<div class="nav-items-container">
+			{
+				navItems.map(item => (
+					<a href={item.href} class="nav-item">
+						{item.label}
+					</a>
+				))
+			}
+		</div>
 	</div>
 </nav>
+
+<script>
+	import gsap from "gsap";
+
+	const menu = document.querySelector(".hamburger") as HTMLButtonElement;
+	const navMenu = document.querySelector(".nav-container") as HTMLDivElement;
+
+	let animating = false;
+
+	gsap.fromTo(
+		".hamburger",
+		{ scale: 1 },
+		{
+			scale: 1.1,
+			duration: 0.3,
+			paused: true,
+			ease: "power2.out",
+			id: "hoverScale"
+		}
+	);
+
+	const hover = gsap.getById("hoverScale") as gsap.core.Tween;
+
+	menu.addEventListener("mouseenter", () => hover.play());
+	menu.addEventListener("mouseleave", () => hover.reverse());
+
+	menu.addEventListener("click", () => {
+		if (animating) return;
+		animating = true;
+		setTimeout(() => {
+			animating = false;
+		}, 500);
+		const isActive = menu.getAttribute("aria-expanded") === "true";
+		menu.setAttribute("aria-expanded", String(!isActive));
+		if (isActive) {
+			let tl = gsap.timeline();
+
+			gsap.timeline().to("#x-icon", { opacity: 0, y: -2, display: "none", duration: 0.2 }).to("#menu-icon", { opacity: 1, y: 0, display: "block", duration: 0.3 });
+
+			tl.to(".nav-items-container", { opacity: 0, y: -5, duration: 0.2 }).to(".nav-container", { duration: 0.2, height: "4rem", ease: "power2.out" });
+
+			setTimeout(() => {
+				menu.classList.toggle("active");
+				navMenu.classList.toggle("active");
+			}, tl.duration() * 1000);
+		} else {
+			menu.classList.toggle("active");
+			navMenu.classList.toggle("active");
+
+			gsap
+				.timeline()
+				.to("#menu-icon", { opacity: 0, y: -4, display: "none", duration: 0.2 })
+				.fromTo("#x-icon", { opacity: 0, y: 4, display: "none" }, { opacity: 1, y: 0, display: "block", duration: 0.3 });
+
+			gsap.timeline().to(".nav-container", { duration: 0.2, height: "auto", ease: "power2.in" }).fromTo(".nav-items-container", { opacity: 0, y: -5 }, { duration: 0.2, opacity: 1, y: 0 });
+		}
+	});
+
+	window.addEventListener("resize", () => {
+		if (window.innerWidth > 850) {
+			menu.setAttribute("aria-expanded", "false");
+			menu.classList.remove("active");
+			navMenu.classList.remove("active");
+			gsap.set([".nav-container", "#menu-icon", "#x-icon", ".nav-items-container"], { clearProps: "all" });
+		}
+	});
+
+	let lastScroll = 0;
+	let offset = 0;
+	const nav = document.querySelector(".nav-container") as HTMLElement;
+
+	window.addEventListener("scroll", () => {
+		const delta = window.scrollY - lastScroll;
+		const navHeight = nav.offsetHeight + 32;
+
+		offset = Math.min(0, Math.max(-navHeight, offset - delta));
+		nav.style.transform = `translateY(${offset}px)`;
+		nav.style.opacity = `${1 - Math.abs(offset) / navHeight}`;
+		lastScroll = window.scrollY;
+	});
+</script>
 
 <style>
 	nav {
@@ -37,26 +128,155 @@ const navItems = [
 		margin: 0 auto;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		gap: 1.25rem;
 	}
 
+	.nav-items-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		font-family: "GenKiMinTW", sans-serif;
+	}
+
 	.nav-item {
-		background-color: #ffd172;
+		background-color: #e8bb5f;
 		color: #2b2e3a;
 		padding: 1rem 2rem;
 		border-radius: 999px;
 		text-decoration: none;
 		font-size: 1.25rem;
-		font-weight: 600;
+		font-weight: bold;
 		transition: all 0.3s ease;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		text-align: center;
 	}
 
 	.nav-item:hover {
 		background-color: #ffdc8a;
-		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(255, 209, 114, 0.3);
+		transform: translateY(-3px);
+		box-shadow: 0 4px 10px rgba(255, 209, 114, 0.3);
 	}
-	.logo {
-		margin-right: auto;
+
+	#logo-svg {
+		height: 2.5rem;
+		width: auto;
+	}
+
+	#logo {
+		transition: all 0.3s ease;
+		transform: translateY(-2px);
+	}
+
+	#logo:hover {
+		filter: drop-shadow(0px 5px 10px rgba(255, 209, 114, 0.7));
+		scale: 1.04;
+	}
+
+	.nav-logo-container {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.3));
+	}
+
+	#info {
+		font-size: 1rem;
+		font-family: "JetBrainsMono", monospace;
+	}
+
+	.hamburger {
+		display: none;
+		background: none;
+		border: none;
+		cursor: pointer;
+	}
+
+	.nav-container.active .nav-items-container {
+		background: #e8bb5f;
+		display: grid;
+	}
+
+	.nav-container.active {
+		border-radius: 2rem;
+	}
+
+	.nav-container.active .nav-item {
+		background-color: #ffdc8a;
+		width: 100%;
+		border-radius: 1rem;
+		box-shadow: none;
+	}
+
+	#x-icon,
+	#menu-icon {
+		width: 2rem;
+		height: 2rem;
+		color: #2b2e3a;
+	}
+
+	#x-icon {
+		display: none;
+		opacity: 0;
+	}
+
+	#menu-icon {
+		display: flex;
+		opacity: 1;
+	}
+
+	@media (max-width: 75rem) {
+		#info {
+			display: none;
+		}
+	}
+
+	@media (max-width: 55rem) {
+		.nav-container {
+			background: #e8bb5f;
+			padding: 1rem 2rem 2rem;
+			border-radius: 2rem;
+			filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.1));
+			flex-direction: column;
+			max-height: 1000px;
+			overflow: hidden;
+		}
+
+		.hamburger {
+			display: block;
+		}
+
+		.nav-logo-container {
+			filter: none;
+			justify-content: space-between;
+			width: 100%;
+		}
+
+		#logo:hover {
+			filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.2));
+		}
+
+		#logo-svg {
+			filter: invert(1);
+			height: 2rem;
+		}
+
+		.nav-items-container {
+			grid-template-columns: repeat(2, 1fr);
+			width: 100%;
+			border-radius: 5rem;
+			display: none;
+			gap: 1rem;
+		}
+	}
+
+	@media (max-width: 30rem) {
+		.nav-container.active .nav-items-container {
+			display: flex;
+			flex-direction: column;
+		}
+		nav {
+			padding: 0 1rem;
+		}
 	}
 </style>

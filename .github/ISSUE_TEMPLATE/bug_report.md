@@ -1,9 +1,9 @@
 ---
 name: 🐛 Bug 回報
 about: 回報問題或錯誤
-title: '[Bug] '
+title: "[Bug] "
 labels: bug
-assignees: ''
+assignees: ""
 ---
 
 ## 問題描述
@@ -12,9 +12,9 @@ assignees: ''
 
 ## 重現步驟
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## 預期行為
 
