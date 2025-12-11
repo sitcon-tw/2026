@@ -134,7 +134,9 @@ const navItems = [
 
 	.nav-items-container {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 1rem;
+		font-family: "GenKiMinTW", sans-serif;
 	}
 
 	.nav-item {
@@ -144,7 +146,6 @@ const navItems = [
 		border-radius: 999px;
 		text-decoration: none;
 		font-size: 1.25rem;
-		font-family: "GenKiMinTW", sans-serif;
 		font-weight: bold;
 		transition: all 0.3s ease;
 		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -194,8 +195,6 @@ const navItems = [
 	.nav-container.active .nav-items-container {
 		background: #e8bb5f;
 		display: grid;
-		grid-template-columns: 1fr 1fr;
-		width: 100%;
 	}
 
 	.nav-container.active {
@@ -235,11 +234,11 @@ const navItems = [
 	@media (max-width: 55rem) {
 		.nav-container {
 			background: #e8bb5f;
-			padding: 1rem 2rem;
+			padding: 1rem 2rem 2rem;
 			border-radius: 2rem;
 			filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.1));
 			flex-direction: column;
-			height: 4rem;
+			max-height: 1000px;
 			overflow: hidden;
 		}
 
@@ -263,12 +262,10 @@ const navItems = [
 		}
 
 		.nav-items-container {
+			grid-template-columns: repeat(2, 1fr);
+			width: 100%;
 			border-radius: 5rem;
 			display: none;
-		}
-
-		.nav-container.active .nav-items-container {
-			padding: 1rem;
 			gap: 1rem;
 		}
 	}
@@ -276,7 +273,7 @@ const navItems = [
 	@media (max-width: 30rem) {
 		.nav-container.active .nav-items-container {
 			display: flex;
-			flex-wrap: wrap;
+			flex-direction: column;
 		}
 		nav {
 			padding: 0 1rem;
