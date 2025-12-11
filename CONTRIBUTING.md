@@ -104,7 +104,6 @@
    - `refactor/` - 程式碼重構
 
 2. **進行開發**
-
    - 遵循專案的程式碼風格
    - 確保程式碼可以正常執行
    - 必要時更新相關文件
@@ -167,26 +166,22 @@ Closes #123
    ```
 
 2. **建立 Pull Request**
-
    - 前往你 Fork 的專案頁面
    - 點擊 "New Pull Request"
    - 選擇你的分支並填寫 PR 描述
 
 3. **PR 描述應包含**
-
    - 變更的摘要
    - 相關的 Issue 編號（使用 `Closes #123` 或 `Fixes #123`）
    - 測試方法
    - 截圖或 GIF（如果有 UI 變更）
 
 4. **等待審核**
-
    - 維護者會審核你的 PR
    - 可能會要求修改或提供更多資訊
    - 請保持關注並及時回應
 
 5. **合併**
-
    - PR 通過審核後，維護者會將其合併到 `main` 分支
    - 你的 PR 會自動觸發 CI/CD 流程，建置並部署到 build 分支
 
@@ -260,6 +255,7 @@ A: 本專案使用 pnpm workspace 功能，並在 `preinstall` 腳本中強制�
 ### Q: 開發伺服器無法啟動怎麼辦？
 
 A: 請確認：
+
 1. Node.js 版本符合要求（18.x 或更高）
 2. 已正確執行 `pnpm install`
 3. 埠號 4321 未被佔用
@@ -270,7 +266,8 @@ A: 維護者會盡快審核 PR，通常在幾天內。如果超過一週未獲�
 
 ### Q: 如何更新我的 Fork？
 
-A: 
+A:
+
 ```bash
 git remote add upstream https://github.com/sitcon-tw/2026.git
 git fetch upstream
