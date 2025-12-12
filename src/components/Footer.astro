@@ -3,13 +3,15 @@ import zhHant from "@/i18n/zh-Hant.json";
 ---
 
 <footer>
-	<div class="social">
-		<a href="">FACEBOOK</a>
-		<a href="">X</a>
-		<a href="">YOUTUBE</a>
-		<a href="">INSTAGRAM</a>
-		<a href="">FLICKR</a>
-		<a href="">TELEGRAM</a>
+	<div class="social-wrapper">
+		<div class="social">
+			<a href="">FACEBOOK</a>
+			<a href="">X</a>
+			<a href="">YOUTUBE</a>
+			<a href="">INSTAGRAM</a>
+			<a href="">FLICKR</a>
+			<a href="">TELEGRAM</a>
+		</div>
 	</div>
 	<div class="info">
 		{
@@ -33,9 +35,13 @@ import zhHant from "@/i18n/zh-Hant.json";
 		background-color: #ffd172;
 		color: #000;
 	}
+	.social-wrapper {
+		background-color: #f1b12e;
+	}
 
 	.social {
-		background-color: #f1b12e;
+		max-width: 100rem;
+		margin: 0 auto;
 		padding: 1rem 2rem;
 		display: flex;
 		justify-content: space-between;
@@ -59,7 +65,7 @@ import zhHant from "@/i18n/zh-Hant.json";
 	}
 
 	.info {
-		max-width: 90rem;
+		max-width: 100rem;
 		margin: 0 auto;
 		display: grid;
 		grid-template-columns: repeat(4, auto);
@@ -102,7 +108,7 @@ import zhHant from "@/i18n/zh-Hant.json";
 
 	#hero {
 		display: flex;
-		max-width: 90rem;
+		max-width: 100rem;
 		width: 100%;
 		display: block;
 		margin: 0 auto;
