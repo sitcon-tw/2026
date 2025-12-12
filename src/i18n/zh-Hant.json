@@ -6,58 +6,55 @@
 		"team": "團隊成員",
 		"openMenu": "開啟選單"
 	},
-	"info": {
-		"mainHeading": "活動資訊",
-		"mainDetails": ["2026/3/28", "中央研究院 人文社會科學館", "台北市南港區研究院路 2 段 128 號"],
-		"mainButton": "交通指引",
-		"activitiesHeading": "年會活動",
-		"sections": [
-			{
-				"title": "我是第一次來，想認識新朋友",
-				"activities": [
-					{
-						"title": "導遊團",
-						"body": "在這個人潮洶湧的 SITCON 年會中，是否感到有些迷茫呢？您是否還在猶豫該往哪個方向前進呢？\n\n別擔心，在導遊團集合地可以看到拿著 SITCON 旗子的導遊，跟著 SITCON 導遊的腳步，帶領你前往社群攤位、走訪靜態海報展、咖啡廳，讓您更瞭解 SITCON 的各個面向以及運作模式。\n\n導遊團會分為上午團以及下午團，上午團的時間為 11:00 到 11:40，集合地點是 3F 白板區旁。下午團的時間為 14:40 到 15:20，集合地點是 2F 咖啡廳與靜態海報展旁。\n\n趕快來參加導遊團，與新朋友一同揭開年會的精彩面紗！",
-						"image": {
-							"url": "/src/assets/example.jpg",
-							"alt": "SITCON 導遊團導覽活動",
-							"position": "left"
-						}
-					},
-					{
-						"title": "導遊團",
-						"body": "在這個人潮洶湧的 SITCON 年會中，是否感到有些迷茫呢？您是否還在猶豫該往哪個方向前進呢？\n\n別擔心，在導遊團集合地可以看到拿著 SITCON 旗子的導遊，跟著 SITCON 導遊的腳步，帶領你前往社群攤位、走訪靜態海報展、咖啡廳，讓您更瞭解 SITCON 的各個面向以及運作模式。\n\n導遊團會分為上午團以及下午團，上午團的時間為 11:00 到 11:40，集合地點是 3F 白板區旁。下午團的時間為 14:40 到 15:20，集合地點是 2F 咖啡廳與靜態海報展旁。\n\n趕快來參加導遊團，與新朋友一同揭開年會的精彩面紗！",
-						"image": {
-							"url": "/src/assets/example.jpg",
-							"alt": "SITCON 導遊團導覽活動",
-							"position": "right"
-						}
-					}
-				]
-			},
-			{
-				"title": "有話想說？",
-				"activities": [
-					{
-						"title": "導遊團",
-						"body": "在這個人潮洶湧的 SITCON 年會中，是否感到有些迷茫呢？您是否還在猶豫該往哪個方向前進呢？\n\n別擔心，在導遊團集合地可以看到拿著 SITCON 旗子的導遊，跟著 SITCON 導遊的腳步，帶領你前往社群攤位、走訪靜態海報展、咖啡廳，讓您更瞭解 SITCON 的各個面向以及運作模式。\n\n導遊團會分為上午團以及下午團，上午團的時間為 11:00 到 11:40，集合地點是 3F 白板區旁。下午團的時間為 14:40 到 15:20，集合地點是 2F 咖啡廳與靜態海報展旁。\n\n趕快來參加導遊團，與新朋友一同揭開年會的精彩面紗！",
-						"image": {
-							"url": "/src/assets/example.jpg",
-							"alt": "SITCON 導遊團導覽活動",
-							"position": "left"
-						}
-					},
-					{
-						"title": "導遊團",
-						"body": "在這個人潮洶湧的 SITCON 年會中，是否感到有些迷茫呢？您是否還在猶豫該往哪個方向前進呢？\n\n別擔心，在導遊團集合地可以看到拿著 SITCON 旗子的導遊，跟著 SITCON 導遊的腳步，帶領你前往社群攤位、走訪靜態海報展、咖啡廳，讓您更瞭解 SITCON 的各個面向以及運作模式。\n\n導遊團會分為上午團以及下午團，上午團的時間為 11:00 到 11:40，集合地點是 3F 白板區旁。下午團的時間為 14:40 到 15:20，集合地點是 2F 咖啡廳與靜態海報展旁。\n\n趕快來參加導遊團，與新朋友一同揭開年會的精彩面紗！",
-						"image": {
-							"url": "/src/assets/example.jpg",
-							"alt": "SITCON 導遊團導覽活動",
-							"position": "right"
-						}
-					}
-				]
-			}
-		]
-	}
+	"footer": [
+		{
+			"title": "頁面導覽",
+			"links": [
+				{ "name": "年會活動（含交通方式）", "url": "#" },
+				{ "name": "議程表", "url": "#" },
+				{ "name": "會場地圖", "url": "#" },
+				{ "name": "活動報名", "url": "#" },
+				{ "name": "SITCON 團隊", "url": "#" },
+				{ "name": "合作夥伴", "url": "#" },
+				{ "name": "資源下載", "url": "#" }
+			]
+		},
+		{
+			"title": "SITCON 子計畫",
+			"links": [
+				{ "name": "贊助徵求書", "url": "#" },
+				{ "name": "Call for Paper", "url": "#" },
+				{ "name": "Hour of Code", "url": "#" },
+				{ "name": "SITCON Camp", "url": "#" },
+				{ "name": "SITCON Hackathon", "url": "#" }
+			]
+		},
+		{
+			"title": "聯絡資訊",
+			"links": [
+				{ "name": "聯絡窗口\ncontact@sitcon.org", "url": "mailto:contact@sitcon.org" },
+				{ "name": "票務資訊\nticket@sitcon.org", "url": "mailto:ticket@sitcon.org" },
+				{ "name": "SITCON Hackathon", "url": "#" }
+			]
+		},
+		{
+			"title": "歷年網站",
+			"gridLayout": true,
+			"links": [
+				{ "name": "2025", "url": "https://sitcon.org/2025" },
+				{ "name": "2024", "url": "https://sitcon.org/2024" },
+				{ "name": "2023", "url": "https://sitcon.org/2023" },
+				{ "name": "2022", "url": "https://sitcon.org/2022" },
+				{ "name": "2021", "url": "https://sitcon.org/2021" },
+				{ "name": "2020", "url": "https://sitcon.org/2020" },
+				{ "name": "2019", "url": "https://sitcon.org/2019" },
+				{ "name": "2018", "url": "https://sitcon.org/2018" },
+				{ "name": "2017", "url": "https://sitcon.org/2017" },
+				{ "name": "2016", "url": "https://sitcon.org/2016" },
+				{ "name": "2015", "url": "https://sitcon.org/2015" },
+				{ "name": "2014", "url": "https://sitcon.org/2014" },
+				{ "name": "2013", "url": "https://sitcon.org/2013" }
+			]
+		}
+	]
 }
