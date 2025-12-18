@@ -1,0 +1,32 @@
+---
+import Person from "./Person.astro";
+const { member, name, description } = Astro.props;
+---
+
+<h2 id="title">{name}</h2>
+<p class="text">{description}</p>
+
+<div id="person-group">
+	{member.map((person: { name: string; position: string; image: string }) => <Person name={person.name} position={person.position} image={person.image} />)}
+</div>
+
+<style>
+	#title {
+		font-size: 3rem;
+		font-weight: 700;
+		margin-bottom: 3rem;
+	}
+
+	.text {
+		font-size: 1rem;
+		font-weight: 700;
+		font-family: "GenKiGothic2 TW";
+		max-width: 34rem;
+	}
+
+	#person-group {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: start;
+	}
+</style>

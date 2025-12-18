@@ -1,6 +1,118 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
+import Team from "@/components/page/Team.astro";
+
+const team_data = [
+	{
+		name: "開發組",
+		description: "SITCON 開發組主要負責年會的官網與通關 App 開發，適合對網頁開發有興趣、想法，有新鮮肝可以榨的朋友們！",
+		member: [
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			}
+		]
+	},
+
+	{
+		name: "議程組",
+		description: "SITCON 開發組主要負責年會的官網與通關 App 開發，適合對網頁開發有興趣、想法，有新鮮肝可以榨的朋友們！",
+		member: [
+			{
+				name: "毛哥ME",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥ME",
+				position: "組長",
+				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			}
+		]
+	}
+];
 ---
 
 <Layout>
@@ -20,6 +132,7 @@ import Footer from "@/components/Footer.astro";
 				</div>
 			</div>
 		</div>
+		{team_data.map(team => <Team member={team.member} name={team.name} description={team.description} />)}
 	</main>
 	<Footer />
 </Layout>
@@ -27,11 +140,11 @@ import Footer from "@/components/Footer.astro";
 <style>
 	main {
 		min-height: 100vh;
-		padding: 5rem 2rem 2rem;
+		padding: 5rem 4rem;
 	}
 
 	#top {
-		padding: 5.5rem 4rem;
+		padding: 5.5rem 0;
 		display: flex;
 		justify-content: space-between;
 	}

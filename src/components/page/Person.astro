@@ -1,0 +1,42 @@
+---
+import { Image } from "astro:assets";
+const { name, position, image } = Astro.props;
+---
+
+<div id="person">
+	<div id="avatar">
+		<Image id="avatar" src={image} width={200} height={200} alt={name} />
+	</div>
+	<div id="text-group">
+		<p id="name">{name}</p>
+		<p id="position">{position}</p>
+	</div>
+</div>
+
+<style>
+	#person {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		max-width: 20rem;
+		margin: 2rem 1.5rem;
+	}
+
+	#avatar {
+		width: 10rem;
+		height: 10rem;
+		border-radius: 16px;
+		border: 1px solid #000;
+		background: url({image}) lightgray 0.548px -20.434px / 100.06% 141.522% no-repeat;
+	}
+
+	#text-group {
+		width: 10rem;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		font-weight: 700;
+		line-height: 1.5;
+	}
+</style>
