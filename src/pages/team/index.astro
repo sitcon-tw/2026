@@ -5,7 +5,21 @@ import Footer from "@/components/Footer.astro";
 
 <Layout>
 	<main>
-		<h1>工作人員 - 列表</h1>
+		<div id="top">
+			<div id="top-left">
+				<h1 id="top-title">團隊成員</h1>
+				<p id="top-text">
+					SITCON 年會每年皆是許多志工奉獻時間與精神所舉辦，沒有大家的付出，就不可能會有如此內容豐富且高品質的年會，希望大家在參加之餘，也不要忘記背後工作人員的付出。若你對參與 SITCON
+					年會的籌備有興趣，歡迎填寫跳坑表單或是關注 SITCON 的郵件論壇，明年的籌備開始時，你就會收到相關的資訊！
+				</p>
+			</div>
+			<div id="top-right">
+				<div id="top-right-btn-group">
+					<button class="top-right-btn">跳坑表單</button>
+					<button class="top-right-btn">郵件論壇</button>
+				</div>
+			</div>
+		</div>
 	</main>
 	<Footer />
 </Layout>
@@ -14,5 +28,53 @@ import Footer from "@/components/Footer.astro";
 	main {
 		min-height: 100vh;
 		padding: 5rem 2rem 2rem;
+	}
+
+	#top {
+		padding: 5.5rem 4rem;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	#top-title {
+		font-size: 4rem;
+		font-weight: 700;
+		margin-bottom: 3rem;
+	}
+
+	#top-text {
+		font-size: 1rem;
+		font-weight: 700;
+		font-family: "GenKiGothic2 TW";
+		max-width: 34rem;
+	}
+
+	#top-right {
+		align-content: end;
+	}
+
+	#top-right-btn-group {
+		display: flex;
+		gap: 1rem;
+	}
+
+	.top-right-btn:hover {
+		background-color: #ffdc8a;
+		transform: translateY(0.25rem);
+		box-shadow: 0 0.25rem 0.5rem rgba(255, 209, 114, 0.3);
+	}
+
+	.top-right-btn {
+		background-color: #e8bb5f;
+		color: #2b2e3a;
+		padding: 1rem 2rem;
+		border-radius: 62rem;
+		text-decoration: none;
+		font-size: 1.25rem;
+		font-weight: bold;
+		transition: all 0.3s ease;
+		box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+		text-align: center;
+		cursor: pointer;
 	}
 </style>
