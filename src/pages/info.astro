@@ -1,18 +1,252 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
+import zhHant from "@/i18n/zh-Hant.json";
+import { Image } from "astro:assets";
+import academiaSinica from "../assets/academia-sinica.svg";
+
+const { info } = zhHant;
+const { sections } = info;
 ---
 
 <Layout>
-	<main>
-		<h1>活動資訊</h1>
-	</main>
-	<Footer />
+    <main class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">{info.mainHeading}</h1>
+
+        <div class="hero-details">
+          {info.mainDetails.map((detail) => (
+            <p class="hero-detail">{detail}</p>
+          ))}
+        </div>
+
+        <button class="hero-button">{info.mainButton}</button>
+      </div>
+
+      <div class="hero-bg" aria-hidden="true">
+        <Image src={academiaSinica} alt="" class="hero-bg-img" />
+      </div>
+    </main>
+
+	<div class="activities">
+		<h1 class="activities-title">{info.activitiesHeading}</h1>
+		{
+			sections?.map((section, sectionIndex) => (
+				<div class="activities-section" id=`${sectionIndex}`>
+					<h2 class="section-title">{section.title}</h2>
+
+					{section.activities?.map((activity, activityIndex) => {
+						return (
+							<div class="activity" id=`${activityIndex}` class:list={{ "activity-reverse": activity.image?.position === "right" }}>
+								<Image class="activity-image" src={activity.image.url} alt={activity.image.alt ?? activity.title} width={600} height={600} loading="lazy" />
+								<div class="activity-content">
+									<h3 class="activity-title">{activity.title}</h3>
+									{activity.body
+										?.split("\n\n")
+										.map(paragraph => paragraph.trim())
+										.filter(Boolean)
+										.map((paragraph, paragraphIndex) => (
+											<p class="activity-paragraph">{paragraph}</p>
+										))}
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			))
+		}
+	</div>
 </Layout>
+<Footer />
 
 <style>
 	main {
 		min-height: 100vh;
 		padding: 5rem 2rem 2rem;
+	}
+
+	.hero {
+        position: relative;
+        min-height: 80vh;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+    }
+
+    .hero-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 2.69rem;
+        z-index: 2;
+
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .hero-bg :global(img.hero-bg-img) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+	.hero-title {
+		font-size: 4rem;
+		font-weight: bold;
+	}
+
+	.hero-details {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.hero-detail {
+		font-size: 1.0625rem;
+		font-weight: bold;
+		margin: 0;
+		margin-bottom: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.hero-button {
+		padding: 1rem 2rem;
+		font-size: 1.25rem;
+		font-weight: bold;
+		background-color: #3c2d0e;
+		color: #ffefcf;
+		border-radius: 10rem;
+		border: none;
+		cursor: pointer;
+	}
+
+	.activities {
+		background-color: #ffffff;
+		color: #3c2d0e;
+		font-weight: bold;
+		font-family: "GenKiGothicTW", sans-serif;
+		padding: 3rem 2rem;@
+		h2,
+		h3 {
+			font-family: "GenKiGothicTW", sans-serif;
+		}
+	}
+
+	.activities-title {
+		font-size: 4rem;
+		line-height: 1.3;
+		padding-left: 1rem;
+		font-weight: bold;
+		margin-bottom: 1rem;
+	}
+
+	.activities-section {
+		border-top: 2px solid #3c2d0e;
+		padding: 3rem 0rem;
+		gap: 2rem;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.section-title {
+		font-size: 3rem;
+		padding-left: 1rem;
+		font-weight: bold;
+	}
+
+	.activity {
+		padding: 0rem 2rem;
+		gap: 2.75rem;
+		display: flex;
+		align-items: center;
+	}
+
+	.activity-reverse {
+		flex-direction: row-reverse;
+	}
+
+	.activity-image {
+		width: 18.75rem;
+		height: 18.75rem;
+		max-width: 100%;
+		object-fit: cover;
+	}
+
+	.activity-content {
+		display: flex;
+		flex-direction: column;
+		gap: 1.125rem;
+	}
+
+	.activity-title {
+		font-size: 2rem;
+		font-weight: bold;
+	}
+
+	.activity-heading {
+		font-size: 2rem;
+		font-weight: bold;
+	}
+
+	.body-text {
+		font-size: 1.0625rem;
+		line-height: 1.6;
+		margin-top: 1rem;
+	}
+
+	@media (max-width: 880px) {
+	    .hero-button {
+			background-color: #3c2d0ecc;
+        }
+
+		.activities-title {
+			font-size: 3rem;
+		}
+
+		.section-title {
+			font-size: 2rem;
+		}
+		.activity-title {
+			font-size: 1.5rem;
+		}
+
+		.activity-grid {
+			gap: 1rem;
+		}
+
+		.activity {
+			padding: 0;
+			gap: 2rem;
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.activity-reverse {
+			flex-direction: column;
+		}
+
+		.activity-image {
+			width: 100%;
+			height: auto;
+			max-height: 20rem;
+			aspect-ratio: 35 / 20;
+			object-fit: cover;
+			border-radius: 0.75rem;
+		}
+
+		.activities-section {
+			padding: 1.5rem 0rem;
+		}
 	}
 </style>
