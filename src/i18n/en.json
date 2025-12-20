@@ -4,5 +4,59 @@
 		"agenda": "Agenda",
 		"venue": "Venue",
 		"team": "Team"
+	},
+	"info": {
+		"mainHeading": "Information",
+		"mainDetails": ["2026/3/28", "Academia Sinica, Humanities and Social Sciences Building", "No. 128, Sec. 2, Academia Rd., Nangang District, Taipei City"],
+		"mainButton": "Transportation Guide",
+		"activitiesHeading": "Conference Activities",
+		"sections": [
+			{
+				"title": "First time here and want to meet new friends",
+				"activities": [
+					{
+						"title": "Guided Tour",
+						"body": "At the bustling SITCON annual conference, are you feeling a bit lost? Still unsure where to go next?\n\nDon't worry. At the tour meeting point you will see guides holding SITCON flags. Follow them as they lead you to community booths, the poster exhibition, and the cafe, helping you learn more about SITCON and how it operates.\n\nTours are divided into a morning and an afternoon group. The morning tour runs from 11:00 to 11:40 and meets next to the whiteboard area on 3F. The afternoon tour runs from 14:40 to 15:20 and meets near the cafe and poster exhibition on 2F.\n\nJoin the tour and uncover the excitement of the conference with new friends!",
+						"image": {
+							"url": "/src/assets/example.jpg",
+							"alt": "SITCON guided tour",
+							"position": "left"
+						}
+					},
+					{
+						"title": "Guided Tour",
+						"body": "At the bustling SITCON annual conference, are you feeling a bit lost? Still unsure where to go next?\n\nDon't worry. At the tour meeting point you will see guides holding SITCON flags. Follow them as they lead you to community booths, the poster exhibition, and the cafe, helping you learn more about SITCON and how it operates.\n\nTours are divided into a morning and an afternoon group. The morning tour runs from 11:00 to 11:40 and meets next to the whiteboard area on 3F. The afternoon tour runs from 14:40 to 15:20 and meets near the cafe and poster exhibition on 2F.\n\nJoin the tour and uncover the excitement of the conference with new friends!",
+						"image": {
+							"url": "/src/assets/example.jpg",
+							"alt": "SITCON guided tour",
+							"position": "right"
+						}
+					}
+				]
+			},
+			{
+				"title": "Have something to say?",
+				"activities": [
+					{
+						"title": "Guided Tour",
+						"body": "At the bustling SITCON annual conference, are you feeling a bit lost? Still unsure where to go next?\n\nDon't worry. At the tour meeting point you will see guides holding SITCON flags. Follow them as they lead you to community booths, the poster exhibition, and the cafe, helping you learn more about SITCON and how it operates.\n\nTours are divided into a morning and an afternoon group. The morning tour runs from 11:00 to 11:40 and meets next to the whiteboard area on 3F. The afternoon tour runs from 14:40 to 15:20 and meets near the cafe and poster exhibition on 2F.\n\nJoin the tour and uncover the excitement of the conference with new friends!",
+						"image": {
+							"url": "/src/assets/example.jpg",
+							"alt": "SITCON guided tour",
+							"position": "left"
+						}
+					},
+					{
+						"title": "Guided Tour",
+						"body": "At the bustling SITCON annual conference, are you feeling a bit lost? Still unsure where to go next?\n\nDon't worry. At the tour meeting point you will see guides holding SITCON flags. Follow them as they lead you to community booths, the poster exhibition, and the cafe, helping you learn more about SITCON and how it operates.\n\nTours are divided into a morning and an afternoon group. The morning tour runs from 11:00 to 11:40 and meets next to the whiteboard area on 3F. The afternoon tour runs from 14:40 to 15:20 and meets near the cafe and poster exhibition on 2F.\n\nJoin the tour and uncover the excitement of the conference with new friends!",
+						"image": {
+							"url": "/src/assets/example.jpg",
+							"alt": "SITCON guided tour",
+							"position": "right"
+						}
+					}
+				]
+			}
+		]
 	}
 }
