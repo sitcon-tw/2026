@@ -33,8 +33,7 @@
 			"title": "聯絡資訊",
 			"links": [
 				{ "name": "聯絡窗口\ncontact@sitcon.org", "url": "mailto:contact@sitcon.org" },
-				{ "name": "票務資訊\nticket@sitcon.org", "url": "mailto:ticket@sitcon.org" },
-				{ "name": "SITCON Hackathon", "url": "#" }
+				{ "name": "票務資訊\nticket@sitcon.org", "url": "mailto:ticket@sitcon.org" }
 			]
 		},
 		{
