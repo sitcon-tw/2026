@@ -130,6 +130,7 @@ const navItems = [
 		align-items: center;
 		justify-content: space-between;
 		gap: 1.25rem;
+		height: 4rem;
 	}
 
 	.nav-items-container {
@@ -199,6 +200,7 @@ const navItems = [
 
 	.nav-container.active {
 		border-radius: 2rem;
+		padding-bottom: 2rem;
 	}
 
 	.nav-container.active .nav-item {
@@ -234,11 +236,10 @@ const navItems = [
 	@media (max-width: 55rem) {
 		.nav-container {
 			background: #e8bb5f;
-			padding: 1rem 2rem 2rem;
+			padding: 1rem 2rem;
 			border-radius: 2rem;
 			filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.1));
 			flex-direction: column;
-			max-height: 1000px;
 			overflow: hidden;
 		}
 
