@@ -34,23 +34,24 @@ import zhHant from "@/i18n/zh-Hant.json";
 	footer {
 		background-color: #ffd172;
 		color: #000;
+		overflow-y: hidden;
 	}
 	.social-wrapper {
 		background-color: #f1b12e;
 	}
 
 	.social {
-		max-width: 100rem;
+		max-width: var(--max-width);
 		margin: 0 auto;
 		padding: 1rem 2rem;
 		display: flex;
 		justify-content: space-between;
 		font-family: "JetBrainsMono", monospace;
 		flex-wrap: wrap;
+		line-height: 1;
 	}
 
 	.social a {
-		margin: 0rem 1rem;
 		transition: all 0.3s ease;
 	}
 
@@ -65,17 +66,18 @@ import zhHant from "@/i18n/zh-Hant.json";
 	}
 
 	.info {
-		max-width: 100rem;
+		max-width: var(--max-width);
 		margin: 0 auto;
+		padding: 1rem 1rem 0;
 		display: grid;
 		grid-template-columns: repeat(4, auto);
+		gap: 1.5rem;
 	}
 
 	.info-item {
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-		padding: 1.5rem;
 		white-space: pre-line;
 		line-height: 1.5;
 	}
@@ -108,21 +110,12 @@ import zhHant from "@/i18n/zh-Hant.json";
 
 	#hero {
 		display: flex;
-		max-width: 100rem;
+		max-width: var(--max-width);
 		width: 100%;
 		display: block;
 		margin: 0 auto;
-		padding: 0rem 1rem;
-	}
-
-	@media (max-width: 45rem) {
-		.social {
-			display: grid;
-			grid-template-columns: repeat(3, auto);
-		}
-		.social a {
-			margin: 0.5rem 1rem;
-		}
+		padding: 0rem 2rem;
+		transform: translateY(2.7%);
 	}
 
 	@media (max-width: 60rem) {
@@ -134,14 +127,6 @@ import zhHant from "@/i18n/zh-Hant.json";
 	@media (max-width: 30rem) {
 		.info {
 			grid-template-columns: repeat(1, auto);
-		}
-	}
-
-	@media (max-width: 22rem) {
-		.social {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
 		}
 	}
 </style>
