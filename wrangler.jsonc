@@ -1,5 +1,5 @@
 {
-	"name": "2026",
+	"name": "2026-website-preview",
 	"compatibility_date": "2026-12-26",
 	"assets": {
 		"directory": "./dist",
@@ -7,6 +7,6 @@
 		"not_found_handling": "404-page"
 	},
 	"build": {
-		"command": "pnpm build"
+		"command": "pnpm build && mkdir -p dist/2026 && sh -c 'for f in dist/*; do [ \"$f\" != \"dist/2026\" ] && mv \"$f\" dist/2026/; done'"
 	}
 }
