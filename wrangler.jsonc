@@ -1,0 +1,12 @@
+{
+	"name": "2026",
+	"compatibility_date": "2026-12-26",
+	"assets": {
+		"directory": "./dist",
+		"html_handling": "force-trailing-slash",
+		"not_found_handling": "404-page"
+	},
+	"build": {
+		"command": "pnpm build"
+	}
+}
