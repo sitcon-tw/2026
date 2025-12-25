@@ -7,6 +7,6 @@
 		"not_found_handling": "404-page"
 	},
 	"build": {
-		"command": "pnpm build && mkdir -p dist/2026 && sh -c 'for f in dist/*; do [ \"$f\" != \"dist/2026\" ] && mv \"$f\" dist/2026/; done'"
+		"command": "pnpm build && mkdir -p dist/2026 && echo \"/  /2026/  302\" > dist/_redirects && sh -c 'for f in dist/*; do [ \"$f\" != \"dist/2026\" ] && mv \"$f\" dist/2026/; done'"
 	}
 }
