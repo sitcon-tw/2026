@@ -1,0 +1,18 @@
+---
+import { Image } from "astro:assets";
+const { image, alt_text } = Astro.props;
+---
+
+<div id="avatar">
+	<Image id="avatar" src={image} width={200} height={200} alt={alt_text} />
+</div>
+
+<style>
+	#avatar {
+		width: 10rem;
+		height: 10rem;
+		border-radius: 16px;
+		border: 1px solid #000;
+		background: url({image}) lightgray 0.548px -20.434px / 100.06% 141.522% no-repeat;
+	}
+</style>

@@ -1,12 +1,10 @@
 ---
-import { Image } from "astro:assets";
+import Avatar from "./Avatar.astro";
 const { name, position, image } = Astro.props;
 ---
 
 <div id="person">
-	<div id="avatar">
-		<Image id="avatar" src={image} width={200} height={200} alt={name} />
-	</div>
+	<Avatar image={image} alt_text={name} />
 	<div id="text-group">
 		<p id="name">{name}</p>
 		<p id="position">{position}</p>
@@ -23,13 +21,6 @@ const { name, position, image } = Astro.props;
 		margin: 2rem 1.5rem;
 	}
 
-	#avatar {
-		width: 10rem;
-		height: 10rem;
-		border-radius: 16px;
-		border: 1px solid #000;
-		background: url({image}) lightgray 0.548px -20.434px / 100.06% 141.522% no-repeat;
-	}
 
 	#text-group {
 		width: 10rem;
