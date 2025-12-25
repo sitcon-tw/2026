@@ -9,7 +9,7 @@
 
 ## 開發指南
 
-從 main checkout/fork 出來，開發完成後 PR 到 main 即可。
+從 main checkout/fork 出來，開發完成後 PR 到 main 即可。有新的 PR 時，Cloudflare Pages 會自動重新部署預覽版本，可以點擊 PR 裡面的 Cloudflare Pages 連結查看預覽。而實際的官網則會在 main Branch 有新的 Commit 時，透過 GitHub Actions 自動部署到 GitHub Pages。
 
 > 目前官網還沒上線，因此並無 Actions 會部署 main Branch，不用擔心。
 
