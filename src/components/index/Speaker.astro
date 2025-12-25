@@ -2,22 +2,27 @@
 const speakers = [
 	{
 		name: "OsGa",
+		desc: "崴崴孟孟旅行三百天",
 		img: "https://placehold.co/367x492/png?text=OsGa"
 	},
 	{
 		name: "毛哥EM",
+		desc: "厲害崴孟讓旅途順暢無阻",
 		img: "https://placehold.co/367x492/png?text=EM"
 	},
 	{
 		name: "凱文 Kevin",
+		desc: "崴孟合作 什麼難關都不怕",
 		img: "https://placehold.co/367x492/png?text=Kevin"
 	},
 	{
-		name: "Nelson",
+		name: "紐爾森 Nelson",
+		desc: "孟寶總是心暖暖 因為崴崴寶",
 		img: "https://placehold.co/367x492/png?text=Nelson"
 	},
 	{
 		name: "yc油成",
+		desc: "擁有豐富的數學背景",
 		img: "https://placehold.co/367x492/png?text=YC"
 	}
 ];
@@ -36,13 +41,21 @@ const speakers = [
 				speakers.map((person, index) => (
 					<div class:list={["speaker-item", { active: index === 0 }]} data-img={person.img}>
 						<a>{person.name}</a>
+						<p class="speakerDesc">{person.desc}</p>
 					</div>
 				))
 			}
 		</div>
 
 		<div class="speaker-image">
-			<img id="speaker-img" src={speakers[0].img} alt="Speaker" />
+			<img id="speaker-img" class="desktop-img" src={speakers[0].img} alt="Speaker" />
+
+			<div class="marquee-container">
+				<div class="marquee-track">
+					{speakers.map(person => <img class="marquee-item" src={person.img} alt={person.name} />)}
+					{speakers.map(person => <img class="marquee-item" src={person.img} alt={person.name} />)}
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -58,6 +71,15 @@ const speakers = [
 </section>
 
 <style>
+	@keyframes scroll {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-50%);
+		}
+	}
+
 	.speaker-section {
 		position: relative;
 		background-color: #f4f4f4;
@@ -68,57 +90,38 @@ const speakers = [
 		overflow: hidden;
 	}
 
-	.bg-optimized {
-		position: absolute;
-		top: auto;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 60%;
-		pointer-events: none;
-	}
-
-	.bg-optimized svg {
-		width: 100%;
-		height: 100%;
-		display: block;
-	}
-
-	.title,
-	.content-wrapper,
-	.cta-btn {
-		position: relative;
-		z-index: 1;
-	}
-
 	.title {
-		color: #a79164;
-		display: flex;
-		align-items: center;
 		width: 100%;
 		max-width: 1000px;
 		margin-bottom: 3rem;
+		color: #a79164;
+		display: grid;
+		grid-template-columns: max-content 1fr max-content;
+		align-items: center;
+		gap: 2rem;
 	}
 
 	.title h2 {
 		font-size: 5rem;
 		margin: 0;
 		font-weight: 600;
+		white-space: nowrap;
 	}
 
 	.line {
 		height: 1px;
 		background-color: #a79164;
-		flex-grow: 1;
-		margin: 0 2rem;
+		width: 100%;
+		justify-self: center;
 	}
 
 	.content-wrapper {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
 		width: 100%;
 		max-width: 1000px;
+		display: grid;
+		grid-template-columns: 4fr 6fr;
+		gap: 4rem;
+		align-items: center;
 	}
 
 	.speaker-list {
@@ -131,12 +134,11 @@ const speakers = [
 	.speaker-item {
 		font-size: 3rem;
 		font-weight: bold;
-		color: rgba(169, 124, 33, 0.3); /* 使用 rgba 替代 hex alpha 兼容性更好 */
+		color: rgba(169, 124, 33, 0.3);
 		cursor: pointer;
 		transition: 0.3s;
 		display: flex;
-		align-items: baseline;
-		gap: 10px;
+		flex-direction: column;
 	}
 
 	.speaker-item.active {
@@ -145,11 +147,26 @@ const speakers = [
 		transform-origin: left center;
 	}
 
-	.speaker-image img {
+	.speakerDesc {
+		display: none;
+	}
+
+	.speaker-image {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+
+	.desktop-img {
+		display: block;
 		max-width: 100%;
 		height: auto;
 		border-radius: 8px;
 		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+	}
+
+	.marquee-container {
+		display: none;
 	}
 
 	.cta-btn {
@@ -160,14 +177,11 @@ const speakers = [
 		font-size: 1.5rem;
 		letter-spacing: 0.05em;
 		color: #4f4031;
-
 		padding: 12px 48px;
 		margin-top: 5rem;
-
 		border: 2px solid #4f4031;
 		border-radius: 9999px;
 		background: linear-gradient(180deg, #e6dac0 0%, #c4b188 100%);
-
 		transition:
 			transform 0.2s,
 			filter 0.2s;
@@ -176,6 +190,135 @@ const speakers = [
 	.cta-btn:hover {
 		transform: translateY(-2px);
 		filter: brightness(1.05);
+	}
+
+	.title,
+	.content-wrapper,
+	.cta-btn {
+		position: relative;
+		z-index: 1;
+	}
+
+	.bg-optimized {
+		position: absolute;
+		top: auto;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 60%;
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	.bg-optimized svg {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+
+	@media (max-width: 900px) {
+		.speaker-section {
+			padding: 3rem 1.5rem 8rem 1.5rem;
+		}
+
+		.title {
+			width: 100%;
+			margin-bottom: 2rem;
+			grid-template-columns: max-content 1fr;
+			row-gap: 0.5rem;
+			column-gap: 15px;
+			align-items: center;
+		}
+
+		.title h2 {
+			font-size: 3rem;
+			margin: 0;
+			line-height: 1;
+		}
+
+		.line {
+			width: 100%;
+			margin: 0;
+			align-self: center;
+		}
+
+		.title h2:nth-of-type(2) {
+			grid-column: 1 / -1;
+			margin-left: 2rem;
+		}
+
+		.content-wrapper {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+
+		.speaker-list {
+			align-items: flex-start;
+			width: 100%;
+			gap: 1.5rem;
+		}
+
+		.speaker-item {
+			font-size: 1.5rem;
+			align-items: flex-start;
+			width: 100%;
+			text-align: left;
+		}
+
+		.speaker-item.active {
+			transform-origin: left center;
+		}
+
+		.speakerDesc {
+			display: block;
+			font-size: 1rem;
+			font-weight: normal;
+			margin-top: 0.5rem;
+			color: #4f4031;
+			opacity: 1;
+		}
+
+		.speaker-image {
+			width: calc(100% + 3rem);
+			margin-left: -1.5rem;
+			overflow: hidden;
+			margin-top: 2rem;
+		}
+
+		.desktop-img {
+			display: none;
+		}
+
+		.marquee-container {
+			display: block;
+			width: 100%;
+		}
+
+		.marquee-track {
+			display: flex;
+			width: max-content;
+			gap: 20px;
+			animation: scroll 20s linear infinite;
+		}
+
+		.marquee-item {
+			height: 250px;
+			width: auto;
+			border-radius: 12px;
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+			flex-shrink: 0;
+		}
+
+		.cta-btn {
+			width: auto;
+			text-align: center;
+			padding: 10px 32px;
+			font-size: 1.2rem;
+		}
+
+		.bg-optimized {
+			height: 50%;
+		}
 	}
 </style>
 
