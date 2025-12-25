@@ -1,10 +1,10 @@
 ---
-import Avatar from "./Avatar.astro";
-const { name, position, image } = Astro.props;
+import { Image } from "astro:assets";
+const { name, position, avatar_url, social_link } = Astro.props;
 ---
 
-<div id="person">
-	<Avatar image={image} alt_text={name} />
+<div id="person" class="person-trigger" data-name={name} data-position={position} data-avatar={avatar_url} data-social={social_link} data-open-modal="member-info-modal">
+	<Image class="avatar-img" src={avatar_url} width={200} height={200} alt={`${name} avatar`} />
 	<div id="text-group">
 		<p id="name">{name}</p>
 		<p id="position">{position}</p>
@@ -12,6 +12,14 @@ const { name, position, image } = Astro.props;
 </div>
 
 <style>
+	.avatar-img {
+		width: 10rem;
+		height: 10rem;
+		border-radius: 16px;
+		object-fit: contain;
+		background-color: #a97c21;
+	}
+
 	#person {
 		display: flex;
 		flex-direction: column;
@@ -19,8 +27,8 @@ const { name, position, image } = Astro.props;
 		gap: 1rem;
 		max-width: 20rem;
 		margin: 2rem 1.5rem;
+		cursor: pointer;
 	}
-
 
 	#text-group {
 		width: 10rem;

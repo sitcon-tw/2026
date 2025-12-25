@@ -2,6 +2,7 @@
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
 import Team from "@/components/page/Team.astro";
+import MemberInfo from "@/components/page/MemberInfo.astro";
 
 const team_data = [
 	{
@@ -11,87 +12,89 @@ const team_data = [
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png",
+				social_link: "https://github.com/sitcon-tw"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png",
+				social_link: "https://instagram.com/sitcon.tw"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥EM",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			}
 		]
 	},
@@ -103,12 +106,12 @@ const team_data = [
 			{
 				name: "毛哥ME",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			},
 			{
 				name: "毛哥ME",
 				position: "組長",
-				image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
 			}
 		]
 	}
@@ -134,6 +137,7 @@ const team_data = [
 		</div>
 		{team_data.map(team => <Team member={team.member} name={team.name} description={team.description} />)}
 	</main>
+	<MemberInfo />
 	<Footer />
 </Layout>
 
