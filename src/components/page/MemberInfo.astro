@@ -124,11 +124,28 @@ const { id = "member-info-modal" } = Astro.props;
 		padding: 4rem;
 		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
 		z-index: 5000;
-		overflow: auto;
+		overflow-y: auto;
+	}
+
+	@media (max-width: 48rem) {
+		.member-info {
+			min-width: 90vw;
+			min-height: 90vh;
+			align-self: center;
+			justify-self: center;
+			position: fixed;
+			padding: 2.5rem;
+		}
 	}
 
 	.header {
 		padding-bottom: 1.5rem;
+	}
+
+	@media (max-width: 48rem) {
+		.header {
+			padding-bottom: 3.5rem;
+		}
 	}
 
 	.close-btn {
@@ -148,11 +165,25 @@ const { id = "member-info-modal" } = Astro.props;
 		display: flex;
 		border: none;
 	}
+	
+	@media (max-width: 48rem) {
+		.close-btn {
+			top: 2rem;
+			right: 2rem;
+			font-size: 1.5rem;
+		}
+	}
 
 	h1 {
 		font-family: "GenKiGothic2 TW";
 		font-size: 5.25rem;
 		font-weight: 700;
+	}
+
+	@media (max-width: 48rem) {
+		h1 {
+			font-size: 3.5rem;
+		}
 	}
 
 	h2 {
@@ -166,6 +197,13 @@ const { id = "member-info-modal" } = Astro.props;
 	.avatar,
 	.social {
 		justify-self: end;
+	}
+
+	@media (max-width: 48rem) {
+		.avatar,
+		.social {
+			justify-self: center;
+		}
 	}
 
 	.social {
@@ -192,6 +230,12 @@ const { id = "member-info-modal" } = Astro.props;
 		font-size: 1rem;
 		font-weight: 700;
 		line-height: 1.5;
+	}
+
+	@media (max-width: 48rem) {
+		p {
+			width: 100%;
+		}
 	}
 
 	.avatar-img {
