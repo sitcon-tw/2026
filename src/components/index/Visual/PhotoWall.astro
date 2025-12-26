@@ -80,20 +80,34 @@ const images = [
 
 	@media (max-width: 768px) {
 		.photo-wall {
-			padding: 50px 0 100px;
+			padding: 40px 0 150px;
 		}
 		.photo-container {
-			display: grid;
-			grid-template-columns: repeat(2, 1fr);
+			display: flex;
 			gap: 16px;
+			width: max-content;
+			padding: 0;
+			justify-content: flex-start;
 		}
 		.photo-item {
-			transform: none !important;
+			flex: 0 0 180px;
+			aspect-ratio: 3 / 4;
+		}
+		/* 窄版維持階梯式排列，但間距縮小 */
+		.item-0 {
+			transform: translateY(0);
+		}
+		.item-1 {
+			transform: translateY(20px);
+		}
+		.item-2 {
+			transform: translateY(40px);
+		}
+		.item-3 {
+			transform: translateY(60px);
 		}
 		.item-4 {
-			grid-column: span 2;
-			justify-self: center;
-			width: 50%;
+			transform: translateY(80px);
 		}
 	}
 </style>
@@ -104,20 +118,68 @@ const images = [
 
 	gsap.registerPlugin(ScrollTrigger);
 
-	const items = document.querySelectorAll(".photo-item");
+	const container = document.querySelector(".photo-container");
+	if (container) {
+		const items = container.querySelectorAll(".photo-item");
+		const mm = gsap.matchMedia();
 
-	items.forEach((item, index) => {
-		gsap.from(item, {
-			x: 100,
-			opacity: 0,
-			duration: 1.2,
-			ease: "power3.out",
-			scrollTrigger: {
-				trigger: item,
-				start: "top 90%",
-				toggleActions: "play none none none"
-			},
-			delay: index * 0.15
+		mm.add("(max-width: 768px)", () => {
+			// 複製項目以實現無縫捲動
+			if (container.children.length === items.length) {
+				items.forEach(item => {
+					const clone = item.cloneNode(true);
+					container.appendChild(clone);
+				});
+			}
+
+			// 由右向左無限捲動 (從 0 到 -50%)
+			const loop = gsap.fromTo(
+				container,
+				{ xPercent: 0 },
+				{
+					xPercent: -50,
+					duration: 20,
+					ease: "none",
+					repeat: -1
+				}
+			);
+
+			return () => {
+				loop.kill();
+				gsap.set(container, { clearProps: "all" });
+				// 移除複製的項目
+				const currentItems = container.querySelectorAll(".photo-item");
+				currentItems.forEach((item, index) => {
+					if (index >= items.length) {
+						item.remove();
+					} else {
+						gsap.set(item, { clearProps: "all" });
+					}
+				});
+			};
 		});
-	});
+
+		mm.add("(min-width: 769px)", () => {
+			items.forEach((item, index) => {
+				gsap.from(item, {
+					x: 100,
+					opacity: 0,
+					duration: 1.2,
+					ease: "power3.out",
+					scrollTrigger: {
+						trigger: item,
+						start: "top 90%",
+						toggleActions: "play none none none"
+					},
+					delay: index * 0.15
+				});
+			});
+
+			return () => {
+				items.forEach(item => {
+					gsap.set(item, { clearProps: "all" });
+				});
+			};
+		});
+	}
 </script>
