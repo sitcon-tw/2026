@@ -84,8 +84,8 @@ function getRandomStyle() {
 								<div class="ticket-stub-inner">
 									<div class="ticket-pill">{ticket.pill}</div>
 									<div class="ticket-vertical-text">{ticket.verticalTitle}</div>
-									<div class="ticket-footer-info">
-										<div class="ticket-footer-left">
+									<div class="ticket-info">
+										<div class="ticket-info-corner">
 											<div class="ticket-date">2026/03/28</div>
 											<div class="ticket-location">中央研究院 人文社會科學館</div>
 										</div>
@@ -347,7 +347,7 @@ function getRandomStyle() {
 		z-index: 1;
 	}
 
-	.ticket-footer-info {
+	.ticket-info {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -360,7 +360,7 @@ function getRandomStyle() {
 		z-index: 2;
 	}
 
-	.ticket-footer-left {
+	.ticket-info-corner {
 		order: 2; /* Bottom of horizontal -> Left of stub */
 		text-align: right;
 		display: flex;
@@ -375,7 +375,7 @@ function getRandomStyle() {
 		font-weight: 700;
 	}
 
-	.ticket-card.active .ticket-footer-info {
+	.ticket-card.active .ticket-info {
 		opacity: 1;
 	}
 
@@ -494,13 +494,13 @@ function getRandomStyle() {
 			margin-bottom: 0;
 		}
 
-		.ticket-footer-info {
+		.ticket-info {
 			height: auto;
 			opacity: 1;
 			text-align: right;
 		}
 
-		.ticket-footer-left {
+		.ticket-info-corner {
 			display: block;
 		}
 	}
