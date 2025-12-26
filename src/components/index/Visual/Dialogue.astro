@@ -16,13 +16,11 @@
 				2026，我們邀請你一起加入這場 Jam。讓我們駕馭混沌，在紛亂中找到節奏，在協作中尋求共鳴。
 			</p>
 		</div>
-		<div class="photo-container slide-in-right">
-			<div class="photo-placeholder"></div>
-		</div>
 	</div>
 
 	<div class="about-container fade-in">
 		<div class="about-content">
+			<h3>關於 SITCON</h3>
 			<p>
 				學生計算機年會（Students’ Information Technology Conference）自 2012
 				年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神，希望引領更多學子踏入資訊的殿堂，更冀望所有對資訊有興趣的學生，能夠在年會裏齊聚一堂，彼此激盪、傳承、啟發，達到「學以致用」、「教學相長」的實際展現。
@@ -61,12 +59,14 @@
 
 	.content-grid {
 		display: grid;
-		grid-template-columns: 1.2fr 1fr;
+		grid-template-columns: 1fr;
 		gap: 4rem;
 		align-items: center;
+		max-width: 650px;
 	}
 
-	.theme-content p {
+	.theme-content p,
+	.about-content p {
 		font-family: "GenKiGothicTW", sans-serif;
 		font-size: 1.125rem;
 		line-height: 2;
@@ -74,16 +74,17 @@
 		text-align: justify;
 	}
 
-	.photo-container {
-		width: 100%;
+	.theme-content p:last-child,
+	.about-content p:last-child {
+		margin-bottom: 0;
 	}
 
-	.photo-placeholder {
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		background-color: rgba(255, 255, 255, 0.1);
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		border-radius: 8px;
+	.about-content h3 {
+		display: none;
+		font-family: "GenKiGothicTW", sans-serif;
+		font-size: 2.25rem;
+		font-weight: 700;
+		margin-bottom: 2rem;
 	}
 
 	.about-container {
@@ -93,29 +94,13 @@
 
 	.about-content {
 		max-width: 600px;
-		padding: 2rem;
-		background-color: rgba(255, 255, 255, 0.05);
-		border-left: 4px solid #e8bb5f;
-		backdrop-filter: blur(10px);
-	}
-
-	.about-content p {
-		font-family: "GenKiGothicTW", sans-serif;
-		font-size: 1rem;
-		line-height: 1.8;
-		text-align: justify;
-		margin: 0;
-		opacity: 0.9;
 	}
 
 	@media (max-width: 992px) {
 		.content-grid {
 			grid-template-columns: 1fr;
 			gap: 3rem;
-		}
-
-		.photo-container {
-			order: -1;
+			max-width: 100%;
 		}
 
 		h2 {
@@ -124,6 +109,14 @@
 
 		.about-container {
 			justify-content: center;
+		}
+
+		.about-content {
+			max-width: 100%;
+		}
+
+		.about-content h3 {
+			display: block;
 		}
 	}
 
@@ -137,8 +130,14 @@
 			gap: 4rem;
 		}
 
-		.theme-content p {
+		.theme-content p,
+		.about-content p {
 			font-size: 1rem;
+		}
+
+		.about-content h3 {
+			font-size: 1.75rem;
+			margin-bottom: 1.5rem;
 		}
 	}
 </style>
@@ -160,22 +159,6 @@
 			scrollTrigger: {
 				trigger: el,
 				start: "top 85%",
-				toggleActions: "play none none none"
-			}
-		});
-	});
-
-	// Slide in from right animation for photo
-	const slideElements = document.querySelectorAll(".slide-in-right");
-	slideElements.forEach(el => {
-		gsap.from(el, {
-			opacity: 0,
-			x: 100,
-			duration: 1.5,
-			ease: "power3.out",
-			scrollTrigger: {
-				trigger: el,
-				start: "top 80%",
 				toggleActions: "play none none none"
 			}
 		});
