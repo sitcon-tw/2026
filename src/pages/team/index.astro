@@ -1,18 +1,225 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
+import Team from "@/components/page/Team.astro";
+import MemberInfo from "@/components/page/MemberInfo.astro";
+
+const form_url = "https://forms.gle/";
+const forum_url = "https://forum/";
+
+const team_data = [
+	{
+		name: "開發組",
+		description: "SITCON 開發組主要負責年會的官網與通關 App 開發，適合對網頁開發有興趣、想法，有新鮮肝可以榨的朋友們！",
+		member: [
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png",
+				social_link: "https://github.com/sitcon-tw"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png",
+				social_link: "https://instagram.com/sitcon.tw"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			}
+		]
+	},
+
+	{
+		name: "議程組",
+		description: "SITCON 開發組主要負責年會的官網與通關 App 開發，適合對網頁開發有興趣、想法，有新鮮肝可以榨的朋友們！",
+		member: [
+			{
+				name: "毛哥ME",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥ME",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			}
+		]
+	}
+];
 ---
 
 <Layout>
 	<main>
-		<h1>工作人員 - 列表</h1>
+		<div class="top">
+			<div class="top-left">
+				<h1 class="top-title">團隊成員</h1>
+				<p class="top-text">
+					SITCON 年會每年皆是許多志工奉獻時間與精神所舉辦，沒有大家的付出，就不可能會有如此內容豐富且高品質的年會，希望大家在參加之餘，也不要忘記背後工作人員的付出。若你對參與 SITCON
+					年會的籌備有興趣，歡迎填寫跳坑表單或是關注 SITCON 的郵件論壇，明年的籌備開始時，你就會收到相關的資訊！
+				</p>
+			</div>
+			<div class="top-right">
+				<div class="top-right-btn-group">
+					<button class="top-right-btn"><a href={form_url} target="_blank">跳坑表單</a></button>
+					<button class="top-right-btn"><a href={forum_url} target="_blank">郵件論壇</a></button>
+				</div>
+			</div>
+		</div>
+		{team_data.map(team => <Team member={team.member} name={team.name} description={team.description} />)}
 	</main>
+	<MemberInfo />
 	<Footer />
 </Layout>
 
 <style>
 	main {
 		min-height: 100vh;
-		padding: 5rem 2rem 2rem;
+		padding: 5rem 4rem;
+	}
+
+	@media (max-width: 48rem) {
+		main {
+			padding: 5rem 3rem;
+		}
+	}
+
+	.top {
+		padding: 5.5rem 0;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	@media (max-width: 48rem) {
+		.top {
+			flex-direction: column;
+			gap: 2rem;
+		}
+	}
+	.top-title {
+		font-size: 4rem;
+		font-weight: 700;
+		margin-bottom: 3rem;
+	}
+
+	.top-text {
+		font-size: 1rem;
+		font-weight: 700;
+		font-family: "GenKiGothic2 TW";
+		word-break: break-word;
+		max-width: 34rem;
+	}
+
+	.top-right {
+		align-content: end;
+	}
+
+	.top-right-btn-group {
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+	}
+
+	@media (max-width: 48rem) {
+		.top-right-btn-group {
+			flex-direction: column;
+		}
+	}
+
+	.top-right-btn:hover {
+		background-color: #ffdc8a;
+		transform: translateY(0.25rem);
+		box-shadow: 0 0.25rem 0.5rem rgba(255, 209, 114, 0.3);
+	}
+
+	.top-right-btn {
+		background-color: #e8bb5f;
+		color: #2b2e3a;
+		padding: 1rem 2rem;
+		border-radius: 62rem;
+		text-decoration: none;
+		font-size: 1.25rem;
+		font-weight: bold;
+		transition: all 0.3s ease;
+		box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+		text-align: center;
+		cursor: pointer;
+	}
+
+	a {
+		text-decoration: none;
+		color: inherit;
 	}
 </style>

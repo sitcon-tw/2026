@@ -218,6 +218,8 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 				autoRaf: true,
 				anchors: true
 			});
+			// @ts-ignore
+			window.lenis = lenis;
 
 			// document.addEventListener("astro:page-load", () => {
 			// 	if (!window.location.href.includes("#")) lenis.scrollTo(0, { immediate: true });
