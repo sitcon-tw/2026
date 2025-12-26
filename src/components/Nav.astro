@@ -14,7 +14,6 @@ const navItems = [
 	<div class="nav-container">
 		<div class="nav-logo-container">
 			<a href="/2026/" id="logo" aria-label="SITCON 2026"><img id="logo-svg" src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
-			<h1 id="info">28 MARCH 2026<br />National Academy of Taiwan</h1>
 			<button class="hamburger" aria-expanded="false" aria-label={zhHant.nav.openMenu}>
 				<Menu id="menu-icon" />
 				<X id="x-icon" />
@@ -130,6 +129,7 @@ const navItems = [
 		align-items: center;
 		justify-content: space-between;
 		gap: 1.25rem;
+		height: 4rem;
 	}
 
 	.nav-items-container {
@@ -180,11 +180,6 @@ const navItems = [
 		filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.3));
 	}
 
-	#info {
-		font-size: 1rem;
-		font-family: "JetBrainsMono", monospace;
-	}
-
 	.hamburger {
 		display: none;
 		background: none;
@@ -199,6 +194,7 @@ const navItems = [
 
 	.nav-container.active {
 		border-radius: 2rem;
+		padding-bottom: 2rem;
 	}
 
 	.nav-container.active .nav-item {
@@ -225,20 +221,13 @@ const navItems = [
 		opacity: 1;
 	}
 
-	@media (max-width: 75rem) {
-		#info {
-			display: none;
-		}
-	}
-
 	@media (max-width: 55rem) {
 		.nav-container {
 			background: #e8bb5f;
-			padding: 1rem 2rem 2rem;
+			padding: 1rem 2rem;
 			border-radius: 2rem;
 			filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.1));
 			flex-direction: column;
-			max-height: 1000px;
 			overflow: hidden;
 		}
 

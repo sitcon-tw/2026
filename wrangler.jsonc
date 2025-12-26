@@ -1,0 +1,12 @@
+{
+	"name": "2026-website-preview",
+	"compatibility_date": "2026-12-26",
+	"assets": {
+		"directory": "./dist",
+		"html_handling": "force-trailing-slash",
+		"not_found_handling": "404-page"
+	},
+	"build": {
+		"command": "pnpm build && mkdir -p dist/2026 && echo \"/  /2026/  302\" > dist/_redirects && sh -c 'for f in dist/*; do [ \"$f\" != \"dist/2026\" ] && mv \"$f\" dist/2026/; done'"
+	}
+}
