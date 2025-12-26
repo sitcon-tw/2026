@@ -1,0 +1,102 @@
+---
+const lines = ["崴寶送了好多禮物給孟寶", "但是孟寶很糟糕", "只準備了這首歌想唱給崴寶聽", "這首歌送給崴寶", "一二三 三百天", "四五六 六百天", "不知不覺在一起永永遠遠"];
+
+const fullLines = [...lines, ...lines];
+
+function getRandomStyle() {
+	const top = Math.floor(Math.random() * 90) + "%";
+	const duration = Math.floor(Math.random() * 10) + 25 + "s";
+	const delay = Math.floor(Math.random() * -30) + "s";
+	return { top, duration, delay };
+}
+---
+
+<section>
+	<div class="container">
+		<div class="title">
+			<h1>索票方式</h1>
+		</div>
+		<div class="ticket"></div>
+	</div>
+
+	<div class="danmaku-container">
+		{
+			fullLines.map(line => {
+				const style = getRandomStyle();
+				return (
+					<p class="danmaku-item" style={`top: ${style.top}; animation-duration: ${style.duration}; animation-delay: ${style.delay};`}>
+						{line}
+					</p>
+				);
+			})
+		}
+	</div>
+</section>
+
+<style>
+	section {
+		position: relative;
+		width: 100%;
+		height: 56rem;
+		overflow: hidden;
+	}
+
+	.container {
+		position: relative;
+		z-index: 10;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		height: 100%;
+	}
+
+	.title {
+		font-size: 2.25rem;
+		font-weight: 700;
+		padding-top: 6rem;
+		color: white;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.ticket {
+		background: #e6d3a3;
+		width: 67rem;
+		height: 30rem;
+		border-radius: 20px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+		margin-top: 2rem;
+	}
+
+	.danmaku-container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 1;
+		user-select: none;
+	}
+
+	.danmaku-item {
+		position: absolute;
+		left: 100%;
+		white-space: nowrap;
+		font-size: 3rem;
+		font-weight: bold;
+		color: white;
+		opacity: 0.15;
+		animation-name: fly;
+		animation-timing-function: linear;
+		animation-iteration-count: infinite;
+	}
+
+	@keyframes fly {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-150vw);
+		}
+	}
+</style>
