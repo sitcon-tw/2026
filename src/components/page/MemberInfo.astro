@@ -83,6 +83,9 @@ const { id = "member-info-modal" } = Astro.props;
 				}
 
 				modal.style.display = "block";
+				// @ts-ignore
+				// disable lenis scrolling
+				if (window.lenis) window.lenis.stop();
 			}
 		}
 	});
@@ -95,6 +98,9 @@ const { id = "member-info-modal" } = Astro.props;
 			const modal = closeBtn.closest(".member-info") as HTMLElement | null;
 			if (modal) {
 				modal.style.display = "none";
+				// @ts-ignore
+				// enable lenis scrolling
+				if (window.lenis) window.lenis.start();
 			}
 		}
 	});
@@ -127,7 +133,7 @@ const { id = "member-info-modal" } = Astro.props;
 		overflow-y: auto;
 	}
 
-	@media (max-width: 48rem) {
+	@media (max-width: 64rem) {
 		.member-info {
 			min-width: 90vw;
 			min-height: 90vh;
@@ -142,7 +148,7 @@ const { id = "member-info-modal" } = Astro.props;
 		padding-bottom: 1.5rem;
 	}
 
-	@media (max-width: 48rem) {
+	@media (max-width: 64rem) {
 		.header {
 			padding-bottom: 3.5rem;
 		}
@@ -166,7 +172,7 @@ const { id = "member-info-modal" } = Astro.props;
 		border: none;
 	}
 
-	@media (max-width: 48rem) {
+	@media (max-width: 64rem) {
 		.close-btn {
 			top: 2rem;
 			right: 2rem;
@@ -180,7 +186,7 @@ const { id = "member-info-modal" } = Astro.props;
 		font-weight: 700;
 	}
 
-	@media (max-width: 48rem) {
+	@media (max-width: 64rem) {
 		h1 {
 			font-size: 3.5rem;
 		}
@@ -199,7 +205,7 @@ const { id = "member-info-modal" } = Astro.props;
 		justify-self: end;
 	}
 
-	@media (max-width: 48rem) {
+	@media (max-width: 64rem) {
 		.avatar,
 		.social {
 			justify-self: center;
@@ -229,9 +235,10 @@ const { id = "member-info-modal" } = Astro.props;
 		font-size: 1rem;
 		font-weight: 700;
 		line-height: 1.5;
+		word-break: break-word;
 	}
 
-	@media (max-width: 48rem) {
+	@media (max-width: 64rem) {
 		p {
 			width: 100%;
 		}
