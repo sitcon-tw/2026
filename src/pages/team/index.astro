@@ -4,6 +4,9 @@ import Footer from "@/components/Footer.astro";
 import Team from "@/components/page/Team.astro";
 import MemberInfo from "@/components/page/MemberInfo.astro";
 
+const form_url = "https://forms.gle/";
+const forum_url = "https://forum/";
+
 const team_data = [
 	{
 		name: "開發組",
@@ -130,8 +133,8 @@ const team_data = [
 			</div>
 			<div class="top-right">
 				<div class="top-right-btn-group">
-					<button class="top-right-btn">跳坑表單</button>
-					<button class="top-right-btn">郵件論壇</button>
+					<button class="top-right-btn"><a href={form_url} target="_blank">跳坑表單</a></button>
+					<button class="top-right-btn"><a href={forum_url} target="_blank">郵件論壇</a></button>
 				</div>
 			</div>
 		</div>
@@ -213,5 +216,10 @@ const team_data = [
 		box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 		text-align: center;
 		cursor: pointer;
+	}
+
+	a {
+		text-decoration: none;
+		color: inherit;
 	}
 </style>
