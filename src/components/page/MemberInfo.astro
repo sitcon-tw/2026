@@ -2,7 +2,7 @@
 const { id = "member-info-modal" } = Astro.props;
 ---
 
-<div id={id} class="member-info" style="display: none;">
+<div id={id} class="member-info" style="display: none;" data-lenis-prevent>
 	<div class="header">
 		<button class="close-btn">
 			<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
@@ -137,6 +137,7 @@ const { id = "member-info-modal" } = Astro.props;
 		.member-info {
 			min-width: 90vw;
 			min-height: 90vh;
+			max-height: 90vh;
 			align-self: center;
 			justify-self: center;
 			position: fixed;
