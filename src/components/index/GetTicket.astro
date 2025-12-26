@@ -204,12 +204,6 @@ function getRandomStyle() {
 		padding: 3rem;
 		display: flex;
 		flex-direction: column;
-		opacity: 0;
-		transition: opacity 0.3s ease;
-	}
-
-	.ticket-card.active .ticket-main {
-		opacity: 1;
 	}
 
 	.ticket-header {
@@ -355,8 +349,6 @@ function getRandomStyle() {
 		height: 100%;
 		font-size: 0.75rem;
 		color: #333;
-		opacity: 0;
-		transition: opacity 0.3s ease;
 		z-index: 2;
 	}
 
@@ -372,14 +364,6 @@ function getRandomStyle() {
 
 	.ticket-sitcon-small {
 		order: 1; /* Top of horizontal -> Right of stub */
-		font-weight: 700;
-	}
-
-	.ticket-card.active .ticket-info {
-		opacity: 1;
-	}
-
-	.ticket-sitcon-small {
 		font-weight: 700;
 		margin-top: 0.25rem;
 	}
