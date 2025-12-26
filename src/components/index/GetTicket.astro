@@ -1,33 +1,41 @@
 ---
+import { Plane, Users, CodeXml } from "@lucide/astro";
+
 const tickets = [
 	{
 		id: "oscvpass",
-		title: "OSCVPASS",
+		title: "開源貢獻票",
+		englishTitle: "OSCVPASS",
 		color: "#e6d3a3",
-		pill: "#77B55A",
+		pill: "#e6d3a3",
+		icon: CodeXml,
 		description: [
 			"資格限制：對開源專案有貢獻者。",
 			"在 2025/01/21 23:59 前申請且通過者，有機會可以搶到 SITCON 2025 開源貢獻票邀請碼。申請表單、申請資格及更詳細的申請說明，請參考開源貢獻者快速通關",
-			"關於歷年來 OSCVPass 申請通過者的專案列表，請參考 OSCVPass 專案介紹。",
+			"關於歷年來 OSCVPass 申請通過者的專案列表，請參考 OSCVPass 專案介紹。"
 		],
-		verticalTitle: "開源貢獻票",
+		verticalTitle: "開源貢獻票"
 	},
 	{
 		id: "general",
 		title: "一般票",
+		englishTitle: "GENERAL",
 		color: "#e0e0e0",
-		pill: "#888888",
+		pill: "#E0E0E0",
+		icon: Users,
 		description: ["一般大眾皆可參與。", "請關注 SITCON 官方網站及社群媒體以獲取最新售票資訊。"],
-		verticalTitle: "一般票",
+		verticalTitle: "一般票"
 	},
 	{
 		id: "long-distance",
 		title: "遠道而來票",
+		englishTitle: "LONG DISTANCE",
 		color: "#c5a880",
-		pill: "#5A4632",
+		pill: "#c5a880",
+		icon: Plane,
 		description: ["居住地距離會場較遠的參與者。", "需提供相關證明文件。"],
-		verticalTitle: "遠道而來票",
-	},
+		verticalTitle: "遠道而來票"
+	}
 ];
 
 const lines = ["崴寶送了好多禮物給孟寶", "但是孟寶很糟糕", "只準備了這首歌想唱給崴寶聽", "這首歌送給崴寶", "一二三 三百天", "四五六 六百天", "不知不覺在一起永永遠遠"];
@@ -51,14 +59,18 @@ function getRandomStyle() {
 			{
 				tickets.map((ticket, index) => (
 					<div class={`ticket-card ${index === 0 ? "active" : ""}`} data-id={ticket.id} style={`--bg-color: ${ticket.color}; --index: ${index};`}>
+						<div class="ticket-mobile-header">
+							<span class="mobile-title">{ticket.title}</span>
+							<ticket.icon class="mobile-icon" />
+						</div>
 						<div class="ticket-content">
 							<div class="ticket-main">
 								<div class="ticket-header">
-									<h2 class="ticket-title">{ticket.title}</h2>
+									<h2 class="ticket-title">{ticket.englishTitle}</h2>
 									<span class="ticket-sitcon">SITCON 2026</span>
 								</div>
 								<ul class="ticket-desc">
-									{ticket.description.map((item) => (
+									{ticket.description.map(item => (
 										<li>{item}</li>
 									))}
 								</ul>
@@ -69,12 +81,16 @@ function getRandomStyle() {
 							</div>
 							<div class="ticket-divider" />
 							<div class="ticket-side">
-								<div class="ticket-pill">{ticket.pill}</div>
-								<div class="ticket-vertical-text">{ticket.verticalTitle}</div>
-								<div class="ticket-footer-info">
-									<div class="ticket-date">2026/03/28</div>
-									<div class="ticket-location">中央研究院 人文社會科學館</div>
-									<div class="ticket-sitcon-small">SITCON 2026</div>
+								<div class="ticket-stub-inner">
+									<div class="ticket-pill">{ticket.pill}</div>
+									<div class="ticket-vertical-text">{ticket.verticalTitle}</div>
+									<div class="ticket-footer-info">
+										<div class="ticket-footer-left">
+											<div class="ticket-date">2026/03/28</div>
+											<div class="ticket-location">中央研究院 人文社會科學館</div>
+										</div>
+										<div class="ticket-sitcon-small">SITCON 2026</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -134,6 +150,26 @@ function getRandomStyle() {
 		perspective: 1000px;
 	}
 
+	.ticket-mobile-header {
+		display: none;
+		padding: 1.5rem 2rem;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 2px dashed rgba(0, 0, 0, 0.1);
+	}
+
+	.mobile-title {
+		font-size: 2.5rem;
+		font-weight: 900;
+		color: #333;
+	}
+
+	.mobile-icon {
+		width: 2.5rem;
+		height: 2.5rem;
+		color: #333;
+	}
+
 	.ticket-card {
 		position: absolute;
 		top: 0;
@@ -146,12 +182,11 @@ function getRandomStyle() {
 		cursor: pointer;
 		overflow: hidden;
 		transform-origin: right center;
-		mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 15px, black 16px),
-			radial-gradient(circle at calc(100% - 12rem) 100%, transparent 15px, black 16px);
-		-webkit-mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 15px, black 16px),
-			radial-gradient(circle at calc(100% - 12rem) 100%, transparent 15px, black 16px);
+		mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 15px, black 16px), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 15px, black 16px);
+		-webkit-mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 15px, black 16px), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 15px, black 16px);
 		mask-composite: intersect;
 		-webkit-mask-composite: source-in;
+		will-change: transform, height;
 	}
 
 	.ticket-card.active {
@@ -264,11 +299,24 @@ function getRandomStyle() {
 
 	.ticket-side {
 		width: 12rem;
-		padding: 2rem 1rem;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+		height: 100%;
 		position: relative;
+		overflow: hidden;
+	}
+
+	.ticket-stub-inner {
+		position: absolute;
+		top: 0;
+		left: 12rem;
+		width: 30rem;
+		height: 12rem;
+		transform: rotate(90deg);
+		transform-origin: 0 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: flex-start;
+		padding: 1.5rem 2rem;
 	}
 
 	.ticket-pill {
@@ -278,41 +326,53 @@ function getRandomStyle() {
 		border-radius: 999px;
 		font-size: 0.875rem;
 		font-family: monospace;
-		margin-bottom: 2rem;
 		color: #333;
-		transform: rotate(90deg);
+		white-space: nowrap;
+		align-self: flex-end;
+		margin-bottom: 0.5rem;
+		z-index: 2;
+		text-transform: uppercase;
 	}
 
 	.ticket-vertical-text {
-		writing-mode: vertical-rl;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		font-size: 3.5rem;
 		font-weight: 900;
 		color: #333;
 		letter-spacing: 0.5rem;
-		flex: 1;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-orientation: upright;
+		white-space: nowrap;
+		z-index: 1;
 	}
 
 	.ticket-footer-info {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: flex-end; /* This becomes the Bottom of the stub */
+		height: 100%;
 		font-size: 0.75rem;
 		color: #333;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		z-index: 2;
+	}
+
+	.ticket-footer-left {
+		order: 2; /* Bottom of horizontal -> Left of stub */
 		text-align: right;
-		margin-top: auto;
 		display: flex;
 		flex-direction: column;
 		gap: 0.2rem;
-		opacity: 0;
-		transition: opacity 0.3s ease;
-		transform: rotate(90deg);
-		transform-origin: bottom right;
-		position: absolute;
-		bottom: 1rem;
-		right: 2.5rem;
-		white-space: nowrap;
-		width: 15rem;
+		align-items: flex-end;
+		font-weight: 700;
+	}
+
+	.ticket-sitcon-small {
+		order: 1; /* Top of horizontal -> Right of stub */
+		font-weight: 700;
 	}
 
 	.ticket-card.active .ticket-footer-info {
@@ -348,6 +408,103 @@ function getRandomStyle() {
 		animation-iteration-count: infinite;
 	}
 
+	@media (max-width: 768px) {
+		section {
+			height: auto;
+			padding-bottom: 4rem;
+		}
+
+		.container {
+			padding: 0 1.5rem;
+		}
+
+		.ticket-container {
+			width: 100%;
+			height: 50rem;
+			margin-top: 3rem;
+		}
+
+		.ticket-mobile-header {
+			display: flex;
+		}
+
+		.ticket-card {
+			transform-origin: center top;
+			mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 15px, black 16px), radial-gradient(circle at 100% calc(100% - 8rem), transparent 15px, black 16px);
+			-webkit-mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 15px, black 16px), radial-gradient(circle at 100% calc(100% - 8rem), transparent 15px, black 16px);
+			box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+		}
+
+		.ticket-content {
+			flex-direction: column;
+			height: calc(100% - 80px); /* Subtract mobile header height */
+			overflow: hidden;
+			opacity: 0;
+			transition: opacity 0.3s ease;
+		}
+
+		.ticket-card.active .ticket-content {
+			opacity: 1;
+		}
+
+		.ticket-main {
+			padding: 1.5rem;
+			overflow-y: auto;
+		}
+
+		.ticket-title {
+			font-size: 2.5rem;
+		}
+
+		.ticket-desc {
+			font-size: 1rem;
+		}
+
+		.btn-primary,
+		.btn-secondary {
+			padding: 0.5rem 1.5rem;
+			font-size: 1.1rem;
+		}
+
+		.ticket-divider {
+			width: 100%;
+			height: 0;
+			border-left: none;
+			border-top: 2px dashed rgba(0, 0, 0, 0.1);
+			margin: 0;
+		}
+
+		.ticket-side {
+			display: none;
+		}
+
+		.ticket-stub-inner {
+			position: static;
+			width: 100%;
+			height: auto;
+			transform: none;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			padding: 0;
+		}
+
+		.ticket-pill {
+			margin-bottom: 0;
+		}
+
+		.ticket-footer-info {
+			height: auto;
+			opacity: 1;
+			text-align: right;
+		}
+
+		.ticket-footer-left {
+			display: block;
+		}
+	}
+
 	@keyframes fly {
 		from {
 			transform: translateX(0);
@@ -364,51 +521,104 @@ function getRandomStyle() {
 	const cards = document.querySelectorAll(".ticket-card");
 	const container = document.querySelector(".ticket-container");
 	const sideWidth = 12 * 16; // 12rem
+	const mobileHeaderHeight = 80;
 	const overlap = 50;
 	let currentActiveIndex = 0;
 
 	function updateCards(activeIndex: number) {
 		if (!container) return;
 		currentActiveIndex = activeIndex;
+		const isMobile = window.innerWidth <= 768;
 		const containerWidth = container.getBoundingClientRect().width;
+		const containerHeight = container.getBoundingClientRect().height;
 
-		cards.forEach((card, index) => {
-			const htmlCard = card as HTMLElement;
-			if (index === activeIndex) {
-				gsap.to(htmlCard, {
-					x: 0,
-					zIndex: cards.length,
-					rotationY: 0,
-					scale: 1,
-					duration: 0.8,
-					ease: "power4.out",
-				});
-				htmlCard.classList.add("active");
-			} else if (index > activeIndex) {
-				// Cards to the right
-				const offset = (index - activeIndex - 1) * overlap;
-				const targetX = containerWidth - sideWidth + offset;
-				gsap.to(htmlCard, {
-					x: targetX,
-					zIndex: cards.length - index,
-					rotationY: -10,
-					scale: 0.95,
-					duration: 0.8,
-					ease: "power4.out",
-				});
-				htmlCard.classList.remove("active");
-			} else {
-				// Cards to the left
-				gsap.to(htmlCard, {
-					x: -containerWidth,
-					zIndex: index,
-					rotationY: 10,
-					duration: 0.8,
-					ease: "power4.out",
-				});
-				htmlCard.classList.remove("active");
-			}
-		});
+		if (isMobile) {
+			let inactiveCount = 0;
+			cards.forEach((card, index) => {
+				const htmlCard = card as HTMLElement;
+				if (index === activeIndex) {
+					// Set zIndex immediately for the active card to prevent stutter
+					gsap.set(htmlCard, { zIndex: cards.length + 1 });
+					gsap.to(htmlCard, {
+						x: 0,
+						y: (cards.length - 1) * mobileHeaderHeight,
+						height: containerHeight - (cards.length - 1) * mobileHeaderHeight,
+						duration: 0.7,
+						ease: "expo.out",
+						force3D: true,
+						overwrite: "auto",
+						onComplete: () => {
+							gsap.set(htmlCard, { zIndex: cards.length });
+						}
+					});
+					htmlCard.classList.add("active");
+				} else {
+					const targetY = inactiveCount * mobileHeaderHeight;
+					gsap.to(htmlCard, {
+						x: 0,
+						y: targetY,
+						zIndex: inactiveCount + 1,
+						height: mobileHeaderHeight,
+						duration: 0.7,
+						ease: "expo.out",
+						force3D: true,
+						overwrite: "auto"
+					});
+					htmlCard.classList.remove("active");
+					inactiveCount++;
+				}
+			});
+		} else {
+			// Desktop Horizontal Stacking Logic
+			cards.forEach((card, index) => {
+				const htmlCard = card as HTMLElement;
+				gsap.set(htmlCard, { height: "100%" });
+				if (index === activeIndex) {
+					gsap.set(htmlCard, { zIndex: cards.length + 1 });
+					gsap.to(htmlCard, {
+						x: 0,
+						y: 0,
+						rotationY: 0,
+						scale: 1,
+						duration: 0.7,
+						ease: "expo.out",
+						force3D: true,
+						overwrite: "auto",
+						onComplete: () => {
+							gsap.set(htmlCard, { zIndex: cards.length });
+						}
+					});
+					htmlCard.classList.add("active");
+				} else if (index > activeIndex) {
+					const offset = (index - activeIndex - 1) * overlap;
+					const targetX = containerWidth - sideWidth + offset;
+					gsap.to(htmlCard, {
+						x: targetX,
+						y: 0,
+						zIndex: cards.length - index,
+						rotationY: -10,
+						scale: 0.95,
+						duration: 0.7,
+						ease: "expo.out",
+						force3D: true,
+						overwrite: "auto"
+					});
+					htmlCard.classList.remove("active");
+				} else {
+					gsap.to(htmlCard, {
+						x: -containerWidth,
+						y: 0,
+						zIndex: index,
+						rotationY: 10,
+						duration: 0.7,
+						ease: "expo.out",
+						force3D: true,
+						overwrite: "auto"
+					});
+					htmlCard.classList.remove("active");
+				}
+			});
+		}
 	}
 
 	cards.forEach((card, index) => {
@@ -417,20 +627,27 @@ function getRandomStyle() {
 		});
 
 		card.addEventListener("mouseenter", () => {
-			if (index > currentActiveIndex) {
+			const isMobile = window.innerWidth <= 768;
+			if (!isMobile && index > currentActiveIndex) {
 				gsap.to(card, {
 					x: "-=30",
 					duration: 0.3,
-					ease: "power2.out",
+					ease: "power2.out"
 				});
 			}
 		});
 
 		card.addEventListener("mouseleave", () => {
-			if (index > currentActiveIndex) {
+			const isMobile = window.innerWidth <= 768;
+			if (!isMobile && index > currentActiveIndex) {
 				updateCards(currentActiveIndex);
 			}
 		});
+	});
+
+	// Handle resize
+	window.addEventListener("resize", () => {
+		updateCards(currentActiveIndex);
 	});
 
 	// Initial state
