@@ -5,21 +5,21 @@
 <div class="landing-section">
 	<!-- 主標題 (左側) -->
 	<div class="title-wrapper">
-		<img src="/2026/img/Visual/jam-the-chaos-title.svg" class="main-title" alt="JAM THE CHAOS" />
+		<img src="/2026/img/Visual/jam-the-chaos-title.svg" class="main-title" alt="JAM THE CHAOS" draggable="false" />
 	</div>
 
 	<!-- 裝飾元素 -->
 	<!-- 右上角金屬球 -->
-	<img src="/2026/img/Visual/round-metal.svg" class="object metal-sphere floating" alt="Metal Sphere" />
+	<img src="/2026/img/Visual/round-metal.svg" class="object metal-sphere floating" alt="Metal Sphere" draggable="false" />
 
 	<!-- 中央偏左 菱形/星星 -->
-	<img src="/2026/img/Visual/star-metal.png" class="object metal-star-1 floating-reverse" alt="Metal Star" />
+	<img src="/2026/img/Visual/star-metal.png" class="object metal-star-1 floating-reverse" alt="Metal Star" draggable="false" />
 
 	<!-- 左下 菱形/星星 -->
-	<img src="/2026/img/Visual/star-metal.png" class="object metal-star-2 floating" alt="Metal Star" />
+	<img src="/2026/img/Visual/star-metal.png" class="object metal-star-2 floating" alt="Metal Star" draggable="false" />
 
 	<!-- 中央下方 吉祥物 -->
-	<img src="/2026/img/Visual/stone-metal.svg" class="object stone-metal floating" alt="Stone Mascot" />
+	<img src="/2026/img/Visual/stone-metal.svg" class="object stone-metal floating" alt="Stone Mascot" draggable="false" />
 
 	<!-- 右下角資訊 -->
 	<div class="info-wrapper">
@@ -32,19 +32,19 @@
 
 	<!-- 左下角報名按鈕預留 -->
 	<div class="cta-wrapper">
-		<a href="#" class="cta-button">
-			<div class="cta-icon">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-					<circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"></circle>
-					<circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="2"></circle>
-				</svg>
+		<div class="cta-container" id="cta-container">
+			<a href="https://tickets.sitcon.org/zh-Hant/sitcon2026" target="_blank">
+				<div class="cta-text-layer">
+					<span class="cta-text">我要報名</span>
+					<span class="arrow">›</span>
+				</div>
+			</a>
+			<div class="cta-handle" id="cta-handle">
+				<div class="cta-icon">
+					<img src="/2026/img/Visual/stone-note.svg" alt="Arrow Right Icon" draggable="false" />
+				</div>
 			</div>
-			<div class="cta-content">
-				<span class="cta-text">我要報名</span>
-				<span class="arrow">›</span>
-			</div>
-		</a>
+		</div>
 	</div>
 </div>
 
@@ -57,6 +57,7 @@
 		font-family: "GenKiMinTW", serif;
 		z-index: 1;
 		animation: fadeIn 2s ease-out forwards;
+		user-select: none;
 	}
 
 	@keyframes fadeIn {
@@ -122,37 +123,46 @@
 		left: 8%;
 		z-index: 2;
 	}
-	.cta-button {
+	.cta-container {
+		position: relative;
 		display: flex;
 		align-items: center;
-		gap: 1.2rem;
-		padding: 0.8rem 1.8rem 0.8rem 0.8rem;
+		width: 280px;
+		height: 64px;
 		background: rgba(255, 255, 255, 0.1);
 		backdrop-filter: blur(12px);
 		border: 1px solid rgba(255, 255, 255, 0.2);
 		border-radius: 1.2rem;
-		color: white;
-		text-decoration: none;
+		overflow: hidden;
+		cursor: pointer;
+		user-select: none;
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		text-decoration: none;
+		color: white;
 	}
-	.cta-button:hover {
-		background: rgba(255, 255, 255, 0.2);
-		transform: translateY(-3px);
+	.cta-container:hover {
+		background: rgba(255, 255, 255, 0.15);
 		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 	}
-	.cta-icon {
-		width: 48px;
-		height: 48px;
-		background: rgba(255, 255, 255, 0.15);
-		border-radius: 0.8rem;
+	.cta-text-layer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		gap: 0.8rem;
+		color: white;
+		z-index: 1;
+		padding-left: 48px;
+		transition: opacity 0.3s ease;
+		font-family: "GenKiGothicTW", serif;
 	}
-	.cta-content {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
+	.cta-text-layer a {
+		text-decoration: none;
+		color: inherit;
 	}
 	.cta-text {
 		font-size: 1.25rem;
@@ -162,10 +172,38 @@
 	.arrow {
 		font-size: 1.5rem;
 		line-height: 1;
-		transition: transform 0.3s ease;
 	}
-	.cta-button:hover .arrow {
-		transform: translateX(4px);
+	.cta-handle {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 64px;
+		height: 64px;
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 0.8rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 2;
+		cursor: grab;
+		touch-action: none;
+	}
+	.cta-handle:active {
+		cursor: grabbing;
+	}
+	.cta-icon {
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		padding: 8px;
+	}
+	.cta-icon img {
+		width: auto;
+		height: 100%;
+		max-width: 100%;
 	}
 
 	/* 位置設定 */
@@ -262,13 +300,18 @@
 			bottom: 5%;
 			left: 5%;
 		}
-		.cta-button {
-			padding: 0.4rem 1.2rem 0.4rem 0.4rem;
-			gap: 0.8rem;
+		.cta-container {
+			width: 220px;
+			height: 52px;
 		}
-		.cta-icon {
+		.cta-handle {
 			width: 36px;
 			height: 36px;
+			left: 7px;
+			top: 7px;
+		}
+		.cta-text-layer {
+			padding-left: 36px;
 		}
 		.cta-text {
 			font-size: 1rem;
@@ -283,3 +326,80 @@
 		}
 	}
 </style>
+
+<script>
+	const container = document.getElementById("cta-container");
+	const handle = document.getElementById("cta-handle");
+	let isDragging = false;
+	let hasMoved = false;
+	let startX = 0;
+	let currentX = 0;
+
+	if (container && handle) {
+		const getX = (e: MouseEvent | TouchEvent) => {
+			return "touches" in e ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
+		};
+
+		const onStart = (e: MouseEvent | TouchEvent) => {
+			isDragging = true;
+			hasMoved = false;
+			startX = getX(e) - currentX;
+			handle.style.transition = "none";
+		};
+
+		const onMove = (e: MouseEvent | TouchEvent) => {
+			if (!isDragging) return;
+			if (e.type === "touchmove") {
+				(e as TouchEvent).preventDefault();
+			}
+			const x = getX(e) - startX;
+			if (Math.abs(x - currentX) > 5) {
+				hasMoved = true;
+			}
+			const maxDrag = container.offsetWidth - handle.offsetWidth - 0;
+			currentX = Math.max(0, Math.min(x, maxDrag));
+			handle.style.transform = `translateX(${currentX}px)`;
+
+			const opacity = 1 - currentX / maxDrag;
+			const textLayer = container.querySelector(".cta-text-layer") as HTMLElement;
+			if (textLayer) textLayer.style.opacity = opacity.toString();
+		};
+
+		const onEnd = () => {
+			if (!isDragging) return;
+			isDragging = false;
+			handle.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
+
+			const maxDrag = container.offsetWidth - handle.offsetWidth - 0;
+			if (currentX > maxDrag * 0.8) {
+				currentX = maxDrag;
+				handle.style.transform = `translateX(${currentX}px)`;
+				const textLayer = container.querySelector(".cta-text-layer") as HTMLElement;
+				if (textLayer) textLayer.style.opacity = "0";
+
+				setTimeout(() => {
+					window.location.href = "https://tickets.sitcon.org/zh-Hant/sitcon2026";
+				}, 300);
+			} else {
+				currentX = 0;
+				handle.style.transform = `translateX(0px)`;
+				const textLayer = container.querySelector(".cta-text-layer") as HTMLElement;
+				if (textLayer) textLayer.style.opacity = "1";
+			}
+		};
+
+		container.addEventListener("click", e => {
+			if (hasMoved) {
+				e.preventDefault();
+			}
+		});
+
+		handle.addEventListener("mousedown", onStart as any);
+		window.addEventListener("mousemove", onMove as any);
+		window.addEventListener("mouseup", onEnd);
+
+		handle.addEventListener("touchstart", onStart as any, { passive: true });
+		window.addEventListener("touchmove", onMove as any, { passive: false });
+		window.addEventListener("touchend", onEnd);
+	}
+</script>
