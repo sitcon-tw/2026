@@ -1,0 +1,218 @@
+---
+const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，在開始籌備時通知你！", "到 GitLab 查看今年的籌備歷程！", "一起在郵件論壇討論籌備！"];
+---
+
+<section class="discuss-section">
+	<div class="container">
+		<div class="chat-container">
+			{
+				messages.map(msg => (
+					<div class="message-group">
+						<div class="bubble-oval">{msg}</div>
+						<div class="bubble-tail">
+							<svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
+								<path d="M0 21.9509C4.84211 12.1674 0 0 0 0L23 1.19723V1.22056C23 1.22056 9.68421 23.1715 0 21.9509Z" fill="#C2A05A" />
+							</svg>
+						</div>
+					</div>
+				))
+			}
+		</div>
+
+		<div class="info-container">
+			<h2 class="section-title">參與討論</h2>
+			<div class="btn-group">
+				<a href="#" class="btn-pill">預約跳坑</a>
+				<a href="#" class="btn-pill">郵件論壇</a>
+				<a href="#" class="btn-pill">籌備紀錄</a>
+			</div>
+		</div>
+	</div>
+
+	<img src="/images/decoration-logo.png" alt="" class="decor-logo" />
+	<img src="/images/decoration-paper.png" alt="" class="decor-paper" />
+</section>
+
+<style>
+	section {
+		position: relative;
+		padding: 10rem 0;
+		overflow: hidden;
+	}
+
+	.container {
+		max-width: 110rem;
+		width: 90%;
+		height: 15rem;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 5rem;
+		position: relative;
+		z-index: 2;
+	}
+
+	.chat-container {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		flex: 1;
+		padding-left: 2rem;
+	}
+
+	.message-group {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		width: fit-content;
+		max-width: 90%;
+		visibility: hidden;
+	}
+
+	.message-group:nth-child(even) {
+		margin-left: 5rem;
+	}
+
+	.bubble-oval {
+		border-radius: 60px;
+		padding: 1.25rem 2.2rem;
+		background: #c2a05a;
+		backdrop-filter: blur(10px);
+		border: 2px solid #c2a05a;
+		color: white;
+		font-size: 1.8rem;
+		font-weight: 500;
+		line-height: 1.5;
+		box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+	}
+
+	.bubble-tail {
+		margin-top: -3px;
+		margin-left: 30px;
+		line-height: 0;
+		transform: scale(1.25);
+		transform-origin: top left;
+		filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+	}
+
+	.info-container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		padding-left: 5rem;
+	}
+
+	.section-title {
+		font-size: 6rem;
+		color: white;
+		font-family: serif;
+		margin: 0 0 2.5rem 0;
+		font-weight: 700;
+		line-height: 1.1;
+	}
+
+	.btn-group {
+		display: flex;
+		gap: 1.8rem;
+		flex-wrap: wrap;
+	}
+
+	.btn-pill {
+		background-color: #ffd172;
+		color: #634a15;
+		padding: 1rem 2.5rem;
+		border-radius: 60px;
+		text-decoration: none;
+		font-weight: bold;
+		font-size: 1.4rem;
+		transition:
+			transform 0.2s,
+			background-color 0.2s;
+	}
+
+	.btn-pill:hover {
+		transform: scale(1.05);
+		background-color: #fff;
+	}
+
+	.decor-logo {
+		position: absolute;
+		right: 3rem;
+		top: 25%;
+		width: 100px;
+		opacity: 0.9;
+		z-index: 1;
+	}
+
+	.decor-paper {
+		position: absolute;
+		right: -6rem;
+		bottom: -9rem;
+		width: 480px;
+		transform: rotate(-10deg);
+		z-index: 1;
+	}
+
+	@media (max-width: 992px) {
+		.container {
+			flex-direction: column-reverse;
+			gap: 4rem;
+		}
+		.info-container {
+			padding-left: 0;
+			align-items: center;
+			text-align: center;
+		}
+		.section-title {
+			font-size: 4rem;
+		}
+		.chat-container {
+			padding-left: 0;
+			align-items: center;
+			width: 100%;
+		}
+		.message-group {
+			max-width: 100%;
+		}
+		.message-group:nth-child(even) {
+			margin-left: 0;
+		}
+		.btn-pill {
+			font-size: 1.3rem;
+			padding: 0.9rem 2.2rem;
+		}
+	}
+</style>
+
+<script>
+	import { gsap } from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	const messages = document.querySelectorAll(".message-group");
+
+	gsap.fromTo(
+		messages,
+		{
+			autoAlpha: 0,
+			y: 70,
+			scale: 0.9
+		},
+		{
+			autoAlpha: 1,
+			y: 0,
+			scale: 1,
+			duration: 0.8,
+			ease: "back.out(1.5)",
+			stagger: 0.25,
+			scrollTrigger: {
+				trigger: ".chat-container",
+				start: "top 75%",
+				toggleActions: "play none none reverse"
+			}
+		}
+	);
+</script>
