@@ -1,9 +1,21 @@
+---
+
+---
+
 <section class="hero-section">
 	<div class="bg-gallery-custom">
-		<img src="/2026/img/DemoShow/a.jpg" class="clip-shape shape-a active" data-index="0" alt="" />
-		<img src="/2026/img/DemoShow/b.jpg" class="clip-shape shape-b" data-index="1" alt="" />
-		<img src="/2026/img/DemoShow/c.jpg" class="clip-shape shape-c" data-index="2" alt="" />
-		<img src="/2026/img/DemoShow/d.jpg" class="clip-shape shape-d" data-index="3" alt="" />
+		<div class="clip-shape shape-a active" data-index="0">
+			<img src="/2026/img/DemoShow/a.jpg" alt="" />
+		</div>
+		<div class="clip-shape shape-b" data-index="1">
+			<img src="/2026/img/DemoShow/b.jpg" alt="" />
+		</div>
+		<div class="clip-shape shape-c" data-index="2">
+			<img src="/2026/img/DemoShow/c.jpg" alt="" />
+		</div>
+		<div class="clip-shape shape-d" data-index="3">
+			<img src="/2026/img/DemoShow/d.jpg" alt="" />
+		</div>
 	</div>
 
 	<div class="overlay"></div>
@@ -49,33 +61,55 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
 		filter: brightness(0.4);
 		transition: all 0.6s ease-in-out;
 		cursor: pointer;
 		pointer-events: auto;
+		overflow: hidden;
+	}
+
+	.clip-shape img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.6s ease-in-out;
+		display: block;
 	}
 
 	.clip-shape.active {
 		filter: brightness(1.1);
 		z-index: 10;
+	}
+
+	.clip-shape.active img {
 		transform: scale(1.05);
 	}
 
 	.shape-a {
 		clip-path: polygon(0 0, 25% 0, 20% 100%, 0% 100%);
+	}
+	.shape-a img {
 		object-position: -60rem 0;
 	}
+
 	.shape-b {
 		clip-path: polygon(25% 0, 45% 0, 45% 100%, 20% 100%);
+	}
+	.shape-b img {
 		object-position: -25rem 0;
 	}
+
 	.shape-c {
 		clip-path: polygon(45% 0, 70% 0, 75% 100%, 45% 100%);
+	}
+	.shape-c img {
 		object-position: 10rem 0;
 	}
+
 	.shape-d {
 		clip-path: polygon(70% 0, 100% 0, 100% 100%, 75% 100%);
+	}
+	.shape-d img {
 		object-position: 25rem 0;
 	}
 
@@ -158,11 +192,15 @@
 
 		.shape-a {
 			clip-path: polygon(0 0, 60% 0, 40% 100%, 0% 100%);
+		}
+		.shape-a img {
 			object-position: 75% center;
 		}
 
 		.shape-b {
 			clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
+		}
+		.shape-b img {
 			object-position: 40% center;
 		}
 
@@ -189,35 +227,35 @@
 
 <script is:inline>
 	document.addEventListener("DOMContentLoaded", () => {
-		const allImages = document.querySelectorAll(".clip-shape");
-		if (allImages.length === 0) return;
+		const allWrappers = document.querySelectorAll(".clip-shape");
+		if (allWrappers.length === 0) return;
 
 		let intervalId = null;
 
-		function getVisibleImages() {
-			return Array.from(allImages).filter(img => {
-				return getComputedStyle(img).display !== "none";
+		function getVisibleWrappers() {
+			return Array.from(allWrappers).filter(wrapper => {
+				return getComputedStyle(wrapper).display !== "none";
 			});
 		}
 
-		function activateImage(targetImg) {
-			allImages.forEach(img => img.classList.remove("active"));
-			if (targetImg) {
-				targetImg.classList.add("active");
+		function activateWrapper(targetWrapper) {
+			allWrappers.forEach(wrapper => wrapper.classList.remove("active"));
+			if (targetWrapper) {
+				targetWrapper.classList.add("active");
 			}
 		}
 
 		function startAutoPlay() {
 			if (intervalId) clearInterval(intervalId);
 			intervalId = setInterval(() => {
-				const visibleImages = getVisibleImages();
+				const visibleWrappers = getVisibleWrappers();
 				const activeNow = document.querySelector(".clip-shape.active");
-				let listIndex = visibleImages.indexOf(activeNow);
+				let listIndex = visibleWrappers.indexOf(activeNow);
 
 				if (listIndex === -1) listIndex = -1;
 
-				let nextListIndex = (listIndex + 1) % visibleImages.length;
-				activateImage(visibleImages[nextListIndex]);
+				let nextListIndex = (listIndex + 1) % visibleWrappers.length;
+				activateWrapper(visibleWrappers[nextListIndex]);
 			}, 3000);
 		}
 
@@ -228,12 +266,12 @@
 			}
 		}
 
-		allImages.forEach(img => {
-			img.addEventListener("mouseenter", () => {
+		allWrappers.forEach(wrapper => {
+			wrapper.addEventListener("mouseenter", () => {
 				stopAutoPlay();
-				activateImage(img);
+				activateWrapper(wrapper);
 			});
-			img.addEventListener("mouseleave", () => {
+			wrapper.addEventListener("mouseleave", () => {
 				startAutoPlay();
 			});
 		});
