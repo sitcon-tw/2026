@@ -59,5 +59,55 @@
 				]
 			}
 		]
-	}
+	},
+	"footer": [
+		{
+			"title": "頁面導覽",
+			"links": [
+				{ "name": "年會活動（含交通方式）", "url": "#" },
+				{ "name": "議程表", "url": "#" },
+				{ "name": "會場地圖", "url": "#" },
+				{ "name": "活動報名", "url": "#" },
+				{ "name": "SITCON 團隊", "url": "#" },
+				{ "name": "合作夥伴", "url": "#" },
+				{ "name": "資源下載", "url": "#" }
+			]
+		},
+		{
+			"title": "SITCON 子計畫",
+			"links": [
+				{ "name": "贊助徵求書", "url": "#" },
+				{ "name": "Call for Paper", "url": "#" },
+				{ "name": "Hour of Code", "url": "#" },
+				{ "name": "SITCON Camp", "url": "#" },
+				{ "name": "SITCON Hackathon", "url": "#" }
+			]
+		},
+		{
+			"title": "聯絡資訊",
+			"links": [
+				{ "name": "聯絡窗口\ncontact@sitcon.org", "url": "mailto:contact@sitcon.org" },
+				{ "name": "票務資訊\nticket@sitcon.org", "url": "mailto:ticket@sitcon.org" }
+			]
+		},
+		{
+			"title": "歷年網站",
+			"gridLayout": true,
+			"links": [
+				{ "name": "2025", "url": "https://sitcon.org/2025" },
+				{ "name": "2024", "url": "https://sitcon.org/2024" },
+				{ "name": "2023", "url": "https://sitcon.org/2023" },
+				{ "name": "2022", "url": "https://sitcon.org/2022" },
+				{ "name": "2021", "url": "https://sitcon.org/2021" },
+				{ "name": "2020", "url": "https://sitcon.org/2020" },
+				{ "name": "2019", "url": "https://sitcon.org/2019" },
+				{ "name": "2018", "url": "https://sitcon.org/2018" },
+				{ "name": "2017", "url": "https://sitcon.org/2017" },
+				{ "name": "2016", "url": "https://sitcon.org/2016" },
+				{ "name": "2015", "url": "https://sitcon.org/2015" },
+				{ "name": "2014", "url": "https://sitcon.org/2014" },
+				{ "name": "2013", "url": "https://sitcon.org/2013" }
+			]
+		}
+	]
 }
