@@ -10,34 +10,32 @@ const { sections } = info;
 ---
 
 <Layout>
-    <main class="hero">
-      <div class="hero-content">
-        <h1 class="hero-title">{info.mainHeading}</h1>
+	<main class="hero">
+		<div class="hero-content">
+			<h1 class="hero-title">{info.mainHeading}</h1>
 
-        <div class="hero-details">
-          {info.mainDetails.map((detail) => (
-            <p class="hero-detail">{detail}</p>
-          ))}
-        </div>
+			<div class="hero-details">
+				{info.mainDetails.map(detail => <p class="hero-detail">{detail}</p>)}
+			</div>
 
-        <button class="hero-button">{info.mainButton}</button>
-      </div>
+			<button class="hero-button">{info.mainButton}</button>
+		</div>
 
-      <div class="hero-bg" aria-hidden="true">
-        <Image src={academiaSinica} alt="" class="hero-bg-img" />
-      </div>
-    </main>
+		<div class="hero-bg" aria-hidden="true">
+			<Image src={academiaSinica} alt="" class="hero-bg-img" />
+		</div>
+	</main>
 
 	<div class="activities">
 		<h1 class="activities-title">{info.activitiesHeading}</h1>
 		{
-			sections?.map((section, sectionIndex) => (
-				<div class="activities-section" id=`${sectionIndex}`>
+			sections?.map(section => (
+				<div class="activities-section">
 					<h2 class="section-title">{section.title}</h2>
 
-					{section.activities?.map((activity, activityIndex) => {
+					{section.activities?.map(activity => {
 						return (
-							<div class="activity" id=`${activityIndex}` class:list={{ "activity-reverse": activity.image?.position === "right" }}>
+							<div class="activity" class:list={{ "activity-reverse": activity.image?.position === "right" }}>
 								<Image class="activity-image" src={activity.image.url} alt={activity.image.alt ?? activity.title} width={600} height={600} loading="lazy" />
 								<div class="activity-content">
 									<h3 class="activity-title">{activity.title}</h3>
@@ -45,7 +43,7 @@ const { sections } = info;
 										?.split("\n\n")
 										.map(paragraph => paragraph.trim())
 										.filter(Boolean)
-										.map((paragraph, paragraphIndex) => (
+										.map(paragraph => (
 											<p class="activity-paragraph">{paragraph}</p>
 										))}
 								</div>
@@ -56,8 +54,8 @@ const { sections } = info;
 			))
 		}
 	</div>
+	<Footer />
 </Layout>
-<Footer />
 
 <style>
 	main {
@@ -66,39 +64,39 @@ const { sections } = info;
 	}
 
 	.hero {
-        position: relative;
-        min-height: 80vh;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 4rem 2rem;
-    }
+		position: relative;
+		min-height: 80vh;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 4rem 2rem;
+	}
 
-    .hero-content {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 2.69rem;
-        z-index: 2;
+	.hero-content {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 2.69rem;
+		z-index: 2;
 
-        align-items: center;
-        text-align: center;
-    }
+		align-items: center;
+		text-align: center;
+	}
 
-    .hero-bg {
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-    }
+	.hero-bg {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
 
-    .hero-bg :global(img.hero-bg-img) {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
+	.hero-bg :global(img.hero-bg-img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
 
 	.hero-title {
 		font-size: 4rem;
@@ -114,7 +112,6 @@ const { sections } = info;
 		font-size: 1.0625rem;
 		font-weight: bold;
 		margin: 0;
-		margin-bottom: 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -194,21 +191,10 @@ const { sections } = info;
 		font-weight: bold;
 	}
 
-	.activity-heading {
-		font-size: 2rem;
-		font-weight: bold;
-	}
-
-	.body-text {
-		font-size: 1.0625rem;
-		line-height: 1.6;
-		margin-top: 1rem;
-	}
-
 	@media (max-width: 880px) {
-	    .hero-button {
+		.hero-button {
 			background-color: #3c2d0ecc;
-        }
+		}
 
 		.activities-title {
 			font-size: 3rem;
@@ -219,10 +205,6 @@ const { sections } = info;
 		}
 		.activity-title {
 			font-size: 1.5rem;
-		}
-
-		.activity-grid {
-			gap: 1rem;
 		}
 
 		.activity {
