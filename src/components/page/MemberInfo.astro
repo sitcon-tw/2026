@@ -2,7 +2,7 @@
 const { id = "member-info-modal" } = Astro.props;
 ---
 
-<div id={id} class="member-info" style="display: none;" data-lenis-prevent>
+<div id={id} class="member-info" data-lenis-prevent>
 	<div class="header">
 		<button class="close-btn">
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="none">
@@ -82,7 +82,7 @@ const { id = "member-info-modal" } = Astro.props;
 					socialBtn.style.display = social ? "inline-block" : "none";
 				}
 
-				modal.style.display = "block";
+				modal.classList.add("show");
 				// @ts-ignore
 				// disable lenis scrolling
 				if (window.lenis) window.lenis.stop();
@@ -97,7 +97,7 @@ const { id = "member-info-modal" } = Astro.props;
 		if (closeBtn) {
 			const modal = closeBtn.closest(".member-info") as HTMLElement | null;
 			if (modal) {
-				modal.style.display = "none";
+				modal.classList.remove("show");
 				// @ts-ignore
 				// enable lenis scrolling
 				if (window.lenis) window.lenis.start();
@@ -131,6 +131,14 @@ const { id = "member-info-modal" } = Astro.props;
 		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
 		z-index: 101;
 		overflow-y: auto;
+
+		/* Animation styles */
+		transform: translateX(-100%);
+		transition: transform 0.3s ease;
+	}
+
+	.member-info.show {
+		transform: translateX(0);
 	}
 
 	@media (max-width: 64rem) {
