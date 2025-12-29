@@ -19,7 +19,7 @@ function getActivityImage(file: string): ImageMetadata {
 ---
 
 <Layout>
-	<main class="hero">
+	<header class="hero">
 		<div class="hero-content">
 			<h1 class="hero-title">{info.mainHeading}</h1>
 
@@ -34,52 +34,49 @@ function getActivityImage(file: string): ImageMetadata {
 		<div class="hero-bg" aria-hidden="true">
 			<Image src={academiaSinica} alt="" class="hero-bg-img" />
 		</div>
-	</main>
+	</header>
 
-	<div class="activities">
-		<h1 class="activities-title">{info.activitiesHeading}</h1>
-		{
-			sections?.map(section => (
-				<div class="activities-section">
-					<h2 class="section-title">{section.title}</h2>
+	<main class="activities">
+		<div class="activities-container">
+			<h1 class="activities-title">{info.activitiesHeading}</h1>
+			{
+				sections?.map(section => (
+					<div class="activities-section">
+						<h2 class="section-title">{section.title}</h2>
 
-					{section.activities?.map(activity => {
-						return (
-							<div class="activity" class:list={{ "activity-reverse": activity.image?.position === "right" }}>
-								<Image class="activity-image" src={getActivityImage(activity.image.url)} alt={activity.image.alt ?? activity.title} loading="lazy" />
-								<div class="activity-content">
-									<h3 class="activity-title">{activity.title}</h3>
-									{activity.body
-										?.split("\n\n")
-										.map(paragraph => paragraph.trim())
-										.filter(Boolean)
-										.map(paragraph => (
-											<p class="activity-paragraph">{paragraph}</p>
-										))}
+						{section.activities?.map(activity => {
+							return (
+								<div class="activity" class:list={{ "activity-reverse": activity.image?.position === "right" }}>
+									<Image class="activity-image" src={getActivityImage(activity.image.url)} alt={activity.image.alt ?? activity.title} loading="lazy" />
+									<div>
+										<h3 class="activity-title">{activity.title}</h3>
+										{activity.body
+											?.split("\n\n")
+											.map(paragraph => paragraph.trim())
+											.filter(Boolean)
+											.map(paragraph => (
+												<p class="activity-paragraph">{paragraph}</p>
+											))}
+									</div>
 								</div>
-							</div>
-						);
-					})}
-				</div>
-			))
-		}
-	</div>
+							);
+						})}
+					</div>
+				))
+			}
+		</div>
+	</main>
 	<Footer />
 </Layout>
 
 <style>
-	main {
-		min-height: 100vh;
-		padding: 5rem 2rem 2rem;
-	}
-
 	.hero {
 		position: relative;
 		overflow: hidden;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 4rem 2rem;
+		padding-block: 13rem;
 	}
 
 	.hero-content {
@@ -108,7 +105,7 @@ function getActivityImage(file: string): ImageMetadata {
 	}
 
 	.hero-title {
-		font-size: 4rem;
+		font-size: clamp(3rem, 6vw, 4rem);
 		font-weight: bold;
 	}
 
@@ -155,13 +152,17 @@ function getActivityImage(file: string): ImageMetadata {
 	.activities {
 		background-color: var(--white);
 		color: var(--coffee);
-		font-weight: bold;
 		font-family: "GenKiGothicTW", sans-serif;
 		padding: 3rem 2rem;
 		h2,
 		h3 {
 			font-family: "GenKiGothicTW", sans-serif;
 		}
+	}
+
+	.activities-container {
+		max-width: 100rem;
+		margin-inline: auto;
 	}
 
 	.activities-title {
@@ -204,15 +205,10 @@ function getActivityImage(file: string): ImageMetadata {
 		object-fit: cover;
 	}
 
-	.activity-content {
-		display: flex;
-		flex-direction: column;
-		gap: 1.125rem;
-	}
-
 	.activity-title {
 		font-size: 2rem;
 		font-weight: bold;
+		margin-bottom: 1.125rem
 	}
 
 	@media (max-width: 880px) {
@@ -223,6 +219,7 @@ function getActivityImage(file: string): ImageMetadata {
 		.hero {
 			flex-direction: column;
 			gap: 1rem;
+			padding-block: 10rem;
 		}
 
 		.hero-into-button {
@@ -235,10 +232,12 @@ function getActivityImage(file: string): ImageMetadata {
 
 		.activities-title {
 			font-size: 3rem;
+			padding-left: 0;
 		}
 
 		.section-title {
 			font-size: 2rem;
+			padding-left: 0;
 		}
 		.activity-title {
 			font-size: 1.5rem;
