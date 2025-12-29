@@ -2,7 +2,7 @@
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
 import MemberInfo from "@/components/page/MemberInfo.astro";
-import ExploreFloat from "@/components/page/ExploreFloat.astro";
+import ExplorePerson from "@/components/page/ExplorePerson.astro";
 
 const team_data = [
 	{
@@ -121,13 +121,105 @@ const team_data = [
 <Layout>
 	<main>
 		<h1>工作人員 - 探索</h1>
-		{team_data[0].member.map(member => <ExploreFloat name={member.name} avatar_url={member.avatar_url} position={member.position} social_link={member.social_link} />)}
+		<div class="explore-container">
+			{
+				team_data.map((team, teamIndex) => {
+					return team.member.map(member => (
+						<ExplorePerson
+							name={member.name}
+							avatar_url={member.avatar_url}
+							position={member.position}
+							social_link={member.social_link}
+							data-team-index={teamIndex}
+							style={teamIndex !== 0 ? "display: none;" : ""}
+						/>
+					));
+				})
+			}
+		</div>
+
+		<!-- anchor -->
+		<div class="anchor">
+			<a class="anchor-switch anchor-box" href="/2026/team/">
+				<img src="/2026/img/switch_icon.svg" alt="switch" height={18} width={18} />
+			</a>
+			<a class="anchor-switch anchor-box" href="/2026/team/">
+				<span class="anchor-text-span">探索模式</span>
+			</a>
+			{
+				team_data.map((team, index) => {
+					return (
+						<div class="anchor-btn anchor-box" data-index={index}>
+							<span class="anchor-text-span">{team.name}</span>
+						</div>
+					);
+				})
+			}
+		</div>
 	</main>
 	<MemberInfo />
 	<Footer />
 </Layout>
 
+<script>
+	const anchorBtns = document.querySelectorAll(".anchor-btn");
+	const items = document.querySelectorAll(".explore-item");
+
+	anchorBtns.forEach(btn => {
+		btn.addEventListener("click", () => {
+			// @ts-ignore
+			const index = btn.dataset.index;
+			items.forEach(item => {
+				// @ts-ignore
+				if (item.dataset.teamIndex === index) {
+					// @ts-ignore
+					item.style.display = "";
+				} else {
+					// @ts-ignore
+					item.style.display = "none";
+				}
+			});
+		});
+	});
+</script>
+
 <style>
+	.anchor-text-span {
+		font-size: 1rem;
+		font-weight: 700;
+		font-family: "GenKiGothic2 TW";
+		text-align: center;
+	}
+
+	.anchor {
+		position: fixed;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 99;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.anchor-box {
+		display: flex;
+		align-items: center;
+		padding: 0.7rem 1.25rem;
+		margin: 0.125rem;
+		height: 2.5rem;
+		border-radius: 0.25rem;
+		background-color: #f5f6ee;
+		color: #222222;
+		cursor: pointer;
+		text-decoration: none;
+	}
+
+	.anchor-switch {
+		background-color: #222222;
+		color: #f5f6ee;
+	}
+
 	main {
 		min-height: 100vh;
 		padding: 5rem 2rem 2rem;

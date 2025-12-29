@@ -145,9 +145,9 @@ const team_data = [
 			<a class="anchor-switch anchor-box" href="/2026/team/explore">
 				<img src="/2026/img/switch_icon.svg" alt="switch" height={18} width={18} />
 			</a>
-			<div class="anchor-text anchor-box">
+			<a class="anchor-switch anchor-box" href="/2026/team/explore">
 				<span class="anchor-text-span">網格模式</span>
-			</div>
+			</a>
 			{
 				team_data.map((team, index) => {
 					return (
@@ -169,7 +169,6 @@ const team_data = [
 		font-weight: 700;
 		font-family: "GenKiGothic2 TW";
 		text-align: center;
-		text-decoration: none;
 	}
 
 	.anchor {
@@ -192,10 +191,11 @@ const team_data = [
 		border-radius: 0.25rem;
 		background-color: #f5f6ee;
 		color: #222222;
+		cursor: pointer;
+		text-decoration: none;
 	}
 
-	.anchor-switch,
-	.anchor-text {
+	.anchor-switch {
 		background-color: #222222;
 		color: #f5f6ee;
 	}
