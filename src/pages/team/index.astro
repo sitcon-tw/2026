@@ -146,13 +146,13 @@ const team_data = [
 				<img src="/2026/img/switch_icon.svg" alt="switch" height={18} width={18} />
 			</a>
 			<div class="anchor-text anchor-box">
-				<span>網格模式</span>
+				<span class="anchor-text">網格模式</span>
 			</div>
 			{
 				team_data.map((team, index) => {
 					return (
 						<a class="anchor-btn anchor-box" href={`#team-${index}`}>
-							<span>{team.name}</span>
+							<span class="anchor-text">{team.name}</span>
 						</a>
 					);
 				})
@@ -164,7 +164,7 @@ const team_data = [
 </Layout>
 
 <style>
-	span {
+	.anchor-text {
 		font-size: 1rem;
 		font-weight: 700;
 		font-family: "GenKiGothic2 TW";
