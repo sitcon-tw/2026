@@ -133,8 +133,8 @@ const team_data = [
 			</div>
 			<div class="top-right">
 				<div class="top-right-btn-group">
-					<button class="top-right-btn"><a href={form_url} target="_blank">跳坑表單</a></button>
-					<button class="top-right-btn"><a href={forum_url} target="_blank">郵件論壇</a></button>
+					<a href={form_url} target="_blank" class="top-right-btn">跳坑表單</a>
+					<a href={forum_url} target="_blank" class="top-right-btn">郵件論壇</a>
 				</div>
 			</div>
 		</div>
@@ -260,6 +260,9 @@ const team_data = [
 	}
 
 	.top-right-btn {
+		display: inline-block;
+		border: none;
+		height: 3.375rem;
 		background-color: #e8bb5f;
 		color: #2b2e3a;
 		padding: 1rem 2rem;
