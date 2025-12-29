@@ -7,6 +7,15 @@ import academiaSinica from "../assets/academia-sinica.svg";
 
 const { info } = zhHant;
 const { sections } = info;
+
+const activityImages = import.meta.glob<{ default: ImageMetadata }>("/src/assets/activities/*.{png,jpg,jpeg,webp,gif,svg}", { eager: true });
+
+function getActivityImage(file: string): ImageMetadata {
+	const key = `/src/assets/activities/${file}`;
+	const mod = activityImages[key];
+	if (!mod) throw new Error(`Missing activity image: ${key}`);
+	return (mod as any).default;
+}
 ---
 
 <Layout>
@@ -36,7 +45,7 @@ const { sections } = info;
 					{section.activities?.map(activity => {
 						return (
 							<div class="activity" class:list={{ "activity-reverse": activity.image?.position === "right" }}>
-								<Image class="activity-image" src={activity.image.url} alt={activity.image.alt ?? activity.title} width={600} height={600} loading="lazy" />
+								<Image class="activity-image" src={getActivityImage(activity.image.url)} alt={activity.image.alt ?? activity.title} loading="lazy" />
 								<div class="activity-content">
 									<h3 class="activity-title">{activity.title}</h3>
 									{activity.body
