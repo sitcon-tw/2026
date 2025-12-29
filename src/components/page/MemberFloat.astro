@@ -1,0 +1,17 @@
+---
+import { Image } from "astro:assets";
+const { name, position, avatar_url, social_link } = Astro.props;
+---
+
+<div class="person-trigger member-float" data-name={name} data-position={position} data-avatar={avatar_url} data-social={social_link} data-open-modal="member-info-modal">
+	<Image src={avatar_url} alt={name} height={180} width={180} />
+</div>
+
+<style>
+	.member-float {
+		border-radius: 62.5rem;
+		background-color: #ac782b;
+		margin: 4rem;
+		cursor: pointer;
+	}
+</style>

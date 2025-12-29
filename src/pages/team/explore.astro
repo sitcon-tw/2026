@@ -1,13 +1,129 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
+import MemberFloat from "@/components/page/MemberFloat.astro";
 import MemberInfo from "@/components/page/MemberInfo.astro";
+
+const team_data = [
+	{
+		name: "開發組",
+		description: "SITCON 開發組主要負責年會的官網與通關 App 開發，適合對網頁開發有興趣、想法，有新鮮肝可以榨的朋友們！",
+		member: [
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png",
+				social_link: "https://github.com/sitcon-tw"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png",
+				social_link: "https://instagram.com/sitcon.tw"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥EM",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			}
+		]
+	},
+
+	{
+		name: "議程組",
+		description: "SITCON 開發組主要負責年會的官網與通關 App 開發，適合對網頁開發有興趣、想法，有新鮮肝可以榨的朋友們！",
+		member: [
+			{
+				name: "毛哥ME",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			},
+			{
+				name: "毛哥ME",
+				position: "組長",
+				avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/1280px-Google_Favicon_2025.svg.png"
+			}
+		]
+	}
+];
 ---
 
 <Layout>
 	<main>
 		<h1>工作人員 - 探索</h1>
+		{team_data[0].member.map(member => <MemberFloat name={member.name} avatar_url={member.avatar_url} position={member.position} social_link={member.social_link} />)}
 	</main>
+	<MemberInfo />
 	<Footer />
 </Layout>
 
