@@ -1,8 +1,8 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
-import MemberFloat from "@/components/page/MemberFloat.astro";
 import MemberInfo from "@/components/page/MemberInfo.astro";
+import ExploreFloat from "@/components/page/ExploreFloat.astro";
 
 const team_data = [
 	{
@@ -121,7 +121,7 @@ const team_data = [
 <Layout>
 	<main>
 		<h1>工作人員 - 探索</h1>
-		{team_data[0].member.map(member => <MemberFloat name={member.name} avatar_url={member.avatar_url} position={member.position} social_link={member.social_link} />)}
+		{team_data[0].member.map(member => <ExploreFloat name={member.name} avatar_url={member.avatar_url} position={member.position} social_link={member.social_link} />)}
 	</main>
 	<MemberInfo />
 	<Footer />

@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
-import Team from "@/components/page/Team.astro";
+import GridTeam from "@/components/page/GridTeam.astro";
 import MemberInfo from "@/components/page/MemberInfo.astro";
 
 const form_url = "https://forms.gle/";
@@ -138,13 +138,67 @@ const team_data = [
 				</div>
 			</div>
 		</div>
-		{team_data.map(team => <Team member={team.member} name={team.name} description={team.description} />)}
+		{team_data.map((team, index) => <GridTeam index={index} member={team.member} name={team.name} description={team.description} />)}
+
+		<!-- anchor -->
+		<div class="anchor">
+			<a class="anchor-switch anchor-box" href="/2026/team/explore">
+				<img src="/2026/img/switch_icon.svg" alt="switch" height={18} width={18} />
+			</a>
+			<div class="anchor-text anchor-box">
+				<span>網格模式</span>
+			</div>
+			{
+				team_data.map((team, index) => {
+					return (
+						<a class="anchor-btn anchor-box" href={`#team-${index}`}>
+							<span>{team.name}</span>
+						</a>
+					);
+				})
+			}
+		</div>
 	</main>
 	<MemberInfo />
 	<Footer />
 </Layout>
 
 <style>
+	span {
+		font-size: 1rem;
+		font-weight: 700;
+		font-family: "GenKiGothic2 TW";
+		text-align: center;
+	}
+
+	.anchor {
+		position: fixed;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 99;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.anchor-box {
+		display: flex;
+		align-items: center;
+		padding: 0.7rem 1.25rem;
+		margin: 0.125rem;
+		height: 2.5rem;
+		border-radius: 0.25rem;
+		background-color: #f5f6ee;
+		color: #222222;
+	}
+
+	.anchor-switch,
+	.anchor-text {
+		background-color: #222222;
+		color: #f5f6ee;
+	}
+
 	main {
 		min-height: 100vh;
 		padding: 5rem 4rem;
