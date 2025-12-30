@@ -123,15 +123,16 @@ const team_data = [
 		<div class="explore-container">
 			<div id="explore-universe">
 				{
-					team_data.map((team, teamIndex) => {
+					team_data.map((team, index) => {
 						return team.member.map(member => (
 							<ExplorePerson
 								name={member.name}
 								avatar_url={member.avatar_url}
 								position={member.position}
 								social_link={member.social_link}
-								data-team-index={teamIndex}
-								style={teamIndex !== 0 ? "display: none;" : ""}
+								team_index={index}
+								team_name={team.name}
+								style={index !== 0 ? "display: none;" : ""}
 							/>
 						));
 					})

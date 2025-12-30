@@ -1,9 +1,9 @@
 ---
 import { Image } from "astro:assets";
-const { name, position, avatar_url, social_link, ...rest } = Astro.props;
----
+const { name, position, avatar_url, social_link, team_name, team_index, style } = Astro.props;
+---	
 
-<div class="explore-item person-trigger" data-name={name} data-position={position} data-avatar={avatar_url} data-social={social_link} data-open-modal="member-info-modal" {...rest}>
+<div class="explore-item person-trigger" data-team={team_name} data-team-index={team_index} data-name={name} data-position={position} data-avatar={avatar_url} data-social={social_link} data-open-modal="member-info-modal" style={style}>
 	<Image src={avatar_url} alt={name} height={180} width={180} />
 </div>
 
