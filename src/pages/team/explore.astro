@@ -210,9 +210,20 @@ const team_data = [
 	import { gsap } from "gsap";
 
 	// Pan and Zoom Logic
-	let panX = 0;
-	let panY = 0;
-	let scale = 1;
+	// 拖曳相關參數 - 可在此調整
+	const DRAG_SPEED = 2; // 拖曳速度倍率 (預設 1.5，數值越大拖越快)
+	const SMOOTH_FACTOR = 0.08; // 潤滑度/平滑度 (0.01~1.0，數值越小越滑/慣性越強，預設 0.08)
+
+	// Logical State (Target) - 目標位置
+	let targetPanX = 0;
+	let targetPanY = 0;
+	let targetScale = 1;
+
+	// Visual State (Rendered) - 實際渲染位置 (隨目標位置平滑移動)
+	let currentPanX = 0;
+	let currentPanY = 0;
+	let currentScale = 1;
+
 	// World dimensions (set by initExplore)
 	let worldWidth = 0;
 	let worldHeight = 0;
@@ -225,14 +236,14 @@ const team_data = [
 		let isDragging = false;
 		let startX = 0;
 		let startY = 0;
-		let lastPanX = 0;
-		let lastPanY = 0;
+		let dragStartPanX = 0;
+		let dragStartPanY = 0;
 
 		const clampPan = () => {
 			const viewW = container.offsetWidth;
 			const viewH = container.offsetHeight;
-			const contentW = worldWidth * scale;
-			const contentH = worldHeight * scale;
+			const contentW = worldWidth * targetScale;
+			const contentH = worldHeight * targetScale;
 
 			// Logic to keep content within viewport, or viewport within content
 			// limit1: 0 (align left/top)
@@ -246,17 +257,31 @@ const team_data = [
 			const minY = Math.min(padding, viewH - contentH - padding);
 			const maxY = Math.max(padding, viewH - contentH - padding);
 
-			panX = Math.min(Math.max(panX, minX), maxX);
-			panY = Math.min(Math.max(panY, minY), maxY);
+			targetPanX = Math.min(Math.max(targetPanX, minX), maxX);
+			targetPanY = Math.min(Math.max(targetPanY, minY), maxY);
 		};
 
-		const updateTransform = () => {
+		// Smooth Animation Loop
+		gsap.ticker.add(() => {
+			const dX = targetPanX - currentPanX;
+			const dY = targetPanY - currentPanY;
+			const dS = targetScale - currentScale;
+
+			// Optimization: stop updating if very close
+			if (Math.abs(dX) < 0.1 && Math.abs(dY) < 0.1 && Math.abs(dS) < 0.001) {
+				return;
+			}
+
+			currentPanX += dX * SMOOTH_FACTOR;
+			currentPanY += dY * SMOOTH_FACTOR;
+			currentScale += dS * SMOOTH_FACTOR;
+
 			gsap.set(universe, {
-				x: panX,
-				y: panY,
-				scale: scale
+				x: currentPanX,
+				y: currentPanY,
+				scale: currentScale
 			});
-		};
+		});
 
 		// Panning
 		container.addEventListener("mousedown", e => {
@@ -267,21 +292,21 @@ const team_data = [
 			isDragging = true;
 			startX = e.clientX;
 			startY = e.clientY;
-			lastPanX = panX;
-			lastPanY = panY;
+			dragStartPanX = targetPanX;
+			dragStartPanY = targetPanY;
 			container.style.cursor = "grabbing";
 		});
 
 		window.addEventListener("mousemove", e => {
 			if (!isDragging) return;
 			e.preventDefault();
-			const dx = e.clientX - startX;
-			const dy = e.clientY - startY;
-			panX = lastPanX + dx;
-			panY = lastPanY + dy;
+			const dx = (e.clientX - startX) * DRAG_SPEED;
+			const dy = (e.clientY - startY) * DRAG_SPEED;
+			targetPanX = dragStartPanX + dx;
+			targetPanY = dragStartPanY + dy;
 
 			clampPan();
-			updateTransform();
+			// updateTransform is handled by ticker
 		});
 
 		window.addEventListener("mouseup", () => {
@@ -296,8 +321,8 @@ const team_data = [
 				e.preventDefault();
 				const zoomSensitivity = 0.001;
 				const delta = -e.deltaY * zoomSensitivity;
-				const oldScale = scale;
-				let newScale = scale + delta;
+				const oldScale = targetScale;
+				let newScale = targetScale + delta;
 
 				// Clamp scale
 				newScale = Math.max(0.5, Math.min(newScale, 3));
@@ -310,12 +335,13 @@ const team_data = [
 				const mouseY = e.clientY - rect.top;
 
 				// Calculate point under mouse in world space (relative to universe origin at current pan/scale)
-				panX = mouseX - ((mouseX - panX) / oldScale) * newScale;
-				panY = mouseY - ((mouseY - panY) / oldScale) * newScale;
+				// Using TARGET values for stable calculation
+				targetPanX = mouseX - ((mouseX - targetPanX) / oldScale) * newScale;
+				targetPanY = mouseY - ((mouseY - targetPanY) / oldScale) * newScale;
 
-				scale = newScale;
+				targetScale = newScale;
 				clampPan();
-				updateTransform();
+				// updateTransform is handled by ticker
 			},
 			{ passive: false }
 		);
