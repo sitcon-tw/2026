@@ -15,7 +15,7 @@ const { id = "member-info-modal" } = Astro.props;
 	<div class="avatar">
 		<img id="member-avatar-img" class="avatar-img" src="" alt="" />
 	</div>
-	<p>要用js啊</p>
+	<p id="member-description"></p>
 	<div class="social">
 		<button id="member-social-btn" data-url="">Link</button>
 	</div>
@@ -56,15 +56,18 @@ const { id = "member-info-modal" } = Astro.props;
 		const target = e.target as HTMLElement;
 		const trigger = target.closest(".person-trigger") as HTMLElement | null;
 		if (trigger) {
-			const { name, position, avatar, social, team } = trigger.dataset;
+			const { name, position, avatar, social, team, description } = trigger.dataset;
 
 			const modal = document.getElementById("member-info-modal");
 			if (modal) {
 				// Update Text
 				const nameEl = modal.querySelector("#member-name");
 				const posEl = modal.querySelector("#member-position");
+				const descEl = modal.querySelector("#member-description");
+
 				if (nameEl) nameEl.textContent = name || "";
 				if (posEl) posEl.textContent = `${team} ● ${position}` || "";
+				if (descEl) descEl.textContent = description || "";
 
 				// Update Avatar
 				const avatarImg = modal.querySelector("#member-avatar-img") as HTMLImageElement | null;
