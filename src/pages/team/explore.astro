@@ -177,36 +177,6 @@ const team_data = [
 </Layout>
 
 <script>
-	const anchorBtns = document.querySelectorAll(".anchor-btn");
-	const items = document.querySelectorAll(".explore-item");
-
-	const switchTeam = (index: string) => {
-		items.forEach(item => {
-			if ((item as HTMLElement).dataset.teamIndex === index) {
-				(item as HTMLElement).style.display = "";
-			} else {
-				(item as HTMLElement).style.display = "none";
-			}
-		});
-	};
-
-	// Default to index 0
-	switchTeam("0");
-
-	anchorBtns.forEach(btn => {
-		btn.addEventListener("click", () => {
-			// Remove active class from all buttons
-			anchorBtns.forEach(b => b.classList.remove("active"));
-			// Add active class to clicked button
-			btn.classList.add("active");
-
-			const index = (btn as HTMLElement).dataset.index;
-			if (index) switchTeam(index);
-		});
-	});
-</script>
-
-<script>
 	import { gsap } from "gsap";
 
 	// Pan and Zoom Logic
@@ -246,9 +216,6 @@ const team_data = [
 			const contentH = worldHeight * targetScale;
 
 			// Logic to keep content within viewport, or viewport within content
-			// limit1: 0 (align left/top)
-			// limit2: view - content (align right/bottom)
-
 			const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 			const padding = 2.5 * rem;
 
@@ -306,7 +273,6 @@ const team_data = [
 			targetPanY = dragStartPanY + dy;
 
 			clampPan();
-			// updateTransform is handled by ticker
 		});
 
 		window.addEventListener("mouseup", () => {
@@ -335,13 +301,11 @@ const team_data = [
 				const mouseY = e.clientY - rect.top;
 
 				// Calculate point under mouse in world space (relative to universe origin at current pan/scale)
-				// Using TARGET values for stable calculation
 				targetPanX = mouseX - ((mouseX - targetPanX) / oldScale) * newScale;
 				targetPanY = mouseY - ((mouseY - targetPanY) / oldScale) * newScale;
 
 				targetScale = newScale;
 				clampPan();
-				// updateTransform is handled by ticker
 			},
 			{ passive: false }
 		);
@@ -364,8 +328,7 @@ const team_data = [
 
 		const items = gsap.utils.toArray(".explore-item") as HTMLElement[];
 
-		// Group items by team to allow overlapping between teams (since they cloak each other)
-		// but prevent overlapping within the same team.
+		// Group items by team
 		const teamGroups: Record<string, HTMLElement[]> = {};
 		items.forEach(item => {
 			const teamIndex = item.dataset.teamIndex || "0";
@@ -383,7 +346,7 @@ const team_data = [
 				let success = false;
 				const maxTries = 100;
 
-				// Reset positioning to absolute to control layout fully
+				// Reset positioning
 				gsap.set(item, {
 					position: "absolute",
 					left: 0,
@@ -392,21 +355,17 @@ const team_data = [
 				});
 
 				while (!success && tries < maxTries) {
-					// Use inner bounds logic: keep items fully visible inside container
-
 					// Snap X to columns
 					const colWidth = itemSize + gap;
 					const maxCols = Math.max(1, Math.floor((width - itemSize) / colWidth) + 1);
 					const totalGridW = (maxCols - 1) * colWidth + itemSize;
-					const offsetX = Math.max(0, (width - totalGridW) / 2); // Center the grid
+					const offsetX = Math.max(0, (width - totalGridW) / 2);
 
 					const col = Math.floor(Math.random() * maxCols);
 					x = offsetX + col * colWidth;
 
-					// Snap Y to staggered rows (Hex/Brick layout)
-					// "Two alternating types" for Y -> Stagger odd columns by half a row
+					// Snap Y to staggered rows
 					const rowHeight = itemSize + gap;
-					// Calculate max rows based on container height, considering stagger
 					const maxRows = Math.max(1, Math.floor((height - itemSize) / rowHeight) + 1);
 
 					const row = Math.floor(Math.random() * maxRows);
@@ -423,7 +382,6 @@ const team_data = [
 					const centerX = x + itemSize / 2;
 					const centerY = y + itemSize / 2;
 
-					// Check collision with already placed items of this team
 					const overlap = placed.some(p => {
 						const dx = centerX - p.centerX;
 						const dy = centerY - p.centerY;
@@ -441,7 +399,6 @@ const team_data = [
 				if (success) {
 					gsap.set(item, { x, y, opacity: 1, pointerEvents: "auto" });
 				} else {
-					// If it doesn't fit, hide it (move outside)
 					gsap.set(item, { x: -9999, y: -9999, opacity: 0, pointerEvents: "none" });
 					console.warn("Could not place item, hiding:", item);
 				}
@@ -449,9 +406,50 @@ const team_data = [
 		});
 	};
 
+	// Switch Team Logic
+	const switchTeam = (index: string) => {
+		const items = document.querySelectorAll(".explore-item");
+
+		const toShow: Element[] = [];
+		const toHide: Element[] = [];
+
+		items.forEach(item => {
+			if ((item as HTMLElement).dataset.teamIndex === index) {
+				toShow.push(item);
+			} else {
+				toHide.push(item);
+			}
+		});
+
+		gsap.to(toHide, {
+			autoAlpha: 0,
+			duration: 0.3,
+			overwrite: "auto"
+		});
+
+		gsap.to(toShow, {
+			autoAlpha: 1,
+			duration: 0.3,
+			overwrite: "auto"
+		});
+	};
+
 	// Initialize on load
 	initExplore();
 	initPanZoom();
+	switchTeam("0"); // Initialize visibility
+
+	// Anchor Listeners
+	const anchorBtns = document.querySelectorAll(".anchor-btn");
+	anchorBtns.forEach(btn => {
+		btn.addEventListener("click", () => {
+			anchorBtns.forEach(b => b.classList.remove("active"));
+			btn.classList.add("active");
+
+			const index = (btn as HTMLElement).dataset.index;
+			if (index) switchTeam(index);
+		});
+	});
 </script>
 
 <style>
@@ -529,6 +527,11 @@ const team_data = [
 		color: #222222;
 		cursor: pointer;
 		text-decoration: none;
+		transition: transform 0.2s ease;
+	}
+
+	.anchor-box:hover {
+		transform: translateY(-0.25rem);
 	}
 
 	.anchor-switch,
