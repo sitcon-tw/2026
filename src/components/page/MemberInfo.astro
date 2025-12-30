@@ -83,9 +83,6 @@ const { id = "member-info-modal" } = Astro.props;
 				}
 
 				modal.classList.add("show");
-				// @ts-ignore
-				// disable lenis scrolling
-				if (window.lenis) window.lenis.stop();
 			}
 		}
 	});
@@ -98,9 +95,6 @@ const { id = "member-info-modal" } = Astro.props;
 			const modal = closeBtn.closest(".member-info") as HTMLElement | null;
 			if (modal) {
 				modal.classList.remove("show");
-				// @ts-ignore
-				// enable lenis scrolling
-				if (window.lenis) window.lenis.start();
 			}
 		}
 	});

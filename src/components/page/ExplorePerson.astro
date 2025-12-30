@@ -1,10 +1,20 @@
 ---
 import { Image } from "astro:assets";
 const { name, position, avatar_url, social_link, team_name, team_index, style } = Astro.props;
----	
+---
 
-<div class="explore-item person-trigger" data-team={team_name} data-team-index={team_index} data-name={name} data-position={position} data-avatar={avatar_url} data-social={social_link} data-open-modal="member-info-modal" style={style}>
-	<Image src={avatar_url} alt={name} height={180} width={180} />
+<div
+	class="explore-item person-trigger"
+	data-team={team_name}
+	data-team-index={team_index}
+	data-name={name}
+	data-position={position}
+	data-avatar={avatar_url}
+	data-social={social_link}
+	data-open-modal="member-info-modal"
+	style={style}
+>
+	<Image class="avatar-img" src={avatar_url} alt={name} height={180} width={180} />
 </div>
 
 <style>
@@ -15,5 +25,13 @@ const { name, position, avatar_url, social_link, team_name, team_index, style } 
 		background-color: #ac782b;
 		margin: 2rem;
 		cursor: pointer;
+	}
+
+	.avatar-img {
+		width: 10rem;
+		height: 10rem;
+		border-radius: 16px;
+		object-fit: contain;
+		background-color: #a97c21;
 	}
 </style>
