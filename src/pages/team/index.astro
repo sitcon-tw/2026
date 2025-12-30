@@ -158,12 +158,24 @@ const team_data = [
 				})
 			}
 		</div>
+		<div class="nav-mask-bottom"></div>
 	</main>
 	<MemberInfo />
 	<Footer />
 </Layout>
 
 <style>
+	.nav-mask-bottom {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+		height: 8rem;
+		background: linear-gradient(to top, #ac782b, transparent);
+		z-index: 10;
+		pointer-events: none;
+	}
+
 	.anchor-text-span {
 		font-size: 1rem;
 		font-weight: 700;

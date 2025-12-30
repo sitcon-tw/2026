@@ -214,12 +214,32 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 		<!-- End Google Tag Manager (noscript) -->
 		<script>
 			import Lenis from "lenis";
-			const lenis = new Lenis({
-				autoRaf: true,
-				anchors: true
-			});
-			// @ts-ignore
-			window.lenis = lenis;
+
+			const initLenis = () => {
+				if (window.location.pathname.includes("team/explore")) {
+					// @ts-ignore
+					if (window.lenis) {
+						// @ts-ignore
+						window.lenis.destroy();
+						// @ts-ignore
+						window.lenis = null;
+					}
+				} else {
+					// @ts-ignore
+					if (!window.lenis) {
+						const lenis = new Lenis({
+							autoRaf: true,
+							anchors: true
+						});
+						// @ts-ignore
+						window.lenis = lenis;
+					}
+				}
+			};
+
+			initLenis();
+
+			document.addEventListener("astro:page-load", initLenis);
 
 			// document.addEventListener("astro:page-load", () => {
 			// 	if (!window.location.href.includes("#")) lenis.scrollTo(0, { immediate: true });

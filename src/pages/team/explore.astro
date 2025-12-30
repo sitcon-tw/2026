@@ -121,21 +121,26 @@ const team_data = [
 <Layout>
 	<main>
 		<div class="explore-container">
-			{
-				team_data.map((team, teamIndex) => {
-					return team.member.map(member => (
-						<ExplorePerson
-							name={member.name}
-							avatar_url={member.avatar_url}
-							position={member.position}
-							social_link={member.social_link}
-							data-team-index={teamIndex}
-							style={teamIndex !== 0 ? "display: none;" : ""}
-						/>
-					));
-				})
-			}
+			<div id="explore-universe">
+				{
+					team_data.map((team, teamIndex) => {
+						return team.member.map(member => (
+							<ExplorePerson
+								name={member.name}
+								avatar_url={member.avatar_url}
+								position={member.position}
+								social_link={member.social_link}
+								data-team-index={teamIndex}
+								style={teamIndex !== 0 ? "display: none;" : ""}
+							/>
+						));
+					})
+				}
+			</div>
 		</div>
+
+		<div class="nav-mask"></div>
+		<div class="nav-mask-bottom"></div>
 
 		<!-- anchor -->
 		<div class="anchor">
@@ -166,23 +171,293 @@ const team_data = [
 
 	anchorBtns.forEach(btn => {
 		btn.addEventListener("click", () => {
-			// @ts-ignore
-			const index = btn.dataset.index;
+			const index = (btn as HTMLElement).dataset.index;
 			items.forEach(item => {
-				// @ts-ignore
-				if (item.dataset.teamIndex === index) {
-					// @ts-ignore
-					item.style.display = "";
+				if ((item as HTMLElement).dataset.teamIndex === index) {
+					(item as HTMLElement).style.display = "";
 				} else {
-					// @ts-ignore
-					item.style.display = "none";
+					(item as HTMLElement).style.display = "none";
 				}
 			});
 		});
 	});
 </script>
 
+<script>
+	import { gsap } from "gsap";
+
+	// Pan and Zoom Logic
+	let panX = 0;
+	let panY = 0;
+	let scale = 1;
+	// World dimensions (set by initExplore)
+	let worldWidth = 0;
+	let worldHeight = 0;
+
+	const initPanZoom = () => {
+		const container = document.querySelector(".explore-container") as HTMLElement;
+		const universe = document.getElementById("explore-universe") as HTMLElement;
+		if (!container || !universe) return;
+
+		let isDragging = false;
+		let startX = 0;
+		let startY = 0;
+		let lastPanX = 0;
+		let lastPanY = 0;
+
+		const clampPan = () => {
+			const viewW = container.offsetWidth;
+			const viewH = container.offsetHeight;
+			const contentW = worldWidth * scale;
+			const contentH = worldHeight * scale;
+
+			// Logic to keep content within viewport, or viewport within content
+			// limit1: 0 (align left/top)
+			// limit2: view - content (align right/bottom)
+
+			const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+			const padding = 2.5 * rem;
+
+			const minX = Math.min(padding, viewW - contentW - padding);
+			const maxX = Math.max(padding, viewW - contentW - padding);
+			const minY = Math.min(padding, viewH - contentH - padding);
+			const maxY = Math.max(padding, viewH - contentH - padding);
+
+			panX = Math.min(Math.max(panX, minX), maxX);
+			panY = Math.min(Math.max(panY, minY), maxY);
+		};
+
+		const updateTransform = () => {
+			gsap.set(universe, {
+				x: panX,
+				y: panY,
+				scale: scale
+			});
+		};
+
+		// Panning
+		container.addEventListener("mousedown", e => {
+			// Disable drag if clicking on an explore item
+			if ((e.target as HTMLElement).closest(".explore-item")) {
+				return;
+			}
+			isDragging = true;
+			startX = e.clientX;
+			startY = e.clientY;
+			lastPanX = panX;
+			lastPanY = panY;
+			container.style.cursor = "grabbing";
+		});
+
+		window.addEventListener("mousemove", e => {
+			if (!isDragging) return;
+			e.preventDefault();
+			const dx = e.clientX - startX;
+			const dy = e.clientY - startY;
+			panX = lastPanX + dx;
+			panY = lastPanY + dy;
+
+			clampPan();
+			updateTransform();
+		});
+
+		window.addEventListener("mouseup", () => {
+			isDragging = false;
+			container.style.cursor = "grab";
+		});
+
+		// Zooming
+		container.addEventListener(
+			"wheel",
+			e => {
+				e.preventDefault();
+				const zoomSensitivity = 0.001;
+				const delta = -e.deltaY * zoomSensitivity;
+				const oldScale = scale;
+				let newScale = scale + delta;
+
+				// Clamp scale
+				newScale = Math.max(0.5, Math.min(newScale, 3));
+
+				if (newScale === oldScale) return;
+
+				// Zoom towards mouse pointer
+				const rect = container.getBoundingClientRect();
+				const mouseX = e.clientX - rect.left;
+				const mouseY = e.clientY - rect.top;
+
+				// Calculate point under mouse in world space (relative to universe origin at current pan/scale)
+				panX = mouseX - ((mouseX - panX) / oldScale) * newScale;
+				panY = mouseY - ((mouseY - panY) / oldScale) * newScale;
+
+				scale = newScale;
+				clampPan();
+				updateTransform();
+			},
+			{ passive: false }
+		);
+	};
+
+	const initExplore = () => {
+		const container = document.querySelector(".explore-container") as HTMLElement;
+		if (!container) return;
+
+		const width = container.offsetWidth;
+		const height = container.offsetHeight;
+
+		// Update global world dims
+		worldWidth = width;
+		worldHeight = height;
+
+		const itemSize = 180; // Image size
+		const gap = 64; // 4rem gap
+		const minDistance = itemSize + gap; // Minimum distance between centers
+
+		const items = gsap.utils.toArray(".explore-item") as HTMLElement[];
+
+		// Group items by team to allow overlapping between teams (since they cloak each other)
+		// but prevent overlapping within the same team.
+		const teamGroups: Record<string, HTMLElement[]> = {};
+		items.forEach(item => {
+			const teamIndex = item.dataset.teamIndex || "0";
+			if (!teamGroups[teamIndex]) teamGroups[teamIndex] = [];
+			teamGroups[teamIndex].push(item);
+		});
+
+		Object.values(teamGroups).forEach(groupItems => {
+			const placed: { centerX: number; centerY: number }[] = [];
+
+			groupItems.forEach(item => {
+				let x = 0;
+				let y = 0;
+				let tries = 0;
+				let success = false;
+				const maxTries = 100;
+
+				// Reset positioning to absolute to control layout fully
+				gsap.set(item, {
+					position: "absolute",
+					left: 0,
+					top: 0,
+					margin: 0
+				});
+
+				while (!success && tries < maxTries) {
+					// Use inner bounds logic: keep items fully visible inside container
+
+					// Snap X to columns
+					const colWidth = itemSize + gap;
+					const maxCols = Math.max(1, Math.floor((width - itemSize) / colWidth) + 1);
+					const totalGridW = (maxCols - 1) * colWidth + itemSize;
+					const offsetX = Math.max(0, (width - totalGridW) / 2); // Center the grid
+
+					const col = Math.floor(Math.random() * maxCols);
+					x = offsetX + col * colWidth;
+
+					// Snap Y to staggered rows (Hex/Brick layout)
+					// "Two alternating types" for Y -> Stagger odd columns by half a row
+					const rowHeight = itemSize + gap;
+					// Calculate max rows based on container height, considering stagger
+					const maxRows = Math.max(1, Math.floor((height - itemSize) / rowHeight) + 1);
+
+					const row = Math.floor(Math.random() * maxRows);
+					let staggerY = 0;
+					if (col % 2 !== 0) {
+						staggerY = rowHeight * 0.5;
+					}
+
+					y = row * rowHeight + staggerY;
+
+					if (x < 0) x = 0;
+					if (y < 0) y = 0;
+
+					const centerX = x + itemSize / 2;
+					const centerY = y + itemSize / 2;
+
+					// Check collision with already placed items of this team
+					const overlap = placed.some(p => {
+						const dx = centerX - p.centerX;
+						const dy = centerY - p.centerY;
+						const distance = Math.sqrt(dx * dx + dy * dy);
+						return distance < minDistance;
+					});
+
+					if (!overlap) {
+						success = true;
+						placed.push({ centerX, centerY });
+					}
+					tries++;
+				}
+
+				if (success) {
+					gsap.set(item, { x, y, opacity: 1, pointerEvents: "auto" });
+				} else {
+					// If it doesn't fit, hide it (move outside)
+					gsap.set(item, { x: -9999, y: -9999, opacity: 0, pointerEvents: "none" });
+					console.warn("Could not place item, hiding:", item);
+				}
+			});
+		});
+	};
+
+	// Initialize on load
+	initExplore();
+	initPanZoom();
+
+	// TODO: DEV USAGE
+	document.addEventListener("keypress", e => {
+		if (e.key === "Enter") {
+			initExplore();
+		}
+	});
+</script>
+
 <style>
+	.explore-container {
+		position: relative;
+		width: 100vw;
+		height: 40rem; /*TODO*/
+		overflow: hidden;
+		cursor: grab;
+		user-select: none;
+	}
+
+	.explore-container:active {
+		cursor: grabbing;
+	}
+
+	#explore-universe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform-origin: 0 0;
+		will-change: transform;
+	}
+
+	.nav-mask {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 8rem;
+		background: linear-gradient(to bottom, #ac782b, transparent);
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	.nav-mask-bottom {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+		height: 8rem;
+		background: linear-gradient(to top, #ac782b, transparent);
+		z-index: 10;
+		pointer-events: none;
+	}
+
 	.anchor-text-span {
 		font-size: 1rem;
 		font-weight: 700;
@@ -221,6 +496,5 @@ const team_data = [
 
 	main {
 		min-height: 100vh;
-		padding: 5rem 2rem 2rem;
 	}
 </style>
