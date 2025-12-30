@@ -28,6 +28,14 @@ const { name, position, avatar_url, social_link, team } = Astro.props;
 		max-width: 20rem;
 		margin: 2rem 1.5rem;
 		cursor: pointer;
+		transition:
+			transform 0.3s ease,
+			filter 0.3s ease;
+	}
+
+	#person:hover {
+		transform: translateY(-0.5rem);
+		filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
 	}
 
 	#text-group {
