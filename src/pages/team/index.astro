@@ -168,11 +168,11 @@ const team_data = [
 
 		<!-- anchor -->
 		<div class="anchor">
-			<a class="anchor-switch anchor-box" href="/2026/team/explore">
+			<a class="anchor-switch anchor-box anchor-icon" href="/2026/team/explore">
 				<img src="/2026/img/switch_icon.svg" alt="switch" height={18} width={18} />
 			</a>
 			<a class="anchor-switch anchor-box" href="/2026/team/explore">
-				<span class="anchor-text-span">網格模式</span>
+				<span class="anchor-text-span">探索模式</span>
 			</a>
 			{
 				team_data.map((team, index) => {
@@ -283,7 +283,7 @@ const team_data = [
 		padding: 5rem 4rem;
 	}
 
-	@media (max-width: 48rem) {
+	@media (max-width: 64rem) {
 		main {
 			padding: 5rem 3rem;
 		}
@@ -295,7 +295,7 @@ const team_data = [
 		justify-content: space-between;
 	}
 
-	@media (max-width: 48rem) {
+	@media (max-width: 64rem) {
 		.top {
 			flex-direction: column;
 			gap: 2rem;
@@ -325,7 +325,7 @@ const team_data = [
 		gap: 1rem;
 	}
 
-	@media (max-width: 48rem) {
+	@media (max-width: 64rem) {
 		.top-right-btn-group {
 			flex-direction: column;
 		}
@@ -427,6 +427,12 @@ const team_data = [
 
 		.anchor .anchor-switch {
 			display: none;
+		}
+
+		.anchor:hover .anchor-switch:not(.anchor-icon) {
+			display: flex;
+			order: -1;
+			font-weight: 700;
 		}
 
 		.anchor-indicator {
