@@ -397,7 +397,7 @@ const team_data = [
 				}
 
 				if (success) {
-					gsap.set(item, { x, y, opacity: 1, pointerEvents: "auto" });
+					gsap.set(item, { x, y, pointerEvents: "auto" });
 				} else {
 					gsap.set(item, { x: -9999, y: -9999, opacity: 0, pointerEvents: "none" });
 					console.warn("Could not place item, hiding:", item);
@@ -547,5 +547,10 @@ const team_data = [
 
 	main {
 		min-height: 100vh;
+	}
+
+	:global(.explore-item) {
+		opacity: 0;
+		visibility: hidden;
 	}
 </style>
