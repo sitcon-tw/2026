@@ -4,8 +4,8 @@ const { id = "member-info-modal" } = Astro.props;
 
 <div id={id} class="member-info" data-lenis-prevent>
 	<div class="header">
-		<button class="close-btn" aria-label="Close">
-			<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="none">
+		<button class="close-btn">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="none">
 				<path d="M19 2L2 19M2 2L19 19" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
 			</svg>
 		</button>
@@ -17,7 +17,7 @@ const { id = "member-info-modal" } = Astro.props;
 	</div>
 	<p id="member-description"></p>
 	<div class="social">
-		<button id="member-social-btn" data-url="" aria-label="Visit Social Link">Link</button>
+		<button id="member-social-btn" data-url="">Link</button>
 	</div>
 </div>
 
@@ -84,7 +84,6 @@ const { id = "member-info-modal" } = Astro.props;
 				if (socialBtn) {
 					socialBtn.setAttribute("data-url", social || "");
 					socialBtn.textContent = getSocialText(social || "");
-					socialBtn.removeAttribute("aria-label");
 					socialBtn.style.display = social ? "inline-block" : "none";
 				}
 

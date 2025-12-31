@@ -172,8 +172,8 @@ const team_data = [
 
 		<!-- anchor -->
 		<div class="anchor">
-			<a class="anchor-switch anchor-box" href="/2026/team/" aria-label="Switch to list view">
-				<img src="/2026/img/switch_icon.svg" alt="" height={18} width={18} />
+			<a class="anchor-switch anchor-box" href="/2026/team/">
+				<img src="/2026/img/switch_icon.svg" alt="switch" height={18} width={18} />
 			</a>
 			<a class="anchor-switch anchor-box" href="/2026/team/">
 				<span class="anchor-text-span">探索模式</span>
@@ -181,9 +181,9 @@ const team_data = [
 			{
 				team_data.map((team, index) => {
 					return (
-						<button type="button" class={`anchor-btn anchor-box ${index === 0 ? "active" : ""}`} data-index={index}>
+						<div class={`anchor-btn anchor-box ${index === 0 ? "active" : ""}`} data-index={index}>
 							<span class="anchor-text-span">{team.name}</span>
-						</button>
+						</div>
 					);
 				})
 			}
@@ -638,8 +638,6 @@ const team_data = [
 		cursor: pointer;
 		text-decoration: none;
 		transition: transform 0.2s ease;
-		border: none;
-		font: inherit;
 	}
 
 	.anchor-box:hover {
