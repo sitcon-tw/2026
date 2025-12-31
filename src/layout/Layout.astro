@@ -216,7 +216,8 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 			import Lenis from "lenis";
 
 			const initLenis = () => {
-				if (window.location.pathname.includes("team/explore")) {
+				const pathname = window.location.pathname;
+				if (/(^|\/)team\/explore(\/|$)/.test(pathname)) {
 					// @ts-ignore
 					if (window.lenis) {
 						// @ts-ignore
