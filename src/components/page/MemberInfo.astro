@@ -103,8 +103,9 @@ const { id = "member-info-modal" } = Astro.props;
 		}
 
 		// Social Button Click Logic
-		if (target.id === "member-social-btn") {
-			const url = target.getAttribute("data-url");
+		const socialBtn = target.closest("#member-social-btn");
+		if (socialBtn) {
+			const url = socialBtn.getAttribute("data-url");
 			if (url) window.open(url, "_blank");
 			return;
 		}
