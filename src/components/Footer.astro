@@ -1,16 +1,20 @@
 ---
 import zhHant from "@/i18n/zh-Hant.json";
+
+const socialLinks = [
+	{ name: "FACEBOOK", url: "fb" },
+	{ name: "X", url: "x" },
+	{ name: "YOUTUBE", url: "youtube" },
+	{ name: "INSTAGRAM", url: "ig" },
+	{ name: "FLICKR", url: "flickr" },
+	{ name: "TELEGRAM", url: "telegram" }
+];
 ---
 
 <footer>
 	<div class="social-wrapper">
 		<div class="social">
-			<a href="">FACEBOOK</a>
-			<a href="">X</a>
-			<a href="">YOUTUBE</a>
-			<a href="">INSTAGRAM</a>
-			<a href="">FLICKR</a>
-			<a href="">TELEGRAM</a>
+			{socialLinks.map(link => <a href={`https://sitcon.org/${link.url}`}>{link.name}</a>)}
 		</div>
 	</div>
 	<div class="info">
