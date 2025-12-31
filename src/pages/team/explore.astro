@@ -221,10 +221,12 @@ const team_data = [
 		if (!container || !universe) return;
 
 		let isDragging = false;
+		let isPinching = false;
 		let startX = 0;
 		let startY = 0;
 		let dragStartPanX = 0;
 		let dragStartPanY = 0;
+		let pinchStartDist = 0;
 
 		const clampPan = () => {
 			const viewW = container.offsetWidth;
@@ -295,6 +297,97 @@ const team_data = [
 		window.addEventListener("mouseup", () => {
 			isDragging = false;
 			container.style.cursor = "grab";
+		});
+
+		// Touch Panning & Zooming
+		container.addEventListener(
+			"touchstart",
+			e => {
+				// Handle 2-finger pinch
+				if (e.touches.length === 2) {
+					isDragging = false;
+					isPinching = true;
+					const t1 = e.touches[0];
+					const t2 = e.touches[1];
+					pinchStartDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+					return;
+				}
+
+				if ((e.target as HTMLElement).closest(".explore-item")) {
+					return;
+				}
+				isDragging = true;
+				startX = e.touches[0].clientX;
+				startY = e.touches[0].clientY;
+				dragStartPanX = targetPanX;
+				dragStartPanY = targetPanY;
+			},
+			{ passive: false }
+		);
+
+		window.addEventListener(
+			"touchmove",
+			e => {
+				// Handle Pinch Zoom
+				if (isPinching && e.touches.length === 2) {
+					e.preventDefault();
+					const t1 = e.touches[0];
+					const t2 = e.touches[1];
+					const currentDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+
+					if (pinchStartDist < 0.1) return; // Avoid unstable calcs
+
+					const zoomFactor = currentDist / pinchStartDist;
+
+					// If changes are too small, ignore to avoid jitter
+					if (Math.abs(zoomFactor - 1) < 0.005) return;
+
+					const oldScale = targetScale;
+					let newScale = oldScale * zoomFactor;
+
+					// Clamp scale
+					newScale = Math.max(0.5, Math.min(newScale, 3));
+
+					// Update pinchStartDist for next frame (incremental)
+					pinchStartDist = currentDist;
+
+					if (newScale === oldScale) return;
+
+					// Zoom center logic
+					const rect = container.getBoundingClientRect();
+					const cx = (t1.clientX + t2.clientX) / 2 - rect.left;
+					const cy = (t1.clientY + t2.clientY) / 2 - rect.top;
+
+					targetPanX = cx - ((cx - targetPanX) / oldScale) * newScale;
+					targetPanY = cy - ((cy - targetPanY) / oldScale) * newScale;
+					targetScale = newScale;
+
+					clampPan();
+					return;
+				}
+
+				if (!isDragging) return;
+				if (e.touches.length > 1) return; // Ignore multi-touch
+				e.preventDefault();
+				const dx = (e.touches[0].clientX - startX) * DRAG_SPEED;
+				const dy = (e.touches[0].clientY - startY) * DRAG_SPEED;
+				targetPanX = dragStartPanX + dx;
+				targetPanY = dragStartPanY + dy;
+
+				clampPan();
+			},
+			{ passive: false }
+		);
+
+		window.addEventListener("touchend", e => {
+			if (e.touches.length === 0) {
+				isDragging = false;
+				isPinching = false;
+			} else if (e.touches.length === 1) {
+				// If we were pinching and lifted one finger, stop everything to avoid jump
+				isPinching = false;
+				isDragging = false; // Require lift-off to restart drag
+			}
 		});
 
 		// Zooming
