@@ -51,9 +51,11 @@ const { id = "member-info-modal" } = Astro.props;
 		}
 	}
 
-	// Open modal logic with data injection
+	// Unified Click Event Listener
 	document.addEventListener("click", e => {
 		const target = e.target as HTMLElement;
+
+		// Open modal logic
 		const trigger = target.closest(".person-trigger") as HTMLElement | null;
 		if (trigger) {
 			const { name, position, avatar, social, team, description } = trigger.dataset;
@@ -88,27 +90,24 @@ const { id = "member-info-modal" } = Astro.props;
 
 				modal.classList.add("show");
 			}
+			return;
 		}
-	});
 
-	// Close modal logic
-	document.addEventListener("click", e => {
-		const target = e.target as HTMLElement;
+		// Close modal logic
 		const closeBtn = target.closest(".member-info .close-btn");
 		if (closeBtn) {
 			const modal = closeBtn.closest(".member-info") as HTMLElement | null;
 			if (modal) {
 				modal.classList.remove("show");
 			}
+			return;
 		}
-	});
 
-	// Social Button Click Logic
-	document.addEventListener("click", e => {
-		const target = e.target as HTMLElement;
+		// Social Button Click Logic
 		if (target.id === "member-social-btn") {
 			const url = target.getAttribute("data-url");
 			if (url) window.open(url, "_blank");
+			return;
 		}
 	});
 </script>
