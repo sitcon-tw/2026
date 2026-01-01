@@ -80,7 +80,6 @@
 
 	.content-container {
 		width: 75rem;
-		/* background-color: gray; */
 		display: flex;
 		flex-direction: column;
 		margin: 0 auto;
@@ -123,5 +122,77 @@
 		border: 1px solid #595959;
 		padding-left: 1rem;
 		gap: 0.8rem;
+	}
+
+	@media screen and (max-width: 1250px) {
+		.content-container {
+			width: 100%;
+			padding: 0 1.5rem;
+			box-sizing: border-box;
+		}
+
+		.content-text {
+			margin: 3rem auto;
+			max-width: 90%;
+		}
+
+		.content-list {
+			/* margin: 2rem auto 4rem auto; */
+			width: fit-content;
+		}
+	}
+
+	@media screen and (max-width: 768px) {
+		.title {
+			flex-direction: column;
+			padding: 3rem 2rem 0;
+			font-size: 2rem;
+			gap: 0.5rem;
+			margin: 0 auto;
+		}
+
+		.title h1:nth-of-type(2) {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		.content-text {
+			margin: 2rem auto;
+			font-size: 1rem;
+			text-align: left;
+			line-height: 1.6;
+		}
+
+		.content-text br {
+			display: none;
+		}
+
+		.content-list {
+			font-size: 1rem;
+			margin: 1rem auto 3rem auto;
+		}
+
+		.content-btn {
+			flex-direction: row;
+			gap: 0.8rem;
+			align-items: center;
+			width: 100%;
+			padding: 0 1rem;
+			box-sizing: border-box;
+		}
+
+		.content-btn a {
+			width: auto;
+			flex: 1;
+			max-width: none;
+			height: 3.2rem;
+			font-size: 1rem;
+			padding: 0;
+		}
+
+		.content-btn a svg {
+			width: 20px;
+			height: 20px;
+		}
 	}
 </style>
