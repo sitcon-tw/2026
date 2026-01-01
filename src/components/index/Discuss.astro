@@ -43,7 +43,7 @@ const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，
 	.container {
 		max-width: 110rem;
 		width: 90%;
-		height: 15rem;
+		min-height: 15rem;
 		margin: 0 auto;
 		display: flex;
 		justify-content: space-between;
@@ -85,6 +85,7 @@ const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，
 		font-weight: 500;
 		line-height: 1.5;
 		box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+		white-space: nowrap; /* 強制不換行 */
 	}
 
 	.bubble-tail {
@@ -155,33 +156,141 @@ const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，
 		z-index: 1;
 	}
 
-	@media (max-width: 992px) {
+	@media screen and (max-width: 1645px) {
+		.bubble-oval {
+			font-size: 1.5rem;
+			padding: 1.1rem 2rem;
+		}
+
+		.bubble-tail {
+			transform: scale(1.1);
+			margin-left: 28px;
+		}
+	}
+
+	@media screen and (max-width: 1250px) {
+		section {
+			padding: 8rem 0;
+		}
+
+		.container {
+			gap: 3rem;
+			width: 95%;
+		}
+
+		.section-title {
+			font-size: 5rem;
+		}
+
+		.info-container {
+			padding-left: 2rem;
+		}
+
+		.message-group:nth-child(even) {
+			margin-left: 3rem;
+		}
+	}
+
+	@media screen and (max-width: 992px) {
+		section {
+			padding: 6rem 0;
+		}
+
 		.container {
 			flex-direction: column-reverse;
 			gap: 4rem;
+			height: auto;
 		}
+
 		.info-container {
 			padding-left: 0;
 			align-items: center;
 			text-align: center;
+			width: 100%;
 		}
+
 		.section-title {
 			font-size: 4rem;
+			margin-bottom: 2rem;
 		}
+
+		.btn-group {
+			justify-content: center;
+		}
+
 		.chat-container {
 			padding-left: 0;
 			align-items: center;
 			width: 100%;
 		}
+
 		.message-group {
 			max-width: 100%;
 		}
+
 		.message-group:nth-child(even) {
 			margin-left: 0;
 		}
+
+		.bubble-oval {
+			font-size: 1.25rem;
+			padding: 0.9rem 1.8rem;
+		}
+
+		.bubble-tail {
+			transform: scale(1);
+			margin-left: 20px;
+		}
+
+		.decor-paper {
+			width: 350px;
+			right: -4rem;
+			opacity: 0.7;
+		}
+	}
+
+	@media screen and (max-width: 576px) {
+		section {
+			padding: 4rem 0;
+		}
+
+		.container {
+			gap: 3rem;
+		}
+
+		.section-title {
+			font-size: 2.8rem;
+		}
+
+		.btn-group {
+			gap: 1rem;
+		}
+
 		.btn-pill {
-			font-size: 1.3rem;
-			padding: 0.9rem 2.2rem;
+			font-size: 1rem;
+			padding: 0.8rem 1.6rem;
+		}
+
+		.bubble-oval {
+			font-size: 0.95rem;
+			padding: 0.7rem 1.2rem;
+			border-radius: 30px;
+		}
+
+		.bubble-tail {
+			transform: scale(0.8);
+			margin-left: 15px;
+		}
+
+		.decor-logo {
+			display: none;
+		}
+
+		.decor-paper {
+			width: 250px;
+			right: -2rem;
+			bottom: -5rem;
+			opacity: 0.4;
 		}
 	}
 </style>
