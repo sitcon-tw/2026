@@ -172,11 +172,13 @@ const team_data = [
 
 		<!-- anchor -->
 		<div class="anchor">
-			<a class="anchor-switch anchor-box" href="/2026/team/">
-				<img src="/2026/img/explore_icon.svg" alt="switch" height={18} width={18} />
-			</a>
-			<a class="anchor-switch anchor-box" href="/2026/team/">
-				<span class="anchor-text-span">探索模式</span>
+			<a class="anchor-switch anchor-btn" href="/2026/team/">
+				<div class="anchor-box anchor-icon">
+					<img src="/2026/img/list_icon.svg" alt="switch" height={18} width={18} />
+				</div>
+				<div class="anchor-box">
+					<span class="anchor-text-span">列表模式</span>
+				</div>
 			</a>
 			{
 				team_data.map((team, index) => {
@@ -563,6 +565,77 @@ const team_data = [
 </script>
 
 <style>
+	.nav-mask-bottom {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+		height: 8rem;
+		background: linear-gradient(to top, #ac782b, transparent);
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	:global(.explore-item) {
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.anchor {
+		position: fixed;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 99;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.anchor-box {
+		display: flex;
+		align-items: center;
+		width: fit-content;
+		padding: 0.7rem 1.25rem;
+		margin: 0.125rem;
+		height: 2.5rem;
+		border-radius: 0.25rem;
+		background-color: #f5f6ee;
+		color: #222222;
+		cursor: pointer;
+	}
+
+	.anchor-switch {
+		display: flex;
+	}
+
+	.anchor-text-span {
+		font-size: 1rem;
+		font-weight: 500;
+		font-family: "GenKiGothic2 TW";
+		text-align: center;
+	}
+
+	.anchor-btn {
+		text-decoration: none;
+		transition: transform 0.2s ease;
+	}
+
+	.anchor-btn:hover {
+		transform: translateY(-0.25rem);
+	}
+
+	.anchor-switch .anchor-box,
+	.anchor-btn.active {
+		background-color: #222222;
+		color: #f5f6ee;
+	}
+
+	.anchor-switch .anchor-box .anchor-text-span,
+	.anchor-btn.active .anchor-text-span {
+		font-weight: 700;
+	}
+
 	.explore-container {
 		position: relative;
 		width: 100vw;
@@ -608,59 +681,7 @@ const team_data = [
 		pointer-events: none;
 	}
 
-	.anchor-text-span {
-		font-size: 1rem;
-		font-weight: 500;
-		font-family: "GenKiGothic2 TW";
-		text-align: center;
-	}
-
-	.anchor {
-		position: fixed;
-		bottom: 2rem;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 99;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.anchor-box {
-		display: flex;
-		align-items: center;
-		padding: 0.7rem 1.25rem;
-		margin: 0.125rem;
-		height: 2.5rem;
-		border-radius: 0.25rem;
-		background-color: #f5f6ee;
-		color: #222222;
-		cursor: pointer;
-		text-decoration: none;
-		transition: transform 0.2s ease;
-	}
-
-	.anchor-box:hover {
-		transform: translateY(-0.25rem);
-	}
-
-	.anchor-switch,
-	.anchor-btn.active {
-		background-color: #222222;
-		color: #f5f6ee;
-	}
-
-	.anchor-switch .anchor-text-span,
-	.anchor-btn.active .anchor-text-span {
-		font-weight: 700;
-	}
-
 	main {
 		min-height: 100vh;
-	}
-
-	:global(.explore-item) {
-		opacity: 0;
-		visibility: hidden;
 	}
 </style>

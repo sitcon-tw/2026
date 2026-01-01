@@ -170,10 +170,10 @@ const team_data = [
 		<div class="anchor">
 			<a class="anchor-switch anchor-btn" href="/2026/team/explore">
 				<div class="anchor-box anchor-icon">
-					<img src="/2026/img/list_icon.svg" alt="switch" height={18} width={18} />
+					<img src="/2026/img/explore_icon.svg" alt="switch" height={18} width={18} />
 				</div>
 				<div class="anchor-box">
-					<span class="anchor-text-span">列表模式</span>
+					<span class="anchor-text-span">探索模式</span>
 				</div>
 			</a>
 			{
@@ -288,29 +288,12 @@ const team_data = [
 		font-weight: 700;
 	}
 
-	main {
-		min-height: 100vh;
-		padding: 5rem 4rem;
-	}
-
-	@media (max-width: 64rem) {
-		main {
-			padding: 5rem 3rem;
-		}
-	}
-
 	.top {
 		padding: 5.5rem 0;
 		display: flex;
 		justify-content: space-between;
 	}
 
-	@media (max-width: 64rem) {
-		.top {
-			flex-direction: column;
-			gap: 2rem;
-		}
-	}
 	.top-title {
 		font-size: 4rem;
 		font-weight: 700;
@@ -333,12 +316,6 @@ const team_data = [
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
-	}
-
-	@media (max-width: 64rem) {
-		.top-right-btn-group {
-			flex-direction: column;
-		}
 	}
 
 	.top-right-btn:hover {
@@ -369,30 +346,47 @@ const team_data = [
 		color: inherit;
 	}
 
+	main {
+		min-height: 100vh;
+		padding: 5rem 4rem;
+	}
+
+	@media (max-width: 64rem) {
+		.top {
+			flex-direction: column;
+			gap: 2rem;
+		}
+
+		.top-right-btn-group {
+			flex-direction: column;
+		}
+
+		main {
+			padding: 5rem 3rem;
+		}
+	}
+
 	@media (max-width: 64rem) {
 		.anchor {
-			position: fixed;
 			top: 50%;
 			right: 0;
 			left: auto;
 			bottom: auto;
 			transform: translateY(-50%);
-			z-index: 99;
 			padding: 1rem 0.5rem;
 			background: #ac782b;
 			border-radius: 1rem 0 0 1rem;
 			transition: all 0.3s ease;
-			width: 50px;
+			width: 3.125rem;
 			opacity: 0.3;
 			flex-direction: column;
 		}
 
 		.anchor:hover {
-			width: 200px;
+			width: fit-content;
 			padding: 1rem;
 			right: 0;
 			background: rgba(1, 1, 33, 0.95);
-			backdrop-filter: blur(10px);
 			opacity: 1;
 			border-radius: 1rem;
 		}
@@ -416,10 +410,6 @@ const team_data = [
 			color: white;
 		}
 
-		.anchor:hover .anchor-box.active {
-			color: white;
-		}
-
 		.anchor .anchor-text-span {
 			opacity: 0;
 			max-width: 0;
@@ -431,18 +421,12 @@ const team_data = [
 
 		.anchor:hover .anchor-text-span {
 			opacity: 1;
-			max-width: 200px;
+			max-width: 12.5rem;
 			margin-left: 0.5rem;
 		}
 
-		.anchor .anchor-switch {
+		.anchor-icon {
 			display: none;
-		}
-
-		.anchor:hover .anchor-switch:not(.anchor-icon) {
-			display: flex;
-			order: -1;
-			font-weight: 700;
 		}
 
 		.anchor-indicator {
