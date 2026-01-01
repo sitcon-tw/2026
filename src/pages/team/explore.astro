@@ -468,17 +468,17 @@ const team_data = [
 
 				while (!success && tries < maxTries) {
 					// Snap X to columns
-					const colWidth = ImageSize + imageGap;
-					const maxCols = Math.max(1, Math.floor((width - ImageSize) / colWidth) + 1);
-					const totalGridW = (maxCols - 1) * colWidth + ImageSize;
+					const colWidth = imageSize + imageGap;
+					const maxCols = Math.max(1, Math.floor((width - imageSize) / colWidth) + 1);
+					const totalGridW = (maxCols - 1) * colWidth + imageSize;
 					const offsetX = Math.max(0, (width - totalGridW) / 2);
 
 					const col = Math.floor(Math.random() * maxCols);
 					x = offsetX + col * colWidth;
 
 					// Snap Y to staggered rows
-					const rowHeight = ImageSize + imageGap;
-					const maxRows = Math.max(1, Math.floor((height - ImageSize) / rowHeight) + 1);
+					const rowHeight = imageSize + imageGap;
+					const maxRows = Math.max(1, Math.floor((height - imageSize) / rowHeight) + 1);
 
 					const row = Math.floor(Math.random() * maxRows);
 					let staggerY = 0;
@@ -491,8 +491,8 @@ const team_data = [
 					if (x < 0) x = 0;
 					if (y < 0) y = 0;
 
-					const centerX = x + ImageSize / 2;
-					const centerY = y + ImageSize / 2;
+					const centerX = x + imageSize / 2;
+					const centerY = y + imageSize / 2;
 
 					const overlap = placed.some(p => {
 						const dx = centerX - p.centerX;
