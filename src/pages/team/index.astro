@@ -168,11 +168,13 @@ const team_data = [
 
 		<!-- anchor -->
 		<div class="anchor">
-			<a class="anchor-switch anchor-box anchor-icon" href="/2026/team/explore">
-				<img src="/2026/img/switch_icon.svg" alt="switch" height={18} width={18} />
-			</a>
-			<a class="anchor-switch anchor-box" href="/2026/team/explore">
-				<span class="anchor-text-span">探索模式</span>
+			<a class="anchor-switch anchor-btn" href="/2026/team/explore">
+				<div class="anchor-box anchor-icon">
+					<img src="/2026/img/list_icon.svg" alt="switch" height={18} width={18} />
+				</div>
+				<div class="anchor-box">
+					<span class="anchor-text-span">列表模式</span>
+				</div>
 			</a>
 			{
 				team_data.map((team, index) => {
@@ -231,13 +233,6 @@ const team_data = [
 		pointer-events: none;
 	}
 
-	.anchor-text-span {
-		font-size: 1rem;
-		font-weight: 500;
-		font-family: "GenKiGothic2 TW";
-		text-align: center;
-	}
-
 	.anchor {
 		position: fixed;
 		bottom: 2rem;
@@ -252,6 +247,7 @@ const team_data = [
 	.anchor-box {
 		display: flex;
 		align-items: center;
+		width: fit-content;
 		padding: 0.7rem 1.25rem;
 		margin: 0.125rem;
 		height: 2.5rem;
@@ -259,21 +255,35 @@ const team_data = [
 		background-color: #f5f6ee;
 		color: #222222;
 		cursor: pointer;
+	}
+
+	.anchor-switch {
+		display: flex;
+	}
+
+	.anchor-text-span {
+		font-size: 1rem;
+		font-weight: 500;
+		font-family: "GenKiGothic2 TW";
+		text-align: center;
+	}
+
+	.anchor-btn {
 		text-decoration: none;
 		transition: transform 0.2s ease;
 	}
 
-	.anchor-box:hover {
+	.anchor-btn:hover {
 		transform: translateY(-0.25rem);
 	}
 
-	.anchor-switch,
+	.anchor-switch .anchor-box,
 	.anchor-btn.active {
 		background-color: #222222;
 		color: #f5f6ee;
 	}
 
-	.anchor-switch .anchor-text-span,
+	.anchor-switch .anchor-box .anchor-text-span,
 	.anchor-btn.active .anchor-text-span {
 		font-weight: 700;
 	}
