@@ -6,8 +6,12 @@
 	<div class="content">
 		<h1>行為準則</h1>
 		<div class="content-coc">
-			<p>SITCON 非常歡迎所有年齡、身分、背景的與會者！</p>
-			<p>為了讓大家都能愉快的參加 SITCON，<br /> 請所有參與者遵循行為準則共創一個友善的環境。</p>
+			<p>SITCON 非常歡迎<br class="mobile-br" />所有年齡、身分、背景的與會者！</p>
+
+			<p>
+				為了讓大家都能愉快的參加 SITCON，<br />
+				請所有參與者遵循行為準則<br class="mobile-br" />共創一個友善的環境。
+			</p>
 		</div>
 
 		<div class="cocLink">
@@ -30,11 +34,10 @@
 		height: 25rem;
 		display: flex;
 		justify-content: center;
-
 		align-items: center;
-
 		color: #fce6c5;
 		gap: 3rem;
+		margin: 0 auto;
 	}
 
 	.content h1 {
@@ -57,6 +60,11 @@
 		line-height: 1.5;
 		font-size: 1.2rem;
 	}
+
+	.mobile-br {
+		display: none;
+	}
+
 	.cocLink {
 		display: flex;
 		align-items: center;
@@ -69,10 +77,58 @@
 		transition:
 			transform 0.3s ease,
 			background-color 0.3s ease;
+		flex-shrink: 0;
 	}
 
 	.cocLink:hover {
 		transform: scale(1.1);
 		background-color: #fff;
+	}
+
+	@media screen and (max-width: 992px) {
+		.content {
+			flex-direction: column;
+			height: auto;
+			padding: 4rem 0;
+			text-align: left;
+			gap: 2rem;
+		}
+
+		.content-coc {
+			align-items: center;
+		}
+
+		.cocLink {
+			margin-top: 1rem;
+		}
+	}
+
+	@media screen and (max-width: 576px) {
+		.content {
+			padding: 3rem 0;
+			gap: 1.5rem;
+		}
+
+		.content h1 {
+			font-size: 3.5rem;
+		}
+
+		.content-coc p {
+			font-size: 1rem;
+		}
+
+		.mobile-br {
+			display: inline;
+		}
+
+		.cocLink {
+			width: 5rem;
+			height: 5rem;
+		}
+
+		.cocLink svg {
+			width: 32px;
+			height: 32px;
+		}
 	}
 </style>
