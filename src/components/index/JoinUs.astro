@@ -1,5 +1,5 @@
 ---
-
+import { ExternalLink } from "@lucide/astro";
 ---
 
 <section>
@@ -11,7 +11,7 @@
 		<div class="content-text">
 			<p>
 				自 2013 年以來，SITCON 始終秉持著「不向與會者收費」的初心，<br />致力於推廣學生資訊教育。我們鼓勵參與者跳脫思想框架、發掘潛在的可能性，<br
-				/> 並為學子們提供寶貴的學習與交流機會，陪伴無數學生踏入資訊領域的殿堂。
+				/>並為學子們提供寶貴的學習與交流機會，陪伴無數學生踏入資訊領域的殿堂。
 			</p>
 		</div>
 		<div class="content-list">
@@ -22,31 +22,19 @@
 		</div>
 		<div class="content-btn">
 			<a href="#">
-				贊助徵求
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-					<path
-						d="M22.5 13.1667V20.1667C22.5 20.7855 22.2542 21.379 21.8166 21.8166C21.379 22.2542 20.7855 22.5 20.1667 22.5H3.83333C3.21449 22.5 2.621 22.2542 2.18342 21.8166C1.74583 21.379 1.5 20.7855 1.5 20.1667V3.83333C1.5 3.21449 1.74583 2.621 2.18342 2.18342C2.621 1.74583 3.21449 1.5 3.83333 1.5H10.8333M22.5 1.5L12 12M22.5 1.5H15.5M22.5 1.5V8.5"
-						stroke="#515151"
-						stroke-width="3"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-					</path>
-				</svg>
+				<div class="hover-bg"></div>
+				<span>
+					贊助徵求
+					<ExternalLink class="arrow-icon" />
+				</span>
 			</a>
 
 			<a href="#">
-				個人贊助
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-					<path
-						d="M22.5 13.1667V20.1667C22.5 20.7855 22.2542 21.379 21.8166 21.8166C21.379 22.2542 20.7855 22.5 20.1667 22.5H3.83333C3.21449 22.5 2.621 22.2542 2.18342 21.8166C1.74583 21.379 1.5 20.7855 1.5 20.1667V3.83333C1.5 3.21449 1.74583 2.621 2.18342 2.18342C2.621 1.74583 3.21449 1.5 3.83333 1.5H10.8333M22.5 1.5L12 12M22.5 1.5H15.5M22.5 1.5V8.5"
-						stroke="#515151"
-						stroke-width="3"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-					</path>
-				</svg>
+				<div class="hover-bg"></div>
+				<span>
+					個人贊助
+					<ExternalLink class="arrow-icon" />
+				</span>
 			</a>
 		</div>
 		<div class="sponsor-section">
@@ -120,24 +108,41 @@
 			linear-gradient(124deg, rgba(133, 138, 146, 0) -3.36%, rgba(133, 138, 146, 0.5) 31.33%, rgba(133, 138, 146, 0.75) 69.49%, rgba(133, 138, 146, 0.88) 96.26%, #858a92 98.2%),
 			radial-gradient(390.63% 225.3% at 8.72% -121.17%, #fff 0%, rgba(255, 255, 255, 0) 100%);
 		border: 1px solid #595959;
-		padding-left: 1rem;
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+		overflow: hidden;
+		position: relative;
+		z-index: 1;
+	}
+
+	.hover-bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background:
+			linear-gradient(124deg, rgba(133, 138, 146, 0.1) -3.36%, rgba(133, 138, 146, 0.6) 31.33%, rgba(133, 138, 146, 0.8) 69.49%, rgba(133, 138, 146, 0.9) 96.26%, #7a7f87 98.2%),
+			radial-gradient(390.63% 225.3% at 8.72% -121.17%, #fff 0%, rgba(255, 255, 255, 0) 100%);
+		transform: translateX(-100%);
+		z-index: -1;
+	}
+
+	.content-btn a span {
+		display: flex;
+		align-items: center;
 		gap: 0.8rem;
-		transition: all 0.3s ease;
 	}
 
 	.content-btn a:hover {
-		background: #595959;
-		color: #ffffff;
 		transform: translateY(-3px);
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+		border-color: #333333;
 	}
 
 	.content-btn a svg path {
 		transition: stroke 0.3s ease;
-	}
-
-	.content-btn a:hover svg path {
-		stroke: #ffffff;
 	}
 
 	@media screen and (max-width: 1250px) {
@@ -211,3 +216,48 @@
 		}
 	}
 </style>
+
+<script>
+	import { gsap } from "gsap";
+
+	const buttons = document.querySelectorAll(".content-btn a");
+
+	buttons.forEach(btn => {
+		const content = btn.querySelector("span");
+		const hoverBg = btn.querySelector(".hover-bg");
+
+		btn.addEventListener("mouseenter", () => {
+			gsap.killTweensOf([content, hoverBg]);
+
+			// Text rolling effect
+			gsap.to(content, {
+				x: 20,
+				opacity: 0,
+				duration: 0.3,
+				ease: "power2.in",
+				onComplete: () => {
+					gsap.set(content, { x: -20 });
+					gsap.to(content, { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" });
+				}
+			});
+
+			// Background rolling effect
+			gsap.fromTo(hoverBg, { x: "-100%" }, { x: "0%", duration: 0.5, ease: "power2.out" });
+		});
+
+		btn.addEventListener("mouseleave", () => {
+			gsap.killTweensOf([content, hoverBg]);
+
+			gsap.to(content, { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" });
+
+			gsap.to(hoverBg, {
+				x: "100%",
+				duration: 0.5,
+				ease: "power2.in",
+				onComplete: () => {
+					gsap.set(hoverBg, { x: "-100%" });
+				}
+			});
+		});
+	});
+</script>
