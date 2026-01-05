@@ -79,7 +79,8 @@ const navItems = [
 			menu.classList.toggle("active");
 			navMenu.classList.toggle("active");
 
-			gsap.timeline()
+			gsap
+				.timeline()
 				.to("#menu-icon", { opacity: 0, y: -4, display: "none", duration: 0.2 })
 				.fromTo("#x-icon", { opacity: 0, y: 4, display: "none" }, { opacity: 1, y: 0, display: "block", duration: 0.3 });
 
