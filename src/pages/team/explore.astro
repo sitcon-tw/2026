@@ -184,6 +184,7 @@ const team_data = [
 				team_data.map((team, index) => {
 					return (
 						<div class={`anchor-btn anchor-box ${index === 0 ? "active" : ""}`} data-index={index}>
+							<span class="anchor-indicator" />
 							<span class="anchor-text-span">{team.name}</span>
 						</div>
 					);
@@ -683,5 +684,89 @@ const team_data = [
 
 	main {
 		min-height: 100vh;
+	}
+
+	@media (max-width: 64rem) {
+		.anchor {
+			top: 50%;
+			right: 1rem;
+			left: auto;
+			bottom: auto;
+			transform: translateY(-50%);
+			padding: 1rem 0.5rem;
+			background: #575757;
+			border-radius: 1rem;
+			transition: all 0.3s ease;
+			width: 3.125rem;
+			opacity: 0.3;
+			flex-direction: column;
+		}
+
+		.anchor:hover {
+			width: fit-content;
+			padding: 1rem;
+			right: 1rem;
+			background: rgba(1, 1, 33, 0.95);
+			opacity: 1;
+			border-radius: 1rem;
+		}
+
+		.anchor .anchor-box {
+			width: 100%;
+			justify-content: center;
+			background-color: transparent;
+			color: #ccc;
+			margin: 0;
+			padding: 0.75rem 0.5rem;
+			height: auto;
+		}
+
+		.anchor:hover .anchor-box {
+			justify-content: flex-start;
+			color: #999;
+		}
+
+		.anchor .anchor-box.active {
+			color: white;
+		}
+
+		.anchor .anchor-text-span {
+			opacity: 0;
+			max-width: 0;
+			overflow: hidden;
+			white-space: nowrap;
+			display: inline-block;
+			transition: all 0.3s ease;
+		}
+
+		.anchor:hover .anchor-text-span {
+			opacity: 1;
+			max-width: 12.5rem;
+			margin-left: 0.5rem;
+		}
+
+		.anchor-icon {
+			display: none;
+		}
+
+		.anchor-indicator {
+			width: 3px;
+			height: 20px;
+			background: #666;
+			border-radius: 2px;
+			transition: all 0.3s ease;
+			flex-shrink: 0;
+			transform: rotate(90deg);
+		}
+
+		.anchor:hover .anchor-indicator {
+			transform: rotate(0deg);
+		}
+
+		.anchor .anchor-box.active .anchor-indicator {
+			background: white;
+			box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+			height: 24px;
+		}
 	}
 </style>

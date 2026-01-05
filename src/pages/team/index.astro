@@ -401,13 +401,13 @@ const team_data = [
 			height: auto;
 		}
 
+		.anchor .anchor-box.active {
+			color: white;
+		}
+
 		.anchor:hover .anchor-box {
 			justify-content: flex-start;
 			color: #999;
-		}
-
-		.anchor .anchor-box.active {
-			color: white;
 		}
 
 		.anchor .anchor-text-span {
@@ -436,6 +436,11 @@ const team_data = [
 			border-radius: 2px;
 			transition: all 0.3s ease;
 			flex-shrink: 0;
+			transform: rotate(90deg);
+		}
+
+		.anchor:hover .anchor-indicator {
+			transform: rotate(0deg);
 		}
 
 		.anchor .anchor-box.active .anchor-indicator {
