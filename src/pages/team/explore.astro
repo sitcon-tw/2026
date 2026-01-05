@@ -172,7 +172,7 @@ const team_data = [
 
 		<!-- anchor -->
 		<div class="anchor">
-			<a class="anchor-switch anchor-btn" href="/2026/team/">
+			<a class="anchor-switch anchor-btn" href="/2026/team/" aria-label="切換至列表模式">
 				<div class="anchor-box anchor-icon">
 					<img src="/2026/img/list_icon.svg" alt="switch" height={18} width={18} />
 				</div>
@@ -183,7 +183,7 @@ const team_data = [
 			{
 				team_data.map((team, index) => {
 					return (
-						<div class={`anchor-btn anchor-box ${index === 0 ? "active" : ""}`} data-index={index}>
+						<div class={`anchor-btn anchor-box ${index === 0 ? "active" : ""}`} data-index={index} aria-label={team.name}>
 							<span class="anchor-indicator" />
 							<span class="anchor-text-span">{team.name}</span>
 						</div>
