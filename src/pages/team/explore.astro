@@ -424,143 +424,232 @@ const team_data = [
 		);
 	};
 
-	const initExplore = () => {
+	const layoutItems = (targetIndex: string | null = null, animate = false) => {
 		const container = document.querySelector(".explore-container") as HTMLElement;
 		if (!container) return;
 
 		const width = container.offsetWidth;
 		const height = container.offsetHeight;
 
-		// Update global world dims
-		worldWidth = width;
-		worldHeight = height;
-
+		// Initial constraints
 		const imageSize = 180;
 		const imageGap = 64;
 		const minDistance = imageSize + imageGap;
 
-		const items = gsap.utils.toArray(".explore-item") as HTMLElement[];
+		// Grid configuration
+		const colWidth = imageSize + imageGap;
+		const maxCols = Math.max(1, Math.floor((width - imageSize) / colWidth) + 1);
+		const totalGridW = (maxCols - 1) * colWidth + imageSize;
+		const offsetX = Math.max(0, (width - totalGridW) / 2);
 
-		// Group items by team
-		const teamGroups: Record<string, HTMLElement[]> = {};
+		const rowHeight = imageSize + imageGap;
+		const maxRows = Math.max(1, Math.floor((height - imageSize) / rowHeight) + 1);
+
+		const centerCol = Math.floor(maxCols / 2);
+		const centerRow = Math.floor(maxRows / 2);
+
+		// Track used space to expand world
+		let contentMaxX = width;
+		let contentMaxY = height;
+
+		// Get items and shuffle them for randomness
+		let items = gsap.utils.toArray(".explore-item") as HTMLElement[];
+		items.sort(() => Math.random() - 0.5);
+
+		// If targetIndex is present, prioritize those items by moving them to the front
+		// and mark them for central placement
+		if (targetIndex !== null) {
+			items.sort((a, b) => {
+				const aIsTarget = a.dataset.teamIndex === targetIndex;
+				const bIsTarget = b.dataset.teamIndex === targetIndex;
+				if (aIsTarget && !bIsTarget) return -1;
+				if (!aIsTarget && bIsTarget) return 1;
+				return 0;
+			});
+		}
+
+		const placed: { centerX: number; centerY: number }[] = [];
+
 		items.forEach(item => {
-			const teamIndex = item.dataset.teamIndex || "0";
-			if (!teamGroups[teamIndex]) teamGroups[teamIndex] = [];
-			teamGroups[teamIndex].push(item);
-		});
+			const isTarget = targetIndex !== null && item.dataset.teamIndex === targetIndex;
 
-		Object.values(teamGroups).forEach(groupItems => {
-			const placed: { centerX: number; centerY: number }[] = [];
+			let x = 0;
+			let y = 0;
+			let tries = 0;
+			let success = false;
+			const maxTries = 100;
 
-			groupItems.forEach(item => {
-				let x = 0;
-				let y = 0;
-				let tries = 0;
-				let success = false;
-				const maxTries = 100;
-
-				// Reset positioning
+			// Reset basic style if not animating
+			if (!animate) {
 				gsap.set(item, {
 					position: "absolute",
 					left: 0,
 					top: 0,
 					margin: 0
 				});
+			}
 
-				while (!success && tries < maxTries) {
-					// Snap X to columns
-					const colWidth = imageSize + imageGap;
-					const maxCols = Math.max(1, Math.floor((width - imageSize) / colWidth) + 1);
-					const totalGridW = (maxCols - 1) * colWidth + imageSize;
-					const offsetX = Math.max(0, (width - totalGridW) / 2);
+			// 1. Try Random Placement (Preference for center if target)
+			while (!success && tries < maxTries) {
+				let col, row;
 
-					const col = Math.floor(Math.random() * maxCols);
-					x = offsetX + col * colWidth;
+				if (isTarget && tries < 50) {
+					// Target: Try placing near center
+					const radius = 1;
+					const minC = Math.max(0, centerCol - radius);
+					const maxC = Math.min(maxCols - 1, centerCol + radius);
+					const minR = Math.max(0, centerRow - radius);
+					const maxR = Math.min(maxRows - 1, centerRow + radius);
 
-					// Snap Y to staggered rows
-					const rowHeight = imageSize + imageGap;
-					const maxRows = Math.max(1, Math.floor((height - imageSize) / rowHeight) + 1);
-
-					const row = Math.floor(Math.random() * maxRows);
-					let staggerY = 0;
-					if (col % 2 !== 0) {
-						staggerY = rowHeight * 0.5;
-					}
-
-					y = row * rowHeight + staggerY;
-
-					if (x < 0) x = 0;
-					if (y < 0) y = 0;
-
-					const centerX = x + imageSize / 2;
-					const centerY = y + imageSize / 2;
-
-					const overlap = placed.some(p => {
-						const dx = centerX - p.centerX;
-						const dy = centerY - p.centerY;
-						const distance = Math.sqrt(dx * dx + dy * dy);
-						return distance < minDistance;
-					});
-
-					if (!overlap) {
-						success = true;
-						placed.push({ centerX, centerY });
-					}
-					tries++;
-				}
-
-				if (success) {
-					gsap.set(item, { x, y, pointerEvents: "auto" });
+					col = Math.floor(Math.random() * (maxC - minC + 1)) + minC;
+					row = Math.floor(Math.random() * (maxR - minR + 1)) + minR;
 				} else {
-					gsap.set(item, { x: -9999, y: -9999, opacity: 0, pointerEvents: "none" });
-					console.warn("Could not place item, hiding:", item);
+					// Random: Anywhere in view
+					col = Math.floor(Math.random() * maxCols);
+					row = Math.floor(Math.random() * maxRows);
 				}
-			});
-		});
-	};
 
-	// Switch Team Logic
-	const switchTeam = (index: string) => {
-		const items = document.querySelectorAll(".explore-item");
+				x = offsetX + col * colWidth;
 
-		const toShow: Element[] = [];
-		const toHide: Element[] = [];
+				let staggerY = 0;
+				if (col % 2 !== 0) staggerY = rowHeight * 0.5;
+				y = row * rowHeight + staggerY;
 
-		items.forEach(item => {
-			if ((item as HTMLElement).dataset.teamIndex === index) {
-				toShow.push(item);
+				if (x < 0) x = 0;
+				if (y < 0) y = 0;
+
+				const centerX = x + imageSize / 2;
+				const centerY = y + imageSize / 2;
+
+				const overlap = placed.some(p => {
+					const dx = centerX - p.centerX;
+					const dy = centerY - p.centerY;
+					return Math.sqrt(dx * dx + dy * dy) < minDistance;
+				});
+
+				if (!overlap) {
+					success = true;
+					placed.push({ centerX, centerY });
+				}
+				tries++;
+			}
+
+			// 2. Fallback: Guaranteed Spiral Search (Expanding outwards)
+			if (!success) {
+				let radius = 0;
+				while (!success) {
+					// Generate ring coordinates
+					const candidates: { c: number; r: number }[] = [];
+					const minD = -radius;
+					const maxD = radius;
+
+					for (let dc = minD; dc <= maxD; dc++) {
+						for (let dr = minD; dr <= maxD; dr++) {
+							// Only check the perimeter (ring) unless radius is 0
+							if (radius > 0 && Math.abs(dc) !== radius && Math.abs(dr) !== radius) continue;
+
+							const c = centerCol + dc;
+							const r = centerRow + dr;
+
+							// Only allow positive expansion (right/down)
+							if (c >= 0 && r >= 0) {
+								candidates.push({ c, r });
+							}
+						}
+					}
+
+					// Shuffle ring to maintain some randomness in direction
+					candidates.sort(() => Math.random() - 0.5);
+
+					for (const cand of candidates) {
+						const col = cand.c;
+						const row = cand.r;
+
+						x = offsetX + col * colWidth;
+
+						let staggerY = 0;
+						if (col % 2 !== 0) staggerY = rowHeight * 0.5;
+						y = row * rowHeight + staggerY;
+
+						const centerX = x + imageSize / 2;
+						const centerY = y + imageSize / 2;
+
+						const overlap = placed.some(p => {
+							const dx = centerX - p.centerX;
+							const dy = centerY - p.centerY;
+							return Math.sqrt(dx * dx + dy * dy) < minDistance;
+						});
+
+						if (!overlap) {
+							success = true;
+							placed.push({ centerX, centerY });
+							break;
+						}
+					}
+
+					radius++;
+					if (radius > 100) {
+						// Extreme safety break
+						break;
+					}
+				}
+			}
+
+			if (success) {
+				// Update world boundaries
+				const rightEdge = x + imageSize + imageGap;
+				const bottomEdge = y + imageSize + imageGap;
+				if (rightEdge > contentMaxX) contentMaxX = rightEdge;
+				if (bottomEdge > contentMaxY) contentMaxY = bottomEdge;
+
+				if (animate) {
+					gsap.to(item, {
+						x,
+						y,
+						autoAlpha: 1,
+						duration: 0.5,
+						ease: "power2.out",
+						overwrite: "auto",
+						pointerEvents: "auto"
+					});
+				} else {
+					gsap.set(item, {
+						x,
+						y,
+						autoAlpha: 1,
+						pointerEvents: "auto"
+					});
+				}
 			} else {
-				toHide.push(item);
+				console.warn("Failed to place item even with expansion:", item);
+				gsap.set(item, { x: -9999, y: -9999, opacity: 0, pointerEvents: "none" });
 			}
 		});
 
-		gsap.to(toHide, {
-			autoAlpha: 0,
-			duration: 0.3,
-			overwrite: "auto"
-		});
-
-		gsap.to(toShow, {
-			autoAlpha: 1,
-			duration: 0.3,
-			overwrite: "auto"
-		});
+		// Update global world dimensions for panning
+		worldWidth = contentMaxX;
+		worldHeight = contentMaxY;
 	};
 
-	// Initialize on load
-	initExplore();
+	// Initialize
+	layoutItems(null, false);
 	initPanZoom();
-	switchTeam("0"); // Initialize visibility
 
 	// Anchor Listeners
 	const anchorBtns = document.querySelectorAll(".anchor-btn");
 	anchorBtns.forEach(btn => {
-		btn.addEventListener("click", () => {
+		btn.addEventListener("click", e => {
+			// prevent default anchor behavior (for anchor to index page)
+			if (btn.tagName === "A") return;
+			e.preventDefault();
+
 			anchorBtns.forEach(b => b.classList.remove("active"));
 			btn.classList.add("active");
 
 			const index = (btn as HTMLElement).dataset.index;
-			if (index) switchTeam(index);
+
+			// Shuffle items, centering the selected team
+			layoutItems(index || null, true);
 		});
 	});
 </script>
