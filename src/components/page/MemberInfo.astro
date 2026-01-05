@@ -145,26 +145,8 @@ const { id = "member-info-modal" } = Astro.props;
 			visibility 0s 0s;
 	}
 
-	@media (max-width: 64rem) {
-		.member-info {
-			min-width: 90vw;
-			min-height: 90vh;
-			max-height: 90vh;
-			align-self: center;
-			justify-self: center;
-			position: fixed;
-			padding: 2.5rem;
-		}
-	}
-
 	.header {
 		padding-bottom: 1.5rem;
-	}
-
-	@media (max-width: 64rem) {
-		.header {
-			padding-bottom: 2.5rem;
-		}
 	}
 
 	.close-btn {
@@ -183,11 +165,81 @@ const { id = "member-info-modal" } = Astro.props;
 		cursor: pointer;
 		display: flex;
 		border: none;
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+
+	.close-btn:hover {
+		transform: translateY(-0.25rem);
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
 	}
 
 	svg {
 		width: 1.5rem;
 		height: 1.5rem;
+	}
+
+	h1 {
+		font-family: "GenKiMinTW";
+		font-size: 5.25rem;
+		font-weight: 700;
+	}
+
+	h2 {
+		font-family: "GenKiMinTW";
+		font-size: 1rem;
+		font-weight: 700;
+		padding: 1.5rem 0;
+		line-height: 1.5;
+	}
+
+	.avatar,
+	.social {
+		justify-self: end;
+	}
+
+	.social {
+		margin-top: 3rem;
+		align-self: flex-end;
+	}
+
+	#member-social-btn {
+		padding: 0.5rem 1rem;
+		background-color: #000;
+		font-family: "GenKiGothicTW";
+		color: #fff;
+		border: none;
+		border-radius: 0.3rem;
+		cursor: pointer;
+		font-size: 1rem;
+		font-weight: 700;
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+
+	#member-social-btn:hover {
+		transform: translateY(-0.25rem);
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+	}
+
+	p {
+		font-family: "GenKiGothicTW";
+		width: 20rem;
+		padding-top: 3.75rem;
+		font-size: 1rem;
+		font-weight: 700;
+		line-height: 1.5;
+		word-break: break-word;
+	}
+
+	.avatar-img {
+		width: 10rem;
+		height: 10rem;
+		border-radius: 1rem;
+		background-color: #fff;
+		object-fit: contain;
 	}
 
 	@media (max-width: 64rem) {
@@ -203,77 +255,32 @@ const { id = "member-info-modal" } = Astro.props;
 			width: 1rem;
 			height: 1rem;
 		}
-	}
 
-	h1 {
-		font-family: "GenKiGothic2 TW";
-		font-size: 5.25rem;
-		font-weight: 700;
-	}
+		.member-info {
+			min-width: 90vw;
+			min-height: 90vh;
+			max-height: 90vh;
+			align-self: center;
+			justify-self: center;
+			position: fixed;
+			padding: 2.5rem;
+		}
 
-	@media (max-width: 64rem) {
+		.header {
+			padding-bottom: 2.5rem;
+		}
+
 		h1 {
 			font-size: 3.5rem;
 		}
-	}
 
-	h2 {
-		font-family: "GenKiGothic2 TW";
-		font-size: 1rem;
-		font-weight: 700;
-		padding: 1.5rem 0;
-		line-height: 1.5;
-	}
-
-	.avatar,
-	.social {
-		justify-self: end;
-	}
-
-	@media (max-width: 64rem) {
 		.avatar,
 		.social {
 			justify-self: center;
 		}
-	}
 
-	.social {
-		margin-top: 3rem;
-		align-self: flex-end;
-	}
-
-	#member-social-btn {
-		padding: 0.5rem 1rem;
-		background-color: #000;
-		color: #fff;
-		border: none;
-		border-radius: 0.3rem;
-		cursor: pointer;
-		font-size: 1rem;
-		font-weight: 700;
-	}
-
-	p {
-		font-family: "GenKiGothic2 TW";
-		width: 20rem;
-		padding-top: 3.75rem;
-		font-size: 1rem;
-		font-weight: 700;
-		line-height: 1.5;
-		word-break: break-word;
-	}
-
-	@media (max-width: 64rem) {
 		p {
 			width: 100%;
 		}
-	}
-
-	.avatar-img {
-		width: 10rem;
-		height: 10rem;
-		border-radius: 16px;
-		background-color: #fff;
-		object-fit: contain;
 	}
 </style>
