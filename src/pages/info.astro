@@ -290,10 +290,10 @@ function getActivityImage(file: string): ImageMetadata {
 		place-items: center;
 	}
 
-	/*.modal::backdrop {
+	.modal::backdrop {
 		background: rgba(0, 0, 0, 0.45);
 		backdrop-filter: blur(2px);
-	}*/
+	}
 
 	.modal-card {
 		width: min(50rem, calc(100vw - 2rem));
@@ -311,7 +311,7 @@ function getActivityImage(file: string): ImageMetadata {
 	}
 
 	.modal-button {
-		background: linear-gradient(90deg, #EDB73D 0%, #d1a643 25%, #c39d47 50%, #c09b48 75%, #b6944acc 100%);
+		background: linear-gradient(90deg, #edb73d 0%, #d1a643 25%, #c39d47 50%, #c09b48 75%, #b6944acc 100%);
 		border: 1px solid var(--copper);
 		border-radius: 0.75rem;
 		cursor: pointer;
@@ -353,65 +353,65 @@ function getActivityImage(file: string): ImageMetadata {
 
 	.modal-body {
 		padding: 1rem 1.25rem 1.25rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
 	}
 
-    .transport-panel {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
+	.transport-panel {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
 
-    .transport-route {
-        display: flex;
-        align-items: center;
-        gap: 1.25rem;
-        color: var(--silence-white);
-        font-weight: 500;
-        font-size: 1.25rem;
-    }
+	.transport-route {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+		color: var(--silence-white);
+		font-weight: 500;
+		font-size: 1.25rem;
+	}
 
-    .transport-route-left,
-    .transport-route-right {
-        white-space: nowrap;
-    }
+	.transport-route-left,
+	.transport-route-right {
+		white-space: nowrap;
+	}
 
-    .transport-route-line {
-        position: relative;
-        flex: 1;
-        height: 2px;
-        background: rgba(255, 255, 255, 0.7);
-        border-radius: 999px;
-        min-width: 3rem;
-    }
+	.transport-route-line {
+		position: relative;
+		flex: 1;
+		height: 2px;
+		background: var(--silence-white);
+		border-radius: 999px;
+		min-width: 3rem;
+	}
 
-    .transport-route-line::after {
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 50%;
-        width: 10px;
-        height: 10px;
-        border-right: 2px solid rgba(255, 255, 255, 0.7);
-        border-top: 2px solid rgba(255, 255, 255, 0.7);
-        transform: translateY(-50%) rotate(45deg);
-    }
+	.transport-route-line::after {
+		content: "";
+		position: absolute;
+		right: 0;
+		top: 50%;
+		width: 10px;
+		height: 10px;
+		border-right: 2px solid var(--silence-white);
+		border-top: 2px solid var(--silence-white);
+		transform: translateY(-50%) rotate(45deg);
+	}
 
-    .transport-card {
-        border-radius: 0.5rem;
-        padding: 1.25rem 1.5rem;
-        background: rgba(0, 0, 0, 0.25);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }
+	.transport-card {
+		border-radius: 0.5rem;
+		padding: 1.25rem 1.5rem;
+		background: rgba(0, 0, 0, 0.25);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+	}
 
-    .transport-card p {
-        margin: 0;
-        font-size: 1rem;
-        color: var(--silence-white);
-        font-weight: 500;
-    }
+	.transport-card p {
+		margin: 0;
+		font-size: 1rem;
+		color: var(--silence-white);
+		font-weight: 500;
+	}
 
 	@media (max-width: 880px) {
 		.hero-button {
@@ -467,6 +467,24 @@ function getActivityImage(file: string): ImageMetadata {
 
 		.activities-section {
 			padding: 1.5rem 0rem;
+		}
+	}
+
+	@media (max-width: 730px) {
+		.modal-card {
+			padding: 0.5rem;
+		}
+		.transport-route-left,
+		.transport-route-right {
+			white-space: normal;
+		}
+		.modal-button-container {
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.modal-button {
+			width: 100%;
 		}
 	}
 </style>
