@@ -204,7 +204,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 	playerBody.allowSleep = false;
 	world.addBody(playerBody);
 
-	// SEt to zero because we dont want to let user see the ball
+	// Set to zero because we don't want to let the user see the ball
 	const playerMesh = new THREE.Mesh(new THREE.SphereGeometry(0, 24, 24), new THREE.MeshStandardMaterial({ color: 0xddddff }));
 	scene.add(playerMesh);
 
@@ -278,14 +278,14 @@ import { Move, ChevronUp } from "@lucide/astro";
 	});
 
 	const keys = { w: false, a: false, s: false, d: false, space: false };
-	addEventListener("keydown", e => {
+	window.addEventListener("keydown", e => {
 		if (e.code === "KeyW") keys.w = true;
 		if (e.code === "KeyA") keys.a = true;
 		if (e.code === "KeyS") keys.s = true;
 		if (e.code === "KeyD") keys.d = true;
 		if (e.code === "Space") keys.space = true;
 	});
-	addEventListener("keyup", e => {
+	window.addEventListener("keyup", e => {
 		if (e.code === "KeyW") keys.w = false;
 		if (e.code === "KeyA") keys.a = false;
 		if (e.code === "KeyS") keys.s = false;
@@ -431,6 +431,4 @@ import { Move, ChevronUp } from "@lucide/astro";
 		renderer.render(scene, camera);
 	}
 	animate();
-
-	if (isTouchDevice) touchControls.style.display = "none";
 </script>

@@ -180,8 +180,6 @@ function getActivityImage(file: string): ImageMetadata {
 			const html = document.documentElement;
 			html.style.scrollBehavior = "auto";
 
-			const se = document.scrollingElement as HTMLElement | null;
-			if (se) se.scrollTop = 0;
 			document.documentElement.scrollTop = 0;
 			document.body.scrollTop = 0;
 			window.scrollTo(0, 0);
@@ -198,13 +196,12 @@ function getActivityImage(file: string): ImageMetadata {
 				hero.style.paddingBottom = getComputedStyle(hero).paddingBottom;
 			}
 
-			document.body.classList.add("page-lock");
 			heroContent?.classList.add("fade-out");
 			main?.classList.add("fade-out");
 			footer?.classList.add("fade-out");
 			intoBtn.classList.add("fade-out");
 
-			hero!.style.height = "100vh";
+			if (hero) hero.style.height = "100vh";
 
 			const href = "/2026/info/academia-sinica";
 
@@ -268,6 +265,7 @@ function getActivityImage(file: string): ImageMetadata {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		margin: 0;
 	}
 
 	.hero-button {
@@ -444,6 +442,10 @@ function getActivityImage(file: string): ImageMetadata {
 		line-height: 0;
 	}
 
+	.modal-x:hover {
+		background: rgba(255, 255, 255, 0.1);
+	}
+
 	.modal-body {
 		padding: 1rem 1.25rem 1.25rem;
 		display: flex;
@@ -617,11 +619,7 @@ function getActivityImage(file: string): ImageMetadata {
 	}
 
 	.hero-bg :global(img.hero-bg-img) {
-		transition: transform 900ms ease;
+		transition: transform 700ms ease;
 		will-change: transform;
-	}
-
-	.hero.hero-fullscreen .hero-bg :global(img.hero-bg-img) {
-		transform: scale(1.06);
 	}
 </style>
