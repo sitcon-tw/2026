@@ -31,7 +31,7 @@ function getActivityImage(file: string): ImageMetadata {
 			<button class="hero-button" data-open-transport>{info.mainButton}</button>
 		</div>
 
-		<button class="hero-into-button">{info.intoAcademiaSinica}</button>
+		<button class="hero-into-button" id="into-academia-sinica">{info.intoAcademiaSinica}</button>
 		<div class="hero-bg" aria-hidden="true">
 			<Image src={academiaSinica} alt="" class="hero-bg-img" />
 		</div>
@@ -67,6 +67,7 @@ function getActivityImage(file: string): ImageMetadata {
 			}
 		</div>
 	</main>
+
 	<dialog class="modal" data-transport-dialog>
 		<div class="modal-card">
 			<div class="modal-header">
@@ -75,12 +76,15 @@ function getActivityImage(file: string): ImageMetadata {
 			</div>
 
 			<div class="modal-body">
-				<div class="modal-button-container">
-					<button class="modal-button">大會接駁車</button>
-					<button class="modal-button">大眾運輸工具</button>
-					<button class="modal-button">自行開車 / 機車</button>
+				<div class="modal-button-container" role="tablist" aria-label="交通方式">
+					<button class="modal-button is-active" type="button" data-transport-tab="shuttle" role="tab" aria-selected="true">大會接駁車</button>
+
+					<button class="modal-button" type="button" data-transport-tab="public" role="tab" aria-selected="false">大眾運輸工具</button>
+
+					<button class="modal-button" type="button" data-transport-tab="drive" role="tab" aria-selected="false">自行開車 / 機車</button>
 				</div>
-				<section class="transport-panel">
+
+				<section class="transport-panel" data-transport-panel="shuttle" role="tabpanel">
 					<div class="transport-route">
 						<div class="transport-route-left">捷運南港展覽館站 2A 出口</div>
 
@@ -95,6 +99,18 @@ function getActivityImage(file: string): ImageMetadata {
 						<p>班距：15~20 分鐘一班</p>
 					</div>
 				</section>
+
+				<section class="transport-panel" data-transport-panel="public" role="tabpanel" hidden>
+					<div class="transport-card">
+						<p>你覺得我會知道大眾運輸要怎麼走嗎</p>
+					</div>
+				</section>
+
+				<section class="transport-panel" data-transport-panel="drive" role="tabpanel" hidden>
+					<div class="transport-card">
+						<p>我看起來像是有車的人嗎</p>
+					</div>
+				</section>
 			</div>
 		</div>
 	</dialog>
@@ -104,28 +120,97 @@ function getActivityImage(file: string): ImageMetadata {
 
 <script>
 	window.addEventListener("DOMContentLoaded", () => {
+		// Modal logic
 		const dialog = document.querySelector<HTMLDialogElement>("[data-transport-dialog]");
-		const openButtons = document.querySelectorAll<HTMLButtonElement>("[data-open-transport]");
-		const closeButtons = document.querySelectorAll<HTMLElement>("[data-close-transport]");
+		const openButton = document.querySelector<HTMLButtonElement>("[data-open-transport]");
+		const closeButton = document.querySelector<HTMLButtonElement>("[data-close-transport]");
 
-		if (!dialog) return;
+		if (!dialog || !openButton || !closeButton) return;
 
-		openButtons.forEach(btn => {
+		const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-transport-tab]"));
+		const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-transport-panel]"));
+
+		function activateTab(name: string) {
+			tabs.forEach(btn => {
+				const active = btn.getAttribute("data-transport-tab") === name;
+				btn.classList.toggle("is-active", active);
+				btn.setAttribute("aria-selected", active ? "true" : "false");
+			});
+
+			panels.forEach(panel => {
+				const active = panel.getAttribute("data-transport-panel") === name;
+				if (active) panel.removeAttribute("hidden");
+				else panel.setAttribute("hidden", "");
+			});
+		}
+
+		openButton.addEventListener("click", () => {
+			if (typeof dialog.showModal === "function") dialog.showModal();
+			else dialog.setAttribute("open", "");
+
+			activateTab("shuttle");
+		});
+
+		closeButton.addEventListener("click", () => dialog.close());
+
+		dialog.addEventListener("click", (e: MouseEvent) => {
+			if (e.target === dialog) dialog.close();
+		});
+
+		tabs.forEach(btn => {
 			btn.addEventListener("click", () => {
-				if (typeof dialog.showModal === "function") dialog.showModal();
-				else dialog.setAttribute("open", "");
+				const name = btn.getAttribute("data-transport-tab");
+				if (name) activateTab(name);
 			});
 		});
 
-		closeButtons.forEach(btn => {
-			btn.addEventListener("click", () => dialog.close());
-		});
+		// Into Academia Sinica button logic
+		const intoBtn = document.getElementById("into-academia-sinica");
+		const hero = document.querySelector<HTMLElement>("header.hero");
+		const heroContent = hero?.querySelector<HTMLElement>(".hero-content");
+		const main = document.querySelector<HTMLElement>("main.activities");
+		const footer = document.querySelector<HTMLElement>("footer");
 
-		dialog.addEventListener("click", (e: MouseEvent) => {
-			const rect = dialog.getBoundingClientRect();
-			const inside = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+		let exiting = false;
 
-			if (!inside) dialog.close();
+		intoBtn?.addEventListener("click", () => {
+			if (exiting) return;
+			exiting = true;
+
+			const html = document.documentElement;
+			html.style.scrollBehavior = "auto";
+
+			const se = document.scrollingElement as HTMLElement | null;
+			if (se) se.scrollTop = 0;
+			document.documentElement.scrollTop = 0;
+			document.body.scrollTop = 0;
+			window.scrollTo(0, 0);
+
+			const scrollY = window.scrollY;
+			document.body.style.position = "fixed";
+			document.body.style.top = `-${scrollY}px`;
+			document.body.classList.add("page-lock");
+
+			if (hero) {
+				const rect = hero.getBoundingClientRect();
+				hero.style.height = `${rect.height}px`;
+				hero.style.paddingTop = getComputedStyle(hero).paddingTop;
+				hero.style.paddingBottom = getComputedStyle(hero).paddingBottom;
+			}
+
+			document.body.classList.add("page-lock");
+			heroContent?.classList.add("fade-out");
+			main?.classList.add("fade-out");
+			footer?.classList.add("fade-out");
+			intoBtn.classList.add("fade-out");
+
+			hero!.style.height = "100vh";
+
+			const href = "/2026/info/academia-sinica";
+
+			setTimeout(() => {
+				window.location.href = href;
+			}, 300);
 		});
 	});
 </script>
@@ -274,8 +359,8 @@ function getActivityImage(file: string): ImageMetadata {
 		margin-bottom: 1.125rem;
 	}
 
-	/* Modal */
 	.modal {
+		display: none;
 		border: none;
 		padding: 0;
 		background: transparent;
@@ -285,7 +370,9 @@ function getActivityImage(file: string): ImageMetadata {
 		max-width: none;
 		height: 100%;
 		max-height: none;
+	}
 
+	.modal[open] {
 		display: grid;
 		place-items: center;
 	}
@@ -319,6 +406,12 @@ function getActivityImage(file: string): ImageMetadata {
 		padding: 0.625rem 1.75rem;
 		color: #12121280;
 		font-weight: bold;
+	}
+
+	.modal-button.is-active {
+		filter: brightness(1.05);
+		outline: 2px solid rgba(255, 255, 255, 0.35);
+		outline-offset: 2px;
 	}
 
 	.modal-button-container {
@@ -362,6 +455,10 @@ function getActivityImage(file: string): ImageMetadata {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+	}
+
+	.transport-panel[hidden] {
+		display: none !important;
 	}
 
 	.transport-route {
@@ -470,6 +567,7 @@ function getActivityImage(file: string): ImageMetadata {
 		}
 	}
 
+	/* For modal */
 	@media (max-width: 730px) {
 		.modal-card {
 			padding: 0.5rem;
@@ -486,5 +584,44 @@ function getActivityImage(file: string): ImageMetadata {
 		.modal-button {
 			width: 100%;
 		}
+	}
+
+	.page-lock {
+		overflow: hidden;
+	}
+
+	.hero {
+		transition:
+			height 700ms ease,
+			padding-top 700ms ease,
+			padding-bottom 700ms ease;
+		will-change: height, padding-top, padding-bottom;
+	}
+
+	.fade-out {
+		opacity: 0;
+		transform: translateY(10px);
+		transition:
+			opacity 700ms ease,
+			transform 700ms ease;
+		pointer-events: none;
+	}
+
+	.hero-content,
+	.activities,
+	footer,
+	.hero-into-button {
+		transition:
+			opacity 700ms ease,
+			transform 700ms ease;
+	}
+
+	.hero-bg :global(img.hero-bg-img) {
+		transition: transform 900ms ease;
+		will-change: transform;
+	}
+
+	.hero.hero-fullscreen .hero-bg :global(img.hero-bg-img) {
+		transform: scale(1.06);
 	}
 </style>

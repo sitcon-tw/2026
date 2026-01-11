@@ -1,0 +1,436 @@
+---
+import Layout from "@/layout/Layout.astro";
+import { Move, ChevronUp } from "@lucide/astro";
+
+---
+
+<style>
+	:global(html, body) {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		overflow: hidden;
+	}
+
+	canvas {
+		width: 100vw;
+		height: 100vh;
+		display: block;
+		touch-action: none;
+	}
+
+	#instructions {
+		position: fixed;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background: rgba(0, 0, 0, 0.55);
+		color: white;
+		text-align: center;
+		font-family:
+			ui-sans-serif,
+			system-ui,
+			-apple-system,
+			Segoe UI,
+			Roboto,
+			"Noto Sans",
+			Arial;
+		cursor: pointer;
+		user-select: none;
+		z-index: 10;
+	}
+
+	#instructions span {
+		font-size: 40px;
+		font-weight: bold;
+	}
+	
+	#touchControls {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		z-index: 9;
+		display: none;
+	}
+
+	.control {
+		position: absolute;
+		pointer-events: auto;
+		touch-action: none;
+		border-radius: 9999px;
+		background: rgba(0, 0, 0, 0.25);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(4px);
+		display: grid;
+		place-items: center;
+	}
+
+	#joy {
+		left: 18px;
+		bottom: 18px;
+		width: 150px;
+		height: 150px;
+	}
+
+	#joy .base {
+		position: absolute;
+		inset: 0;
+		border-radius: 9999px;
+		background: rgba(0, 0, 0, 0.12);
+	}
+
+	#joyKnob {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 70px;
+		height: 70px;
+		transform: translate(-50%, -50%);
+		border-radius: 9999px;
+		background: rgba(255, 255, 255, 0.18);
+		border: 1px solid rgba(255, 255, 255, 0.28);
+		display: grid;
+		place-items: center;
+	}
+
+	#jump {
+		right: 18px;
+		bottom: 26px;
+		width: 96px;
+		height: 96px;
+	}
+
+	.lucide {
+		width: 34px;
+		height: 34px;
+		stroke: white;
+		stroke-width: 2;
+		fill: none;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		opacity: 0.95;
+	}
+</style>
+
+<Layout>
+	<div id="instructions">
+		<span>點擊螢幕開始逛中研院！</span>
+	</div>
+
+	<div id="touchControls">
+		<div class="control" id="joy" aria-label="Move joystick">
+			<div class="base"></div>
+			<div id="joyKnob">
+				<Move class="lucide" />
+			</div>
+		</div>
+
+		<button class="control" id="jump" aria-label="Jump">
+			<ChevronUp class="lucide" />
+		</button>
+	</div>
+
+	<canvas id="c"></canvas>
+</Layout>
+
+<script>
+	import * as THREE from "three";
+	import * as CANNON from "cannon-es";
+
+	// DOM
+	const canvas = document.getElementById("c");
+	const instructions = document.getElementById("instructions");
+	const touchControls = document.getElementById("touchControls");
+	const joy = document.getElementById("joy");
+	const joyKnob = document.getElementById("joyKnob");
+	const jumpBtn = document.getElementById("jump");
+	if (!canvas || !instructions || !touchControls || !joy || !joyKnob || !jumpBtn) throw new Error("Missing DOM");
+
+	const isTouchDevice = (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) || navigator.maxTouchPoints > 0;
+
+	// THREE
+	const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+	const scene = new THREE.Scene();
+	scene.background = new THREE.Color(0x87ceeb);
+	scene.fog = new THREE.Fog(0x87ceeb, 20, 160);
+
+	const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 500);
+	camera.position.set(0, 1, 5);
+
+	scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.0));
+	const sun = new THREE.DirectionalLight(0xffffff, 1.0);
+	sun.position.set(10, 20, 10);
+	scene.add(sun);
+
+	const floor = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshStandardMaterial({ color: 0x3a7d44 }));
+	floor.rotation.x = -Math.PI / 2;
+	scene.add(floor);
+
+	const boxMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: 0xffcc00 }));
+	scene.add(boxMesh);
+
+	// CANNON
+	const world = new CANNON.World({ gravity: new CANNON.Vec3(0, -20, 0) });
+	world.allowSleep = true;
+
+	const matPlayer = new CANNON.Material("player");
+	const matGround = new CANNON.Material("ground");
+	const matBox = new CANNON.Material("box");
+
+	world.addContactMaterial(new CANNON.ContactMaterial(matPlayer, matGround, { friction: 0.0, restitution: 0.0 }));
+	world.addContactMaterial(new CANNON.ContactMaterial(matPlayer, matBox, { friction: 0.0, restitution: 0.0 }));
+
+	const groundBody = new CANNON.Body({ type: CANNON.Body.STATIC, material: matGround });
+	groundBody.addShape(new CANNON.Plane());
+	groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+	world.addBody(groundBody);
+
+	const boxBody = new CANNON.Body({ mass: 0, material: matBox, position: new CANNON.Vec3(2, 1, 0) });
+	boxBody.addShape(new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 0.5)));
+	world.addBody(boxBody);
+
+	// Player setting
+	const playerRadius = 0.5;
+	const playerBody = new CANNON.Body({
+		mass: 5,
+		material: matPlayer,
+		position: new CANNON.Vec3(0, 3, 0),
+		shape: new CANNON.Sphere(playerRadius)
+	});
+	playerBody.allowSleep = false;
+	world.addBody(playerBody);
+
+	// SEt to zero because we dont want to let user see the ball
+	const playerMesh = new THREE.Mesh(new THREE.SphereGeometry(0, 24, 24), new THREE.MeshStandardMaterial({ color: 0xddddff }));
+	scene.add(playerMesh);
+
+	let enabled = false;
+	let yaw = 0;
+	let pitch = 0;
+	const pitchLimit = Math.PI / 2 - 0.05;
+
+	document.addEventListener("mousemove", e => {
+		if (document.pointerLockElement !== canvas) return;
+		const sens = 0.002;
+		yaw -= e.movementX * sens;
+		pitch -= e.movementY * sens;
+		pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
+	});
+
+	let lookPointerId: number | null = null;
+	let lastLookX = 0;
+	let lastLookY = 0;
+	const touchLookSens = 0.005;
+
+	function isInside(el: Element, x: number, y: number) {
+		const r = el.getBoundingClientRect();
+		return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+	}
+
+	canvas.addEventListener("pointerdown", e => {
+		if (!isTouchDevice) return;
+		if (isInside(joy, e.clientX, e.clientY) || isInside(jumpBtn, e.clientX, e.clientY)) return;
+		lookPointerId = e.pointerId;
+		lastLookX = e.clientX;
+		lastLookY = e.clientY;
+		canvas.setPointerCapture(e.pointerId);
+	});
+
+	canvas.addEventListener("pointermove", e => {
+		if (!isTouchDevice) return;
+		if (lookPointerId !== e.pointerId) return;
+
+		const dx = e.clientX - lastLookX;
+		const dy = e.clientY - lastLookY;
+		lastLookX = e.clientX;
+		lastLookY = e.clientY;
+
+		yaw -= dx * touchLookSens;
+		pitch -= dy * touchLookSens;
+		pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
+	});
+
+	canvas.addEventListener("pointerup", e => {
+		if (!isTouchDevice) return;
+		if (lookPointerId !== e.pointerId) return;
+		lookPointerId = null;
+	});
+
+	// Start
+	instructions.addEventListener("click", async () => {
+		if (isTouchDevice) {
+			enabled = true;
+			instructions.style.display = "none";
+			touchControls.style.display = "block";
+			return;
+		}
+		await canvas.requestPointerLock();
+	});
+
+	document.addEventListener("pointerlockchange", () => {
+		if (isTouchDevice) return;
+		enabled = document.pointerLockElement === canvas;
+		instructions.style.display = enabled ? "none" : "flex";
+	});
+
+	const keys = { w: false, a: false, s: false, d: false, space: false };
+	addEventListener("keydown", e => {
+		if (e.code === "KeyW") keys.w = true;
+		if (e.code === "KeyA") keys.a = true;
+		if (e.code === "KeyS") keys.s = true;
+		if (e.code === "KeyD") keys.d = true;
+		if (e.code === "Space") keys.space = true;
+	});
+	addEventListener("keyup", e => {
+		if (e.code === "KeyW") keys.w = false;
+		if (e.code === "KeyA") keys.a = false;
+		if (e.code === "KeyS") keys.s = false;
+		if (e.code === "KeyD") keys.d = false;
+		if (e.code === "Space") keys.space = false;
+	});
+
+	let joyActiveId: number | null = null;
+	let joyCenterX = 0;
+	let joyCenterY = 0;
+	let joyX = 0;
+	let joyY = 0;
+	const joyMax = 46;
+
+	function setKnob(dx: number, dy: number) {
+		joyKnob!.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+	}
+
+	function setJoyFromDelta(dx: number, dy: number) {
+		const len = Math.hypot(dx, dy) || 1;
+		const clamped = Math.min(len, joyMax);
+		const nx = (dx / len) * clamped;
+		const ny = (dy / len) * clamped;
+		setKnob(nx, ny);
+		joyX = nx / joyMax;
+		joyY = ny / joyMax;
+	}
+
+	function resetJoy() {
+		joyActiveId = null;
+		joyX = 0;
+		joyY = 0;
+		setKnob(0, 0);
+	}
+
+	joy.addEventListener("pointerdown", e => {
+		if (!isTouchDevice) return;
+		joyActiveId = e.pointerId;
+		const r = joy.getBoundingClientRect();
+		joyCenterX = r.left + r.width / 2;
+		joyCenterY = r.top + r.height / 2;
+		joy.setPointerCapture(e.pointerId);
+		setJoyFromDelta(e.clientX - joyCenterX, e.clientY - joyCenterY);
+	});
+
+	joy.addEventListener("pointermove", e => {
+		if (!isTouchDevice) return;
+		if (joyActiveId !== e.pointerId) return;
+		setJoyFromDelta(e.clientX - joyCenterX, e.clientY - joyCenterY);
+	});
+
+	joy.addEventListener("pointerup", e => {
+		if (!isTouchDevice) return;
+		if (joyActiveId !== e.pointerId) return;
+		resetJoy();
+	});
+	joy.addEventListener("pointercancel", resetJoy);
+
+	let jumpRequested = false;
+	jumpBtn.addEventListener("pointerdown", e => {
+		if (!isTouchDevice) return;
+		jumpRequested = true;
+		jumpBtn.setPointerCapture(e.pointerId);
+	});
+
+	function isGrounded() {
+		const from = playerBody.position.clone();
+		const to = playerBody.position.clone();
+		to.y -= playerRadius + 0.12;
+		const ray = new CANNON.Ray(from, to);
+		const result = new CANNON.RaycastResult();
+		ray.intersectWorld(world, { skipBackfaces: true, result });
+		return result.hasHit;
+	}
+
+	function resize() {
+		const w = window.innerWidth;
+		const h = window.innerHeight;
+		renderer.setSize(w, h, false);
+		camera.aspect = w / h;
+		camera.updateProjectionMatrix();
+	}
+	addEventListener("resize", resize);
+	resize();
+
+	// Loop
+	const clock = new THREE.Clock();
+	const fixedTimeStep = 1 / 60;
+	const maxSubSteps = 5;
+
+	function stepPlayer() {
+		if (!enabled) return;
+
+		const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
+		const right = new THREE.Vector3(1, 0, 0).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
+
+		const move = new THREE.Vector3();
+
+		if (!isTouchDevice) {
+			if (keys.w) move.add(forward);
+			if (keys.s) move.sub(forward);
+			if (keys.d) move.add(right);
+			if (keys.a) move.sub(right);
+		} else {
+			move.addScaledVector(forward, -joyY);
+			move.addScaledVector(right, joyX);
+		}
+
+		if (move.lengthSq() > 0) move.normalize();
+
+		const grounded = isGrounded();
+		const speed = grounded ? 8 : 6;
+
+		playerBody.velocity.x = move.x * speed;
+		playerBody.velocity.z = move.z * speed;
+
+		const jumpPressed = !isTouchDevice ? keys.space : jumpRequested;
+		if (jumpPressed && grounded) playerBody.velocity.y = 7;
+		jumpRequested = false;
+
+		camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, "YXZ"));
+	}
+
+	function syncVisuals() {
+		playerMesh.position.set(playerBody.position.x, playerBody.position.y, playerBody.position.z);
+
+		const eye = 1;
+		camera.position.set(playerBody.position.x, playerBody.position.y + eye, playerBody.position.z);
+
+		boxMesh.position.set(boxBody.position.x, boxBody.position.y, boxBody.position.z);
+		boxMesh.quaternion.set(boxBody.quaternion.x, boxBody.quaternion.y, boxBody.quaternion.z, boxBody.quaternion.w);
+	}
+
+	function animate() {
+		requestAnimationFrame(animate);
+
+		const dt = Math.min(clock.getDelta(), 0.033);
+		stepPlayer();
+
+		if (enabled) world.step(fixedTimeStep, dt, maxSubSteps);
+
+		syncVisuals();
+		renderer.render(scene, camera);
+	}
+	animate();
+
+	if (isTouchDevice) touchControls.style.display = "none";
+</script>
