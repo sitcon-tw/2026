@@ -3,6 +3,7 @@ import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
 import MemberInfo from "@/components/page/MemberInfo.astro";
 import ExplorePerson from "@/components/page/ExplorePerson.astro";
+import { List } from "@lucide/astro";
 
 const team_data = [
 	{
@@ -174,7 +175,7 @@ const team_data = [
 		<div class="anchor">
 			<a class="anchor-switch anchor-btn" href="/2026/team/" aria-label="切換至列表模式">
 				<div class="anchor-box anchor-icon">
-					<img src="/2026/img/list_icon.svg" alt="switch" height={18} width={18} />
+					<List size={18} />
 				</div>
 				<div class="anchor-box">
 					<span class="anchor-text-span">列表模式</span>
