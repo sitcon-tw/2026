@@ -220,6 +220,10 @@ const team_data = [
 	document.querySelectorAll('[id^="team-"]').forEach(section => {
 		observer.observe(section);
 	});
+
+	window.addEventListener("beforeunload", () => {
+		observer.disconnect();
+	});
 </script>
 
 <style>
