@@ -12,4 +12,6 @@ declare module "@lucide/astro" {
 	export const ChevronRight: any;
 	export const Menu: any;
 	export const Move: any;
+	export const Grip: any;
+	export const List: any;
 }

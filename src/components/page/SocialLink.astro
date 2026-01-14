@@ -1,0 +1,63 @@
+---
+const { url } = Astro.props;
+
+const KNOWN_SITES: Record<string, string> = {
+	"instagram.com": "Instagram",
+	"github.com": "GitHub",
+	"facebook.com": "Facebook",
+	"youtube.com": "YouTube",
+	"twitter.com": "Twitter",
+	"x.com": "X",
+	"linkedin.com": "LinkedIn",
+	"plurk.com": "Plurk",
+	"medium.com": "Medium"
+};
+
+let displayText = "";
+
+try {
+	const urlObj = new URL(url);
+	const hostname = urlObj.hostname;
+
+	let siteName = "";
+	for (const [domain, name] of Object.entries(KNOWN_SITES)) {
+		if (hostname === domain || hostname.endsWith("." + domain)) {
+			siteName = name;
+			break;
+		}
+	}
+
+	displayText = siteName ? `前往 ${siteName}` : `前往 ${hostname.replace(/^www\./, "")}`;
+} catch (e) {
+	displayText = `前往 ${url}`;
+}
+---
+
+<button data-url={url}>
+	{displayText}
+</button>
+
+<script>
+	const buttons = document.querySelectorAll("button[data-url]");
+
+	buttons.forEach(btn => {
+		btn.addEventListener("click", () => {
+			const url = btn.getAttribute("data-url");
+			if (url) window.open(url, "_blank");
+		});
+	});
+</script>
+
+<style>
+	button {
+		margin-top: 3rem;
+		padding: 0.5rem 1rem;
+		background-color: #000;
+		color: #fff;
+		border: none;
+		border-radius: 0.3rem;
+		cursor: pointer;
+		font-size: 1rem;
+		font-weight: 700;
+	}
+</style>
