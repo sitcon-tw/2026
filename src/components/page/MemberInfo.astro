@@ -1,0 +1,285 @@
+---
+const { id = "member-info-modal" } = Astro.props;
+---
+
+<div id={id} class="member-info" data-lenis-prevent>
+	<div class="header">
+		<button class="close-btn" aria-label="關閉">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="none">
+				<path d="M19 2L2 19M2 2L19 19" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+			</svg>
+		</button>
+	</div>
+	<h1 id="member-name"></h1>
+	<h2 id="member-position"></h2>
+	<div class="avatar">
+		<img id="member-avatar-img" class="avatar-img" src="" alt="" />
+	</div>
+	<p id="member-description"></p>
+	<div class="social">
+		<button id="member-social-btn" data-url="">Link</button>
+	</div>
+</div>
+
+<script>
+	const KNOWN_SITES = {
+		"instagram.com": "Instagram",
+		"github.com": "GitHub",
+		"facebook.com": "Facebook",
+		"youtube.com": "YouTube",
+		"twitter.com": "Twitter",
+		"x.com": "X",
+		"linkedin.com": "LinkedIn",
+		"plurk.com": "Plurk",
+		"medium.com": "Medium"
+	};
+
+	function getSocialText(url: string) {
+		try {
+			const urlObj = new URL(url);
+			const hostname = urlObj.hostname;
+			let siteName = "";
+			for (const [domain, name] of Object.entries(KNOWN_SITES)) {
+				if (hostname === domain || hostname.endsWith("." + domain)) {
+					siteName = name;
+					break;
+				}
+			}
+			return siteName ? `前往 ${siteName}` : `前往 ${hostname.replace(/^www\./, "")}`;
+		} catch (e) {
+			return `前往 ${url}`;
+		}
+	}
+
+	// Unified Click Event Listener
+	document.addEventListener("click", e => {
+		const target = e.target as HTMLElement;
+
+		// Open modal logic
+		const trigger = target.closest(".person-trigger") as HTMLElement | null;
+		if (trigger) {
+			const { name, position, avatar, social, team, description } = trigger.dataset;
+
+			const modal = document.getElementById("member-info-modal");
+			if (modal) {
+				// Update Text
+				const nameEl = modal.querySelector("#member-name");
+				const posEl = modal.querySelector("#member-position");
+				const descEl = modal.querySelector("#member-description");
+
+				if (nameEl) nameEl.textContent = name || "";
+				if (posEl) posEl.textContent = `${team} ● ${position}` || "";
+				if (descEl) descEl.textContent = description || "";
+
+				// Update Avatar
+				const avatarImg = modal.querySelector("#member-avatar-img") as HTMLImageElement | null;
+				if (avatarImg) {
+					avatarImg.src = avatar || "";
+					avatarImg.alt = `${name} avatar`;
+					avatarImg.setAttribute("object-fit", "contain");
+				}
+
+				// Update Social Button
+				const socialBtn = modal.querySelector("#member-social-btn") as HTMLElement | null;
+				if (socialBtn) {
+					socialBtn.setAttribute("data-url", social || "");
+					socialBtn.textContent = getSocialText(social || "");
+					socialBtn.style.display = social ? "inline-block" : "none";
+					socialBtn.setAttribute("aria-label", socialBtn.textContent || "");
+				}
+
+				modal.classList.add("show");
+			}
+			return;
+		}
+
+		// Close modal logic
+		const closeBtn = target.closest(".member-info .close-btn");
+		if (closeBtn) {
+			const modal = closeBtn.closest(".member-info") as HTMLElement | null;
+			if (modal) {
+				modal.classList.remove("show");
+			}
+			return;
+		}
+
+		// Social Button Click Logic
+		const socialBtn = target.closest("#member-social-btn");
+		if (socialBtn) {
+			const url = socialBtn.getAttribute("data-url");
+			if (url) window.open(url, "_blank");
+			return;
+		}
+	});
+</script>
+
+<style>
+	.member-info {
+		color: black;
+		background-color: white;
+		width: 40rem;
+		max-width: 40vw;
+		height: 100vh;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		padding: 4rem;
+		box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+		z-index: 101;
+		overflow-y: auto;
+
+		/* Animation styles */
+		transform: translateX(-105%);
+		transition:
+			transform 0.3s ease,
+			visibility 0s 0.3s;
+		visibility: hidden;
+	}
+
+	.member-info.show {
+		transform: translateX(0);
+		visibility: visible;
+		transition:
+			transform 0.4s ease,
+			visibility 0s 0s;
+	}
+
+	.header {
+		padding-bottom: 1.5rem;
+	}
+
+	.close-btn {
+		border-radius: 62rem;
+		justify-content: center;
+		align-items: center;
+		width: 3rem;
+		height: 3rem;
+		position: absolute;
+		top: 3rem;
+		right: 3rem;
+		font-size: 2rem;
+		font-weight: 700;
+		background-color: black;
+		color: white;
+		cursor: pointer;
+		display: flex;
+		border: none;
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+
+	.close-btn:hover {
+		transform: translateY(-0.25rem);
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+	}
+
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+
+	h1 {
+		font-family: "GenKiMinTW";
+		font-size: 5.25rem;
+		font-weight: 700;
+	}
+
+	h2 {
+		font-family: "GenKiMinTW";
+		font-size: 1rem;
+		font-weight: 700;
+		padding: 1.5rem 0;
+		line-height: 1.5;
+	}
+
+	.avatar,
+	.social {
+		justify-self: end;
+	}
+
+	.social {
+		margin-top: 3rem;
+		align-self: flex-end;
+	}
+
+	#member-social-btn {
+		padding: 0.5rem 1rem;
+		background-color: #000;
+		color: #fff;
+		border: none;
+		border-radius: 0.3rem;
+		cursor: pointer;
+		font-size: 1rem;
+		font-weight: 700;
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+
+	#member-social-btn:hover {
+		transform: translateY(-0.25rem);
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+	}
+
+	p {
+		width: 20rem;
+		padding-top: 3.75rem;
+		font-size: 1rem;
+		font-weight: 700;
+		line-height: 1.5;
+		word-break: break-word;
+	}
+
+	.avatar-img {
+		width: 10rem;
+		height: 10rem;
+		border-radius: 1rem;
+		background-color: #fff;
+		object-fit: contain;
+	}
+
+	@media (max-width: 64rem) {
+		.close-btn {
+			top: 2rem;
+			right: 2rem;
+			width: 2rem;
+			height: 2rem;
+			font-size: 1.5rem;
+		}
+
+		svg {
+			width: 1rem;
+			height: 1rem;
+		}
+
+		.member-info {
+			min-width: 90vw;
+			min-height: 90vh;
+			max-height: 90vh;
+			align-self: center;
+			justify-self: center;
+			position: fixed;
+			padding: 2.5rem;
+		}
+
+		.header {
+			padding-bottom: 2.5rem;
+		}
+
+		h1 {
+			font-size: 3.5rem;
+		}
+
+		.avatar,
+		.social {
+			justify-self: center;
+		}
+
+		p {
+			width: 100%;
+		}
+	}
+</style>

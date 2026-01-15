@@ -1,0 +1,49 @@
+---
+import GridPerson from "./GridPerson.astro";
+const { index, member, name, description } = Astro.props;
+---
+
+<div class="team" id={`team-${index}`}>
+	<h2 class="title">{name}</h2>
+	<p class="text">{description}</p>
+
+	<div class="person-group">
+		{
+			member.map((person: { name: string; position: string; avatar_url: string; social_link?: string; description?: string }) => (
+				<GridPerson team={name} name={person.name} position={person.position} avatar_url={person.avatar_url} social_link={person.social_link} description={person.description} />
+			))
+		}
+	</div>
+</div>
+
+<style>
+	.title {
+		font-size: 3rem;
+		font-weight: 700;
+		font-family: "GenKiMinTW";
+		margin-bottom: 3rem;
+	}
+
+	.text {
+		font-size: 1rem;
+		font-weight: 700;
+		max-width: 34rem;
+	}
+
+	.person-group {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: start;
+	}
+
+	@media (max-width: 64rem) {
+		.person-group {
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.team {
+			margin-bottom: 3.5rem;
+		}
+	}
+</style>

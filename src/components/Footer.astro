@@ -1,16 +1,20 @@
 ---
 import zhHant from "@/i18n/zh-Hant.json";
+
+const socialLinks = [
+	{ name: "Facebook", url: "fb" },
+	{ name: "X", url: "x" },
+	{ name: "Youtube", url: "youtube" },
+	{ name: "Instagram", url: "ig" },
+	{ name: "Flickr", url: "flickr" },
+	{ name: "Telegram", url: "telegram" }
+];
 ---
 
 <footer>
 	<div class="social-wrapper">
 		<div class="social">
-			<a href="">FACEBOOK</a>
-			<a href="">X</a>
-			<a href="">YOUTUBE</a>
-			<a href="">INSTAGRAM</a>
-			<a href="">FLICKR</a>
-			<a href="">TELEGRAM</a>
+			{socialLinks.map(link => <a href={`https://sitcon.org/${link.url}`}>{link.name}</a>)}
 		</div>
 	</div>
 	<div class="info">
@@ -36,6 +40,7 @@ import zhHant from "@/i18n/zh-Hant.json";
 		color: #000;
 		overflow-y: hidden;
 	}
+
 	.social-wrapper {
 		background-color: #f1b12e;
 	}
@@ -54,6 +59,7 @@ import zhHant from "@/i18n/zh-Hant.json";
 
 	.social a {
 		transition: all 0.3s ease;
+		text-transform: uppercase;
 	}
 
 	.social a:hover {

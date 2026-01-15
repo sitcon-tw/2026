@@ -119,6 +119,8 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 				--white: #ffffff;
 				--black: #000000;
 				--coffee: #3c2d0e;
+				--silence-white: #f2f2f2;
+				--copper: #431b0a;
 			}
 
 			* {
@@ -214,14 +216,28 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 		<!-- End Google Tag Manager (noscript) -->
 		<script>
 			import Lenis from "lenis";
-			new Lenis({
-				autoRaf: true,
-				anchors: true
-			});
+			let lenis: InstanceType<typeof Lenis> | null = null;
 
-			// document.addEventListener("astro:page-load", () => {
-			// 	if (!window.location.href.includes("#")) lenis.scrollTo(0, { immediate: true });
-			// });
+			const initLenis = () => {
+				const pathname = window.location.pathname;
+				if (/(^|\/)team\/explore(\/|$)/.test(pathname)) {
+					if (lenis) {
+						lenis.destroy();
+						lenis = null;
+					}
+				} else {
+					if (!lenis) {
+						lenis = new Lenis({
+							autoRaf: true,
+							anchors: true
+						});
+					}
+				}
+			};
+
+			initLenis();
+
+			document.addEventListener("astro:page-load", initLenis);
 		</script>
 	</body>
 </html>
