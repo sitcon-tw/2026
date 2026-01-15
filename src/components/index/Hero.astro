@@ -53,110 +53,65 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 <script>
 	const canvas = document.getElementById("bg-canvas") as HTMLCanvasElement;
 	if (canvas) {
-		const ctx = canvas.getContext("2d");
-
-		let width: number, height: number;
-		let lines: Line[] = [];
-		const mouse = { x: -1000, y: -1000 };
-
-		const config = {
-			lineCount: 8,
-			waveAmplitude: 40,
-			waveLength: 0.002,
-			speed: 0.003,
-			mouseRadius: 200,
-			mouseForce: 100
-		};
-
-		interface Point {
-			x: number;
-			y: number;
-			basePathY: number;
+		function createMetalMaterial(color: any) {
+			return new THREE.MeshPhysicalMaterial({
+				color: color,
+				metalness: 0.5, // Lower metalness to let color be the subject
+				roughness: 0.2, // Smooth surface for clear reflections
+				reflectivity: 0.8,
+				clearcoat: 1.0, // High clearcoat for the "metallic" shine overlay
+				clearcoatRoughness: 0.05,
+				envMapIntensity: 1.2
+			});
 		}
 
-		class Line {
-			yIndex: number;
-			totalLines: number;
-			baseY: number = 0;
-			color: string = "";
-			width: number = 1;
-			phase: number = 0;
-			tilt: number = 0.2;
-			points: Point[] = [];
+		const svgLoader = new SVGLoader();
+		const textureLoader = new THREE.TextureLoader();
 
-			constructor(yIndex: number, totalLines: number) {
-				this.yIndex = yIndex;
-				this.totalLines = totalLines;
-				this.reset();
-			}
+		// round-metal.svg
+		svgLoader.load("/2026/img/Hero/round-metal.svg", data => {
+			const shapes: THREE.Shape[] = [];
+			data.paths.forEach(path => shapes.push(...SVGLoader.createShapes(path)));
+			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 8, bevelEnabled: true });
+			geometry.center();
+			geometry.rotateX(Math.PI); // Correct SVG flip
 
-			reset() {
-				if (!height) return;
-				this.baseY = (height / this.totalLines) * this.yIndex + height * 0.1;
-				this.color = `rgba(255, 255, 255, ${0.15 + Math.random() * 0.2})`;
-				this.width = 1 + Math.random() * 1.5;
-				this.phase = Math.random() * Math.PI * 2;
-				this.tilt = 0.2;
+			const baseColor = data.paths[0]?.color || 0xdaa520;
+			const material = createMetalMaterial(baseColor);
 
-				this.points = [];
-				const gap = 40;
-				for (let x = 0; x <= width + gap; x += gap) {
-					this.points.push({ x: x, y: this.baseY + x * this.tilt, basePathY: 0 });
-				}
-			}
+			// Orbiting Background (now draggable)
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.03, 0.07], [0.0001, 0.0002]);
+		});
 
-			update(time: number) {
-				for (let i = 0; i < this.points.length; i++) {
-					const p = this.points[i];
+		// stone-metal.svg
+		svgLoader.load("/2026/img/Hero/stone-metal.svg", data => {
+			const shapes: THREE.Shape[] = [];
+			data.paths.forEach(path => shapes.push(...SVGLoader.createShapes(path)));
+			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 10, bevelEnabled: true });
+			geometry.center();
+			geometry.rotateX(Math.PI);
 
-					// 基礎正弦波
-					const waveOffset = Math.sin(p.x * config.waveLength + time * config.speed + this.phase) * config.waveAmplitude;
-					p.basePathY = this.baseY + p.x * this.tilt + waveOffset;
+			const baseColor = data.paths[0]?.color || 0xdfdfdf;
+			const material = createMetalMaterial(baseColor);
 
-					// 滑鼠互動
-					const dx = mouse.x - p.x;
-					const dy = mouse.y - p.basePathY;
-					const distance = Math.sqrt(dx * dx + dy * dy);
+			// Orbiting Background (now draggable)
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.04, 0.09], [0.0001, 0.0002]);
+		});
 
-					let interactionY = 0;
-					if (distance < config.mouseRadius) {
-						// 使用餘弦函數讓邊緣過渡更柔和 (Smoothstep 效果)
-						const ratio = distance / config.mouseRadius;
-						const force = ((Math.cos(ratio * Math.PI) + 1) / 2) * config.mouseForce;
+		// star-metal.svg
+		svgLoader.load("/2026/img/Hero/star-metal.svg", data => {
+			const shapes: THREE.Shape[] = [];
+			data.paths.forEach(path => shapes.push(...SVGLoader.createShapes(path)));
+			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 4, bevelEnabled: true });
+			geometry.center();
+			geometry.rotateX(Math.PI);
 
-						// 根據滑鼠在線條上方或下方來推開線條 (垂直推開效果)
-						if (mouse.y > p.basePathY) {
-							interactionY = -force;
-						} else {
-							interactionY = force;
-						}
-					}
+			const baseColor = data.paths[0]?.color || 0xffffff;
+			const material = createMetalMaterial(baseColor);
 
-					// 平滑回彈 (Easing)
-					p.y += (p.basePathY + interactionY - p.y) * 0.08;
-				}
-			}
-
-			draw() {
-				if (!ctx) return;
-				ctx.beginPath();
-				ctx.strokeStyle = this.color;
-				ctx.lineWidth = this.width;
-
-				if (this.points.length > 0) {
-					ctx.moveTo(this.points[0].x, this.points[0].y);
-
-					// 使用二次貝茲曲線繪製平滑線條
-					for (let i = 1; i < this.points.length - 2; i++) {
-						const xc = (this.points[i].x + this.points[i + 1].x) / 2;
-						const yc = (this.points[i].y + this.points[i + 1].y) / 2;
-						ctx.quadraticCurveTo(this.points[i].x, this.points[i].y, xc, yc);
-					}
-
-					if (this.points.length > 2) {
-						const last = this.points[this.points.length - 1];
-						const secondLast = this.points[this.points.length - 2];
-						ctx.quadraticCurveTo(secondLast.x, secondLast.y, last.x, last.y);
+			// Orbiting Background (now draggable)
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.05, 0.12], [0.0001, 0.0002]);
+		});
 					}
 				}
 				ctx.stroke();
