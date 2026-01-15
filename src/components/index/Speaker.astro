@@ -327,7 +327,7 @@ const speakers = [
 	const imgElement = document.getElementById("speaker-img");
 	let currentIndex = 0;
 
-	function updateView(index) {
+	function updateView(index: number) {
 		items.forEach(item => {
 			item.classList.remove("active");
 		});
@@ -337,7 +337,7 @@ const speakers = [
 
 		const newImgSrc = targetItem.getAttribute("data-img");
 		if (imgElement && newImgSrc) {
-			imgElement.src = newImgSrc;
+			(imgElement as HTMLImageElement).src = newImgSrc;
 		}
 
 		currentIndex = index;
@@ -354,18 +354,18 @@ const speakers = [
 		});
 	});
 
-	let timer = null;
+	let timer: number | null = null;
 
 	function startAutoPlay() {
 		if (timer) return;
-		timer = setInterval(() => {
+		timer = window.setInterval(() => {
 			const nextIndex = (currentIndex + 1) % items.length;
 			updateView(nextIndex);
 		}, 2000);
 	}
 
 	function stopAutoPlay() {
-		clearInterval(timer);
+		if (timer) window.clearInterval(timer);
 		timer = null;
 	}
 
