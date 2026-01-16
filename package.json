@@ -7,6 +7,7 @@
 		"dev": "astro dev",
 		"format": "prettier --write .",
 		"preinstall": "npx only-allow pnpm",
+		"prepare": "husky",
 		"preview": "astro preview",
 		"test": "astro check"
 	},
@@ -26,6 +27,7 @@
 	},
 	"devDependencies": {
 		"@types/three": "^0.182.0",
+		"husky": "^9.1.7",
 		"prettier": "^3.7.4",
 		"prettier-plugin-astro": "^0.14.1",
 		"prettier-plugin-organize-imports": "^4.3.0",
