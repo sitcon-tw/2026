@@ -1,18 +1,781 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
+import MemberInfo from "@/components/page/MemberInfo.astro";
+import ExplorePerson from "@/components/page/ExplorePerson.astro";
+import { List } from "@lucide/astro";
+
+const team_data = [
+	{
+		name: "開發組",
+		description: "致力於用程式碼構築年會的數位基石，維護官網與 App 的穩定運作。我們是一群熱愛技術的開發者，將天馬行空的設計轉化為實際的互動體驗，歡迎來這裡交流切磋！",
+		member: [
+			{
+				name: "開發組名_0",
+				position: "組長",
+				avatar_url: "https://api.iconify.design/mdi:code-tags.svg?color=%23f5f6ee",
+				social_link: "https://github.com/sitcon-tw",
+				description: "熱愛開源技術，喜歡探索新技術的極限。致力於讓 SITCON 官網體驗更流暢。"
+			},
+			{
+				name: "開發組名_1",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:terminal.svg?color=%23f5f6ee",
+				social_link: "",
+				description: "專注於後端開發，確保系統穩定運行。喜歡在半夜寫 Code，享受寧靜的 Coding 時光。"
+			},
+			{
+				name: "開發組名_2",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:git.svg?color=%23f5f6ee",
+				social_link: "https://example.com",
+				description: "版本控制大師，隨時準備好解救大家的 Merge Conflict。相信 Git 是世界上最好的發明。"
+			},
+			{
+				name: "開發組名_3",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:bug-outline.svg?color=%23f5f6ee",
+				social_link: "https://twitter.com/dev_3",
+				description: "Bug 獵人，看到 Bug 就會興奮。目標是寫出沒有 Bug 的程式碼（雖然是不可能的任務）。"
+			},
+			{
+				name: "開發組名_4",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:database.svg?color=%23f5f6ee",
+				social_link: "https://instagram.com/life_of_4",
+				description: "資料庫管家，小心翼翼地守護著每一筆資料。對於資料結構有著極高的潔癖。"
+			}
+		]
+	},
+	{
+		name: "議程組",
+		description: "負責年會所有的議程規劃與講師邀請，是年會內容的核心產出者。我們需要閱讀大量的技術投稿，並從中篩選出最適合年會的議題，確保會眾能聽到最優質的內容。",
+		member: [
+			{
+				name: "議程組名_5",
+				position: "組長",
+				avatar_url: "https://api.iconify.design/mdi:calendar-clock.svg?color=%23f5f6ee",
+				social_link: "https://medium.com/@agenda_lead",
+				description: "時間管理大師，精確掌握每一場議程的進度。致力於帶來最多元、最有趣的議程內容。"
+			},
+			{
+				name: "議程組名_6",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:microphone.svg?color=%23f5f6ee",
+				social_link: "",
+				description: "喜歡聆聽各種技術分享，從中尋找靈感。希望能讓每一位講者都能在舞台上發光發熱。"
+			},
+			{
+				name: "議程組名_7",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:presentation.svg?color=%23f5f6ee",
+				social_link: "https://github.com/agenda_review",
+				description: "簡報設計愛好者，對於視覺呈現有著極高的要求。協助講者將複雜的技術概念轉化為易懂的圖表。"
+			},
+			{
+				name: "議程組名_8",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:script-text.svg?color=%23f5f6ee",
+				social_link: "https://twitter.com/talks_hunter",
+				description: "文字工作的熱愛者，負責撰寫動人的議程介紹。希望能透過文字吸引更多人來參與 SITCON。"
+			}
+		]
+	},
+	{
+		name: "財務組",
+		description: "掌管年會的財政大權，確保每一分贊助與預算都能發揮最大效益。我們需要細心與耐心，處理繁雜的報帳與預算編列，是活動背後最堅實的後盾。",
+		member: [
+			{
+				name: "財務組名_10",
+				position: "組長",
+				avatar_url: "https://api.iconify.design/mdi:finance.svg?color=%23f5f6ee",
+				social_link: "https://instagram.com/money_keeper",
+				description: "精打細算的財務長，每一筆支出都要經過嚴格審核。目標是讓 SITCON 的財務狀況永遠健康。"
+			},
+			{
+				name: "財務組名_11",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:calculator.svg?color=%23f5f6ee",
+				social_link: "https://linkedin.com/in/finance_pro",
+				description: "Excel 表格達人，能用最快的速度整理好所有數據。對於數字有著極高的敏感度。"
+			}
+		]
+	},
+	{
+		name: "場務組",
+		description: "年會當天的現場守護神，負責動線規劃、設備架設與突發狀況處理。我們是活動順利進行的幕後功臣，需要強大的應變能力來面對各種挑戰。",
+		member: [
+			{
+				name: "場務組名_12",
+				position: "組長",
+				avatar_url: "https://api.iconify.design/mdi:map-marker-radius.svg?color=%23f5f6ee",
+				social_link: "https://twitter.com/field_ops",
+				description: "場地規劃專家，熟悉每一個角落的配置。確保動線順暢，讓會眾能輕鬆找到想去的地方。"
+			},
+			{
+				name: "場務組名_13",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:power-plug.svg?color=%23f5f6ee",
+				social_link: "",
+				description: "電力供應守護者，確保每一個插座都有電。隨身攜帶延長線，隨時準備支援電力需求。"
+			},
+			{
+				name: "場務組名_14",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:video-input-antenna.svg?color=%23f5f6ee",
+				social_link: "https://facebook.com/venue_staff",
+				description: "視聽設備達人，確保投影與音響效果完美呈現。對於線材收納有著近乎強迫症的堅持。"
+			},
+			{
+				name: "場務組名_16",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:account-hard-hat.svg?color=%23f5f6ee",
+				social_link: "",
+				description: "安全第一的守護者，時刻注意現場的安全狀況。遇到突發狀況總能冷靜應對，化險為夷。"
+			},
+			{
+				name: "場務組名_17",
+				position: "組員",
+				avatar_url: "https://api.iconify.design/mdi:cctv.svg?color=%23f5f6ee",
+				social_link: "https://instagram.com/behind_scenes",
+				description: "默默付出的幕後英雄，總是出現在最需要的地方。喜歡觀察人群，確保每一個人都玩得開心。"
+			}
+		]
+	}
+];
 ---
 
 <Layout>
 	<main>
-		<h1>工作人員 - 探索</h1>
+		<div class="explore-container">
+			<div id="explore-universe">
+				{
+					team_data.map((team, index) => {
+						return team.member.map(member => (
+							<ExplorePerson
+								name={member.name}
+								avatar_url={member.avatar_url}
+								position={member.position}
+								social_link={member.social_link}
+								description={member.description}
+								team_index={index}
+								team_name={team.name}
+								style=""
+							/>
+						));
+					})
+				}
+			</div>
+		</div>
+
+		<div class="nav-mask"></div>
+		<div class="nav-mask-bottom"></div>
+
+		<!-- anchor -->
+		<div class="anchor">
+			<a class="anchor-switch anchor-btn" href="/2026/team/" aria-label="切換至列表模式">
+				<div class="anchor-box anchor-icon">
+					<List size={18} />
+				</div>
+				<div class="anchor-box">
+					<span class="anchor-text-span">列表模式</span>
+				</div>
+			</a>
+			{
+				team_data.map((team, index) => {
+					return (
+						<div class={`anchor-btn anchor-box ${index === 0 ? "active" : ""}`} data-index={index} aria-label={team.name}>
+							<span class="anchor-indicator" />
+							<span class="anchor-text-span">{team.name}</span>
+						</div>
+					);
+				})
+			}
+		</div>
 	</main>
+	<MemberInfo />
 	<Footer />
 </Layout>
 
+<script>
+	import { gsap } from "gsap";
+
+	// Pan and Zoom Logic
+	// 拖曳相關參數 - 可在此調整
+	const DRAG_SPEED = 2; // 拖曳速度倍率 (預設 1.5，數值越大拖越快)
+	const SMOOTH_FACTOR = 0.08; // 潤滑度/平滑度 (0.01~1.0，數值越小越滑/慣性越強，預設 0.08)
+
+	// Logical State (Target) - 目標位置
+	let targetPanX = 0;
+	let targetPanY = 0;
+	let targetScale = 1;
+
+	// Visual State (Rendered) - 實際渲染位置 (隨目標位置平滑移動)
+	let currentPanX = 0;
+	let currentPanY = 0;
+	let currentScale = 1;
+
+	// World dimensions (set by initExplore)
+	let worldWidth = 0;
+	let worldHeight = 0;
+
+	const initPanZoom = () => {
+		const container = document.querySelector(".explore-container") as HTMLElement;
+		const universe = document.getElementById("explore-universe") as HTMLElement;
+		if (!container || !universe) return;
+
+		let isDragging = false;
+		let isPinching = false;
+		let startX = 0;
+		let startY = 0;
+		let dragStartPanX = 0;
+		let dragStartPanY = 0;
+		let pinchStartDist = 0;
+
+		const clampPan = () => {
+			const viewW = container.offsetWidth;
+			const viewH = container.offsetHeight;
+			const contentW = worldWidth * targetScale;
+			const contentH = worldHeight * targetScale;
+
+			// Logic to keep content within viewport, or viewport within content
+			const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+			const padding = 2.5 * rem;
+
+			const minX = Math.min(padding, viewW - contentW - padding);
+			const maxX = Math.max(padding, viewW - contentW - padding);
+			const minY = Math.min(padding, viewH - contentH - padding);
+			const maxY = Math.max(padding, viewH - contentH - padding);
+
+			targetPanX = Math.min(Math.max(targetPanX, minX), maxX);
+			targetPanY = Math.min(Math.max(targetPanY, minY), maxY);
+		};
+
+		// Smooth Animation Loop
+		gsap.ticker.add(() => {
+			const dX = targetPanX - currentPanX;
+			const dY = targetPanY - currentPanY;
+			const dS = targetScale - currentScale;
+
+			// Optimization: stop updating if very close
+			if (Math.abs(dX) < 0.1 && Math.abs(dY) < 0.1 && Math.abs(dS) < 0.001) {
+				return;
+			}
+
+			currentPanX += dX * SMOOTH_FACTOR;
+			currentPanY += dY * SMOOTH_FACTOR;
+			currentScale += dS * SMOOTH_FACTOR;
+
+			gsap.set(universe, {
+				x: currentPanX,
+				y: currentPanY,
+				scale: currentScale
+			});
+		});
+
+		// Panning
+		container.addEventListener("mousedown", e => {
+			// Disable drag if clicking on an explore item
+			if ((e.target as HTMLElement).closest(".explore-item")) {
+				return;
+			}
+			isDragging = true;
+			startX = e.clientX;
+			startY = e.clientY;
+			dragStartPanX = targetPanX;
+			dragStartPanY = targetPanY;
+			container.style.cursor = "grabbing";
+		});
+
+		window.addEventListener("mousemove", e => {
+			if (!isDragging) return;
+			e.preventDefault();
+			const dx = (e.clientX - startX) * DRAG_SPEED;
+			const dy = (e.clientY - startY) * DRAG_SPEED;
+			targetPanX = dragStartPanX + dx;
+			targetPanY = dragStartPanY + dy;
+
+			clampPan();
+		});
+
+		window.addEventListener("mouseup", () => {
+			isDragging = false;
+			container.style.cursor = "grab";
+		});
+
+		// Touch Panning & Zooming
+		container.addEventListener(
+			"touchstart",
+			e => {
+				// Handle 2-finger pinch
+				if (e.touches.length === 2) {
+					isDragging = false;
+					isPinching = true;
+					const t1 = e.touches[0];
+					const t2 = e.touches[1];
+					pinchStartDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+					return;
+				}
+
+				if ((e.target as HTMLElement).closest(".explore-item")) {
+					return;
+				}
+				isDragging = true;
+				startX = e.touches[0].clientX;
+				startY = e.touches[0].clientY;
+				dragStartPanX = targetPanX;
+				dragStartPanY = targetPanY;
+			},
+			{ passive: false }
+		);
+
+		window.addEventListener(
+			"touchmove",
+			e => {
+				// Handle Pinch Zoom
+				if (isPinching && e.touches.length === 2) {
+					e.preventDefault();
+					const t1 = e.touches[0];
+					const t2 = e.touches[1];
+					const currentDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+
+					if (pinchStartDist < 0.1) return; // Avoid unstable calcs
+
+					const zoomFactor = currentDist / pinchStartDist;
+
+					// If changes are too small, ignore to avoid jitter
+					if (Math.abs(zoomFactor - 1) < 0.005) return;
+
+					const oldScale = targetScale;
+					let newScale = oldScale * zoomFactor;
+
+					// Clamp scale
+					newScale = Math.max(0.5, Math.min(newScale, 3));
+
+					// Update pinchStartDist for next frame (incremental)
+					pinchStartDist = currentDist;
+
+					if (newScale === oldScale) return;
+
+					// Zoom center logic
+					const rect = container.getBoundingClientRect();
+					const cx = (t1.clientX + t2.clientX) / 2 - rect.left;
+					const cy = (t1.clientY + t2.clientY) / 2 - rect.top;
+
+					targetPanX = cx - ((cx - targetPanX) / oldScale) * newScale;
+					targetPanY = cy - ((cy - targetPanY) / oldScale) * newScale;
+					targetScale = newScale;
+
+					clampPan();
+					return;
+				}
+
+				if (!isDragging) return;
+				if (e.touches.length > 1) return; // Ignore multi-touch
+				e.preventDefault();
+				const dx = (e.touches[0].clientX - startX) * DRAG_SPEED;
+				const dy = (e.touches[0].clientY - startY) * DRAG_SPEED;
+				targetPanX = dragStartPanX + dx;
+				targetPanY = dragStartPanY + dy;
+
+				clampPan();
+			},
+			{ passive: false }
+		);
+
+		window.addEventListener("touchend", e => {
+			if (e.touches.length === 0) {
+				isDragging = false;
+				isPinching = false;
+			} else if (e.touches.length === 1) {
+				// If we were pinching and lifted one finger, stop everything to avoid jump
+				isPinching = false;
+				isDragging = false; // Require lift-off to restart drag
+			}
+		});
+
+		// Zooming
+		container.addEventListener(
+			"wheel",
+			e => {
+				e.preventDefault();
+				const zoomSensitivity = 0.001;
+				const delta = -e.deltaY * zoomSensitivity;
+				const oldScale = targetScale;
+				let newScale = targetScale + delta;
+
+				// Clamp scale
+				newScale = Math.max(0.5, Math.min(newScale, 3));
+
+				if (newScale === oldScale) return;
+
+				// Zoom towards mouse pointer
+				const rect = container.getBoundingClientRect();
+				const mouseX = e.clientX - rect.left;
+				const mouseY = e.clientY - rect.top;
+
+				// Calculate point under mouse in world space (relative to universe origin at current pan/scale)
+				targetPanX = mouseX - ((mouseX - targetPanX) / oldScale) * newScale;
+				targetPanY = mouseY - ((mouseY - targetPanY) / oldScale) * newScale;
+
+				targetScale = newScale;
+				clampPan();
+			},
+			{ passive: false }
+		);
+	};
+
+	const layoutItems = (targetIndex: string | null = null, animate = false) => {
+		const container = document.querySelector(".explore-container") as HTMLElement;
+		if (!container) return;
+
+		const width = container.offsetWidth;
+		const height = container.offsetHeight;
+
+		// Initial constraints
+		const imageSize = 180;
+		const imageGap = 64;
+		const minDistance = imageSize + imageGap;
+
+		// Grid configuration
+		const colWidth = imageSize + imageGap;
+		const maxCols = Math.max(1, Math.floor((width - imageSize) / colWidth) + 1);
+		const totalGridW = (maxCols - 1) * colWidth + imageSize;
+		const offsetX = Math.max(0, (width - totalGridW) / 2);
+
+		const rowHeight = imageSize + imageGap;
+		const maxRows = Math.max(1, Math.floor((height - imageSize) / rowHeight) + 1);
+
+		const centerCol = Math.floor(maxCols / 2);
+		const centerRow = Math.floor(maxRows / 2);
+
+		// Track used space to expand world
+		let contentMaxX = width;
+		let contentMaxY = height;
+
+		// Get items and shuffle them for randomness
+		let items = gsap.utils.toArray(".explore-item") as HTMLElement[];
+		items.sort(() => Math.random() - 0.5);
+
+		// If targetIndex is present, prioritize those items by moving them to the front
+		// and mark them for central placement
+		if (targetIndex !== null) {
+			items.sort((a, b) => {
+				const aIsTarget = a.dataset.teamIndex === targetIndex;
+				const bIsTarget = b.dataset.teamIndex === targetIndex;
+				if (aIsTarget && !bIsTarget) return -1;
+				if (!aIsTarget && bIsTarget) return 1;
+				return 0;
+			});
+		}
+
+		const placed: { centerX: number; centerY: number }[] = [];
+
+		items.forEach(item => {
+			const isTarget = targetIndex !== null && item.dataset.teamIndex === targetIndex;
+
+			let x = 0;
+			let y = 0;
+			let tries = 0;
+			let success = false;
+			const maxTries = 100;
+
+			// Reset basic style if not animating
+			if (!animate) {
+				gsap.set(item, {
+					position: "absolute",
+					left: 0,
+					top: 0,
+					margin: 0
+				});
+			}
+
+			// 1. Try Random Placement (Preference for center if target)
+			while (!success && tries < maxTries) {
+				let col, row;
+
+				if (isTarget && tries < 50) {
+					// Target: Try placing near center
+					const radius = 1;
+					const minC = Math.max(0, centerCol - radius);
+					const maxC = Math.min(maxCols - 1, centerCol + radius);
+					const minR = Math.max(0, centerRow - radius);
+					const maxR = Math.min(maxRows - 1, centerRow + radius);
+
+					col = Math.floor(Math.random() * (maxC - minC + 1)) + minC;
+					row = Math.floor(Math.random() * (maxR - minR + 1)) + minR;
+				} else {
+					// Random: Anywhere in view
+					col = Math.floor(Math.random() * maxCols);
+					row = Math.floor(Math.random() * maxRows);
+				}
+
+				x = offsetX + col * colWidth;
+
+				let staggerY = 0;
+				if (col % 2 !== 0) staggerY = rowHeight * 0.5;
+				y = row * rowHeight + staggerY;
+
+				if (x < 0) x = 0;
+				if (y < 0) y = 0;
+
+				const centerX = x + imageSize / 2;
+				const centerY = y + imageSize / 2;
+
+				const overlap = placed.some(p => {
+					const dx = centerX - p.centerX;
+					const dy = centerY - p.centerY;
+					return Math.sqrt(dx * dx + dy * dy) < minDistance;
+				});
+
+				if (!overlap) {
+					success = true;
+					placed.push({ centerX, centerY });
+				}
+				tries++;
+			}
+
+			// 2. Fallback: Guaranteed Spiral Search (Expanding outwards)
+			if (!success) {
+				let radius = 0;
+				while (!success) {
+					// Generate ring coordinates
+					const candidates: { c: number; r: number }[] = [];
+					const minD = -radius;
+					const maxD = radius;
+
+					for (let dc = minD; dc <= maxD; dc++) {
+						for (let dr = minD; dr <= maxD; dr++) {
+							// Only check the perimeter (ring) unless radius is 0
+							if (radius > 0 && Math.abs(dc) !== radius && Math.abs(dr) !== radius) continue;
+
+							const c = centerCol + dc;
+							const r = centerRow + dr;
+
+							// Only allow positive expansion (right/down)
+							if (c >= 0 && r >= 0) {
+								candidates.push({ c, r });
+							}
+						}
+					}
+
+					// Shuffle ring to maintain some randomness in direction
+					candidates.sort(() => Math.random() - 0.5);
+
+					for (const cand of candidates) {
+						const col = cand.c;
+						const row = cand.r;
+
+						x = offsetX + col * colWidth;
+
+						let staggerY = 0;
+						if (col % 2 !== 0) staggerY = rowHeight * 0.5;
+						y = row * rowHeight + staggerY;
+
+						const centerX = x + imageSize / 2;
+						const centerY = y + imageSize / 2;
+
+						const overlap = placed.some(p => {
+							const dx = centerX - p.centerX;
+							const dy = centerY - p.centerY;
+							return Math.sqrt(dx * dx + dy * dy) < minDistance;
+						});
+
+						if (!overlap) {
+							success = true;
+							placed.push({ centerX, centerY });
+							break;
+						}
+					}
+
+					radius++;
+					if (radius > 100) {
+						// Extreme safety break
+						break;
+					}
+				}
+			}
+
+			if (success) {
+				// Update world boundaries
+				const rightEdge = x + imageSize + imageGap;
+				const bottomEdge = y + imageSize + imageGap;
+				if (rightEdge > contentMaxX) contentMaxX = rightEdge;
+				if (bottomEdge > contentMaxY) contentMaxY = bottomEdge;
+
+				if (animate) {
+					gsap.to(item, {
+						x,
+						y,
+						autoAlpha: 1,
+						duration: 0.5,
+						ease: "power2.out",
+						overwrite: "auto",
+						pointerEvents: "auto"
+					});
+				} else {
+					gsap.set(item, {
+						x,
+						y,
+						autoAlpha: 1,
+						pointerEvents: "auto"
+					});
+				}
+			} else {
+				console.warn("Failed to place item even with expansion:", item);
+				gsap.set(item, { x: -9999, y: -9999, opacity: 0, pointerEvents: "none" });
+			}
+		});
+
+		// Update global world dimensions for panning
+		worldWidth = contentMaxX;
+		worldHeight = contentMaxY;
+	};
+
+	// Initialize
+	layoutItems(null, false);
+	gsap.fromTo(
+		".explore-item",
+		{ autoAlpha: 0 },
+		{
+			autoAlpha: 1,
+			duration: 0.6,
+			stagger: 0.03,
+			ease: "power2.out"
+		}
+	);
+	initPanZoom();
+
+	// Anchor Listeners
+	const anchorBtns = document.querySelectorAll(".anchor-btn");
+	anchorBtns.forEach(btn => {
+		btn.addEventListener("click", e => {
+			// prevent default anchor behavior (for anchor to index page)
+			if (btn.tagName === "A") return;
+			e.preventDefault();
+
+			anchorBtns.forEach(b => b.classList.remove("active"));
+			btn.classList.add("active");
+
+			const index = (btn as HTMLElement).dataset.index;
+
+			// Shuffle items, centering the selected team
+			layoutItems(index || null, true);
+		});
+	});
+</script>
+
 <style>
+	.nav-mask-bottom {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+		height: 8rem;
+		background: linear-gradient(to top, #ac782b, transparent);
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	:global(.explore-item) {
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.anchor {
+		position: fixed;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 99;
+		display: inline-flex;
+		align-items: center;
+		justify-content: flex-start;
+		overflow-x: auto;
+		max-width: 90vw;
+		padding: 0.5rem;
+	}
+
+	.anchor-box {
+		display: flex;
+		align-items: center;
+		width: fit-content;
+		padding: 0.7rem 1.25rem;
+		margin: 0.125rem;
+		height: 2.5rem;
+		border-radius: 0.25rem;
+		background-color: #f5f6ee;
+		color: #222222;
+		cursor: pointer;
+		flex-shrink: 0;
+		white-space: nowrap;
+	}
+
+	.anchor-switch {
+		display: flex;
+	}
+
+	.anchor-text-span {
+		font-size: 1rem;
+		font-weight: 500;
+		text-align: center;
+	}
+
+	.anchor-btn {
+		text-decoration: none;
+		transition: transform 0.2s ease;
+	}
+
+	.anchor-btn:hover {
+		transform: translateY(-0.25rem);
+	}
+
+	.anchor-switch .anchor-box,
+	.anchor-btn.active {
+		background-color: #222222;
+		color: #f5f6ee;
+	}
+
+	.anchor-switch .anchor-box .anchor-text-span,
+	.anchor-btn.active .anchor-text-span {
+		font-weight: 700;
+	}
+
+	.explore-container {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+		overflow: hidden;
+		cursor: grab;
+		user-select: none;
+	}
+
+	.explore-container:active {
+		cursor: grabbing;
+	}
+
+	#explore-universe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform-origin: 0 0;
+		will-change: transform;
+	}
+
+	.nav-mask {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 8rem;
+		background: linear-gradient(to bottom, #ac782b, transparent);
+		z-index: 10;
+		pointer-events: none;
+	}
+
 	main {
 		min-height: 100vh;
-		padding: 5rem 2rem 2rem;
 	}
 </style>

@@ -1,6 +1,7 @@
 ---
 import Nav from "@/components/Nav.astro";
 import "lenis/dist/lenis.css";
+import "./global.css";
 
 interface Props {
 	title?: string;
@@ -113,81 +114,6 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 				}
 			}
 		</script>
-		<style is:global>
-			:root {
-				--max-width: 1400px;
-				--white: #ffffff;
-				--black: #000000;
-				--coffee: #3c2d0e;
-			}
-
-			* {
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-			}
-
-			html {
-				scroll-behavior: smooth;
-				scroll-padding-top: 5rem;
-			}
-
-			body {
-				background-color: #a97c21;
-				color: var(--white);
-				font-family: "GenKiGothicTW", sans-serif;
-				font-optical-sizing: auto;
-				font-size: 17px;
-				color: #fff;
-			}
-
-			h1,
-			h2,
-			h3,
-			h4,
-			h5,
-			h6 {
-				font-family: "GenKiMinTW", serif;
-				font-weight: normal;
-			}
-
-			code,
-			pre {
-				font-family: "JetBrainsMono", monospace;
-			}
-
-			h2 {
-				font-size: 4rem;
-			}
-
-			p {
-				line-height: 1.5;
-				margin-bottom: 1rem;
-			}
-
-			@media (max-width: 600px) {
-				body {
-					font-size: 16px;
-				}
-			}
-
-			/* i11y */
-			.skip-link {
-				position: absolute;
-				top: -40px;
-				left: 0;
-				background: #000;
-				color: var(--white);
-				padding: 8px 16px;
-				text-decoration: none;
-				z-index: 10000;
-				font-weight: bold;
-			}
-
-			.skip-link:focus {
-				top: 0;
-			}
-		</style>
 		<!-- Google Tag Manager -->
 		<script is:inline>
 			(function (w, d, s, l, i) {
@@ -214,14 +140,28 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 		<!-- End Google Tag Manager (noscript) -->
 		<script>
 			import Lenis from "lenis";
-			const lenis = new Lenis({
-				autoRaf: true,
-				anchors: true
-			});
+			let lenis: InstanceType<typeof Lenis> | null = null;
 
-			// document.addEventListener("astro:page-load", () => {
-			// 	if (!window.location.href.includes("#")) lenis.scrollTo(0, { immediate: true });
-			// });
+			const initLenis = () => {
+				const pathname = window.location.pathname;
+				if (/(^|\/)team\/explore(\/|$)/.test(pathname)) {
+					if (lenis) {
+						lenis.destroy();
+						lenis = null;
+					}
+				} else {
+					if (!lenis) {
+						lenis = new Lenis({
+							autoRaf: true,
+							anchors: true
+						});
+					}
+				}
+			};
+
+			initLenis();
+
+			document.addEventListener("astro:page-load", initLenis);
 		</script>
 	</body>
 </html>

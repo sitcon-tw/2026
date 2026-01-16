@@ -1,0 +1,327 @@
+---
+const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，在開始籌備時通知你！", "到 GitLab 查看今年的籌備歷程！", "一起在郵件論壇討論籌備！"];
+---
+
+<section class="discuss-section">
+	<div class="container">
+		<div class="chat-container">
+			{
+				messages.map(msg => (
+					<div class="message-group">
+						<div class="bubble-oval">{msg}</div>
+						<div class="bubble-tail">
+							<svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
+								<path d="M0 21.9509C4.84211 12.1674 0 0 0 0L23 1.19723V1.22056C23 1.22056 9.68421 23.1715 0 21.9509Z" fill="#C2A05A" />
+							</svg>
+						</div>
+					</div>
+				))
+			}
+		</div>
+
+		<div class="info-container">
+			<h2 class="section-title">參與討論</h2>
+			<div class="btn-group">
+				<a href="#" class="btn-pill">預約跳坑</a>
+				<a href="#" class="btn-pill">郵件論壇</a>
+				<a href="#" class="btn-pill">籌備紀錄</a>
+			</div>
+		</div>
+	</div>
+
+	<img src="/images/decoration-logo.png" alt="" class="decor-logo" />
+	<img src="/images/decoration-paper.png" alt="" class="decor-paper" />
+</section>
+
+<style>
+	section {
+		position: relative;
+		padding: 10rem 0;
+		overflow: hidden;
+	}
+
+	.container {
+		max-width: 110rem;
+		width: 90%;
+		min-height: 15rem;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 5rem;
+		position: relative;
+		z-index: 2;
+	}
+
+	.chat-container {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		flex: 1;
+		padding-left: 2rem;
+	}
+
+	.message-group {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		width: fit-content;
+		max-width: 90%;
+		visibility: hidden;
+	}
+
+	.message-group:nth-child(even) {
+		margin-left: 5rem;
+	}
+
+	.bubble-oval {
+		border-radius: 60px;
+		padding: 1.25rem 2.2rem;
+		background: #c2a05a;
+		backdrop-filter: blur(10px);
+		border: 2px solid #c2a05a;
+		color: white;
+		font-size: 1.8rem;
+		font-weight: 500;
+		line-height: 1.5;
+		box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+		white-space: nowrap; /* 強制不換行 */
+	}
+
+	.bubble-tail {
+		margin-top: -3px;
+		margin-left: 30px;
+		line-height: 0;
+		transform: scale(1.25);
+		transform-origin: top left;
+		filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+	}
+
+	.info-container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		padding-left: 5rem;
+	}
+
+	.section-title {
+		font-size: 6rem;
+		color: white;
+		font-family: serif;
+		margin: 0 0 2.5rem 0;
+		font-weight: 700;
+		line-height: 1.1;
+	}
+
+	.btn-group {
+		display: flex;
+		gap: 1.8rem;
+		flex-wrap: wrap;
+	}
+
+	.btn-pill {
+		background-color: #ffd172;
+		color: #634a15;
+		padding: 1rem 2.5rem;
+		border-radius: 60px;
+		text-decoration: none;
+		font-weight: bold;
+		font-size: 1.4rem;
+		transition:
+			transform 0.2s,
+			background-color 0.2s;
+	}
+
+	.btn-pill:hover {
+		transform: scale(1.05);
+		background-color: #fff;
+	}
+
+	.decor-logo {
+		position: absolute;
+		right: 3rem;
+		top: 25%;
+		width: 100px;
+		opacity: 0.9;
+		z-index: 1;
+	}
+
+	.decor-paper {
+		position: absolute;
+		right: -6rem;
+		bottom: -9rem;
+		width: 480px;
+		transform: rotate(-10deg);
+		z-index: 1;
+	}
+
+	@media screen and (max-width: 1645px) {
+		.bubble-oval {
+			font-size: 1.5rem;
+			padding: 1.1rem 2rem;
+		}
+
+		.bubble-tail {
+			transform: scale(1.1);
+			margin-left: 28px;
+		}
+	}
+
+	@media screen and (max-width: 1250px) {
+		section {
+			padding: 8rem 0;
+		}
+
+		.container {
+			gap: 3rem;
+			width: 95%;
+		}
+
+		.section-title {
+			font-size: 5rem;
+		}
+
+		.info-container {
+			padding-left: 2rem;
+		}
+
+		.message-group:nth-child(even) {
+			margin-left: 3rem;
+		}
+	}
+
+	@media screen and (max-width: 992px) {
+		section {
+			padding: 6rem 0;
+		}
+
+		.container {
+			flex-direction: column-reverse;
+			gap: 4rem;
+			height: auto;
+		}
+
+		.info-container {
+			padding-left: 0;
+			align-items: center;
+			text-align: center;
+			width: 100%;
+		}
+
+		.section-title {
+			font-size: 4rem;
+			margin-bottom: 2rem;
+		}
+
+		.btn-group {
+			justify-content: center;
+		}
+
+		.chat-container {
+			padding-left: 0;
+			align-items: center;
+			width: 100%;
+		}
+
+		.message-group {
+			max-width: 100%;
+		}
+
+		.message-group:nth-child(even) {
+			margin-left: 0;
+		}
+
+		.bubble-oval {
+			font-size: 1.25rem;
+			padding: 0.9rem 1.8rem;
+		}
+
+		.bubble-tail {
+			transform: scale(1);
+			margin-left: 20px;
+		}
+
+		.decor-paper {
+			width: 350px;
+			right: -4rem;
+			opacity: 0.7;
+		}
+	}
+
+	@media screen and (max-width: 576px) {
+		section {
+			padding: 4rem 0;
+		}
+
+		.container {
+			gap: 3rem;
+		}
+
+		.section-title {
+			font-size: 2.8rem;
+		}
+
+		.btn-group {
+			gap: 1rem;
+		}
+
+		.btn-pill {
+			font-size: 1rem;
+			padding: 0.8rem 1.6rem;
+		}
+
+		.bubble-oval {
+			font-size: 0.95rem;
+			padding: 0.7rem 1.2rem;
+			border-radius: 30px;
+		}
+
+		.bubble-tail {
+			transform: scale(0.8);
+			margin-left: 15px;
+		}
+
+		.decor-logo {
+			display: none;
+		}
+
+		.decor-paper {
+			width: 250px;
+			right: -2rem;
+			bottom: -5rem;
+			opacity: 0.4;
+		}
+	}
+</style>
+
+<script>
+	import { gsap } from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	const messages = document.querySelectorAll(".message-group");
+
+	gsap.fromTo(
+		messages,
+		{
+			autoAlpha: 0,
+			y: 70,
+			scale: 0.9
+		},
+		{
+			autoAlpha: 1,
+			y: 0,
+			scale: 1,
+			duration: 0.8,
+			ease: "back.out(1.5)",
+			stagger: 0.25,
+			scrollTrigger: {
+				trigger: ".chat-container",
+				start: "top 75%",
+				toggleActions: "play none none reverse"
+			}
+		}
+	);
+</script>

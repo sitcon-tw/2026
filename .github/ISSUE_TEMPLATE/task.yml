@@ -1,0 +1,42 @@
+name: 💼 待辦事項
+description: 該處理的問題或功能
+title: "[Task] "
+projects: ["sitcon-tw/13"]
+type: task
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ 注意：這個模板原則上只有毛哥 EM 能使用。
+        請勿用此模板回報 Bug 或功能建議，
+        請使用專門的 Bug 回報或功能建議模板。
+
+  - type: textarea
+    id: task
+    attributes:
+      label: 任務描述 Task Description
+      placeholder: 請清楚描述需要完成的事項
+    validations:
+      required: true
+
+  - type: dropdown
+    id: page
+    attributes:
+      label: 頁面 Page
+      multiple: true
+      options:
+        - 首頁
+        - 活動資訊
+        - 議程表
+        - 會場地圖
+        - 團隊成員
+        - 其他
+
+  - type: checkboxes
+    id: pullrequest
+    attributes:
+      label: 是否願意提交 PR？
+      options:
+        - label: "Yes"

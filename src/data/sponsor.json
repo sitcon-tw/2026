@@ -1,0 +1,29 @@
+{
+	"coOrganizer": [
+		{
+			"id": "iis",
+			"title_zh": "中央研究院資訊科學研究所",
+			"title_en": "Institute of Information Science, Academia Sinica",
+
+			"description_zh": "重視工作之卓越品質，發揮最佳綜效之團隊精神.",
+			"description_en": "Value the excellence of work quality and demonstrate the best synergy of team spirit.",
+			"url": "https://www.iis.sinica.edu.tw/"
+		},
+		{
+			"id": "ocf",
+			"title_zh": "財團法人開放文化基金會",
+			"title_en": "Open Culture Foundation",
+
+			"description_zh": "深耕台灣的開放文化並與國際交流。",
+			"description_en": "Cultivating open culture in Taiwan and exchanging with the international community.",
+			"url": "https://ocf.tw/"
+		}
+	],
+	"coSponsor": [],
+	"sponsorNavigator": [],
+	"sponsorDeepCultivation": [],
+	"sponsorVisionary": [],
+	"sponsorNewSprout": [],
+	"mediaPartners": [],
+	"supporters": []
+}
