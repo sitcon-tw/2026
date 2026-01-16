@@ -118,14 +118,14 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 		const meteorCount = 120; // High density for the storm
 		const meteors: { mesh: THREE.Mesh; speed: number; progress: number; offset: number }[] = [];
 
-		const meteorGeometry = new THREE.CylinderGeometry(0.01, 0.1, 20, 8); // Even longer trails
-		meteorGeometry.translate(0, 10, 0); // Offset so origin is at the "head"
-		meteorGeometry.rotateX(Math.PI / 2); // Align with Z axis for lookAt
+		const meteorGeometry = new THREE.CylinderGeometry(0.01, 0.2, 25, 8); // v=1(Top) is thin tail, v=0(Bottom) is thick head
+		meteorGeometry.translate(0, 12.5, 0); // Move Bottom(Head) to origin
+		meteorGeometry.rotateX(-Math.PI / 2); // Rotate so head (v=0) points forward (+Z)
 
 		const meteorShaderMaterial = new THREE.ShaderMaterial({
 			uniforms: {
 				color: { value: new THREE.Color(0xdddddd) }, // Grey-white color scheme
-				opacity: { value: 0.6 }
+				opacity: { value: 0.8 }
 			},
 			vertexShader: `
 				varying vec2 vUv;
@@ -165,7 +165,7 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 
 		// Orbiting Decorative Objects
 		const heroObjects: HeroObject[] = [];
-		const decorInstanceCount = 20; // 20 of each
+		const decorInstanceCount = 10; // Reduced count for SVGs to highlight volumetric primitives
 
 		function createOrbitingObjects(geometry: THREE.BufferGeometry, material: THREE.Material, count: number, scaleRange: [number, number], speedRange: [number, number]) {
 			for (let i = 0; i < count; i++) {
@@ -209,11 +209,24 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 		const svgLoader = new SVGLoader();
 		const textureLoader = new THREE.TextureLoader();
 
+		// Add Volumetric Primitives (Cubes & Spheres & Toruses)
+		const cubeGeom = new THREE.BoxGeometry(2, 2, 2);
+		const sphereGeom = new THREE.IcosahedronGeometry(1.2, 4); // Increased detail from 1 to 4 for smoothness
+		const torusGeom = new THREE.TorusGeometry(1, 0.4, 32, 48); // Also increased torus segments for smoothness
+
+		const goldMat = createMetalMaterial(0xdaa520);
+		const silverMat = createMetalMaterial(0xdfdfdf);
+		const copperMat = createMetalMaterial(0xcc7722);
+
+		createOrbitingObjects(cubeGeom, goldMat, 25, [1.0, 1.8], [0.0004, 0.0008]);
+		createOrbitingObjects(sphereGeom, silverMat, 25, [1.2, 2.2], [0.0004, 0.0008]);
+		createOrbitingObjects(torusGeom, copperMat, 20, [1.0, 1.6], [0.0004, 0.0008]);
+
 		// round-metal.svg
 		svgLoader.load("/2026/img/Hero/round-metal.svg", data => {
 			const shapes: THREE.Shape[] = [];
 			data.paths.forEach(path => shapes.push(...SVGLoader.createShapes(path)));
-			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 8, bevelEnabled: true });
+			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 15, bevelEnabled: true }); // Increased depth
 			geometry.center();
 			geometry.rotateX(Math.PI); // Correct SVG flip
 
@@ -221,14 +234,14 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 			const material = createMetalMaterial(baseColor);
 
 			// Orbiting Background (now draggable)
-			createOrbitingObjects(geometry, material, decorInstanceCount, [0.03, 0.07], [0.0001, 0.0002]);
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.03, 0.07], [0.0003, 0.0006]);
 		});
 
 		// stone-metal.svg
 		svgLoader.load("/2026/img/Hero/stone-metal.svg", data => {
 			const shapes: THREE.Shape[] = [];
 			data.paths.forEach(path => shapes.push(...SVGLoader.createShapes(path)));
-			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 10, bevelEnabled: true });
+			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 18, bevelEnabled: true }); // Increased depth
 			geometry.center();
 			geometry.rotateX(Math.PI);
 
@@ -236,14 +249,14 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 			const material = createMetalMaterial(baseColor);
 
 			// Orbiting Background (now draggable)
-			createOrbitingObjects(geometry, material, decorInstanceCount, [0.04, 0.09], [0.0001, 0.0002]);
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.04, 0.09], [0.0003, 0.0006]);
 		});
 
 		// star-metal.svg
 		svgLoader.load("/2026/img/Hero/star-metal.svg", data => {
 			const shapes: THREE.Shape[] = [];
 			data.paths.forEach(path => shapes.push(...SVGLoader.createShapes(path)));
-			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 4, bevelEnabled: true });
+			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 12, bevelEnabled: true }); // Increased depth
 			geometry.center();
 			geometry.rotateX(Math.PI);
 
@@ -251,7 +264,7 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 			const material = createMetalMaterial(baseColor);
 
 			// Orbiting Background (now draggable)
-			createOrbitingObjects(geometry, material, decorInstanceCount, [0.05, 0.12], [0.0001, 0.0002]);
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.05, 0.12], [0.0003, 0.0006]);
 		});
 
 		// Drag Events
@@ -338,7 +351,7 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 
 			// Update Meteors - only show front half
 			meteors.forEach(m => {
-				m.progress = (m.progress + m.speed * 0.15 * scrollFactor) % 1; // Half speed
+				m.progress = (m.progress + m.speed * 0.4 * scrollFactor) % 1; // Increased speed (was 0.15)
 				const pos = getSpiralPosition(m.progress, m.offset);
 				m.mesh.position.copy(pos);
 
