@@ -3,6 +3,7 @@ name: ✨ 功能建議
 about: 建議新功能或改進
 title: "[Feature] "
 labels: enhancement
+projects: ["sitcon-tw/13"]
 assignees: ""
 ---
 

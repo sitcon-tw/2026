@@ -3,6 +3,7 @@ name: 🐛 Bug 回報
 about: 回報問題或錯誤
 title: "[Bug] "
 labels: bug
+projects: ["sitcon-tw/13"]
 assignees: ""
 ---
 
