@@ -9,8 +9,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        感謝你花時間填寫這個問題回報！
-        Thanks for taking the time to fill out this bug report!
+      ⚠️ 注意：這個模板原則上只有毛哥EM 能使用。請勿用此模板回報 Bug 或功能建議，請使用專門的 Bug 回報或功能建議模板。
   - type: textarea
     id: task
     attributes:
