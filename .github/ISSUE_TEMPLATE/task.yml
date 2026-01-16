@@ -1,4 +1,3 @@
----
 name: 💼 待辦事項
 about: 該處理的問題或功能
 title: "[Task] "
@@ -8,8 +7,7 @@ assignees: ""
 body:
   - type: markdown
     attributes:
-      value: |
-      ⚠️ 注意：這個模板原則上只有毛哥EM 能使用。請勿用此模板回報 Bug 或功能建議，請使用專門的 Bug 回報或功能建議模板。
+      value: ⚠️ 注意：這個模板原則上只有毛哥EM 能使用。請勿用此模板回報 Bug 或功能建議，請使用專門的 Bug 回報或功能建議模板。
   - type: textarea
     id: task
     attributes:
@@ -35,4 +33,3 @@ body:
       label: 你願意提交 PR 來解決這個問題嗎？ Do you want to submit a PR to fix this task?
       options:
         - label: "Yes"
----
