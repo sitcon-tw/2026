@@ -155,6 +155,7 @@ const speakers = [
 		width: 100%;
 		display: flex;
 		justify-content: center;
+		perspective: 1000px;
 	}
 
 	.desktop-img {
@@ -163,6 +164,8 @@ const speakers = [
 		height: auto;
 		border-radius: 0.5rem;
 		box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.1);
+		transform-style: preserve-3d;
+		transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 	}
 
 	.marquee-container {
@@ -323,6 +326,7 @@ const speakers = [
 </style>
 
 <script>
+	import { gsap } from "gsap";
 	const items = document.querySelectorAll(".speaker-item");
 	const imgElement = document.getElementById("speaker-img");
 	let currentIndex = 0;
@@ -370,4 +374,32 @@ const speakers = [
 	}
 
 	startAutoPlay();
+
+	const speakerImage = document.querySelector(".speaker-image");
+	const desktopImg = document.querySelector(".desktop-img");
+
+	speakerImage?.addEventListener("mousemove", e => {
+		const { clientX, clientY } = e;
+		const { left, top, width, height } = speakerImage.getBoundingClientRect();
+		const x = clientX - left;
+		const y = clientY - top;
+		const rotateX = gsap.utils.mapRange(0, height, -10, 10, y);
+		const rotateY = gsap.utils.mapRange(0, width, 10, -10, x);
+
+		gsap.to(desktopImg, {
+			rotateX,
+			rotateY,
+			duration: 0.4,
+			ease: "power2.out"
+		});
+	});
+
+	speakerImage?.addEventListener("mouseleave", () => {
+		gsap.to(desktopImg, {
+			rotateX: 0,
+			rotateY: 0,
+			duration: 0.4,
+			ease: "power2.out"
+		});
+	});
 </script>
