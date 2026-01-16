@@ -1,0 +1,392 @@
+---
+
+---
+
+<div class="landing-section">
+	<!-- 主標題 (左側) -->
+	<div class="title-wrapper">
+		<img src="/2026/img/Hero/jam-the-chaos-title.svg" class="main-title" alt="JAM THE CHAOS" draggable="false" />
+	</div>
+
+	<!-- 右下角資訊 -->
+	<div class="info-wrapper">
+		<div class="location">
+			<p>中央研究院</p>
+			<p>人文社會科學館</p>
+		</div>
+		<div class="date">2026/03/28</div>
+	</div>
+
+	<!-- 左下角報名按鈕預留 -->
+	<div class="cta-wrapper">
+		<div class="cta-container" id="cta-container">
+			<a href="https://tickets.sitcon.org/zh-Hant/sitcon2026" target="_blank">
+				<div class="cta-text-layer">
+					<span class="cta-text">我要報名</span>
+					<span class="arrow">›</span>
+				</div>
+			</a>
+			<div class="cta-handle" id="cta-handle">
+				<div class="cta-icon">
+					<img src="/2026/img/Hero/stone-note.svg" alt="Arrow Right Icon" draggable="false" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.landing-section {
+		position: relative;
+		width: 100%;
+		height: 100dvh;
+		overflow: hidden;
+		font-family: "GenKiMinTW", serif;
+		z-index: 1;
+		animation: fadeIn 2s ease-out forwards;
+		user-select: none;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	.object {
+		position: absolute;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	/* 主標題 */
+	.title-wrapper {
+		position: absolute;
+		top: 15%;
+		left: 8%;
+		z-index: 2;
+		width: 35%;
+		max-width: 450px;
+	}
+	.main-title {
+		width: 100%;
+		height: auto;
+		filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+	}
+
+	/* 右下角資訊 */
+	.info-wrapper {
+		position: absolute;
+		bottom: 8%;
+		right: 8%;
+		z-index: 2;
+		text-align: right;
+		color: white;
+		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+	}
+	.location p {
+		font-size: 2.5rem;
+		margin: 0;
+		line-height: 1.4;
+		letter-spacing: 0.5em;
+		margin-right: -0.5em;
+		font-weight: 400;
+	}
+	.date {
+		font-size: 1.8rem;
+		margin-top: 0.5rem;
+		letter-spacing: 0.4em;
+		margin-right: -0.4em;
+		font-weight: 400;
+	}
+
+	/* 左下角按鈕 */
+	.cta-wrapper {
+		position: absolute;
+		bottom: 8%;
+		left: 8%;
+		z-index: 2;
+	}
+	.cta-container {
+		position: relative;
+		display: flex;
+		align-items: center;
+		width: 280px;
+		height: 64px;
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(12px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 1.2rem;
+		overflow: hidden;
+		cursor: pointer;
+		user-select: none;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		text-decoration: none;
+		color: white;
+	}
+	.cta-container:hover {
+		background: rgba(255, 255, 255, 0.15);
+		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+	}
+	.cta-text-layer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.8rem;
+		color: white;
+		z-index: 1;
+		padding-left: 48px;
+		transition: opacity 0.3s ease;
+		font-family: "GenKiGothicTW", serif;
+	}
+	.cta-text-layer a {
+		text-decoration: none;
+		color: inherit;
+	}
+	.cta-text {
+		font-size: 1.25rem;
+		letter-spacing: 0.1em;
+		font-weight: 500;
+	}
+	.arrow {
+		font-size: 1.5rem;
+		line-height: 1;
+	}
+	.cta-handle {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 64px;
+		height: 64px;
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 0.8rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 2;
+		cursor: grab;
+		touch-action: none;
+	}
+	.cta-handle:active {
+		cursor: grabbing;
+	}
+	.cta-icon {
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		padding: 8px;
+	}
+	.cta-icon img {
+		width: auto;
+		height: 100%;
+		max-width: 100%;
+	}
+
+	/* 位置設定 */
+	.metal-sphere {
+		top: 10%;
+		right: 15%;
+		width: 180px;
+		opacity: 0.9;
+	}
+
+	.metal-star-1 {
+		top: 20%;
+		left: 50%;
+		width: 40px;
+		opacity: 0.8;
+	}
+
+	.metal-star-2 {
+		bottom: 35%;
+		left: 15%;
+		width: 50px;
+		opacity: 0.8;
+	}
+
+	.stone-metal {
+		top: 55%;
+		left: calc(50% - 75px);
+		width: 150px;
+		opacity: 0.9;
+	}
+
+	/* 動畫 */
+	@keyframes float {
+		0% {
+			transform: translateY(0px) rotate(0deg);
+		}
+		50% {
+			transform: translateY(-15px) rotate(2deg);
+		}
+		100% {
+			transform: translateY(0px) rotate(0deg);
+		}
+	}
+
+	@keyframes float-reverse {
+		0% {
+			transform: translateY(0px) rotate(0deg);
+		}
+		50% {
+			transform: translateY(15px) rotate(-2deg);
+		}
+		100% {
+			transform: translateY(0px) rotate(0deg);
+		}
+	}
+
+	.floating {
+		animation: float 6s ease-in-out infinite;
+	}
+
+	.floating-reverse {
+		animation: float-reverse 7s ease-in-out infinite;
+	}
+
+	/* 響應式調整 */
+	@media (max-width: 1024px) {
+		.location p {
+			font-size: 1.8rem;
+		}
+		.date {
+			font-size: 1.4rem;
+		}
+		.metal-sphere {
+			width: 140px;
+		}
+	}
+	@media (max-width: 768px) {
+		.title-wrapper {
+			width: 70%;
+			top: 12%;
+			left: 5%;
+		}
+		.info-wrapper {
+			bottom: 4%;
+			right: 5%;
+		}
+		.location p {
+			font-size: 1.2rem;
+		}
+		.date {
+			font-size: 1rem;
+		}
+		.cta-wrapper {
+			bottom: 14%;
+			left: 5%;
+		}
+		.cta-container {
+			width: 240px;
+			height: 56px;
+		}
+		.cta-handle {
+			width: 56px;
+			height: 56px;
+			left: 0;
+			top: 0;
+		}
+		.cta-text-layer {
+			padding-left: 40px;
+		}
+		.cta-text {
+			font-size: 1.1rem;
+		}
+		.metal-sphere {
+			width: 100px;
+			top: 15%;
+		}
+		.stone-metal {
+			width: 100px;
+			left: calc(50% - 50px);
+		}
+	}
+</style>
+
+<script>
+	const container = document.getElementById("cta-container");
+	const handle = document.getElementById("cta-handle");
+	let isDragging = false;
+	let hasMoved = false;
+	let startX = 0;
+	let currentX = 0;
+
+	if (container && handle) {
+		const getX = (e: MouseEvent | TouchEvent) => {
+			return "touches" in e ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
+		};
+
+		const onStart = (e: MouseEvent | TouchEvent) => {
+			isDragging = true;
+			hasMoved = false;
+			startX = getX(e) - currentX;
+			handle.style.transition = "none";
+		};
+
+		const onMove = (e: MouseEvent | TouchEvent) => {
+			if (!isDragging) return;
+			if (e.type === "touchmove") {
+				(e as TouchEvent).preventDefault();
+			}
+			const x = getX(e) - startX;
+			if (Math.abs(x - currentX) > 5) {
+				hasMoved = true;
+			}
+			const maxDrag = container.offsetWidth - handle.offsetWidth - 0;
+			currentX = Math.max(0, Math.min(x, maxDrag));
+			handle.style.transform = `translateX(${currentX}px)`;
+
+			const opacity = 1 - currentX / maxDrag;
+			const textLayer = container.querySelector(".cta-text-layer") as HTMLElement;
+			if (textLayer) textLayer.style.opacity = opacity.toString();
+		};
+
+		const onEnd = () => {
+			if (!isDragging) return;
+			isDragging = false;
+			handle.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
+
+			const maxDrag = container.offsetWidth - handle.offsetWidth - 0;
+			if (currentX > maxDrag * 0.8) {
+				currentX = maxDrag;
+				handle.style.transform = `translateX(${currentX}px)`;
+				const textLayer = container.querySelector(".cta-text-layer") as HTMLElement;
+				if (textLayer) textLayer.style.opacity = "0";
+
+				setTimeout(() => {
+					window.location.href = "https://tickets.sitcon.org/zh-Hant/sitcon2026";
+				}, 300);
+			} else {
+				currentX = 0;
+				handle.style.transform = `translateX(0px)`;
+				const textLayer = container.querySelector(".cta-text-layer") as HTMLElement;
+				if (textLayer) textLayer.style.opacity = "1";
+			}
+		};
+
+		container.addEventListener("click", e => {
+			if (hasMoved) {
+				e.preventDefault();
+			}
+		});
+
+		handle.addEventListener("mousedown", onStart as any);
+		window.addEventListener("mousemove", onMove as any);
+		window.addEventListener("mouseup", onEnd);
+
+		handle.addEventListener("touchstart", onStart as any, { passive: true });
+		window.addEventListener("touchmove", onMove as any, { passive: false });
+		window.addEventListener("touchend", onEnd);
+	}
+</script>
