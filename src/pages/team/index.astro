@@ -170,10 +170,10 @@ const team_data = [
 		<!-- anchor -->
 		<div class="anchor">
 			<a class="anchor-switch anchor-btn" href="/2026/team/explore" aria-label="切換至探索模式">
-				<div class="anchor-box anchor-icon">
+				<div class="anchor-box" id="switch-icon">
 					<Grip size={18} />
 				</div>
-				<div class="anchor-box">
+				<div class="anchor-box" id="switch-text">
 					<span class="anchor-text-span">探索模式</span>
 				</div>
 			</a>
@@ -250,6 +250,19 @@ const team_data = [
 		overflow-x: auto;
 		max-width: 90vw;
 		padding: 0.5rem;
+	}
+
+	#switch-icon {
+		margin-right: 0;
+		padding-right: 0;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+
+	#switch-text {
+		margin-left: 0;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
 	}
 
 	.anchor-box {

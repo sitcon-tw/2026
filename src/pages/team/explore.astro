@@ -174,10 +174,10 @@ const team_data = [
 		<!-- anchor -->
 		<div class="anchor">
 			<a class="anchor-switch anchor-btn" href="/2026/team/" aria-label="切換至列表模式">
-				<div class="anchor-box anchor-icon">
+				<div class="anchor-box" id="switch-icon">
 					<List size={18} />
 				</div>
-				<div class="anchor-box">
+				<div class="anchor-box" id="switch-text">
 					<span class="anchor-text-span">列表模式</span>
 				</div>
 			</a>
@@ -696,6 +696,20 @@ const team_data = [
 		padding: 0.5rem;
 	}
 
+
+	#switch-icon {
+		margin-right: 0;
+		padding-right: 0;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+
+	#switch-text {
+		margin-left: 0;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+
 	.anchor-box {
 		display: flex;
 		align-items: center;
@@ -723,7 +737,7 @@ const team_data = [
 
 	.anchor-btn {
 		text-decoration: none;
-		transition: transform 0.2s ease;
+		transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 	}
 
 	.anchor-btn:hover {
