@@ -1,138 +1,726 @@
 [
-	{
-		"name": "開發組",
-		"description": "致力於用程式碼構築年會的數位基石，維護官網與 App 的穩定運作。我們是一群熱愛技術的開發者，將天馬行空的設計轉化為實際的互動體驗，歡迎來這裡交流切磋！",
-		"member": [
-			{
-				"name": "開發組名_0",
-				"position": "組長",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://github.com/sitcon-tw",
-				"description": "熱愛開源技術，喜歡探索新技術的極限。致力於讓 SITCON 官網體驗更流暢。"
-			},
-			{
-				"name": "開發組名_1",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "",
-				"description": "專注於後端開發，確保系統穩定運行。喜歡在半夜寫 Code，享受寧靜的 Coding 時光。"
-			},
-			{
-				"name": "開發組名_2",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://example.com",
-				"description": "版本控制大師，隨時準備好解救大家的 Merge Conflict。相信 Git 是世界上最好的發明。"
-			},
-			{
-				"name": "開發組名_3",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://twitter.com/dev_3",
-				"description": "Bug 獵人，看到 Bug 就會興奮。目標是寫出沒有 Bug 的程式碼（雖然是不可能的任務）。"
-			},
-			{
-				"name": "開發組名_4",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://instagram.com/life_of_4",
-				"description": "資料庫管家，小心翼翼地守護著每一筆資料。對於資料結構有著極高的潔癖。"
-			}
-		]
-	},
-	{
-		"name": "議程組",
-		"description": "負責年會所有的議程規劃與講師邀請，是年會內容的核心產出者。我們需要閱讀大量的技術投稿，並從中篩選出最適合年會的議題，確保會眾能聽到最優質的內容。",
-		"member": [
-			{
-				"name": "議程組名_5",
-				"position": "組長",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://medium.com/@agenda_lead",
-				"description": "時間管理大師，精確掌握每一場議程的進度。致力於帶來最多元、最有趣的議程內容。"
-			},
-			{
-				"name": "議程組名_6",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "",
-				"description": "喜歡聆聽各種技術分享，從中尋找靈感。希望能讓每一位講者都能在舞台上發光發熱。"
-			},
-			{
-				"name": "議程組名_7",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://github.com/agenda_review",
-				"description": "簡報設計愛好者，對於視覺呈現有著極高的要求。協助講者將複雜的技術概念轉化為易懂的圖表。"
-			},
-			{
-				"name": "議程組名_8",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://twitter.com/talks_hunter",
-				"description": "文字工作的熱愛者，負責撰寫動人的議程介紹。希望能透過文字吸引更多人來參與 SITCON。"
-			}
-		]
-	},
-	{
-		"name": "財務組",
-		"description": "掌管年會的財政大權，確保每一分贊助與預算都能發揮最大效益。我們需要細心與耐心，處理繁雜的報帳與預算編列，是活動背後最堅實的後盾。",
-		"member": [
-			{
-				"name": "財務組名_10",
-				"position": "組長",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://instagram.com/money_keeper",
-				"description": "精打細算的財務長，每一筆支出都要經過嚴格審核。目標是讓 SITCON 的財務狀況永遠健康。"
-			},
-			{
-				"name": "財務組名_11",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://linkedin.com/in/finance_pro",
-				"description": "Excel 表格達人，能用最快的速度整理好所有數據。對於數字有著極高的敏感度。"
-			}
-		]
-	},
-	{
-		"name": "場務組",
-		"description": "年會當天的現場守護神，負責動線規劃、設備架設與突發狀況處理。我們是活動順利進行的幕後功臣，需要強大的應變能力來面對各種挑戰。",
-		"member": [
-			{
-				"name": "場務組名_12",
-				"position": "組長",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://twitter.com/field_ops",
-				"description": "場地規劃專家，熟悉每一個角落的配置。確保動線順暢，讓會眾能輕鬆找到想去的地方。"
-			},
-			{
-				"name": "場務組名_13",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "",
-				"description": "電力供應守護者，確保每一個插座都有電。隨身攜帶延長線，隨時準備支援電力需求。"
-			},
-			{
-				"name": "場務組名_14",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://facebook.com/venue_staff",
-				"description": "視聽設備達人，確保投影與音響效果完美呈現。對於線材收納有著近乎強迫症的堅持。"
-			},
-			{
-				"name": "場務組名_16",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "",
-				"description": "安全第一的守護者，時刻注意現場的安全狀況。遇到突發狀況總能冷靜應對，化險為夷。"
-			},
-			{
-				"name": "場務組名_17",
-				"position": "組員",
-				"avatar_url": "/2026/img/avatar.jpg",
-				"social_link": "https://instagram.com/behind_scenes",
-				"description": "默默付出的幕後英雄，總是出現在最需要的地方。喜歡觀察人群，確保每一個人都玩得開心。"
-			}
-		]
-	}
+    {
+        "name": "毛哥EM",
+        "teams": [
+            {
+                "name": "development",
+                "role": "head"
+            },
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://elvismao.com",
+        "description": "熱愛開源技術，喜歡探索新技術的極限。致力於讓 SITCON 官網體驗更流暢。"
+    },
+    {
+        "name": "Leo",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "head"
+            },
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://leo.dev",
+        "description": "對議程規劃有獨到見解，同時對數字敏感。希望能為大家帶來高品質的議程與穩健的財務。"
+    },
+    {
+        "name": "Mina",
+        "teams": [
+            {
+                "name": "design",
+                "role": "head"
+            }
+        ],
+        "link": "https://instagram.com/mina_design",
+        "description": "設計風格獨特，為年會帶來視覺上的衝擊。每一個像素都經過精心雕琢，只為呈現最完美的畫面。"
+    },
+    {
+        "name": "Ray",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "head"
+            },
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://github.com/ray_code",
+        "description": "場地動線規劃專家，熟悉每一個角落的配置。閒暇時也會寫寫程式，貢獻開源專案。"
+    },
+    {
+        "name": "Vicky",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "head"
+            }
+        ],
+        "link": "https://youtube.com/@vicky_finance",
+        "description": "精打細算，確保年會財務狀況健康。每一筆支出都在掌握之中，讓每一分錢都花在刀口上。"
+    },
+    {
+        "name": "Yuki",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            },
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://x.com/yuki_art",
+        "description": "喜歡閱讀技術文章，也擅長平面設計。將複雜的技術概念轉化為易懂的圖像，是我的專長。"
+    },
+    {
+        "name": "小賴",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://instagram.com/lai_venue",
+        "description": "熱心助人，總是出現在最需要的地方。無論是搬運器材還是引導人流，都難不倒我。"
+    },
+    {
+        "name": "阿凱",
+        "teams": [
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://github.com/kai_dev",
+        "description": "全端開發者，致力於解決各種技術難題。享受 Coding 的樂趣，也喜歡分享技術心得。"
+    },
+    {
+        "name": "Member_9",
+        "teams": [
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_9",
+        "description": "This is an auto-generated description for Member_9. They contribute to development."
+    },
+    {
+        "name": "Member_10",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_10",
+        "description": "This is an auto-generated description for Member_10. They contribute to agenda."
+    },
+    {
+        "name": "Member_11",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_11",
+        "description": "This is an auto-generated description for Member_11. They contribute to finance."
+    },
+    {
+        "name": "Member_12",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_12",
+        "description": "This is an auto-generated description for Member_12. They contribute to venue."
+    },
+    {
+        "name": "Member_13",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_13",
+        "description": "This is an auto-generated description for Member_13. They contribute to agenda."
+    },
+    {
+        "name": "Member_14",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_14",
+        "description": "This is an auto-generated description for Member_14. They contribute to agenda."
+    },
+    {
+        "name": "Member_15",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_15",
+        "description": "This is an auto-generated description for Member_15. They contribute to finance."
+    },
+    {
+        "name": "Member_16",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_16",
+        "description": "This is an auto-generated description for Member_16. They contribute to venue."
+    },
+    {
+        "name": "Member_17",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            },
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_17",
+        "description": "This is an auto-generated description for Member_17. They contribute to agenda, development."
+    },
+    {
+        "name": "Member_18",
+        "teams": [
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_18",
+        "description": "This is an auto-generated description for Member_18. They contribute to development."
+    },
+    {
+        "name": "Member_19",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_19",
+        "description": "This is an auto-generated description for Member_19. They contribute to venue."
+    },
+    {
+        "name": "Member_20",
+        "teams": [
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_20",
+        "description": "This is an auto-generated description for Member_20. They contribute to design."
+    },
+    {
+        "name": "Member_21",
+        "teams": [
+            {
+                "name": "development",
+                "role": "member"
+            },
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_21",
+        "description": "This is an auto-generated description for Member_21. They contribute to development, venue."
+    },
+    {
+        "name": "Member_22",
+        "teams": [
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_22",
+        "description": "This is an auto-generated description for Member_22. They contribute to design."
+    },
+    {
+        "name": "Member_23",
+        "teams": [
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_23",
+        "description": "This is an auto-generated description for Member_23. They contribute to design."
+    },
+    {
+        "name": "Member_24",
+        "teams": [
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_24",
+        "description": "This is an auto-generated description for Member_24. They contribute to design."
+    },
+    {
+        "name": "Member_25",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_25",
+        "description": "This is an auto-generated description for Member_25. They contribute to agenda."
+    },
+    {
+        "name": "Member_26",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            },
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_26",
+        "description": "This is an auto-generated description for Member_26. They contribute to agenda, development."
+    },
+    {
+        "name": "Member_27",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            },
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_27",
+        "description": "This is an auto-generated description for Member_27. They contribute to agenda, design."
+    },
+    {
+        "name": "Member_28",
+        "teams": [
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_28",
+        "description": "This is an auto-generated description for Member_28. They contribute to development."
+    },
+    {
+        "name": "Member_29",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_29",
+        "description": "This is an auto-generated description for Member_29. They contribute to venue."
+    },
+    {
+        "name": "Member_30",
+        "teams": [
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_30",
+        "description": "This is an auto-generated description for Member_30. They contribute to design."
+    },
+    {
+        "name": "Member_31",
+        "teams": [
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_31",
+        "description": "This is an auto-generated description for Member_31. They contribute to development."
+    },
+    {
+        "name": "Member_32",
+        "teams": [
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_32",
+        "description": "This is an auto-generated description for Member_32. They contribute to design."
+    },
+    {
+        "name": "Member_33",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_33",
+        "description": "This is an auto-generated description for Member_33. They contribute to finance."
+    },
+    {
+        "name": "Member_34",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_34",
+        "description": "This is an auto-generated description for Member_34. They contribute to finance."
+    },
+    {
+        "name": "Member_35",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_35",
+        "description": "This is an auto-generated description for Member_35. They contribute to agenda."
+    },
+    {
+        "name": "Member_36",
+        "teams": [
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_36",
+        "description": "This is an auto-generated description for Member_36. They contribute to development."
+    },
+    {
+        "name": "Member_37",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            },
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_37",
+        "description": "This is an auto-generated description for Member_37. They contribute to venue, finance."
+    },
+    {
+        "name": "Member_38",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_38",
+        "description": "This is an auto-generated description for Member_38. They contribute to venue."
+    },
+    {
+        "name": "Member_39",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "member"
+            },
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_39",
+        "description": "This is an auto-generated description for Member_39. They contribute to finance, venue."
+    },
+    {
+        "name": "Member_40",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            },
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_40",
+        "description": "This is an auto-generated description for Member_40. They contribute to agenda, development."
+    },
+    {
+        "name": "Member_41",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_41",
+        "description": "This is an auto-generated description for Member_41. They contribute to finance."
+    },
+    {
+        "name": "Member_42",
+        "teams": [
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_42",
+        "description": "This is an auto-generated description for Member_42. They contribute to design."
+    },
+    {
+        "name": "Member_43",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            },
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_43",
+        "description": "This is an auto-generated description for Member_43. They contribute to venue, finance."
+    },
+    {
+        "name": "Member_44",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_44",
+        "description": "This is an auto-generated description for Member_44. They contribute to venue."
+    },
+    {
+        "name": "Member_45",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_45",
+        "description": "This is an auto-generated description for Member_45. They contribute to venue."
+    },
+    {
+        "name": "Member_46",
+        "teams": [
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_46",
+        "description": "This is an auto-generated description for Member_46. They contribute to design."
+    },
+    {
+        "name": "Member_47",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_47",
+        "description": "This is an auto-generated description for Member_47. They contribute to finance."
+    },
+    {
+        "name": "Member_48",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_48",
+        "description": "This is an auto-generated description for Member_48. They contribute to agenda."
+    },
+    {
+        "name": "Member_49",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            },
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_49",
+        "description": "This is an auto-generated description for Member_49. They contribute to venue, design."
+    },
+    {
+        "name": "Member_50",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_50",
+        "description": "This is an auto-generated description for Member_50. They contribute to venue."
+    },
+    {
+        "name": "Member_51",
+        "teams": [
+            {
+                "name": "development",
+                "role": "member"
+            },
+            {
+                "name": "agenda",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_51",
+        "description": "This is an auto-generated description for Member_51. They contribute to development, agenda."
+    },
+    {
+        "name": "Member_52",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_52",
+        "description": "This is an auto-generated description for Member_52. They contribute to finance."
+    },
+    {
+        "name": "Member_53",
+        "teams": [
+            {
+                "name": "venue",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_53",
+        "description": "This is an auto-generated description for Member_53. They contribute to venue."
+    },
+    {
+        "name": "Member_54",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            },
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_54",
+        "description": "This is an auto-generated description for Member_54. They contribute to agenda, development."
+    },
+    {
+        "name": "Member_55",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            },
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_55",
+        "description": "This is an auto-generated description for Member_55. They contribute to agenda, finance."
+    },
+    {
+        "name": "Member_56",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_56",
+        "description": "This is an auto-generated description for Member_56. They contribute to finance."
+    },
+    {
+        "name": "Member_57",
+        "teams": [
+            {
+                "name": "development",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_57",
+        "description": "This is an auto-generated description for Member_57. They contribute to development."
+    },
+    {
+        "name": "Member_58",
+        "teams": [
+            {
+                "name": "agenda",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_58",
+        "description": "This is an auto-generated description for Member_58. They contribute to agenda."
+    },
+    {
+        "name": "Member_59",
+        "teams": [
+            {
+                "name": "finance",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_59",
+        "description": "This is an auto-generated description for Member_59. They contribute to finance."
+    },
+    {
+        "name": "Member_60",
+        "teams": [
+            {
+                "name": "design",
+                "role": "member"
+            }
+        ],
+        "link": "https://example.com/Member_60",
+        "description": "This is an auto-generated description for Member_60. They contribute to design."
+    }
 ]

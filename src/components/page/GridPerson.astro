@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-const { name, position, avatar_url, social_link, team, description } = Astro.props;
+const { name, position, avatar_url, link, team, description } = Astro.props;
 ---
 
 <div
@@ -9,7 +9,7 @@ const { name, position, avatar_url, social_link, team, description } = Astro.pro
 	data-name={name}
 	data-position={position}
 	data-avatar={avatar_url}
-	data-social={social_link}
+	data-link={link}
 	data-description={description}
 	data-open-modal="member-info-modal"
 	aria-label={name}

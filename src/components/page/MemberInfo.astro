@@ -58,7 +58,7 @@ const { id = "member-info-modal" } = Astro.props;
 		// Open modal logic
 		const trigger = target.closest(".person-trigger") as HTMLElement | null;
 		if (trigger) {
-			const { name, position, avatar, social, team, description } = trigger.dataset;
+			const { name, position, avatar, link, team, description } = trigger.dataset;
 
 			const modal = document.getElementById("member-info-modal");
 			if (modal) {
@@ -82,9 +82,9 @@ const { id = "member-info-modal" } = Astro.props;
 				// Update Social Button
 				const socialBtn = modal.querySelector("#member-social-btn") as HTMLElement | null;
 				if (socialBtn) {
-					socialBtn.setAttribute("data-url", social || "");
-					socialBtn.textContent = getSocialText(social || "");
-					socialBtn.style.display = social ? "inline-block" : "none";
+					socialBtn.setAttribute("data-url", link || "");
+					socialBtn.textContent = getSocialText(link || "");
+					socialBtn.style.display = link ? "inline-block" : "none";
 					socialBtn.setAttribute("aria-label", socialBtn.textContent || "");
 				}
 
