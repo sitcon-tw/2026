@@ -63,7 +63,8 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 
 <script>
 	import * as THREE from "three";
-	import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader";
+	// @ts-ignore - SVGLoader types may not be available
+	import { SVGLoader, type SVGResult } from "three/examples/jsm/loaders/SVGLoader";
 	import gsap from "gsap";
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -207,7 +208,7 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 		}
 
 		const svgLoader = new SVGLoader();
-		const textureLoader = new THREE.TextureLoader();
+		// textureLoader removed - was declared but never used
 
 		// Add Volumetric Primitives (Cubes & Spheres & Toruses)
 		const cubeGeom = new THREE.BoxGeometry(2, 2, 2);
@@ -223,9 +224,9 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 		createOrbitingObjects(torusGeom, copperMat, 20, [1.0, 1.6], [0.0004, 0.0008]);
 
 		// round-metal.svg
-		svgLoader.load("/2026/img/Hero/round-metal.svg", data => {
+		svgLoader.load("/2026/img/Hero/round-metal.svg", (data: SVGResult) => {
 			const shapes: THREE.Shape[] = [];
-			data.paths.forEach(path => shapes.push(...SVGLoader.createShapes(path)));
+			data.paths.forEach((path: any) => shapes.push(...SVGLoader.createShapes(path)));
 			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 15, bevelEnabled: true }); // Increased depth
 			geometry.center();
 			geometry.rotateX(Math.PI); // Correct SVG flip
@@ -238,9 +239,9 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 		});
 
 		// stone-metal.svg
-		svgLoader.load("/2026/img/Hero/stone-metal.svg", data => {
+		svgLoader.load("/2026/img/Hero/stone-metal.svg", (data: SVGResult) => {
 			const shapes: THREE.Shape[] = [];
-			data.paths.forEach(path => shapes.push(...SVGLoader.createShapes(path)));
+			data.paths.forEach((path: any) => shapes.push(...SVGLoader.createShapes(path)));
 			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 18, bevelEnabled: true }); // Increased depth
 			geometry.center();
 			geometry.rotateX(Math.PI);
@@ -253,9 +254,9 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 		});
 
 		// star-metal.svg
-		svgLoader.load("/2026/img/Hero/star-metal.svg", data => {
+		svgLoader.load("/2026/img/Hero/star-metal.svg", (data: SVGResult) => {
 			const shapes: THREE.Shape[] = [];
-			data.paths.forEach(path => shapes.push(...SVGLoader.createShapes(path)));
+			data.paths.forEach((path: any) => shapes.push(...SVGLoader.createShapes(path)));
 			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 12, bevelEnabled: true }); // Increased depth
 			geometry.center();
 			geometry.rotateX(Math.PI);
@@ -401,9 +402,10 @@ import PhotoWall from "./Hero/PhotoWall.astro";
 				// Scale visibility based on Z position for smooth fade
 				const isVisible = obj.mesh.position.z < 15;
 				obj.mesh.visible = isVisible;
-				if (isVisible && obj.mesh.material instanceof THREE.MeshPhysicalMaterial) {
-					obj.mesh.material.opacity = Math.max(0, 1.0 * (1 - (obj.mesh.position.z - 5) / 10));
-					obj.mesh.material.transparent = obj.mesh.position.z > 5;
+				const meshWithMaterial = obj.mesh as THREE.Mesh;
+				if (isVisible && meshWithMaterial.material instanceof THREE.MeshPhysicalMaterial) {
+					meshWithMaterial.material.opacity = Math.max(0, 1.0 * (1 - (obj.mesh.position.z - 5) / 10));
+					meshWithMaterial.material.transparent = obj.mesh.position.z > 5;
 				}
 			});
 
