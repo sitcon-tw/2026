@@ -28,6 +28,14 @@ const { name, position, avatar_url, social_link, team_name, team_index, style, d
 		margin: 2rem;
 		cursor: pointer;
 		border: none;
+		transition:
+			transform 0.3s ease,
+			filter 0.3s ease;
+	}
+
+	.explore-item:hover {
+		transform: translateY(-0.5rem);
+		filter: drop-shadow(0 1rem 1rem #0000002d);
 	}
 
 	.avatar-img {
