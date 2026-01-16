@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-const { name, position, avatar_url, social_link, team_name, team_index, style, description } = Astro.props;
+const { name, position, avatar_url, link, team_name, team_index, style, description } = Astro.props;
 ---
 
 <div
@@ -10,7 +10,7 @@ const { name, position, avatar_url, social_link, team_name, team_index, style, d
 	data-name={name}
 	data-position={position}
 	data-avatar={avatar_url}
-	data-social={social_link}
+	data-link={link}
 	data-description={description}
 	data-open-modal="member-info-modal"
 	style={style}
@@ -21,6 +21,7 @@ const { name, position, avatar_url, social_link, team_name, team_index, style, d
 
 <style>
 	.explore-item {
+		display: flex;
 		position: relative;
 		width: fit-content;
 		border-radius: 62.5rem;
@@ -28,13 +29,21 @@ const { name, position, avatar_url, social_link, team_name, team_index, style, d
 		margin: 2rem;
 		cursor: pointer;
 		border: none;
+		transition:
+			transform 0.3s ease,
+			filter 0.3s ease;
+	}
+
+	.explore-item:hover {
+		transform: translateY(-0.5rem);
+		filter: drop-shadow(0 1rem 1rem #0000002d);
 	}
 
 	.avatar-img {
 		width: 10rem;
 		height: 10rem;
 		border-radius: 1rem;
-		object-fit: contain;
+		object-fit: cover;
 		background-color: #a97c21;
 	}
 </style>
