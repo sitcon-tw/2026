@@ -37,8 +37,8 @@ const ROLE_MAP: Record<string, string> = {
 
 const teamsMap = new Map();
 
-team_data_raw.forEach((person) => {
-	person.teams.forEach((team) => {
+team_data_raw.forEach(person => {
+	person.teams.forEach(team => {
 		if (!teamsMap.has(team.name)) {
 			teamsMap.set(team.name, {
 				id: team.name,
