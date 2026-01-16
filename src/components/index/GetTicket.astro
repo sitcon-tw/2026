@@ -135,7 +135,7 @@ function getRandomStyle() {
 		font-size: 2.25rem;
 		padding-top: 6rem;
 		color: white;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
 	}
 
 	.title h1 {
@@ -147,7 +147,7 @@ function getRandomStyle() {
 		width: 67rem;
 		height: 30rem;
 		margin-top: 2rem;
-		perspective: 1000px;
+		perspective: 62.5rem;
 	}
 
 	.ticket-mobile-header {
@@ -155,7 +155,7 @@ function getRandomStyle() {
 		padding: 1.5rem 2rem;
 		justify-content: space-between;
 		align-items: center;
-		border-bottom: 2px dashed rgba(0, 0, 0, 0.1);
+		border-bottom: 0.125rem dashed rgba(0, 0, 0, 0.1);
 	}
 
 	.mobile-title {
@@ -177,13 +177,13 @@ function getRandomStyle() {
 		width: 100%;
 		height: 100%;
 		background-color: var(--bg-color);
-		border-radius: 20px;
-		box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
+		border-radius: 1.25rem;
+		box-shadow: -0.3125rem 0 1.25rem rgba(0, 0, 0, 0.15);
 		cursor: pointer;
 		overflow: hidden;
 		transform-origin: right center;
-		mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 15px, black 16px), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 15px, black 16px);
-		-webkit-mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 15px, black 16px), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 15px, black 16px);
+mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375rem, black 1rem), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 0.9375rem, black 1rem);
+		-webkit-mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375rem, black 1rem), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 0.9375rem, black 1rem);
 		mask-composite: intersect;
 		-webkit-mask-composite: source-in;
 		will-change: transform, height;
@@ -257,7 +257,7 @@ function getRandomStyle() {
 	.btn-primary,
 	.btn-secondary {
 		padding: 0.75rem 2.5rem;
-		border-radius: 999px;
+		border-radius: 62.4375rem;
 		font-size: 1.5rem;
 		font-weight: 700;
 		cursor: pointer;
@@ -266,7 +266,7 @@ function getRandomStyle() {
 
 	.btn-primary {
 		background: transparent;
-		border: 2px solid #333;
+		border: 0.125rem solid #333;
 		color: #333;
 	}
 
@@ -277,7 +277,7 @@ function getRandomStyle() {
 
 	.btn-secondary {
 		background: transparent;
-		border: 2px solid rgba(0, 0, 0, 0.3);
+		border: 0.125rem solid rgba(0, 0, 0, 0.3);
 		color: #333;
 	}
 
@@ -287,7 +287,7 @@ function getRandomStyle() {
 
 	.ticket-divider {
 		width: 0;
-		border-left: 2px dashed rgba(0, 0, 0, 0.2);
+		border-left: 0.125rem dashed rgba(0, 0, 0, 0.2);
 		margin: 2rem 0;
 	}
 
@@ -315,9 +315,9 @@ function getRandomStyle() {
 
 	.ticket-pill {
 		background: rgba(0, 0, 0, 0.05);
-		border: 1px solid rgba(0, 0, 0, 0.1);
+		border: 0.0625rem solid rgba(0, 0, 0, 0.1);
 		padding: 0.2rem 0.8rem;
-		border-radius: 999px;
+		border-radius: 62.4375rem;
 		font-size: 0.875rem;
 		font-family: monospace;
 		color: #333;
@@ -414,14 +414,16 @@ function getRandomStyle() {
 
 		.ticket-card {
 			transform-origin: center top;
-			mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 15px, black 16px), radial-gradient(circle at 100% calc(100% - 8rem), transparent 15px, black 16px);
-			-webkit-mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 15px, black 16px), radial-gradient(circle at 100% calc(100% - 8rem), transparent 15px, black 16px);
-			box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+			mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 0.9375rem, black 1rem),
+						radial-gradient(circle at 100% calc(100% - 8rem), transparent 0.9375rem, black 1rem);
+			-webkit-mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 0.9375rem, black 1rem),
+						radial-gradient(circle at 100% calc(100% - 8rem), transparent 0.9375rem, black 1rem);
+			box-shadow: 0 -0.3125rem 0.9375rem rgba(0, 0, 0, 0.1);
 		}
 
 		.ticket-content {
 			flex-direction: column;
-			height: calc(100% - 80px); /* Subtract mobile header height */
+			height: calc(100% - 5rem); /* Subtract mobile header height */
 			overflow: hidden;
 			opacity: 0;
 			transition: opacity 0.3s ease;
@@ -454,7 +456,7 @@ function getRandomStyle() {
 			width: 100%;
 			height: 0;
 			border-left: none;
-			border-top: 2px dashed rgba(0, 0, 0, 0.1);
+			border-top: 0.125rem dashed rgba(0, 0, 0, 0.1);
 			margin: 0;
 		}
 
@@ -505,8 +507,8 @@ function getRandomStyle() {
 	const cards = document.querySelectorAll(".ticket-card");
 	const container = document.querySelector(".ticket-container");
 	const sideWidth = 12 * 16; // 12rem
-	const mobileHeaderHeight = 80;
-	const overlap = 50;
+	const mobileHeaderHeight = 5 * 16;
+	const overlap = 3.125 * 16;
 	let currentActiveIndex = 0;
 
 	function updateCards(activeIndex: number) {
