@@ -38,16 +38,7 @@ const tickets = [
 	}
 ];
 
-const lines = ["崴寶送了好多禮物給孟寶", "但是孟寶很糟糕", "只準備了這首歌想唱給崴寶聽", "這首歌送給崴寶", "一二三 三百天", "四五六 六百天", "不知不覺在一起永永遠遠"];
-
-const fullLines = [...lines, ...lines];
-
-function getRandomStyle() {
-	const top = Math.floor(Math.random() * 90) + "%";
-	const duration = Math.floor(Math.random() * 10) + 25 + "s";
-	const delay = Math.floor(Math.random() * -30) + "s";
-	return { top, duration, delay };
-}
+const danmakuLines = ["竟然完全免費？", "所以我可以怎麼來？？？", "SITCON 自己的報名系統？", "崴崴孟孟 一起去日本", "立即申請", "SITCON{AloGuys_By_OsGa}", "千萬不要錯過！！！"];
 ---
 
 <section>
@@ -100,18 +91,8 @@ function getRandomStyle() {
 		</div>
 	</div>
 
-	<div class="danmaku-container">
-		{
-			fullLines.map(line => {
-				const style = getRandomStyle();
-				return (
-					<p class="danmaku-item" style={`top: ${style.top}; animation-duration: ${style.duration}; animation-delay: ${style.delay};`}>
-						{line}
-					</p>
-				);
-			})
-		}
-	</div>
+	<!-- 彈幕容器，由 JS 動態生成內容 -->
+	<div class="danmaku-container" id="danmaku-container" data-lines={JSON.stringify(danmakuLines)}></div>
 </section>
 
 <style>
@@ -182,7 +163,7 @@ function getRandomStyle() {
 		cursor: pointer;
 		overflow: hidden;
 		transform-origin: right center;
-mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375rem, black 1rem), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 0.9375rem, black 1rem);
+		mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375rem, black 1rem), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 0.9375rem, black 1rem);
 		-webkit-mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375rem, black 1rem), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 0.9375rem, black 1rem);
 		mask-composite: intersect;
 		-webkit-mask-composite: source-in;
@@ -345,7 +326,7 @@ mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375re
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		align-items: flex-end; /* This becomes the Bottom of the stub */
+		align-items: flex-end;
 		height: 100%;
 		font-size: 0.75rem;
 		color: #333;
@@ -353,7 +334,7 @@ mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375re
 	}
 
 	.ticket-info-corner {
-		order: 2; /* Bottom of horizontal -> Left of stub */
+		order: 2;
 		text-align: right;
 		display: flex;
 		flex-direction: column;
@@ -363,7 +344,7 @@ mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375re
 	}
 
 	.ticket-sitcon-small {
-		order: 1; /* Top of horizontal -> Right of stub */
+		order: 1;
 		font-weight: 700;
 		margin-top: 0.25rem;
 	}
@@ -377,19 +358,21 @@ mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375re
 		pointer-events: none;
 		z-index: 1;
 		user-select: none;
+		overflow: hidden;
 	}
 
-	.danmaku-item {
+	/* 彈幕樣式，font-size 由 JS 動態設定 */
+	:global(.danmaku-item) {
 		position: absolute;
 		left: 100%;
 		white-space: nowrap;
-		font-size: 3rem;
-		font-weight: bold;
+		font-weight: 900;
 		color: white;
-		opacity: 0.15;
+		opacity: 0.12;
 		animation-name: fly;
 		animation-timing-function: linear;
 		animation-iteration-count: infinite;
+		will-change: transform;
 	}
 
 	@media (max-width: 768px) {
@@ -414,16 +397,14 @@ mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375re
 
 		.ticket-card {
 			transform-origin: center top;
-			mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 0.9375rem, black 1rem),
-						radial-gradient(circle at 100% calc(100% - 8rem), transparent 0.9375rem, black 1rem);
-			-webkit-mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 0.9375rem, black 1rem),
-						radial-gradient(circle at 100% calc(100% - 8rem), transparent 0.9375rem, black 1rem);
+			mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 0.9375rem, black 1rem), radial-gradient(circle at 100% calc(100% - 8rem), transparent 0.9375rem, black 1rem);
+			-webkit-mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 0.9375rem, black 1rem), radial-gradient(circle at 100% calc(100% - 8rem), transparent 0.9375rem, black 1rem);
 			box-shadow: 0 -0.3125rem 0.9375rem rgba(0, 0, 0, 0.1);
 		}
 
 		.ticket-content {
 			flex-direction: column;
-			height: calc(100% - 5rem); /* Subtract mobile header height */
+			height: calc(100% - 5rem);
 			overflow: hidden;
 			opacity: 0;
 			transition: opacity 0.3s ease;
@@ -496,7 +477,7 @@ mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375re
 			transform: translateX(0);
 		}
 		to {
-			transform: translateX(-150vw);
+			transform: translateX(calc(-100vw - 100%));
 		}
 	}
 </style>
@@ -504,26 +485,99 @@ mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375re
 <script>
 	import { gsap } from "gsap";
 
+	// ==================== 彈幕動態生成 ====================
+	const ROWS = 8;
+	const ITEMS_PER_ROW = 6;
+	const FIXED_DURATION = 35;
+	const SAFETY_GAP_SEC = 2;
+
+	// 用 Canvas 測量實際文字寬度
+	function measureTextWidth(text: string, fontSize: number): number {
+		const canvas = document.createElement("canvas");
+		const ctx = canvas.getContext("2d");
+		if (!ctx) return text.length * fontSize;
+		ctx.font = `900 ${fontSize}px sans-serif`;
+		return ctx.measureText(text).width;
+	}
+
+	// 計算彈幕間距時間
+	function calculateDelay(text: string, fontSize: number, screenWidth: number): number {
+		const textWidth = measureTextWidth(text, fontSize);
+		const totalDistance = screenWidth + textWidth;
+		const speed = totalDistance / FIXED_DURATION;
+		const timeForText = textWidth / speed;
+		return timeForText + SAFETY_GAP_SEC;
+	}
+
+	// 生成彈幕
+	function generateDanmaku() {
+		const container = document.getElementById("danmaku-container");
+		if (!container) return;
+
+		const linesData = container.dataset.lines;
+		if (!linesData) return;
+		const lines: string[] = JSON.parse(linesData);
+
+		container.innerHTML = "";
+
+		const screenWidth = window.innerWidth;
+		const fontSize = Math.max(48, Math.min(80, screenWidth * 0.06));
+
+		for (let r = 0; r < ROWS; r++) {
+			let currentDelay = -(r * 1.5) - Math.random() * 5;
+
+			for (let i = 0; i < ITEMS_PER_ROW; i++) {
+				const text = lines[Math.floor(Math.random() * lines.length)];
+				const top = (r / ROWS) * 85;
+
+				const p = document.createElement("p");
+				p.className = "danmaku-item";
+				p.textContent = text;
+				p.style.cssText = `
+					top: ${top}%;
+					font-size: ${fontSize}px;
+					animation-duration: ${FIXED_DURATION}s;
+					animation-delay: ${currentDelay.toFixed(2)}s;
+				`;
+
+				container.appendChild(p);
+				currentDelay += calculateDelay(text, fontSize, screenWidth);
+			}
+		}
+	}
+
+	// 初始化彈幕
+	generateDanmaku();
+
+	// 視窗大小改變時重新生成
+	let resizeTimeout: number;
+	window.addEventListener("resize", () => {
+		clearTimeout(resizeTimeout);
+		resizeTimeout = window.setTimeout(() => {
+			generateDanmaku();
+		}, 300);
+	});
+
+	// ==================== 票卡互動邏輯 ====================
 	const cards = document.querySelectorAll(".ticket-card");
-	const container = document.querySelector(".ticket-container");
-	const sideWidth = 12 * 16; // 12rem
+	const ticketContainer = document.querySelector(".ticket-container");
+	const sideWidth = 12 * 16;
 	const mobileHeaderHeight = 5 * 16;
 	const overlap = 3.125 * 16;
 	let currentActiveIndex = 0;
 
 	function updateCards(activeIndex: number) {
-		if (!container) return;
+		if (!ticketContainer) return;
 		currentActiveIndex = activeIndex;
 		const isMobile = window.innerWidth <= 768;
-		const containerWidth = container.getBoundingClientRect().width;
-		const containerHeight = container.getBoundingClientRect().height;
+		const containerWidth = ticketContainer.getBoundingClientRect().width;
+		const containerHeight = ticketContainer.getBoundingClientRect().height;
 
 		if (isMobile) {
 			let inactiveCount = 0;
 			cards.forEach((card, index) => {
 				const htmlCard = card as HTMLElement;
 				if (index === activeIndex) {
-					// Set zIndex immediately for the active card to prevent stutter
 					gsap.set(htmlCard, { zIndex: cards.length + 1 });
 					gsap.to(htmlCard, {
 						x: 0,
@@ -555,7 +609,6 @@ mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375re
 				}
 			});
 		} else {
-			// Desktop Horizontal Stacking Logic
 			cards.forEach((card, index) => {
 				const htmlCard = card as HTMLElement;
 				gsap.set(htmlCard, { height: "100%" });
@@ -631,11 +684,9 @@ mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375re
 		});
 	});
 
-	// Handle resize
 	window.addEventListener("resize", () => {
 		updateCards(currentActiveIndex);
 	});
 
-	// Initial state
 	updateCards(0);
 </script>
