@@ -1,29 +1,29 @@
 ---
 const speakers = [
 	{
-		name: "OsGa",
+		name: "osga",
 		desc: "崴崴孟孟旅行三百天",
-		img: "https://placehold.co/367x492/png?text=OsGa"
+		img: "https://placehold.co/367x492/png?text=osga"
 	},
 	{
-		name: "毛哥EM",
+		name: "毛哥em",
 		desc: "厲害崴孟讓旅途順暢無阻",
-		img: "https://placehold.co/367x492/png?text=EM"
+		img: "https://placehold.co/367x492/png?text=em"
 	},
 	{
-		name: "凱文 Kevin",
+		name: "凱文 kevin",
 		desc: "崴孟合作 什麼難關都不怕",
-		img: "https://placehold.co/367x492/png?text=Kevin"
+		img: "https://placehold.co/367x492/png?text=kevin"
 	},
 	{
-		name: "紐爾森 Nelson",
+		name: "紐爾森 nelson",
 		desc: "孟寶總是心暖暖 因為崴崴寶",
-		img: "https://placehold.co/367x492/png?text=Nelson"
+		img: "https://placehold.co/367x492/png?text=nelson"
 	},
 	{
 		name: "yc油成",
 		desc: "擁有豐富的數學背景",
-		img: "https://placehold.co/367x492/png?text=YC"
+		img: "https://placehold.co/367x492/png?text=yc"
 	}
 ];
 ---
@@ -41,14 +41,14 @@ const speakers = [
 				speakers.map((person, index) => (
 					<div class:list={["speaker-item", { active: index === 0 }]} data-img={person.img}>
 						<a>{person.name}</a>
-						<p class="speakerDesc">{person.desc}</p>
+						<p class="speakerdesc">{person.desc}</p>
 					</div>
 				))
 			}
 		</div>
 
 		<div class="speaker-image">
-			<img id="speaker-img" class="desktop-img" src={speakers[0].img} alt="Speaker" />
+			<img id="speaker-img" class="desktop-img" src={speakers[0].img} alt="speaker" />
 
 			<div class="marquee-container">
 				<div class="marquee-track">
@@ -62,10 +62,16 @@ const speakers = [
 	<a href="#" class="cta-btn">查看議程表</a>
 
 	<div class="bg-optimized">
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1512 543" preserveAspectRatio="none">
-			<path opacity="0.34" d="M1512 0L0 320V543H1512V0Z" fill="#A1A1A1"></path>
-			<path opacity="0.34" d="M0 0L1512 320V543H0V0Z" fill="#D9D9D9"></path>
-			<path opacity="0.34" d="M0 0L1512 320V543H0V0Z" fill="#CDCDCD"></path>
+		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewbox="0 24 150 28" preserveaspectratio="none" shape-rendering="auto">
+			<defs>
+				<path id="gentle-wave" d="m-160 44c30 0 58-8 88-8s 58 4 88 8 58-8 88-8 58 8 88 8 v44h-352z"></path>
+			</defs>
+			<g class="parallax">
+				<use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(161, 161, 161, 0.34)"></use>
+				<use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(217, 217, 217, 0.34)"></use>
+				<use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(205, 205, 205, 0.34)"></use>
+				<use xlink:href="#gentle-wave" x="48" y="7" fill="#e0e0e0"></use>
+			</g>
 		</svg>
 	</div>
 </section>
@@ -73,17 +79,26 @@ const speakers = [
 <style>
 	@keyframes scroll {
 		0% {
-			transform: translateX(0);
+			transform: translatex(0);
 		}
 		100% {
-			transform: translateX(-50%);
+			transform: translatex(-50%);
+		}
+	}
+
+	@keyframes move-forever {
+		0% {
+			transform: translate3d(-90px, 0, 0);
+		}
+		100% {
+			transform: translate3d(85px, 0, 0);
 		}
 	}
 
 	.speaker-section {
 		position: relative;
 		background-color: #f4f4f4;
-		padding: 4rem 2rem;
+		padding: 4rem 2rem 8rem 2rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -147,7 +162,7 @@ const speakers = [
 		transform-origin: left center;
 	}
 
-	.speakerDesc {
+	.speakerdesc {
 		display: none;
 	}
 
@@ -191,7 +206,7 @@ const speakers = [
 	}
 
 	.cta-btn:hover {
-		transform: translateY(-0.125rem);
+		transform: translatey(-0.125rem);
 		filter: brightness(1.05);
 	}
 
@@ -208,15 +223,40 @@ const speakers = [
 		bottom: 0;
 		left: 0;
 		width: 100%;
-		height: 60%;
+		height: 80%;
 		pointer-events: none;
 		z-index: 0;
+		overflow: hidden;
 	}
 
-	.bg-optimized svg {
+	.waves {
+		position: absolute;
+		bottom: 0;
+		left: 0;
 		width: 100%;
 		height: 100%;
-		display: block;
+		min-height: 100px;
+	}
+
+	.parallax > use {
+		animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+	}
+
+	.parallax > use:nth-child(1) {
+		animation-delay: -2s;
+		animation-duration: 7s;
+	}
+	.parallax > use:nth-child(2) {
+		animation-delay: -3s;
+		animation-duration: 10s;
+	}
+	.parallax > use:nth-child(3) {
+		animation-delay: -4s;
+		animation-duration: 13s;
+	}
+	.parallax > use:nth-child(4) {
+		animation-delay: -5s;
+		animation-duration: 20s;
 	}
 
 	@media (max-width: 900px) {
@@ -272,7 +312,7 @@ const speakers = [
 			transform-origin: left center;
 		}
 
-		.speakerDesc {
+		.speakerdesc {
 			display: block;
 			font-size: 1rem;
 			font-weight: normal;
@@ -320,84 +360,84 @@ const speakers = [
 		}
 
 		.bg-optimized {
-			height: 50%;
+			height: 70%;
 		}
 	}
 </style>
 
 <script>
 	import { gsap } from "gsap";
-	const items = document.querySelectorAll(".speaker-item");
-	const imgElement = document.getElementById("speaker-img");
-	let currentIndex = 0;
+	const items = document.queryselectorall(".speaker-item");
+	const imgelement = document.getelementbyid("speaker-img");
+	let currentindex = 0;
 
-	function updateView(index: number) {
-		items.forEach(item => {
-			item.classList.remove("active");
+	function updateview(index: number) {
+		items.foreach(item => {
+			item.classlist.remove("active");
 		});
 
-		const targetItem = items[index];
-		targetItem.classList.add("active");
+		const targetitem = items[index];
+		targetitem.classlist.add("active");
 
-		const newImgSrc = targetItem.getAttribute("data-img");
-		if (imgElement && newImgSrc) {
-			(imgElement as HTMLImageElement).src = newImgSrc;
+		const newimgsrc = targetitem.getattribute("data-img");
+		if (imgelement && newimgsrc) {
+			(imgelement as htmlimageelement).src = newimgsrc;
 		}
 
-		currentIndex = index;
+		currentindex = index;
 	}
 
-	items.forEach((item, index) => {
-		item.addEventListener("mouseenter", () => {
-			updateView(index);
-			stopAutoPlay();
+	items.foreach((item, index) => {
+		item.addeventlistener("mouseenter", () => {
+			updateview(index);
+			stopautoplay();
 		});
 
-		item.addEventListener("mouseleave", () => {
-			startAutoPlay();
+		item.addeventlistener("mouseleave", () => {
+			startautoplay();
 		});
 	});
 
-	let timer: number | null = null;
+	let timer: returntype<typeof setinterval> | null = null;
 
-	function startAutoPlay() {
+	function startautoplay() {
 		if (timer) return;
-		timer = window.setInterval(() => {
-			const nextIndex = (currentIndex + 1) % items.length;
-			updateView(nextIndex);
+		timer = window.setinterval(() => {
+			const nextindex = (currentindex + 1) % items.length;
+			updateview(nextindex);
 		}, 2000);
 	}
 
-	function stopAutoPlay() {
-		if (timer) window.clearInterval(timer);
+	function stopautoplay() {
+		if (timer) window.clearinterval(timer);
 		timer = null;
 	}
 
-	startAutoPlay();
+	startautoplay();
 
-	const speakerImage = document.querySelector(".speaker-image");
-	const desktopImg = document.querySelector(".desktop-img");
+	const speakerimage = document.queryselector(".speaker-image");
+	const desktopimg = document.queryselector(".desktop-img");
 
-	speakerImage?.addEventListener("mousemove", e => {
-		const { clientX, clientY } = e;
-		const { left, top, width, height } = speakerImage.getBoundingClientRect();
-		const x = clientX - left;
-		const y = clientY - top;
-		const rotateX = gsap.utils.mapRange(0, height, -10, 10, y);
-		const rotateY = gsap.utils.mapRange(0, width, 10, -10, x);
+	speakerimage?.addeventlistener("mousemove", e => {
+		const { clientx, clienty } = e;
+		const { left, top, width, height } = speakerimage.getboundingclientrect();
+		const x = clientx - left;
+		const y = clienty - top;
+		const rotatex = gsap.utils.maprange(0, height, -10, 10, y);
+		const rotatey = gsap.utils.maprange(0, width, 10, -10, x);
 
-		gsap.to(desktopImg, {
-			rotateX,
-			rotateY,
+		gsap.to(desktopimg, {
+			rotatex,
+			rotatey,
 			duration: 0.4,
 			ease: "power2.out"
 		});
 	});
 
-	speakerImage?.addEventListener("mouseleave", () => {
-		gsap.to(desktopImg, {
-			rotateX: 0,
-			rotateY: 0,
+	speakerimage?.addeventlistener("mouseleave", () => {
+		gsap.to(desktopimg, {
+			rotatex: 0,
+			rotatey: 0,
 			duration: 0.4,
 			ease: "power2.out"
 		});
