@@ -1,0 +1,253 @@
+---
+const logoSrc = "/2026/img/SITCON-withname.svg";
+const range = count => Array.from({ length: count });
+---
+
+<section class="sponsor-container">
+	<div class="content-wrapper">
+		<div class="section-group">
+			<div class="top-tier-grid">
+				<div class="tier-item">
+					<h3 class="tier-title">主辦單位</h3>
+					<div class="logo-box">
+						<img src={logoSrc} alt="主辦單位" />
+					</div>
+				</div>
+
+				<div class="tier-item">
+					<h3 class="tier-title">合辦單位</h3>
+					<div class="logo-row-2">
+						{
+							range(2).map(() => (
+								<div class="logo-box">
+									<img src={logoSrc} alt="合辦單位" />
+								</div>
+							))
+						}
+					</div>
+				</div>
+
+				<div class="tier-item">
+					<h3 class="tier-title">協辦單位</h3>
+					<div class="logo-box">
+						<img src={logoSrc} alt="協辦單位" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="section-group">
+			<h3 class="tier-title">領航級</h3>
+			<div class="main-grid">
+				{
+					range(15).map(() => (
+						<div class="logo-box center-box">
+							<img src={logoSrc} alt="領航級贊助" />
+						</div>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="section-group">
+			<h3 class="tier-title">深耕級</h3>
+			<div class="main-grid">
+				{
+					range(9).map(() => (
+						<div class="logo-box center-box">
+							<img src={logoSrc} alt="深耕級贊助" />
+						</div>
+					))
+				}
+				<div class="logo-box center-box person-sponsor">
+					<span>個人贊助</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.sponsor-container {
+		background-color: #f2f2f2;
+		padding: 4rem 1rem;
+		color: #333;
+		font-family: sans-serif;
+	}
+
+	.content-wrapper {
+		max-width: 75rem;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 5rem;
+	}
+
+	.tier-title {
+		font-size: 1.1rem;
+		font-weight: bold;
+		margin-bottom: 2rem;
+		color: #222;
+	}
+
+	img {
+		width: 100%;
+		max-width: 160px;
+		height: auto;
+		opacity: 0.4;
+		filter: grayscale(100%);
+		transition: all 0.3s ease;
+		mix-blend-mode: multiply;
+		display: block;
+	}
+
+	.logo-box:hover img {
+		opacity: 1;
+		filter: grayscale(0%);
+	}
+
+	.top-tier-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 3rem;
+	}
+
+	.tier-item {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.logo-box {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.center-box {
+		justify-content: center;
+	}
+
+	.logo-row-2 {
+		display: flex;
+		justify-content: center;
+		gap: 2rem;
+	}
+
+	.main-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 3rem 2rem;
+	}
+
+	.person-sponsor {
+		font-size: 1.6rem;
+		font-weight: bold;
+		color: #aaa;
+		transition: all 0.3s ease;
+	}
+
+	/* .person-sponsor:hover { */
+	/* 	color: black; */
+	/* } */
+	.person-sponsor:hover {
+		color: black;
+		animation: neon-rainbow 2s linear infinite;
+	}
+
+	@keyframes neon-rainbow {
+		0% {
+			text-shadow:
+				0 0 5px #fff,
+				0 0 10px #fff,
+				0 0 20px #ff0000,
+				0 0 40px #ff0000,
+				0 0 80px #ff0000;
+		}
+		14% {
+			text-shadow:
+				0 0 5px #fff,
+				0 0 10px #fff,
+				0 0 20px #ff7f00,
+				0 0 40px #ff7f00,
+				0 0 80px #ff7f00;
+		}
+		28% {
+			text-shadow:
+				0 0 5px #fff,
+				0 0 10px #fff,
+				0 0 20px #ffff00,
+				0 0 40px #ffff00,
+				0 0 80px #ffff00;
+		}
+		42% {
+			text-shadow:
+				0 0 5px #fff,
+				0 0 10px #fff,
+				0 0 20px #00ff00,
+				0 0 40px #00ff00,
+				0 0 80px #00ff00;
+		}
+		57% {
+			text-shadow:
+				0 0 5px #fff,
+				0 0 10px #fff,
+				0 0 20px #0000ff,
+				0 0 40px #0000ff,
+				0 0 80px #0000ff;
+		}
+		71% {
+			text-shadow:
+				0 0 5px #fff,
+				0 0 10px #fff,
+				0 0 20px #4b0082,
+				0 0 40px #4b0082,
+				0 0 80px #4b0082;
+		}
+		85% {
+			text-shadow:
+				0 0 5px #fff,
+				0 0 10px #fff,
+				0 0 20px #9400d3,
+				0 0 40px #9400d3,
+				0 0 80px #9400d3;
+		}
+		100% {
+			text-shadow:
+				0 0 5px #fff,
+				0 0 10px #fff,
+				0 0 20px #ff0000,
+				0 0 40px #ff0000,
+				0 0 80px #ff0000;
+		}
+	}
+	@media (min-width: 48rem) {
+		.top-tier-grid {
+			display: grid;
+			grid-template-columns: repeat(5, 1fr);
+			gap: 3rem;
+		}
+
+		.tier-item:nth-child(1) {
+			grid-column: 1;
+		}
+
+		.tier-item:nth-child(2) {
+			grid-column: 2 / 4;
+		}
+
+		.tier-item:nth-child(3) {
+			grid-column: 4;
+		}
+
+		.tier-item:nth-child(2) .logo-row-2 {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 3rem;
+		}
+
+		.main-grid {
+			grid-template-columns: repeat(5, 1fr);
+			gap: 4rem 3rem;
+		}
+	}
+</style>
