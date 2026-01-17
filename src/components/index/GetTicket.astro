@@ -38,7 +38,99 @@ const tickets = [
 	}
 ];
 
-const danmakuLines = ["竟然完全免費？", "所以我可以怎麼來？？？", "SITCON 自己的報名系統？", "崴崴孟孟 一起去日本", "立即申請", "SITCON{AloGuys_By_OsGa}", "千萬不要錯過！！！"];
+const danmakuLines = [
+	"竟然完全免費？",
+	"所以我可以怎麼來？？？",
+	"SITCON 自己的報名系統？",
+	"崴崴孟孟 一起去日本",
+	"立即申請",
+	"SITCON{AloGuys_By_OsGa}",
+	"千萬不要錯過！！！",
+	"真的假的啦也太佛？？？",
+	"免費還不衝？？",
+	"我先報名了各位慢慢想",
+	"手速慢一點就沒了吧",
+	"報名入口在哪！！",
+	"這波是官方認證的香",
+	"這不是詐騙吧（是認真的）",
+	"我只問一句：還能再更爽嗎",
+	"想去 +1",
+	"想去 +100",
+	"我朋友也說要去欸",
+	"這活動也太猛了吧",
+	"欸欸欸快看這個！！！",
+	"現在報名會不會太晚？？",
+	"有人一起嗎？？",
+	"我媽問我為什麼跪著看",
+	"先存起來再說",
+	"我按了我按了我按了",
+	"我不管我就是要去",
+	"這種機會不常有欸",
+	"排程先空出來！",
+	"我直接請假",
+	"今天就決定了！",
+	"猶豫就輸了",
+	"按下去就對了",
+	"我只想說：謝謝 SITCON",
+	"系統也太酷了吧",
+	"居然還有自己的報名系統？？",
+	"報名流程順到不行",
+	"UI 好看就給過",
+	"工程師：這我可以",
+	"這個我真的會去",
+	"拜託給我名額",
+	"我要當第一批報到的人",
+	"快點快點快點！！！",
+	"別滑了去報名！！",
+	"還在等什麼啦",
+	"我已經分享到群組了",
+	"已轉發給十個朋友",
+	"傳了傳了別問",
+	"看完直接心動",
+	"這就是青春嗎？？",
+	"我人已在路上（誤）",
+	"現場會不會爆滿",
+	"有沒有大佬出沒？？",
+	"我要去蹭 knowledge",
+	"我要去吸收能量",
+	"想聽神仙 talk",
+	"我只想當個快樂聽眾",
+	"這個不去會後悔吧",
+	"誰不去誰傻",
+	"不要攔我！！！",
+	"今天開始當 SITCON 粉",
+	"我願稱之為神活動",
+	"欸欸欸不要搶我名額",
+	"我就問：名額剩多少",
+	"這波真的要衝",
+	"給我一個理由不去",
+	"看完心跳加速",
+	"我要準備我的筆記本了",
+	"我已經想好要問什麼問題了",
+	"先卡位再說",
+	"晚了就只能看回放了吧",
+	"拜託讓我進！！！",
+	"我宣布：我要參加",
+	"救命我也太興奮",
+	"報名成功我就請飲料",
+	"有沒有同伴一起衝",
+	"衝衝衝衝衝",
+	"這裡是彈幕不是聊天室（但我忍不住）",
+	"我來了我來了",
+	"快開門我是粉絲",
+	"謝謝你 SITCON",
+	"SIX SEVEN!!!!",
+	"下一個：我也要做報名系統",
+	"學到了學到了",
+	"這個含金量超高",
+	"別再說了我要去",
+	"看到這句的人都去報名",
+	"你不報我報",
+	"你報了我也報",
+	"大家一起快樂出發",
+	"準備好了嗎？？？",
+	"Let’s goooooo！！！"
+];
 ---
 
 <section>
@@ -91,7 +183,6 @@ const danmakuLines = ["竟然完全免費？", "所以我可以怎麼來？？�
 		</div>
 	</div>
 
-	<!-- 彈幕容器，由 JS 動態生成內容 -->
 	<div class="danmaku-container" id="danmaku-container" data-lines={JSON.stringify(danmakuLines)}></div>
 </section>
 
@@ -361,17 +452,12 @@ const danmakuLines = ["竟然完全免費？", "所以我可以怎麼來？？�
 		overflow: hidden;
 	}
 
-	/* 彈幕樣式，font-size 由 JS 動態設定 */
 	:global(.danmaku-item) {
 		position: absolute;
-		left: 100%;
 		white-space: nowrap;
 		font-weight: 900;
 		color: white;
 		opacity: 0.12;
-		animation-name: fly;
-		animation-timing-function: linear;
-		animation-iteration-count: infinite;
 		will-change: transform;
 	}
 
@@ -471,92 +557,125 @@ const danmakuLines = ["竟然完全免費？", "所以我可以怎麼來？？�
 			display: block;
 		}
 	}
-
-	@keyframes fly {
-		from {
-			transform: translateX(0);
-		}
-		to {
-			transform: translateX(calc(-100vw - 100%));
-		}
-	}
 </style>
 
 <script>
 	import { gsap } from "gsap";
 
-	// ==================== 彈幕動態生成 ====================
-	const ROWS = 8;
-	const ITEMS_PER_ROW = 6;
-	const FIXED_DURATION = 35;
-	const SAFETY_GAP_SEC = 2;
+	// ==================== 彈幕 ====================
+	class DanmakuSystem {
+		private container: HTMLElement;
+		private lines: string[];
+		private rows: number = 6;
+		private fontSize: number = 0;
+		private speed: number = 150; // px/s
+		private gap: number = 80; // 彈幕間距 px
+		private rowState: { lastEndTime: number }[] = [];
+		private animationFrameId: number = 0;
+		private startTime: number = 0;
 
-	// 用 Canvas 測量實際文字寬度
-	function measureTextWidth(text: string, fontSize: number): number {
-		const canvas = document.createElement("canvas");
-		const ctx = canvas.getContext("2d");
-		if (!ctx) return text.length * fontSize;
-		ctx.font = `900 ${fontSize}px sans-serif`;
-		return ctx.measureText(text).width;
-	}
+		constructor(container: HTMLElement, lines: string[]) {
+			this.container = container;
+			this.lines = lines;
+			this.init();
+		}
 
-	// 計算彈幕間距時間
-	function calculateDelay(text: string, fontSize: number, screenWidth: number): number {
-		const textWidth = measureTextWidth(text, fontSize);
-		const totalDistance = screenWidth + textWidth;
-		const speed = totalDistance / FIXED_DURATION;
-		const timeForText = textWidth / speed;
-		return timeForText + SAFETY_GAP_SEC;
-	}
+		private init() {
+			this.updateFontSize();
+			this.rowState = Array.from({ length: this.rows }, () => ({ lastEndTime: 0 }));
+			this.start();
+			window.addEventListener("resize", this.handleResize.bind(this));
+		}
 
-	// 生成彈幕
-	function generateDanmaku() {
-		const container = document.getElementById("danmaku-container");
-		if (!container) return;
+		private updateFontSize() {
+			const screenWidth = window.innerWidth;
+			this.fontSize = Math.max(48, Math.min(80, screenWidth * 0.06));
+		}
 
-		const linesData = container.dataset.lines;
-		if (!linesData) return;
-		const lines: string[] = JSON.parse(linesData);
+		private measureText(text: string): number {
+			const canvas = document.createElement("canvas");
+			const ctx = canvas.getContext("2d");
+			if (!ctx) return text.length * this.fontSize;
+			ctx.font = `900 ${this.fontSize}px sans-serif`;
+			return ctx.measureText(text).width;
+		}
 
-		container.innerHTML = "";
+		private getRandomText(): string {
+			return this.lines[Math.floor(Math.random() * this.lines.length)];
+		}
 
-		const screenWidth = window.innerWidth;
-		const fontSize = Math.max(48, Math.min(80, screenWidth * 0.06));
+		private createDanmaku(row: number, initialOffset: number = 0) {
+			const text = this.getRandomText();
+			const textWidth = this.measureText(text);
+			const screenWidth = window.innerWidth;
+			const totalDistance = screenWidth + textWidth;
+			const duration = totalDistance / this.speed;
 
-		for (let r = 0; r < ROWS; r++) {
-			let currentDelay = -(r * 1.5) - Math.random() * 5;
+			const el = document.createElement("p");
+			el.className = "danmaku-item";
+			el.textContent = text;
+			el.style.fontSize = `${this.fontSize}px`;
+			el.style.top = `${(row / this.rows) * 100}%`;
+			el.style.left = `${screenWidth + initialOffset}px`;
 
-			for (let i = 0; i < ITEMS_PER_ROW; i++) {
-				const text = lines[Math.floor(Math.random() * lines.length)];
-				const top = (r / ROWS) * 85;
+			this.container.appendChild(el);
 
-				const p = document.createElement("p");
-				p.className = "danmaku-item";
-				p.textContent = text;
-				p.style.cssText = `
-					top: ${top}%;
-					font-size: ${fontSize}px;
-					animation-duration: ${FIXED_DURATION}s;
-					animation-delay: ${currentDelay.toFixed(2)}s;
-				`;
+			const timeUntilFullyEntered = (textWidth + this.gap) / this.speed;
+			this.rowState[row].lastEndTime = performance.now() + timeUntilFullyEntered * 1000;
 
-				container.appendChild(p);
-				currentDelay += calculateDelay(text, fontSize, screenWidth);
+			gsap.to(el, {
+				x: -totalDistance,
+				duration: duration,
+				ease: "none",
+				onComplete: () => {
+					el.remove();
+				}
+			});
+		}
+
+		private tick = (currentTime: number) => {
+			for (let row = 0; row < this.rows; row++) {
+				if (currentTime >= this.rowState[row].lastEndTime) {
+					this.createDanmaku(row);
+				}
 			}
+			this.animationFrameId = requestAnimationFrame(this.tick);
+		};
+
+		private start() {
+			this.container.innerHTML = "";
+			this.startTime = performance.now();
+
+			for (let row = 0; row < this.rows; row++) {
+				const initialDelay = (row * 0.3 + Math.random() * 0.5) * 1000;
+				this.rowState[row].lastEndTime = this.startTime + initialDelay;
+			}
+
+			this.animationFrameId = requestAnimationFrame(this.tick);
+		}
+
+		private handleResize() {
+			cancelAnimationFrame(this.animationFrameId);
+			gsap.killTweensOf(".danmaku-item");
+			this.container.innerHTML = "";
+			this.updateFontSize();
+			this.start();
+		}
+
+		destroy() {
+			cancelAnimationFrame(this.animationFrameId);
+			gsap.killTweensOf(".danmaku-item");
+			window.removeEventListener("resize", this.handleResize.bind(this));
 		}
 	}
 
-	// 初始化彈幕
-	generateDanmaku();
-
-	// 視窗大小改變時重新生成
-	let resizeTimeout: number;
-	window.addEventListener("resize", () => {
-		clearTimeout(resizeTimeout);
-		resizeTimeout = window.setTimeout(() => {
-			generateDanmaku();
-		}, 300);
-	});
+	const danmakuContainer = document.getElementById("danmaku-container");
+	if (danmakuContainer) {
+		const linesData = danmakuContainer.dataset.lines;
+		if (linesData) {
+			new DanmakuSystem(danmakuContainer, JSON.parse(linesData));
+		}
+	}
 
 	// ==================== 票卡互動邏輯 ====================
 	const cards = document.querySelectorAll(".ticket-card");
