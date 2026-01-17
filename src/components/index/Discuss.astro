@@ -1,22 +1,13 @@
 ---
-const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，在開始籌備時通知你！", "到 GitLab 查看今年的籌備歷程！", "一起在郵件論壇討論籌備！"];
+const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，在開始籌備時會寄信通知你，絕不錯過任何消息！", "到 GitLab 查看今年的籌備歷程！"];
 ---
 
-<section class="discuss-section">
+<section class="chat-section">
 	<div class="container">
-		<div class="chat-container">
-			{
-				messages.map(msg => (
-					<div class="message-group">
-						<div class="bubble-oval">{msg}</div>
-						<div class="bubble-tail">
-							<svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
-								<path d="M0 21.9509C4.84211 12.1674 0 0 0 0L23 1.19723V1.22056C23 1.22056 9.68421 23.1715 0 21.9509Z" fill="#C2A05A" />
-							</svg>
-						</div>
-					</div>
-				))
-			}
+		<div class="chat-wrapper">
+			<div class="chat-mask">
+				<div class="chat-stream" id="chatStream" data-messages={JSON.stringify(messages)}></div>
+			</div>
 		</div>
 
 		<div class="info-container">
@@ -34,16 +25,15 @@ const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，
 </section>
 
 <style>
-	section {
+	.chat-section {
 		position: relative;
-		padding: 10rem 0;
 		overflow: hidden;
+		padding: 0;
 	}
 
 	.container {
 		max-width: var(--max-width);
 		width: 90%;
-		min-height: 15rem;
 		margin: 0 auto;
 		display: flex;
 		justify-content: space-between;
@@ -51,50 +41,70 @@ const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，
 		gap: 5rem;
 		position: relative;
 		z-index: 2;
+		padding: 4rem 0;
 	}
 
-	.chat-container {
+	.chat-wrapper {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.chat-mask {
+		height: 320px;
+		width: 100%;
+		overflow: hidden;
+		position: relative;
+		mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%);
+		-webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%);
+	}
+
+	.chat-stream {
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
-		flex: 1;
-		padding-left: 2rem;
+		justify-content: flex-end;
+		height: 100%;
+		gap: 0.5rem;
+		padding: 1rem 0;
+		overflow: hidden;
 	}
 
-	.message-group {
+	.chat-section :global(.message-bubble) {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		width: fit-content;
-		max-width: 90%;
-		visibility: hidden;
+		max-width: 85%;
+		flex-shrink: 0;
+		will-change: transform, opacity;
 	}
 
-	.message-group:nth-child(even) {
-		margin-left: 5rem;
+	.chat-section :global(.message-bubble.is-offset) {
+		margin-left: 4rem;
 	}
 
-	.bubble-oval {
-		border-radius: 3.75rem;
-		padding: 1.25rem 2.2rem;
+	.chat-section :global(.bubble-content) {
+		border-radius: 1.5rem;
+		padding: 1.1rem 1.6rem;
 		background: #c2a05a;
-		backdrop-filter: blur(0.625rem);
-		border: 0.125rem solid #c2a05a;
 		color: white;
-		font-size: 1.8rem;
+		font-size: 1.5rem;
 		font-weight: 500;
-		line-height: 1.5;
-		box-shadow: 0 0.3125rem 1.125rem rgba(0, 0, 0, 0.12);
-		white-space: nowrap; /* 強制不換行 */
+		line-height: 1.45;
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+		max-width: 22rem;
+		word-break: break-word;
 	}
 
-	.bubble-tail {
-		margin-top: -0.1875rem;
-		margin-left: 1.875rem;
+	.chat-section :global(.bubble-tail) {
+		margin-top: -2px;
+		margin-left: 1.5rem;
 		line-height: 0;
-		transform: scale(1.25);
-		transform-origin: top left;
-		filter: drop-shadow(0 0.125rem 0.125rem rgba(0, 0, 0, 0.1));
+	}
+
+	.chat-section :global(.bubble-tail svg) {
+		width: 20px;
+		height: 18px;
+		display: block;
 	}
 
 	.info-container {
@@ -103,13 +113,14 @@ const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，
 		flex-direction: column;
 		align-items: flex-start;
 		padding-left: 5rem;
+		min-width: 25rem;
 	}
 
 	.section-title {
 		font-size: 6rem;
 		color: white;
 		font-family: serif;
-		margin: 0 0 2.5rem 0;
+		margin: 0 0 1.5rem 0;
 		font-weight: 700;
 		line-height: 1.1;
 	}
@@ -150,147 +161,95 @@ const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，
 	.decor-paper {
 		position: absolute;
 		right: -6rem;
-		bottom: -9rem;
+		bottom: -7rem;
 		width: 30rem;
 		transform: rotate(-10deg);
 		z-index: 1;
 	}
 
-	@media screen and (max-width: 1645px) {
-		.bubble-oval {
-			font-size: 1.5rem;
-			padding: 1.1rem 2rem;
-		}
-
-		.bubble-tail {
-			transform: scale(1.1);
-			margin-left: 1.75rem;
-		}
-	}
-
+	/* RWD */
 	@media screen and (max-width: 1250px) {
-		section {
-			padding: 8rem 0;
-		}
-
 		.container {
 			gap: 3rem;
 			width: 95%;
+			padding: 3rem 0;
 		}
-
 		.section-title {
 			font-size: 5rem;
 		}
-
 		.info-container {
 			padding-left: 2rem;
+			min-width: auto;
 		}
-
-		.message-group:nth-child(even) {
-			margin-left: 3rem;
+		.chat-section :global(.message-bubble.is-offset) {
+			margin-left: 2.5rem;
+		}
+		.chat-mask {
+			height: 280px;
+		}
+		.chat-section :global(.bubble-content) {
+			max-width: 18rem;
+			font-size: 1.35rem;
 		}
 	}
 
 	@media screen and (max-width: 992px) {
-		section {
-			padding: 6rem 0;
-		}
-
 		.container {
 			flex-direction: column-reverse;
-			gap: 4rem;
-			height: auto;
+			gap: 3rem;
+			padding: 3rem 0;
 		}
-
 		.info-container {
 			padding-left: 0;
 			align-items: center;
 			text-align: center;
 			width: 100%;
 		}
-
 		.section-title {
 			font-size: 4rem;
-			margin-bottom: 2rem;
+			margin-bottom: 1.5rem;
 		}
-
 		.btn-group {
 			justify-content: center;
 		}
-
-		.chat-container {
-			padding-left: 0;
-			align-items: center;
+		.chat-wrapper {
 			width: 100%;
 		}
-
-		.message-group {
-			max-width: 100%;
+		.chat-mask {
+			width: 100%;
 		}
-
-		.message-group:nth-child(even) {
+		.chat-stream {
+			align-items: center;
+		}
+		.chat-section :global(.message-bubble) {
+			max-width: 90%;
+		}
+		.chat-section :global(.message-bubble.is-offset) {
 			margin-left: 0;
 		}
-
-		.bubble-oval {
-			font-size: 1.25rem;
-			padding: 0.9rem 1.8rem;
+		.chat-section :global(.bubble-content) {
+			font-size: 1.2rem;
+			padding: 0.85rem 1.3rem;
+			max-width: 80vw;
 		}
-
-		.bubble-tail {
-			transform: scale(1);
-			margin-left: 1.25rem;
+		.chat-section :global(.bubble-tail) {
+			margin-left: 1rem;
 		}
-
-		.decor-paper {
-			width: 21.875rem;
-			right: -4rem;
-			opacity: 0.7;
+		.chat-section :global(.bubble-tail svg) {
+			width: 16px;
+			height: 14px;
 		}
 	}
 
 	@media screen and (max-width: 576px) {
-		section {
-			padding: 4rem 0;
-		}
-
 		.container {
-			gap: 3rem;
+			padding: 2.5rem 0;
 		}
-
+		.chat-mask {
+			height: 240px;
+		}
 		.section-title {
-			font-size: 2.8rem;
-		}
-
-		.btn-group {
-			gap: 1rem;
-		}
-
-		.btn-pill {
-			font-size: 1rem;
-			padding: 0.8rem 1.6rem;
-		}
-
-		.bubble-oval {
-			font-size: 0.95rem;
-			padding: 0.7rem 1.2rem;
-			border-radius: 1.875rem;
-		}
-
-		.bubble-tail {
-			transform: scale(0.8);
-			margin-left: 0.9375rem;
-		}
-
-		.decor-logo {
-			display: none;
-		}
-
-		.decor-paper {
-			width: 15.625rem;
-			right: -2rem;
-			bottom: -5rem;
-			opacity: 0.4;
+			font-size: 3rem;
 		}
 	}
 </style>
@@ -301,27 +260,95 @@ const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，
 
 	gsap.registerPlugin(ScrollTrigger);
 
-	const messages = document.querySelectorAll(".message-group");
+	function initChatAnimation() {
+		const chatStream = document.getElementById("chatStream");
+		if (!chatStream) return;
 
-	gsap.fromTo(
-		messages,
-		{
-			autoAlpha: 0,
-			y: 70,
-			scale: 0.9
-		},
-		{
-			autoAlpha: 1,
-			y: 0,
-			scale: 1,
-			duration: 0.8,
-			ease: "back.out(1.5)",
-			stagger: 0.25,
-			scrollTrigger: {
-				trigger: ".chat-container",
-				start: "top 75%",
-				toggleActions: "play none none reverse"
-			}
+		const messagesData = chatStream.dataset.messages;
+		if (!messagesData) return;
+
+		const messages: string[] = JSON.parse(messagesData);
+		const MAX_BUBBLES = 10;
+		const INTERVAL_MS = 2800;
+
+		let messageIndex = 0;
+		let displayCount = 0;
+		let intervalId: number | null = null;
+
+		function createBubble(text: string, isOffset: boolean): HTMLElement {
+			const bubble = document.createElement("div");
+			bubble.className = `message-bubble${isOffset ? " is-offset" : ""}`;
+			bubble.innerHTML = `
+				<div class="bubble-content">${text}</div>
+				<div class="bubble-tail">
+					<svg viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M0 21.9509C4.84211 12.1674 0 0 0 0L23 1.19723V1.22056C23 1.22056 9.68421 23.1715 0 21.9509Z" fill="#C2A05A"/>
+					</svg>
+				</div>
+			`;
+			return bubble;
 		}
-	);
+
+		function addMessage(animate = true) {
+			const text = messages[messageIndex % messages.length];
+			const isOffset = displayCount % 2 === 1;
+			const bubble = createBubble(text, isOffset);
+
+			chatStream.appendChild(bubble);
+
+			if (animate) {
+				gsap.set(bubble, {
+					opacity: 0,
+					scale: 0.92,
+					transformOrigin: "left bottom"
+				});
+
+				gsap.to(bubble, {
+					opacity: 1,
+					scale: 1,
+					duration: 0.45,
+					delay: 0.05,
+					ease: "back.out(1.4)"
+				});
+			}
+
+			// 清理舊訊息
+			while (chatStream.children.length > MAX_BUBBLES) {
+				const oldest = chatStream.firstElementChild as HTMLElement;
+				if (oldest) {
+					gsap.to(oldest, {
+						opacity: 0,
+						duration: 0.3,
+						ease: "power2.out",
+						onComplete: () => oldest.remove()
+					});
+				}
+			}
+
+			messageIndex++;
+			displayCount++;
+		}
+
+		function startLoop() {
+			if (intervalId !== null) return;
+			intervalId = window.setInterval(() => addMessage(true), INTERVAL_MS);
+		}
+
+		for (let i = 0; i < 4; i++) {
+			addMessage(false);
+		}
+
+		ScrollTrigger.create({
+			trigger: ".chat-section",
+			start: "top 85%",
+			onEnter: startLoop,
+			once: true
+		});
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initChatAnimation);
+	} else {
+		initChatAnimation();
+	}
 </script>
