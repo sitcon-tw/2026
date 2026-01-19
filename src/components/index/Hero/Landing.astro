@@ -5,7 +5,11 @@
 <div class="landing-section">
 	<!-- 主標題 (左側) -->
 	<div class="title-wrapper">
-		<img src="/2026/img/Hero/jam-the-chaos-title.svg" class="main-title" alt="JAM THE CHAOS" draggable="false" />
+		<div class="main-title">
+			<span class="line-1">JAM</span>
+			<span class="line-2">THE</span>
+			<span class="line-3">CHAOS</span>
+		</div>
 	</div>
 
 	<!-- 右下角資訊 -->
@@ -72,9 +76,27 @@
 		max-width: 450px;
 	}
 	.main-title {
-		width: 100%;
-		height: auto;
+		display: flex;
+		flex-direction: column;
+		color: white;
+		/* font-size: 6.5rem; */
+		font-weight: 400;
+		line-height: 0.9;
 		filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+		text-transform: uppercase;
+		gap: 1rem;
+	}
+	.line-1 {
+		margin-left: 0;
+		font-size: 6.5rem;
+	}
+	.line-2 {
+		margin-left: 2rem;
+		font-size: 3.5rem;
+	}
+	.line-3 {
+		margin-left: 8rem;
+		font-size: 5.5rem;
 	}
 
 	/* 右下角資訊 */
@@ -272,6 +294,21 @@
 			width: 70%;
 			top: 12%;
 			left: 5%;
+		}
+		.main-title {
+			margin-top: 3rem;
+			gap: 0.5rem;
+		}
+		.line-1 {
+			font-size: 3.5rem;
+		}
+		.line-2 {
+			margin-left: 1rem;
+			font-size: 1.9rem;
+		}
+		.line-3 {
+			margin-left: 4rem;
+			font-size: 3rem;
 		}
 		.info-wrapper {
 			bottom: 4%;
