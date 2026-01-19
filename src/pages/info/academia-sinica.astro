@@ -328,7 +328,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 
 	// ---------- Third-person camera + camera collision ----------
 	let enabled: boolean = false;
-	let yaw: number = 0;
+	let yaw: number = Math.PI;
 	let pitch: number = 0;
 	const pitchLimit: number = Math.PI / 2 - 0.05;
 
