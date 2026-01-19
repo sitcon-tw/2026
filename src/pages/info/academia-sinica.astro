@@ -140,7 +140,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 	import { Octree } from "three/examples/jsm/math/Octree.js";
 	import { Capsule } from "three/examples/jsm/math/Capsule.js";
 
-	// ---------- helpers (type guards / utils) ----------
+	// helpers (type guards / utils)
 	function mustGetEl<T extends HTMLElement>(id: string): T {
 		const el = document.getElementById(id);
 		if (!el) throw new Error(`Missing DOM: #${id}`);
@@ -164,7 +164,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 		(tex as unknown as LegacyTextureEncoding).encoding = 3001;
 	}
 
-	// ---------- DOM ----------
+	// DOM
 	const canvas = mustGetEl<HTMLCanvasElement>("c");
 	const instructions = mustGetEl<HTMLDivElement>("instructions");
 	const touchControls = mustGetEl<HTMLDivElement>("touchControls");
@@ -174,7 +174,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 
 	const isTouchDevice: boolean = (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) || navigator.maxTouchPoints > 0;
 
-	// ---------- THREE ----------
+	// THREE
 	const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 	renderer.shadowMap.enabled = true;
@@ -184,13 +184,13 @@ import { Move, ChevronUp } from "@lucide/astro";
 	scene.background = new THREE.Color(0xa97c21);
 	scene.fog = new THREE.Fog(0xa97c21, 20, 160);
 
-const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 500);
-camera.position.set(0, 2, 6);
+	const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 500);
+	camera.position.set(0, 2, 6);
 
-scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.0));
-const sun = new THREE.DirectionalLight(0xffffff, 1.0);
-sun.position.set(10, 20, 10);
-scene.add(sun);
+	scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.0));
+	const sun = new THREE.DirectionalLight(0xffffff, 1.0);
+	sun.position.set(10, 20, 10);
+	scene.add(sun);
 
 	// Colliders group: put meshes you want collision with in here
 	const colliders = new THREE.Group();
@@ -219,7 +219,7 @@ scene.add(sun);
 	}
 	createBoundingBox(playerMesh, 0xff00ff);
 
-	// ---------- Octree ----------
+	// Octree
 	const worldOctree = new Octree();
 
 	function rebuildOctree(): void {
@@ -231,7 +231,7 @@ scene.add(sun);
 	// Build an initial octree so the player collides with the floor even if the GLB fails to load.
 	rebuildOctree();
 
-	// ---------- Load GLB ----------
+	// Load GLB
 	const gltfLoader = new GLTFLoader();
 	const glbUrl = new URL("../../assets/academia-sinica.glb", import.meta.url).href;
 
@@ -264,7 +264,7 @@ scene.add(sun);
 		err => console.error("Failed to load academia-sinica.glb", err)
 	);
 
-	// ---------- Player controller (Capsule) ----------
+	// Player controller (Capsule)
 	const playerCollider = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1.6, 0), 0.35);
 	playerCollider.translate(new THREE.Vector3(0, 3, 0));
 
@@ -331,7 +331,7 @@ scene.add(sun);
 		playerCollisions();
 	}
 
-	// ---------- Third-person camera + camera collision ----------
+	// Third-person camera + camera collision
 	let enabled: boolean = false;
 	let yaw: number = Math.PI;
 	let pitch: number = 0;
