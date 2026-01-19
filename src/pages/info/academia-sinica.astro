@@ -184,13 +184,13 @@ import { Move, ChevronUp } from "@lucide/astro";
 	scene.background = new THREE.Color(0xa97c21);
 	scene.fog = new THREE.Fog(0xa97c21, 20, 160);
 
-	const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 500);
-	camera.position.set(0, 2, 6);
+const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 500);
+camera.position.set(0, 2, 6);
 
-	scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.0));
-	const sun = new THREE.DirectionalLight(0xffffff, 1.0);
-	sun.position.set(10, 20, 10);
-	scene.add(sun);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.0));
+const sun = new THREE.DirectionalLight(0xffffff, 1.0);
+sun.position.set(10, 20, 10);
+scene.add(sun);
 
 	// Colliders group: put meshes you want collision with in here
 	const colliders = new THREE.Group();
@@ -227,6 +227,9 @@ import { Move, ChevronUp } from "@lucide/astro";
 		colliders.updateMatrixWorld(true);
 		worldOctree.fromGraphNode(colliders);
 	}
+
+	// Build an initial octree so the player collides with the floor even if the GLB fails to load.
+	rebuildOctree();
 
 	// ---------- Load GLB ----------
 	const gltfLoader = new GLTFLoader();
