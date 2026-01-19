@@ -153,7 +153,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 
 	// Some projects have mixed three versions. Make texture SRGB in a typed-safe way.
 	type LegacyTextureEncoding = { encoding: number };
-	function setTextureToSRGB(tex: THREE.Texture) {
+	function setTextureToSRGB(tex: THREE.Texture): void {
 		// Modern three: texture.colorSpace exists
 		if ("colorSpace" in tex) {
 			tex.colorSpace = THREE.SRGBColorSpace;
