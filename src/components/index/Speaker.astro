@@ -40,7 +40,7 @@ const speakers = [
 			{
 				speakers.map((person, index) => (
 					<div class:list={["speaker-item", { active: index === 0 }]} data-img={person.img}>
-						<a>{person.name}</a>
+						<h2>{person.name}</h2>
 						<p class="speakerdesc">{person.desc}</p>
 					</div>
 				))
@@ -88,10 +88,10 @@ const speakers = [
 
 	@keyframes move-forever {
 		0% {
-			transform: translate3d(-90px, 0, 0);
+			transform: translate3d(-5.625rem, 0, 0);
 		}
 		100% {
-			transform: translate3d(85px, 0, 0);
+			transform: translate3d(5.3125rem, 0, 0);
 		}
 	}
 
@@ -132,21 +132,22 @@ const speakers = [
 
 	.content-wrapper {
 		width: 100%;
-		max-width: var(--max-width);
+		max-width: 65rem;
 		display: grid;
-		grid-template-columns: 4fr 6fr;
-		gap: 4rem;
+		grid-template-columns: 1fr 24rem;
+		gap: 0;
 		align-items: center;
 	}
 
 	.speaker-list {
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
+		width: 100%;
 		gap: 3rem;
 	}
 
 	.speaker-item {
+		width: 100%;
 		font-size: 3rem;
 		font-weight: bold;
 		color: rgba(169, 124, 33, 0.3);
@@ -154,6 +155,16 @@ const speakers = [
 		transition: 0.3s;
 		display: flex;
 		flex-direction: column;
+		text-align: left;
+		padding-right: 2rem;
+		box-sizing: border-box;
+	}
+
+	.speaker-item h2 {
+		margin: 0;
+		font-size: inherit;
+		font-weight: inherit;
+		color: inherit;
 	}
 
 	.speaker-item.active {
@@ -168,14 +179,14 @@ const speakers = [
 
 	.speaker-image {
 		width: 100%;
-		display: flex;
-		justify-content: center;
-		perspective: 1000px;
+		display: block;
+		perspective: 62.5rem;
+		margin: 0;
 	}
 
 	.desktop-img {
 		display: block;
-		max-width: 100%;
+		width: 100%;
 		height: auto;
 		border-radius: 0.5rem;
 		box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.1);
@@ -235,7 +246,7 @@ const speakers = [
 		left: 0;
 		width: 100%;
 		height: 100%;
-		min-height: 100px;
+		min-height: 6.25rem;
 	}
 
 	.parallax > use {
@@ -293,6 +304,7 @@ const speakers = [
 		.content-wrapper {
 			grid-template-columns: 1fr;
 			gap: 2.5rem;
+			max-width: 100%;
 		}
 
 		.speaker-list {
@@ -306,6 +318,7 @@ const speakers = [
 			align-items: flex-start;
 			width: 100%;
 			text-align: left;
+			padding-right: 0;
 		}
 
 		.speaker-item.active {
@@ -367,77 +380,77 @@ const speakers = [
 
 <script>
 	import { gsap } from "gsap";
-	const items = document.queryselectorall(".speaker-item");
-	const imgelement = document.getelementbyid("speaker-img");
+	const items = document.querySelectorAll(".speaker-item");
+	const imgelement = document.getElementById("speaker-img");
 	let currentindex = 0;
 
 	function updateview(index: number) {
-		items.foreach(item => {
-			item.classlist.remove("active");
+		items.forEach(item => {
+			item.classList.remove("active");
 		});
 
 		const targetitem = items[index];
-		targetitem.classlist.add("active");
+		targetitem.classList.add("active");
 
-		const newimgsrc = targetitem.getattribute("data-img");
+		const newimgsrc = targetitem.getAttribute("data-img");
 		if (imgelement && newimgsrc) {
-			(imgelement as htmlimageelement).src = newimgsrc;
+			(imgelement as HTMLImageElement).src = newimgsrc;
 		}
 
 		currentindex = index;
 	}
 
-	items.foreach((item, index) => {
-		item.addeventlistener("mouseenter", () => {
+	items.forEach((item, index) => {
+		item.addEventListener("mouseenter", () => {
 			updateview(index);
 			stopautoplay();
 		});
 
-		item.addeventlistener("mouseleave", () => {
+		item.addEventListener("mouseleave", () => {
 			startautoplay();
 		});
 	});
 
-	let timer: returntype<typeof setinterval> | null = null;
+	let timer: ReturnType<typeof setInterval> | null = null;
 
 	function startautoplay() {
 		if (timer) return;
-		timer = window.setinterval(() => {
+		timer = window.setInterval(() => {
 			const nextindex = (currentindex + 1) % items.length;
 			updateview(nextindex);
 		}, 2000);
 	}
 
 	function stopautoplay() {
-		if (timer) window.clearinterval(timer);
+		if (timer) window.clearInterval(timer);
 		timer = null;
 	}
 
 	startautoplay();
 
-	const speakerimage = document.queryselector(".speaker-image");
-	const desktopimg = document.queryselector(".desktop-img");
+	const speakerimage = document.querySelector(".speaker-image");
+	const desktopimg = document.querySelector(".desktop-img");
 
-	speakerimage?.addeventlistener("mousemove", e => {
-		const { clientx, clienty } = e;
-		const { left, top, width, height } = speakerimage.getboundingclientrect();
-		const x = clientx - left;
-		const y = clienty - top;
-		const rotatex = gsap.utils.maprange(0, height, -10, 10, y);
-		const rotatey = gsap.utils.maprange(0, width, 10, -10, x);
+	speakerimage?.addEventListener("mousemove", e => {
+		const { clientX, clientY } = e;
+		const { left, top, width, height } = speakerimage.getBoundingClientRect();
+		const x = clientX - left;
+		const y = clientY - top;
+		const rotatex = gsap.utils.mapRange(0, height, -10, 10, y);
+		const rotatey = gsap.utils.mapRange(0, width, 10, -10, x);
 
 		gsap.to(desktopimg, {
-			rotatex,
-			rotatey,
+			rotateX: rotatex,
+			rotateY: rotatey,
 			duration: 0.4,
 			ease: "power2.out"
 		});
 	});
 
-	speakerimage?.addeventlistener("mouseleave", () => {
+	speakerimage?.addEventListener("mouseleave", () => {
 		gsap.to(desktopimg, {
-			rotatex: 0,
-			rotatey: 0,
+			rotateX: 0,
+			rotateY: 0,
 			duration: 0.4,
 			ease: "power2.out"
 		});
