@@ -30,9 +30,9 @@ const speakers = [
 
 <section class="speaker-section">
 	<div class="title">
-		<h2>年會</h2>
+		<h2 class="text-reveal-title">年會</h2>
 		<div class="line"></div>
-		<h2>邀請講者</h2>
+		<h2 class="text-reveal-title">邀請講者</h2>
 	</div>
 
 	<div class="content-wrapper">
@@ -40,8 +40,8 @@ const speakers = [
 			{
 				speakers.map((person, index) => (
 					<div class:list={["speaker-item", { active: index === 0 }]} data-img={person.img}>
-						<h2>{person.name}</h2>
-						<p class="speakerdesc">{person.desc}</p>
+						<h2 class="text-reveal-title">{person.name}</h2>
+						<p class="speakerdesc text-reveal-paragraph">{person.desc}</p>
 					</div>
 				))
 			}
