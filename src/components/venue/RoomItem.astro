@@ -1,0 +1,64 @@
+---
+interface Props {
+	name: string;
+	description: string;
+	badge?: string;
+}
+
+const { name, description, badge = "12" } = Astro.props;
+---
+
+<div class="room-item">
+	<div class="room-badge">{badge}</div>
+	<div class="room-info">
+		<div class="room-name">{name}</div>
+		<div class="room-desc">{description}</div>
+	</div>
+</div>
+
+<style>
+	.room-item {
+		display: flex;
+		align-items: center;
+		background: rgba(255, 255, 255, 0.05);
+		border: 2px solid white;
+		border-radius: 16px;
+		padding: 1rem;
+		cursor: pointer;
+		transition: all 0.2s;
+		width: 100%;
+	}
+
+	.room-item:hover {
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	.room-badge {
+		background: #22c55e;
+		color: white;
+		width: 45px;
+		height: 45px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 10px;
+		font-weight: 700;
+		margin-right: 1.2rem;
+		flex-shrink: 0;
+	}
+
+	.room-info {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.room-name {
+		font-size: 1.3rem;
+		font-weight: 700;
+	}
+
+	.room-desc {
+		font-size: 0.9rem;
+		opacity: 0.8;
+	}
+</style>

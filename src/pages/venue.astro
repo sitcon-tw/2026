@@ -1,18 +1,416 @@
 ---
 import Layout from "@/layout/Layout.astro";
-import Footer from "@/components/Footer.astro";
+// import { ShieldAlert } from "lucide-astro";
+import FloorButton from "@/components/venue/FloorButton.astro";
+import RoomItem from "@/components/venue/RoomItem.astro";
+import venueData from "@/data/venue.json";
+
+const floors = venueData;
 ---
 
-<Layout>
+<Layout title="會場地圖 - SITCON 2026">
 	<main>
-		<h1>會場地圖</h1>
+		<div class="venue-container">
+			<h1 class="title">會場地圖</h1>
+
+			<div class="content-wrapper">
+				<!-- Floor Selection -->
+				<div id="floor-selection" class="menu-panel">
+					<p class="hint">請選擇地圖</p>
+					<div class="floor-buttons" data-lenis-prevent>
+						{floors.map(floor => <FloorButton id={floor.id} label={floor.label} description={floor.description} />)}
+					</div>
+				</div>
+
+				<!-- Advanced Menu -->
+				<div id="advanced-menu" class="menu-panel hidden">
+					<div class="back-btn-wrapper">
+						<button id="back-btn" class="back-btn">
+							<span class="arrow">&lt;</span> 返回樓層選擇
+						</button>
+					</div>
+
+					{
+						floors.map(floor => (
+							<div id={`room-list-${floor.id}`} class="room-list-container hidden">
+								<div class="room-list" data-lenis-prevent>
+									{floor.items.map(item => (
+										<div class="room-item-wrapper">
+											<RoomItem name={item.name} description={item.description} />
+										</div>
+									))}
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</div>
+
+			<!-- Emergency Exit -->
+			<div class="emergency-btn-container">
+				<button class="emergency-btn">
+					<!-- <ShieldAlert size={20} /> -->
+					緊急逃生指引
+				</button>
+			</div>
+
+			<!-- Background -->
+			<div class="background-container">
+				<div id="bg-all" class="bg-layer active">
+					<div class="placeholder-map">3D Map Overview</div>
+				</div>
+				{
+					floors.map(floor => (
+						<div id={`bg-${floor.id}`} class="bg-layer">
+							<div class="placeholder-map">{floor.label} Floor Plan</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
 	</main>
-	<Footer />
 </Layout>
 
 <style>
 	main {
-		min-height: 100vh;
-		padding: 5rem 2rem 2rem;
+		width: 100%;
+		height: 100vh;
+		overflow: hidden;
+		background-color: #a67c37;
+		color: white;
+		position: relative;
+	}
+
+	.venue-container {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		padding: 6rem 4rem 4rem;
+		display: flex;
+		flex-direction: column;
+		z-index: 1;
+	}
+
+	.title {
+		text-align: center;
+		font-size: 4rem;
+		margin-bottom: 1rem;
+		font-family: "GenKiMinTW", serif;
+		font-weight: 700;
+	}
+
+	.content-wrapper {
+		position: relative;
+		flex: 1;
+		display: flex;
+		align-items: flex-start;
+		margin-top: 1rem;
+		min-height: 400px; /* Added min-height */
+	}
+
+	.menu-panel {
+		width: 380px;
+		z-index: 10;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		max-height: 100%;
+	}
+
+	.menu-panel.hidden {
+		display: none;
+		pointer-events: none;
+	}
+
+	.floor-btn,
+	.room-item-wrapper,
+	.back-btn,
+	.hint {
+		will-change: transform, opacity;
+	}
+
+	.floor-buttons {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		overflow-y: auto;
+		flex: 1;
+	}
+
+	.hint {
+		font-size: 1.4rem;
+		opacity: 0.9;
+		font-weight: 500;
+	}
+
+	.back-btn-wrapper {
+		height: 3.5rem;
+		display: flex;
+		align-items: center;
+	}
+
+	.back-btn {
+		background: none;
+		border: none;
+		color: white;
+		cursor: pointer;
+		font-size: 1.1rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		opacity: 0.9;
+		transition: opacity 0.2s;
+	}
+
+	.back-btn:hover {
+		opacity: 1;
+	}
+
+	.room-list-container {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.room-list-container.hidden {
+		display: none;
+	}
+
+	.room-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1.2rem;
+		flex: 1;
+		overflow-y: auto;
+		padding-right: 1rem;
+		padding-bottom: 1rem;
+	}
+
+	.room-item-wrapper {
+		width: 100%;
+	}
+
+	/* Custom Scrollbar */
+	.room-list::-webkit-scrollbar,
+	.floor-buttons::-webkit-scrollbar {
+		width: 6px;
+	}
+	.room-list::-webkit-scrollbar-track,
+	.floor-buttons::-webkit-scrollbar-track {
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 3px;
+	}
+	.room-list::-webkit-scrollbar-thumb,
+	.floor-buttons::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 3px;
+	}
+
+	.background-container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	.bg-layer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		transition: opacity 0.6s ease-in-out;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.bg-layer.active {
+		opacity: 1;
+	}
+
+	.placeholder-map {
+		width: 80%;
+		height: 60%;
+		background: rgba(255, 255, 255, 0.1);
+		border: 2px dashed rgba(255, 255, 255, 0.3);
+		border-radius: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 2rem;
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	.emergency-btn-container {
+		margin-top: 2rem;
+		z-index: 10;
+	}
+
+	.emergency-btn {
+		background: rgba(0, 0, 0, 0.3);
+		border: none;
+		color: white;
+		padding: 0.6rem 1.2rem;
+		border-radius: 30px;
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		cursor: pointer;
+		font-size: 1rem;
+		transition: background 0.2s;
+		backdrop-filter: blur(4px);
+	}
+
+	.emergency-btn:hover {
+		background: rgba(0, 0, 0, 0.5);
+	}
+
+	@media (max-width: 1024px) {
+		.venue-container {
+			padding: 6rem 2rem 2rem;
+		}
+		.menu-panel {
+			width: 300px;
+		}
+		.title {
+			font-size: 3rem;
+		}
 	}
 </style>
+
+<script>
+	import gsap from "gsap";
+
+	function initVenue() {
+		const floorSelection = document.getElementById("floor-selection");
+		const advancedMenu = document.getElementById("advanced-menu");
+		const backBtn = document.getElementById("back-btn");
+		const floorBtns = document.querySelectorAll(".floor-btn");
+		const bgLayers = document.querySelectorAll(".bg-layer");
+		const roomListContainers = document.querySelectorAll(".room-list-container");
+		const hint = document.querySelector(".hint");
+
+		if (!floorSelection || !advancedMenu || !backBtn) return;
+
+		// Initial state for floor buttons
+		gsap.set(".floor-btn", { opacity: 1, y: 0 });
+		if (hint) gsap.set(hint, { opacity: 0.9, y: 0 });
+
+		floorBtns.forEach(btn => {
+			btn.addEventListener("click", () => {
+				const floorId = btn.getAttribute("data-floor");
+				if (floorId) showFloor(floorId);
+			});
+		});
+
+		backBtn.addEventListener("click", () => {
+			showSelection();
+		});
+
+		function showFloor(floorId: string) {
+			const targetRoomList = document.getElementById(`room-list-${floorId}`);
+			if (!targetRoomList) return;
+
+			const tl = gsap.timeline();
+
+			// 1. Exit Floor Selection
+			tl.to(".floor-btn", {
+				opacity: 0,
+				y: 20,
+				duration: 0.3,
+				stagger: 0.05,
+				ease: "power2.in"
+			});
+			if (hint) {
+				tl.to(hint, { opacity: 0, y: 10, duration: 0.2 }, "<");
+			}
+
+			tl.add(() => {
+				floorSelection?.classList.add("hidden");
+				advancedMenu?.classList.remove("hidden");
+				roomListContainers.forEach(container => container.classList.add("hidden"));
+				targetRoomList.classList.remove("hidden");
+
+				// Switch background
+				bgLayers.forEach(layer => layer.classList.remove("active"));
+				const targetBg = document.getElementById(`bg-${floorId}`);
+				if (targetBg) targetBg.classList.add("active");
+			});
+
+			// 2. Enter Advanced Menu
+			tl.fromTo("#back-btn", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" });
+
+			tl.fromTo(
+				targetRoomList.querySelectorAll(".room-item-wrapper"),
+				{ opacity: 0, y: 30 },
+				{
+					opacity: 1,
+					y: 0,
+					duration: 0.5,
+					stagger: 0.1,
+					ease: "power2.out"
+				},
+				"-=0.3"
+			);
+		}
+
+		function showSelection() {
+			const activeRoomList = Array.from(roomListContainers).find(c => !c.classList.contains("hidden"));
+			if (!activeRoomList) return;
+
+			const tl = gsap.timeline();
+
+			// 1. Exit Advanced Menu
+			tl.to(activeRoomList.querySelectorAll(".room-item-wrapper"), {
+				opacity: 0,
+				y: 30,
+				duration: 0.3,
+				stagger: {
+					each: 0.05,
+					from: "end"
+				},
+				ease: "power2.in"
+			});
+
+			tl.to("#back-btn", { opacity: 0, x: -10, duration: 0.2 }, "<");
+
+			tl.add(() => {
+				advancedMenu?.classList.add("hidden");
+				floorSelection?.classList.remove("hidden");
+
+				// Switch background back to all
+				bgLayers.forEach(layer => layer.classList.remove("active"));
+				const bgAll = document.getElementById("bg-all");
+				if (bgAll) bgAll.classList.add("active");
+			});
+
+			// 2. Enter Floor Selection
+			tl.fromTo(
+				".floor-btn",
+				{ opacity: 0, y: 20 },
+				{
+					opacity: 1,
+					y: 0,
+					duration: 0.4,
+					stagger: 0.1,
+					ease: "power2.out"
+				}
+			);
+			if (hint) {
+				tl.fromTo(hint, { opacity: 0, y: 10 }, { opacity: 0.9, y: 0, duration: 0.3 }, "-=0.2");
+			}
+		}
+	}
+
+	// Run on initial load
+	initVenue();
+
+	// Run on View Transitions navigation
+	document.addEventListener("astro:after-swap", initVenue);
+</script>
