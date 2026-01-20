@@ -261,12 +261,13 @@ const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，
 	gsap.registerPlugin(ScrollTrigger);
 
 	function initChatAnimation() {
-		const chatStream = document.getElementById("chatStream");
-		if (!chatStream) return;
+		const chatStreamEl = document.getElementById("chatStream");
+		if (!chatStreamEl) return;
 
-		const messagesData = chatStream.dataset.messages;
+		const messagesData = chatStreamEl.dataset.messages;
 		if (!messagesData) return;
 
+		const chatStream = chatStreamEl;
 		const messages: string[] = JSON.parse(messagesData);
 		const MAX_BUBBLES = 10;
 		const INTERVAL_MS = 2800;

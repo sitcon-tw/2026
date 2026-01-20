@@ -468,12 +468,12 @@ const sponsors = {
 </style>
 
 <script>
-	const dialog = document.getElementById("sponsor-dialog");
+	const dialog = document.getElementById("sponsor-dialog") as HTMLDialogElement | null;
 	const closeBtn = document.getElementById("close-dialog");
 	const dialogTitle = document.getElementById("dialog-title");
 	const dialogDesc = document.getElementById("dialog-desc");
 	const dialogType = document.getElementById("dialog-type");
-	const dialogImg = document.getElementById("dialog-img");
+	const dialogImg = document.getElementById("dialog-img") as HTMLImageElement | null;
 
 	const closeDialogAnim = () => {
 		if (!dialog) return;
@@ -490,14 +490,14 @@ const sponsors = {
 	};
 
 	document.addEventListener("click", e => {
-		const trigger = e.target.closest(".sponsor-trigger");
+		const trigger = (e.target as Element)?.closest(".sponsor-trigger") as HTMLElement | null;
 
 		if (trigger && dialog) {
 			const { name, desc, type, img } = trigger.dataset;
 
-			if (dialogTitle) dialogTitle.textContent = name;
-			if (dialogDesc) dialogDesc.textContent = desc;
-			if (dialogType) dialogType.textContent = type;
+			if (dialogTitle) dialogTitle.textContent = name ?? null;
+			if (dialogDesc) dialogDesc.textContent = desc ?? null;
+			if (dialogType) dialogType.textContent = type ?? null;
 			if (dialogImg && img) dialogImg.src = img;
 
 			dialog.showModal();

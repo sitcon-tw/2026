@@ -62,7 +62,7 @@ const speakers = [
 	<a href="#" class="cta-btn">查看議程表</a>
 
 	<div class="bg-optimized">
-		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewbox="0 24 150 28" preserveaspectratio="none" shape-rendering="auto">
+		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
 			<defs>
 				<path id="gentle-wave" d="m-160 44c30 0 58-8 88-8s 58 4 88 8 58-8 88-8 58 8 88 8 v44h-352z"></path>
 			</defs>
@@ -411,7 +411,7 @@ const speakers = [
 		});
 	});
 
-	let timer: ReturnType<typeof setInterval> | null = null;
+	let timer: number | null = null;
 
 	function startautoplay() {
 		if (timer) return;
@@ -432,7 +432,7 @@ const speakers = [
 	const desktopimg = document.querySelector(".desktop-img");
 
 	speakerimage?.addEventListener("mousemove", e => {
-		const { clientX, clientY } = e;
+		const { clientX, clientY } = e as MouseEvent;
 		const { left, top, width, height } = speakerimage.getBoundingClientRect();
 		const x = clientX - left;
 		const y = clientY - top;
