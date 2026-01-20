@@ -6,24 +6,24 @@ const speakers = [
 		img: "https://placehold.co/367x492/png?text=OsGa"
 	},
 	{
-		name: "毛哥EM",
+		name: "毛哥em",
 		desc: "厲害崴孟讓旅途順暢無阻",
-		img: "https://placehold.co/367x492/png?text=EM"
+		img: "https://placehold.co/367x492/png?text=em"
 	},
 	{
-		name: "凱文 Kevin",
+		name: "凱文 kevin",
 		desc: "崴孟合作 什麼難關都不怕",
-		img: "https://placehold.co/367x492/png?text=Kevin"
+		img: "https://placehold.co/367x492/png?text=kevin"
 	},
 	{
-		name: "紐爾森 Nelson",
+		name: "紐爾森 nelson",
 		desc: "孟寶總是心暖暖 因為崴崴寶",
-		img: "https://placehold.co/367x492/png?text=Nelson"
+		img: "https://placehold.co/367x492/png?text=nelson"
 	},
 	{
 		name: "yc油成",
 		desc: "擁有豐富的數學背景",
-		img: "https://placehold.co/367x492/png?text=YC"
+		img: "https://placehold.co/367x492/png?text=yc"
 	}
 ];
 ---
@@ -40,15 +40,15 @@ const speakers = [
 			{
 				speakers.map((person, index) => (
 					<div class:list={["speaker-item", { active: index === 0 }]} data-img={person.img}>
-						<a>{person.name}</a>
-						<p class="speakerDesc">{person.desc}</p>
+						<h2>{person.name}</h2>
+						<p class="speakerdesc">{person.desc}</p>
 					</div>
 				))
 			}
 		</div>
 
 		<div class="speaker-image">
-			<img id="speaker-img" class="desktop-img" src={speakers[0].img} alt="Speaker" />
+			<img id="speaker-img" class="desktop-img" src={speakers[0].img} alt="speaker" />
 
 			<div class="marquee-container">
 				<div class="marquee-track">
@@ -62,10 +62,16 @@ const speakers = [
 	<a href="#" class="cta-btn">查看議程表</a>
 
 	<div class="bg-optimized">
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1512 543" preserveAspectRatio="none">
-			<path opacity="0.34" d="M1512 0L0 320V543H1512V0Z" fill="#A1A1A1"></path>
-			<path opacity="0.34" d="M0 0L1512 320V543H0V0Z" fill="#D9D9D9"></path>
-			<path opacity="0.34" d="M0 0L1512 320V543H0V0Z" fill="#CDCDCD"></path>
+		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewbox="0 24 150 28" preserveaspectratio="none" shape-rendering="auto">
+			<defs>
+				<path id="gentle-wave" d="m-160 44c30 0 58-8 88-8s 58 4 88 8 58-8 88-8 58 8 88 8 v44h-352z"></path>
+			</defs>
+			<g class="parallax">
+				<use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(161, 161, 161, 0.34)"></use>
+				<use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(217, 217, 217, 0.34)"></use>
+				<use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(205, 205, 205, 0.34)"></use>
+				<use xlink:href="#gentle-wave" x="48" y="7" fill="#e0e0e0"></use>
+			</g>
 		</svg>
 	</div>
 </section>
@@ -73,17 +79,26 @@ const speakers = [
 <style>
 	@keyframes scroll {
 		0% {
-			transform: translateX(0);
+			transform: translatex(0);
 		}
 		100% {
-			transform: translateX(-50%);
+			transform: translatex(-50%);
+		}
+	}
+
+	@keyframes move-forever {
+		0% {
+			transform: translate3d(-5.625rem, 0, 0);
+		}
+		100% {
+			transform: translate3d(5.3125rem, 0, 0);
 		}
 	}
 
 	.speaker-section {
 		position: relative;
 		background-color: #f4f4f4;
-		padding: 4rem 2rem;
+		padding: 4rem 2rem 8rem 2rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -92,7 +107,7 @@ const speakers = [
 
 	.title {
 		width: 100%;
-		max-width: 1000px;
+		max-width: var(--max-width);
 		margin-bottom: 3rem;
 		color: #a79164;
 		display: grid;
@@ -109,7 +124,7 @@ const speakers = [
 	}
 
 	.line {
-		height: 1px;
+		height: 0.0625rem;
 		background-color: #a79164;
 		width: 100%;
 		justify-self: center;
@@ -117,21 +132,22 @@ const speakers = [
 
 	.content-wrapper {
 		width: 100%;
-		max-width: 1000px;
+		max-width: 65rem;
 		display: grid;
-		grid-template-columns: 4fr 6fr;
-		gap: 4rem;
+		grid-template-columns: 1fr 24rem;
+		gap: 0;
 		align-items: center;
 	}
 
 	.speaker-list {
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
+		width: 100%;
 		gap: 3rem;
 	}
 
 	.speaker-item {
+		width: 100%;
 		font-size: 3rem;
 		font-weight: bold;
 		color: rgba(169, 124, 33, 0.3);
@@ -139,6 +155,16 @@ const speakers = [
 		transition: 0.3s;
 		display: flex;
 		flex-direction: column;
+		text-align: left;
+		padding-right: 2rem;
+		box-sizing: border-box;
+	}
+
+	.speaker-item h2 {
+		margin: 0;
+		font-size: inherit;
+		font-weight: inherit;
+		color: inherit;
 	}
 
 	.speaker-item.active {
@@ -147,22 +173,25 @@ const speakers = [
 		transform-origin: left center;
 	}
 
-	.speakerDesc {
+	.speakerdesc {
 		display: none;
 	}
 
 	.speaker-image {
 		width: 100%;
-		display: flex;
-		justify-content: center;
+		display: block;
+		perspective: 62.5rem;
+		margin: 0;
 	}
 
 	.desktop-img {
 		display: block;
-		max-width: 100%;
+		width: 100%;
 		height: auto;
-		border-radius: 8px;
-		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+		border-radius: 0.5rem;
+		box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.1);
+		transform-style: preserve-3d;
+		transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 	}
 
 	.marquee-container {
@@ -177,10 +206,10 @@ const speakers = [
 		font-size: 1.5rem;
 		letter-spacing: 0.05em;
 		color: #4f4031;
-		padding: 12px 48px;
+		padding: 0.75rem 3rem;
 		margin-top: 5rem;
-		border: 2px solid #4f4031;
-		border-radius: 9999px;
+		border: 0.125rem solid #4f4031;
+		border-radius: 624.9375rem;
 		background: linear-gradient(180deg, #e6dac0 0%, #c4b188 100%);
 		transition:
 			transform 0.2s,
@@ -188,7 +217,7 @@ const speakers = [
 	}
 
 	.cta-btn:hover {
-		transform: translateY(-2px);
+		transform: translatey(-0.125rem);
 		filter: brightness(1.05);
 	}
 
@@ -205,15 +234,40 @@ const speakers = [
 		bottom: 0;
 		left: 0;
 		width: 100%;
-		height: 60%;
+		height: 80%;
 		pointer-events: none;
 		z-index: 0;
+		overflow: hidden;
 	}
 
-	.bg-optimized svg {
+	.waves {
+		position: absolute;
+		bottom: 0;
+		left: 0;
 		width: 100%;
 		height: 100%;
-		display: block;
+		min-height: 6.25rem;
+	}
+
+	.parallax > use {
+		animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+	}
+
+	.parallax > use:nth-child(1) {
+		animation-delay: -2s;
+		animation-duration: 7s;
+	}
+	.parallax > use:nth-child(2) {
+		animation-delay: -3s;
+		animation-duration: 10s;
+	}
+	.parallax > use:nth-child(3) {
+		animation-delay: -4s;
+		animation-duration: 13s;
+	}
+	.parallax > use:nth-child(4) {
+		animation-delay: -5s;
+		animation-duration: 20s;
 	}
 
 	@media (max-width: 900px) {
@@ -226,7 +280,7 @@ const speakers = [
 			margin-bottom: 2rem;
 			grid-template-columns: max-content 1fr;
 			row-gap: 0.5rem;
-			column-gap: 15px;
+			column-gap: 0.9375rem;
 			align-items: center;
 		}
 
@@ -250,6 +304,7 @@ const speakers = [
 		.content-wrapper {
 			grid-template-columns: 1fr;
 			gap: 2.5rem;
+			max-width: 100%;
 		}
 
 		.speaker-list {
@@ -263,13 +318,14 @@ const speakers = [
 			align-items: flex-start;
 			width: 100%;
 			text-align: left;
+			padding-right: 0;
 		}
 
 		.speaker-item.active {
 			transform-origin: left center;
 		}
 
-		.speakerDesc {
+		.speakerdesc {
 			display: block;
 			font-size: 1rem;
 			font-weight: normal;
@@ -297,77 +353,106 @@ const speakers = [
 		.marquee-track {
 			display: flex;
 			width: max-content;
-			gap: 10px;
+			gap: 0.625rem;
 			animation: scroll 20s linear infinite;
 		}
 
 		.marquee-item {
-			height: 250px;
+			height: 15.625rem;
 			width: auto;
-			border-radius: 12px;
-			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+			border-radius: 0.75rem;
+			box-shadow: 0 0.3125rem 0.9375rem rgba(0, 0, 0, 0.1);
 			flex-shrink: 0;
 		}
 
 		.cta-btn {
 			width: auto;
 			text-align: center;
-			padding: 10px 32px;
+			padding: 0.625rem 2rem;
 			font-size: 1.2rem;
 		}
 
 		.bg-optimized {
-			height: 50%;
+			height: 70%;
 		}
 	}
 </style>
 
 <script>
+	import { gsap } from "gsap";
 	const items = document.querySelectorAll(".speaker-item");
-	const imgElement = document.getElementById("speaker-img");
-	let currentIndex = 0;
+	const imgelement = document.getElementById("speaker-img");
+	let currentindex = 0;
 
-	function updateView(index: number) {
+	function updateview(index: number) {
 		items.forEach(item => {
 			item.classList.remove("active");
 		});
 
-		const targetItem = items[index];
-		targetItem.classList.add("active");
+		const targetitem = items[index];
+		targetitem.classList.add("active");
 
-		const newImgSrc = targetItem.getAttribute("data-img");
-		if (imgElement && newImgSrc) {
-			(imgElement as HTMLImageElement).src = newImgSrc;
+		const newimgsrc = targetitem.getAttribute("data-img");
+		if (imgelement && newimgsrc) {
+			(imgelement as HTMLImageElement).src = newimgsrc;
 		}
 
-		currentIndex = index;
+		currentindex = index;
 	}
 
 	items.forEach((item, index) => {
 		item.addEventListener("mouseenter", () => {
-			updateView(index);
-			stopAutoPlay();
+			updateview(index);
+			stopautoplay();
 		});
 
 		item.addEventListener("mouseleave", () => {
-			startAutoPlay();
+			startautoplay();
 		});
 	});
 
-	let timer: number | null = null;
+	let timer: ReturnType<typeof setInterval> | null = null;
 
-	function startAutoPlay() {
+	function startautoplay() {
 		if (timer) return;
 		timer = window.setInterval(() => {
-			const nextIndex = (currentIndex + 1) % items.length;
-			updateView(nextIndex);
+			const nextindex = (currentindex + 1) % items.length;
+			updateview(nextindex);
 		}, 2000);
 	}
 
-	function stopAutoPlay() {
+	function stopautoplay() {
 		if (timer) window.clearInterval(timer);
 		timer = null;
 	}
 
-	startAutoPlay();
+	startautoplay();
+
+	const speakerimage = document.querySelector(".speaker-image");
+	const desktopimg = document.querySelector(".desktop-img");
+
+	speakerimage?.addEventListener("mousemove", e => {
+		const { clientX, clientY } = e;
+		const { left, top, width, height } = speakerimage.getBoundingClientRect();
+		const x = clientX - left;
+		const y = clientY - top;
+		const rotatex = gsap.utils.mapRange(0, height, -10, 10, y);
+		const rotatey = gsap.utils.mapRange(0, width, 10, -10, x);
+
+		gsap.to(desktopimg, {
+			rotateX: rotatex,
+			rotateY: rotatey,
+			duration: 0.4,
+			ease: "power2.out"
+		});
+	});
+
+	speakerimage?.addEventListener("mouseleave", () => {
+		gsap.to(desktopimg, {
+			rotateX: 0,
+			rotateY: 0,
+			duration: 0.4,
+			ease: "power2.out"
+		});
+	});
 </script>
