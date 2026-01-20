@@ -1,0 +1,1684 @@
+[
+	{
+		"name": "柴柴",
+		"description": "我網站有點好康的，來我網站看看吧！",
+		"teams": [
+			{
+				"name": "general",
+				"role": "chief"
+			}
+		],
+		"link": "https://qian30.net"
+	},
+	{
+		"name": "Windless",
+		"description": "QQ",
+		"teams": [
+			{
+				"name": "general",
+				"role": "deputy_chief"
+			}
+		],
+		"link": "https://windless.me"
+	},
+	{
+		"name": "康喔",
+		"description": "夜色捧起星光，照亮我未訴之名。\n命運的筆尖顫動，將你的影刻入風裡。\n若世界終將崩塌，我亦要以殘光護你前行。\n因為在無盡的黑暗中\n你是我唯一選擇的黎明。",
+		"teams": [
+			{
+				"name": "general",
+				"role": "deputy_chief"
+			},
+			{
+				"name": "recording",
+				"role": "member"
+			},
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://kangjw.me/about"
+	},
+	{
+		"name": "77",
+		"description": "來自花果山大學可能是不分系的 SITCON 前總召，ENFJ 常常在台灣各處流浪，是快要擁有巴黎作息時間的斜槓青年。",
+		"teams": [
+			{
+				"name": "administration",
+				"role": "head"
+			}
+		]
+	},
+	{
+		"name": "星星",
+		"description": "",
+		"teams": [
+			{
+				"name": "administration",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "LaiRay",
+		"description": "嗨各位！早安。\n\n萬事圓滿，心情美麗\n認同請分享！",
+		"teams": [
+			{
+				"name": "administration",
+				"role": "member"
+			}
+		],
+		"link": "https://ray-tw.com"
+	},
+	{
+		"name": "艾洛",
+		"description": "吃瓜不嫌事大，吃瓜是動力來源（X",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "head"
+			}
+		],
+		"link": "https://www.instagram.com/heloise_owo"
+	},
+	{
+		"name": "xiung",
+		"description": "跳坑 2027 SITCON 議程組，人人有責！",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "deputy"
+			}
+		],
+		"link": "xiung.me"
+	},
+	{
+		"name": "Ak",
+		"description": "懷著資訊人的熱情與對公民參與的摯愛，常出沒在各地資訊社群中",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		],
+		"link": "https://kuo.is"
+	},
+	{
+		"name": "Yoru",
+		"description": "哈囉，我是 Yoru superfile 作者，同時也是開源貢獻者！歡迎對開源有興趣的找我認識~",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			},
+			{
+				"name": "development",
+				"role": "member"
+			}
+		],
+		"link": "https://github.com/yorukot"
+	},
+	{
+		"name": "Nathan",
+		"description": "善哉，獲吾矣！",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		],
+		"link": "https://nat1an.xyz/"
+	},
+	{
+		"name": "ffting",
+		"description": "安安安安大家！\n祝大家在 SITCON 玩得開心！",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/i_am_fang_fang_?igsh=YmppOW4zbmNzYzQ4&utm_source=qr"
+	},
+	{
+		"name": "Yuto",
+		"description": "嗨我是 Yuto，電鍋大學資工系學生，目前在 TeamT5 擔任實習生。",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		],
+		"link": "https://blog.yuto0226.dev"
+	},
+	{
+		"name": "鴨子草",
+		"description": "嗨鴨我是鴨子草！是第一次跳坑的議程組組員，目前高二，可以叫我鴨子~",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		],
+		"link": "https://gravatar.com/instantlycyclef76de870a9"
+	},
+	{
+		"name": "凱文 Kevinowo",
+		"description": "",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			},
+			{
+				"name": "development",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "chilin.h (麒麟)",
+		"description": "一個混了一點社群成分的資安 + 網路仔，常被朋友當成貓咪玩 (?)",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		],
+		"link": "https://neko70.net/"
+	},
+	{
+		"name": "FKT",
+		"description": "你知道為甚麼新竹馬路不太平嗎?因為有半導體會絆到腳",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		],
+		"link": "https://fkt0207.xyz/"
+	},
+	{
+		"name": "萊姆",
+		"description": "我還不想放棄我的夢！...讓我再回去躺一下",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		],
+		"link": " "
+	},
+	{
+		"name": "好冷吶",
+		"description": "無",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "Super",
+		"description": "嗨嗨！！我是 SITCON 2026 議程組的 Super",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		],
+		"link": "https://github.com/Super1115"
+	},
+	{
+		"name": "Fearnot",
+		"description": "Hi 我是 Fearnot",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "head"
+			}
+		],
+		"link": "https://fearnot.tw/"
+	},
+	{
+		"name": "思惟",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "deputy"
+			}
+		]
+	},
+	{
+		"name": "PT",
+		"description": "早安你好我是PT",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility_lead"
+			}
+		],
+		"link": "about.ptchen.tw"
+	},
+	{
+		"name": "帕尼",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_registration_lead"
+			}
+		]
+	},
+	{
+		"name": "Hugo",
+		"description": "「比起依循往例，不如探究事情的脈絡。」\n高三到大三，在 SITCON 吃了無數的披薩和便當，也帶走一生受用的思考方法。\n所以說披薩是不是依循往例？是也不是；但絕對是俗擱大碗。\n好吃一直吃，跳坑一直跳 (＃°Д°)",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_catering_lead"
+			}
+		],
+		"link": "https://whyhugo.me"
+	},
+	{
+		"name": "Each",
+		"description": "熱愛學習酷酷的資訊技術，目前就讀應數系，每天都和數學作業奮鬥。很高興能在 SITCON 認識你！歡迎到我的網站和我聊聊天",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_logistics_lead"
+			}
+		],
+		"link": "https://www.iach.cc"
+	},
+	{
+		"name": "阿軒",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_logistics"
+			}
+		]
+	},
+	{
+		"name": "安安",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_catering"
+			}
+		]
+	},
+	{
+		"name": "hikari",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_catering"
+			}
+		]
+	},
+	{
+		"name": "微波爐",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_catering"
+			}
+		]
+	},
+	{
+		"name": "小葉",
+		"description": "小葉想吃宵夜",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_catering"
+			}
+		],
+		"link": "https://www.ubereats.com/tw?irgwc=1&afsrc=1&utm_campaign=CM2087663-affiliates-impactradius_195_-99_TW-National_e_all_acq_cpa_zh-tw_ChineseAN_click-RwNRlCSggxycUH8TXQRUP3ASUkpSS-y1e2FOTU0&utm_term=RwNRlCSggxycUH8TXQRUP3ASUkpSS-y1e2FOTU0&adg_id=870115&cid=1234355&utm_source=affiliate-ir-ChineseAN&partner=ChineseAN&utm_medium=impact&hau=true&gad_source=1"
+	},
+	{
+		"name": "MaZon",
+		"description": "<script>alert('’W3Lc0m3_70_5I7c0n');</script>",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_catering"
+			}
+		],
+		"link": "linktr.ee/masonzeng"
+	},
+	{
+		"name": "雪",
+		"description": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Hello world; Hello SITCON.\";\n    return 0;\n}",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_registration"
+			}
+		],
+		"link": "https://www.facebook.com/share/1WAGuDEVTL/?mibextid=wwXIfr"
+	},
+	{
+		"name": "小慈保鏢",
+		"description": "我不會寫演算法。",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_registration"
+			}
+		],
+		"link": "https://www.instagram.com/luv_wangtzu.0903?igsh=M3QwYTBudWF0emMz"
+	},
+	{
+		"name": "TZ",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_registration"
+			}
+		]
+	},
+	{
+		"name": "m0ver!ght_",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_registration"
+			}
+		]
+	},
+	{
+		"name": "喵寶",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_registration"
+			}
+		]
+	},
+	{
+		"name": "Una",
+		"description": "每天都在焦慮作業沒寫完的高中生，希望可以寫完作業和抽到本命小卡（？",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_registration"
+			}
+		],
+		"link": "https://www.instagram.com/una_chiao2.5?igsh=YWltYWlpczhwZzcy&utm_source=qr"
+	},
+	{
+		"name": " Abby",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_registration"
+			}
+		]
+	},
+	{
+		"name": "yimang",
+		"description": "hi!!",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://yimang.tw"
+	},
+	{
+		"name": "hsy",
+		"description": "早安w",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://sitcon.org/2026/"
+	},
+	{
+		"name": "小羊",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "Hui",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "BC",
+		"description": "日本利用壓電瓷磚將腳步轉化為電能。這些瓷磚捕捉來自你腳步的動能。當你行走時，你的重量和動作會對瓷磚產生壓力。瓷磚會輕微彎曲，從而產生機械應力。瓷磚內部的壓電材料將這種應力轉化為電能。每一步都會產生少量電荷，而數百萬步結合在一起就能產生足夠的電力來驅動LED 燈、數字顯示屏和傳感器。",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://bcxy.me"
+	},
+	{
+		"name": "愷蛤",
+		"description": "我是愷蛤 Kaiwha 、但朋友也喜歡叫我凱蛙嘎嘎嘎，第一次當工人，請多指教",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "kaiwha.com"
+	},
+	{
+		"name": "xs",
+		"description": "酷",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://xs1128.github.io/me/"
+	},
+	{
+		"name": "葉子魚",
+		"description": "就是一隻魚",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://leafish.xyz/"
+	},
+	{
+		"name": "許",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "Kukusa",
+		"description": "你好，以下是我的自我介紹：謝謝大家。\navatar X:@Reirei14531",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://maimai.sega.com"
+	},
+	{
+		"name": "草蝦",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "貝坦",
+		"description": "o.0\n看什麼看 好看嗎",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://tribbie.betan.gay"
+	},
+	{
+		"name": "101",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "茉莉",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "Jim",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "Zhenyuan",
+		"description": "身為資訊圈的一份子，非常榮幸能為 SITCON 貢獻己力，希望各位與會者都能在議程中收穫滿滿，滿載而歸",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://zhenyuan.dev/"
+	},
+	{
+		"name": "Roku",
+		"description": "退一萬步來說，我根本聽不到。",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://github.com/RokuSennyou"
+	},
+	{
+		"name": "雪泥",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "Takala",
+		"description": "討厭臺灣教育體制的資工廢人",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://takalawang.github.io/"
+	},
+	{
+		"name": "皮蛋",
+		"description": "嗨",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://bruh0422.xyz"
+	},
+	{
+		"name": "kuan",
+		"description": "我叫kuan, 對網管和和程式開發有興趣❤️",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "blog.kuan.quest (之後會有東西😇）"
+	},
+	{
+		"name": "小黑",
+		"description": "這發言嚇得我的多力多滋撒了一地▼▲►▼▲►▼▼▲▼▲►▼▲►▼▲►▼▲►▼▲►▼▼▲►▼►▼▲►▼▼▲►▼▲►▼▲►▼▼►▼▲►▼▲►▼▼▲▼▲►▼▲►▼►▼▲►▼▲►▼▲▲►▼▲►▼►▼▲▼▲►▼▲▲►▼►▼▲►▼▲►▼▼▲▼▲►▼▲►▼►▼▲►▼▲►▼▲▲►▼▲►▼►▼▲\n嗚嗚嗚賠我的多力多滋，賠我的多力多滋",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			},
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://reurl.cc/zKGZdy"
+	},
+	{
+		"name": "海鷗",
+		"description": "一頭牛在牛群之中一定有牠最好的朋友",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			},
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/kyle9410_chen/"
+	},
+	{
+		"name": "小志",
+		"description": "呼啦呼啦呼～",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://www.instagram.com/evan_jiamg_?igsh=bjIybnVzaGl0MHdi&utm_source=qr"
+	},
+	{
+		"name": "Leo",
+		"description": "嗨 我是 Leo，希望大家在 SITCON 都能夠有個充實的一天",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "https://leo-lee.dev"
+	},
+	{
+		"name": "洛濰",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "小徐",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "軒",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
+		"name": "kiki",
+		"description": "烏薩奇！！！！！ 到！！！！！",
+		"teams": [
+			{
+				"name": "design",
+				"role": "head"
+			}
+		],
+		"link": "https://www.instagram.com/kaichess/"
+	},
+	{
+		"name": "章魚",
+		"description": "很高興認識大家，我是年會前幾天剛滿19歲，來自設計組的章魚～\n然後我在年初已經看到了ZEROBASEONE、CORTIS、BOYNEXTDOOR、TWS、Stray Kids、LE SSERAFIM、IVE、Jennie...，請各位祝福我在今年年末可以去看 BTS 高雄場！！",
+		"teams": [
+			{
+				"name": "design",
+				"role": "deputy"
+			}
+		],
+		"link": "https://www.youtube.com/watch?v=v5_GoNFr5wc"
+	},
+	{
+		"name": "釋迦",
+		"description": "",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "開根號",
+		"description": "Waiting for the light to change everything.",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		],
+		"link": "None"
+	},
+	{
+		"name": "花椰",
+		"description": "",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "柚子",
+		"description": "",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "末夜",
+		"description": "哈嚕",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		],
+		"link": "no"
+	},
+	{
+		"name": "塚川",
+		"description": "",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "KIKI PENG",
+		"description": "",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "阿玉",
+		"description": "",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "Harrison",
+		"description": "很榮幸能成為 SITCON 團隊的成員，謝謝夥伴們這一路上的相挺，成長與收穫遠比付出的更多。未來將持續深耕社群，發光發熱！",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		],
+		"link": "https://www.linkedin.com/in/仁維-張-512558256?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BDvq7e%2F4GS9mTbIbc1Z4G6g%3D%3D"
+	},
+	{
+		"name": "YT",
+		"description": "貓咪可愛，但更喜歡浣熊",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		],
+		"link": "https://youtu.be/qq3NOnr5trY"
+	},
+	{
+		"name": "兆翌",
+		"description": "我沒有搞懂這是要留關於什麼的？？\n但總之\n\n你很棒\n辛苦了\n讚讚",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			},
+			{
+				"name": "editorial",
+				"role": "member"
+			}
+		],
+		"link": "？什麼意思"
+	},
+	{
+		"name": "Lindy",
+		"description": "ㄏㄚˊ",
+		"teams": [
+			{
+				"name": "finance",
+				"role": "head"
+			}
+		],
+		"link": "https://youtu.be/wCuy-IQMgP4?si=h1U3RlOGDzot72RM"
+	},
+	{
+		"name": "Leaf",
+		"description": "葉子是不會飛翔的翅膀，翅膀是落在天上的葉子",
+		"teams": [
+			{
+				"name": "finance",
+				"role": "treasurer"
+			}
+		],
+		"link": "youtube.leaftseng.me"
+	},
+	{
+		"name": "pU",
+		"description": "我的夢想是相機會幫我自己挑圖。",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "head"
+			}
+		]
+	},
+	{
+		"name": "OnCloud",
+		"description": "",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "deputy"
+			}
+		]
+	},
+	{
+		"name": "竺原",
+		"description": "一位高中聲，喜歡按下快門｜紀錄定格瞬間",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		],
+		"link": "https://zhuyuan.tw"
+	},
+	{
+		"name": "Bubble",
+		"description": "",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "夏川",
+		"description": "資訊及程式小白努力學習中 請各位電神多指教 我真的只是個快門操作員而已",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		],
+		"link": "https://natsukawataoyuan.com/"
+	},
+	{
+		"name": "Alvin",
+		"description": "你說得對，但是你說的也不完全對。從某種角度來說，你說的有一點對，可是從另一個角度看，你說得不對。也不能說是完全不對，只能說離完全對之間還有一點不對。如果忽略這點不對，哪你說的當然是對的，可是以一個更嚴謹的態度去審視你說的對不對，那麼你說的又不是對的了。",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		],
+		"link": "https://matias.me/nsfw/"
+	},
+	{
+		"name": "Hex",
+		"description": "",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "餐包",
+		"description": "：）",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		],
+		"link": "https://portal.offsec.com"
+	},
+	{
+		"name": "Edward",
+		"description": "交大資工大三，是個資安仔，但快被壓扁了，大家都太卷了。常出現在 HITCON 活動組，喜歡攝影（運動、舞台、風景和棚拍）。三月要去日本看 F1，快推我新竹的咖啡廳跟夜景！",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		],
+		"link": "https://tyc4d.tw"
+	},
+	{
+		"name": "John",
+		"description": "哈囉哈囉，我是 John，\n17歲，是個學生\n平常最愛拍人像、風景跟 Cosplay",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/graphy.john_?igsh=dmJncXQya3B6Mzl2"
+	},
+	{
+		"name": "Wei",
+		"description": "SITCON 的籌備仰賴許多人的投入，能成為其中一份子感到很榮幸。希望大家在忙碌之餘，也能保有對社群的熱情。",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/tzuweiii_/"
+	},
+	{
+		"name": "阿智",
+		"description": "笑一個喔📸",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/yichih_0126.jpg?igsh=emw4bWJrNWhyNjZh"
+	},
+	{
+		"name": "Brian",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "head"
+			}
+		]
+	},
+	{
+		"name": "御痕",
+		"description": "我們不在幕前爭光，每一次畫面切換，都是一場無聲的戰役",
+		"teams": [
+			{
+				"name": "production",
+				"role": "deputy"
+			}
+		],
+		"link": "https://www.facebook.com/iwjs323"
+	},
+	{
+		"name": "鯨魚",
+		"description": "美好的世界",
+		"teams": [
+			{
+				"name": "production",
+				"role": "deputy"
+			}
+		],
+		"link": "https://bio.whl.tw"
+	},
+	{
+		"name": "Camel",
+		"description": "新鮮的肝。",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/camel._0311"
+	},
+	{
+		"name": "小弘",
+		"description": "(´・ω・｀)",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://hankcheng399.tw"
+	},
+	{
+		"name": "麻糬",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "安得",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "長條貓",
+		"description": "喵",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://simbafs.cc"
+	},
+	{
+		"name": "郭郭",
+		"description": "歡迎來玩",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://gravatar.com/janice1a0885eb8a"
+	},
+	{
+		"name": "Hamster",
+		"description": "喵喵喵喵喵喵",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://youtu.be/Nl4lAO-HFJo?si=8PY3gOHj2i6wUMgb"
+	},
+	{
+		"name": "羊羊",
+		"description": "Ciallo～(∠・ω< )",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/yan.g404?igsh=MWwxeXdqYnNycXVuMA%3D%3D&utm_source=qr"
+	},
+	{
+		"name": "白白",
+		"description": "可頌好吃",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://youtu.be/dQw4w9WgXcQ?si=jfr1UO4ytaOhWwrx"
+	},
+	{
+		"name": "che",
+		"description": "eat sleep code repeat",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://chewu.tw/"
+	},
+	{
+		"name": "Sam",
+		"description": "很開心能和大家一起舉辦這個活動。",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "黃崇",
+		"description": "不知不覺間養了好多蟲，現在它們跑得比我的程式快",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://www.linkedin.com/in/崇傑-黃-b31ba9383/"
+	},
+	{
+		"name": "Stanley",
+		"description": "資工系學生，努力學習資安中",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "stanley1106.dev"
+	},
+	{
+		"name": "!Tony2100",
+		"description": "每個成功的男人背後，都有一條脊椎",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://tony2100.xyz/"
+	},
+	{
+		"name": "浚豪",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "白龍",
+		"description": "一隻喜歡在夜空中翱翔的龍",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://fury.tw"
+	},
+	{
+		"name": "大麻",
+		"description": "哦嗨我是大麻ヾ(≧▽≦*)o\n一位把技術與行動力當成核心競爭力的資管人～\n從自建 NAS 到直播導播再到 AI 模型應用，我習慣把抽象的想法落地成可運作的成果！",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://onyx0824.github.io/"
+	},
+	{
+		"name": "嘎嘎",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "Ting",
+		"description": "嗨喵ฅ⁠^⁠•⁠ •⁠^⁠ฅ",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://ting.ovh/"
+	},
+	{
+		"name": "Liam",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "雪兒",
+		"description": "嗨嗨大家好(?)希望都可以在年會見到大家，認識大家owobb",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			},
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/_.yufong._/"
+	},
+	{
+		"name": "Ming Chen",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "Haco",
+		"description": "一天過完後 24 小時就沒了\n一個月過完後 30 天就沒了\n看完我的話那就是看完了",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://www.haco.tw"
+	},
+	{
+		"name": "蓋蓋",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "agenda_lead"
+			}
+		]
+	},
+	{
+		"name": "brian",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "小婕",
+		"description": "嗨嗨大家好我是小婕，可悲研究生一枚，教授新竹風好大我好害怕",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/yui_wuu?igsh=MWtyOWZxd3R3ZWJlOA=="
+	},
+	{
+		"name": "TT",
+		"description": "嗨大家好我是TT",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "Wolf Yuan",
+		"description": "在 SITCON 打混的 Wolf 🐺",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			},
+			{
+				"name": "editorial",
+				"role": "member"
+			}
+		],
+		"link": "https://wolf-yuan.dev/"
+	},
+	{
+		"name": "冠霖",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "91",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "EE",
+		"description": "",
+		"teams": [
+			{
+				"name": "production",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "毛哥EM",
+		"description": "",
+		"teams": [
+			{
+				"name": "development",
+				"role": "head"
+			},
+			{
+				"name": "design",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "OsGa",
+		"description": "家有一隻狗叫 cookie，請不要偷我的 cookie\n",
+		"teams": [
+			{
+				"name": "development",
+				"role": "deputy"
+			}
+		],
+		"link": "https://osga.dev"
+	},
+	{
+		"name": "Nelson",
+		"description": "泥好鴨ε-(´∀｀; )",
+		"teams": [
+			{
+				"name": "development",
+				"role": "member"
+			}
+		],
+		"link": "https://nelsongx.com"
+	},
+	{
+		"name": "飛翔",
+		"description": "git commit -m \"SITCON社畜跟你 說 你 好！\"",
+		"teams": [
+			{
+				"name": "development",
+				"role": "member"
+			}
+		],
+		"link": "https://sianglife.tech.blog/"
+	},
+	{
+		"name": "yc油成",
+		"description": "呼嚕嚕咚咚咚",
+		"teams": [
+			{
+				"name": "development",
+				"role": "member"
+			}
+		],
+		"link": "https://imych.one"
+	},
+	{
+		"name": "貓貓",
+		"description": "一隻熱愛開源、軟體開發的貓咪",
+		"teams": [
+			{
+				"name": "development",
+				"role": "member"
+			}
+		],
+		"link": "https://eliaschen.dev"
+	},
+	{
+		"name": "橘子",
+		"description": "好好生活，好好快樂，我們一起好好的",
+		"teams": [
+			{
+				"name": "editorial",
+				"role": "head"
+			},
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/yuuu____1103?igsh=anhyM3J2a3F4bXYz"
+	},
+	{
+		"name": "Yuan",
+		"description": "咿呀哈，我是 Yuan，喜歡玩網路和在 Threads 上看廢文！晚上沒事歡迎到 SITCON Threads 底下留言，說不定會有神奇的回覆！",
+		"teams": [
+			{
+				"name": "editorial",
+				"role": "deputy"
+			}
+		],
+		"link": "https://yuan-tw.net"
+	},
+	{
+		"name": "阿六",
+		"description": "要和我辦一輩子的 SITCON 嗎？",
+		"teams": [
+			{
+				"name": "editorial",
+				"role": "member"
+			},
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://sixhuang.com"
+	},
+	{
+		"name": "嵩嵩",
+		"description": "不會寫程式還是可以去麥當勞點餐，可以用電腦玩遊戲，可以在IG發限動",
+		"teams": [
+			{
+				"name": "editorial",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "13",
+		"description": "哈囉！我是喜歡貓貓的13",
+		"teams": [
+			{
+				"name": "editorial",
+				"role": "member"
+			}
+		],
+		"link": "https://discord.gg/KsfcmyTH "
+	},
+	{
+		"name": "Mina",
+		"description": "",
+		"teams": [
+			{
+				"name": "editorial",
+				"role": "member"
+			}
+		]
+	},
+	{
+		"name": "宸",
+		"description": "元気です",
+		"teams": [
+			{
+				"name": "editorial",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/eatcheng_1110?igsh=dWRjMmExa2hobmk5"
+	},
+	{
+		"name": "Pocky",
+		"description": "嗨！",
+		"teams": [
+			{
+				"name": "editorial",
+				"role": "member"
+			}
+		],
+		"link": "https://gravatar.com/hopefuldream8e36e2b1de"
+	},
+	{
+		"name": "Ya",
+		"description": "嗨嗨我是 Ya，一個很像 E 人的大 I，意外跳入資訊社群的斜槓文組生！\n在 SITCON 曾經擔任過 2025 Camp 的編輯組員跟隊輔、2026 年會的行銷、Hour of Code 台中場助教，同時也是戰鬥機的主持人跟剪輯屍，每天都在努力拯救快墜機的戰鬥機 :/",
+		"teams": [
+			{
+				"name": "editorial",
+				"role": "member"
+			},
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/yu._yao/"
+	},
+	{
+		"name": "Panda",
+		"description": "喵喵",
+		"teams": [
+			{
+				"name": "marketing",
+				"role": "head"
+			}
+		],
+		"link": "https://moon-jam.me"
+	},
+	{
+		"name": "Ricky Lu",
+		"description": "",
+		"teams": [
+			{
+				"name": "marketing",
+				"role": "deputy"
+			}
+		]
+	},
+	{
+		"name": "Denny Huang",
+		"description": "SITCON 學生計算機年會共同發起人，在正規教育中特立獨行，妄想透過改善教育讓台灣更進步，崇尚開源精神，熱愛使用者界面以外的多項技術。",
+		"teams": [
+			{
+				"name": "marketing",
+				"role": "marketing_helper"
+			}
+		],
+		"link": "https://denny.one/"
+	},
+	{
+		"name": "阿公",
+		"description": "https://agong.tech/",
+		"teams": [
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://agong.tech/"
+	},
+	{
+		"name": "XC",
+		"description": "不務正業資工系",
+		"teams": [
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://github.com/Octoberlobster"
+	},
+	{
+		"name": "yyc",
+		"description": "喜歡看足球看棒球看漫才的人:P",
+		"teams": [
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/yyc._.luka.pi"
+	},
+	{
+		"name": "Nikka",
+		"description": "我是妮卡",
+		"teams": [
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/nikkkkkkkkkkkka1008?igsh=MTU4aDhpdjgzdXl3Zg%3D%3D&utm_source=qr"
+	},
+	{
+		"name": "Jarek",
+		"description": "早安各位!",
+		"teams": [
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://xiawoohao.github.io/"
+	},
+	{
+		"name": "滷味",
+		"description": "我是右邊",
+		"teams": [
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://www.instagram.com/ho_anyi?igsh=cG51ZjNxb3hrbDh6&utm_source=qr"
+	},
+	{
+		"name": "c7",
+		"description": "吃咖哩飯不會拌",
+		"teams": [
+			{
+				"name": "marketing",
+				"role": "member"
+			}
+		],
+		"link": "https://sitcon.org/2026/cfp/"
+	}
+]

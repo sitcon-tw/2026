@@ -5,6 +5,7 @@
 		"astro": "astro",
 		"build": "astro build",
 		"dev": "astro dev",
+		"fetch-team": "node src/utils/fetch-team.js",
 		"format": "prettier --write .",
 		"preinstall": "npx only-allow pnpm",
 		"prepare": "husky",
