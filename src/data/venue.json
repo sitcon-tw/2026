@@ -1,83 +1,83 @@
 [
-    {
-        "id": "2F",
-        "label": "2F",
-        "description": "入口、咖啡廳",
-        "items": [
-            {
-                "id": "entrance",
-                "name": "入口",
-                "description": "報到處"
-            },
-            {
-                "id": "cafe",
-                "name": "咖啡廳",
-                "description": "休息空間"
-            }
-        ]
-    },
-    {
-        "id": "3F",
-        "label": "3F",
-        "description": "報到、攤位、R0~R3",
-        "items": [
-            {
-                "id": "r0",
-                "name": "R0",
-                "description": "演講廳"
-            },
-            {
-                "id": "r1",
-                "name": "R1",
-                "description": "演講廳"
-            },
-            {
-                "id": "r2",
-                "name": "R2",
-                "description": "演講廳"
-            },
-            {
-                "id": "r3",
-                "name": "R3",
-                "description": "演講廳"
-            },
-            {
-                "id": "r0",
-                "name": "R0",
-                "description": "演講廳"
-            },
-            {
-                "id": "r1",
-                "name": "R1",
-                "description": "演講廳"
-            },
-            {
-                "id": "r2",
-                "name": "R2",
-                "description": "演講廳"
-            },
-            {
-                "id": "r3",
-                "name": "R3",
-                "description": "演講廳"
-            }
-        ]
-    },
-    {
-        "id": "4F",
-        "label": "4F",
-        "description": "攤位、午餐、交誼廳",
-        "items": [
-            {
-                "id": "lounge",
-                "name": "交誼廳",
-                "description": "交流空間"
-            },
-            {
-                "id": "lunch",
-                "name": "午餐區",
-                "description": "用餐空間"
-            }
-        ]
-    }
+	{
+		"id": "2F",
+		"label": "2F",
+		"description": "入口、咖啡廳",
+		"items": [
+			{
+				"id": "entrance",
+				"name": "入口",
+				"description": "報到處"
+			},
+			{
+				"id": "cafe",
+				"name": "咖啡廳",
+				"description": "休息空間"
+			}
+		]
+	},
+	{
+		"id": "3F",
+		"label": "3F",
+		"description": "報到、攤位、R0~R3",
+		"items": [
+			{
+				"id": "r0",
+				"name": "R0",
+				"description": "演講廳"
+			},
+			{
+				"id": "r1",
+				"name": "R1",
+				"description": "演講廳"
+			},
+			{
+				"id": "r2",
+				"name": "R2",
+				"description": "演講廳"
+			},
+			{
+				"id": "r3",
+				"name": "R3",
+				"description": "演講廳"
+			},
+			{
+				"id": "r0",
+				"name": "R0",
+				"description": "演講廳"
+			},
+			{
+				"id": "r1",
+				"name": "R1",
+				"description": "演講廳"
+			},
+			{
+				"id": "r2",
+				"name": "R2",
+				"description": "演講廳"
+			},
+			{
+				"id": "r3",
+				"name": "R3",
+				"description": "演講廳"
+			}
+		]
+	},
+	{
+		"id": "4F",
+		"label": "4F",
+		"description": "攤位、午餐、交誼廳",
+		"items": [
+			{
+				"id": "lounge",
+				"name": "交誼廳",
+				"description": "交流空間"
+			},
+			{
+				"id": "lunch",
+				"name": "午餐區",
+				"description": "用餐空間"
+			}
+		]
+	}
 ]
