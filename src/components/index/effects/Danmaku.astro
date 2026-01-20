@@ -8,9 +8,11 @@ interface Props {
 }
 
 const { lines, rows = 6, speed = 150, gap = 80, opacity = 0.12 } = Astro.props;
+
+const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 ---
 
-<div class="danmaku-container" data-lines={JSON.stringify(lines)} data-rows={rows} data-speed={speed} data-gap={gap} data-opacity={opacity}></div>
+<div class="danmaku-container" id={uniqueId} data-lines={JSON.stringify(lines)} data-rows={rows} data-speed={speed} data-gap={gap} data-opacity={opacity}></div>
 
 <style define:vars={{ opacity }}>
 	.danmaku-container {
@@ -35,127 +37,120 @@ const { lines, rows = 6, speed = 150, gap = 80, opacity = 0.12 } = Astro.props;
 	}
 </style>
 
-<script>
-	import { gsap } from "gsap";
+<script define:vars={{ uniqueId }}>
+	(function () {
+		const container = document.getElementById(uniqueId);
+		if (!container || container.dataset.initialized === "true") return;
+		container.dataset.initialized = "true";
 
-	class DanmakuSystem {
-		private container: HTMLElement;
-		private lines: string[];
-		private rows: number;
-		private fontSize: number = 0;
-		private speed: number;
-		private gap: number;
-		private opacity: number;
-		private rowState: { lastEndTime: number }[] = [];
-		private animationFrameId: number = 0;
-		private startTime: number = 0;
-		private boundHandleResize: () => void;
-
-		constructor(container: HTMLElement) {
-			this.container = container;
-			this.lines = JSON.parse(container.dataset.lines || "[]");
-			this.rows = parseInt(container.dataset.rows || "6", 10);
-			this.speed = parseInt(container.dataset.speed || "150", 10);
-			this.gap = parseInt(container.dataset.gap || "80", 10);
-			this.opacity = parseFloat(container.dataset.opacity || "0.12");
-			this.boundHandleResize = this.handleResize.bind(this);
-			this.init();
-		}
-
-		private init() {
-			this.updateFontSize();
-			this.rowState = Array.from({ length: this.rows }, () => ({ lastEndTime: 0 }));
-			this.start();
-			window.addEventListener("resize", this.boundHandleResize);
-		}
-
-		private updateFontSize() {
-			const screenWidth = window.innerWidth;
-			this.fontSize = Math.max(48, Math.min(80, screenWidth * 0.06));
-		}
-
-		private measureText(text: string): number {
-			const canvas = document.createElement("canvas");
-			const ctx = canvas.getContext("2d");
-			if (!ctx) return text.length * this.fontSize;
-			ctx.font = `900 ${this.fontSize}px sans-serif`;
-			return ctx.measureText(text).width;
-		}
-
-		private getRandomText(): string {
-			return this.lines[Math.floor(Math.random() * this.lines.length)];
-		}
-
-		private createDanmaku(row: number, initialOffset: number = 0) {
-			const text = this.getRandomText();
-			const textWidth = this.measureText(text);
-			const screenWidth = window.innerWidth;
-			const totalDistance = screenWidth + textWidth;
-			const duration = totalDistance / this.speed;
-
-			const el = document.createElement("p");
-			el.className = "danmaku-item";
-			el.textContent = text;
-			el.style.fontSize = `${this.fontSize}px`;
-			el.style.top = `${(row / this.rows) * 100}%`;
-			el.style.left = `${screenWidth + initialOffset}px`;
-			el.style.opacity = String(this.opacity);
-
-			this.container.appendChild(el);
-
-			const timeUntilFullyEntered = (textWidth + this.gap) / this.speed;
-			this.rowState[row].lastEndTime = performance.now() + timeUntilFullyEntered * 1000;
-
-			gsap.to(el, {
-				x: -totalDistance,
-				duration: duration,
-				ease: "none",
-				onComplete: () => {
-					el.remove();
+		import("gsap").then(({ gsap }) => {
+			class DanmakuSystem {
+				constructor(container) {
+					this.container = container;
+					this.lines = JSON.parse(container.dataset.lines || "[]");
+					this.rows = parseInt(container.dataset.rows || "6", 10);
+					this.speed = parseInt(container.dataset.speed || "150", 10);
+					this.gap = parseInt(container.dataset.gap || "80", 10);
+					this.opacity = parseFloat(container.dataset.opacity || "0.12");
+					this.fontSize = 0;
+					this.rowState = [];
+					this.animationFrameId = 0;
+					this.startTime = 0;
+					this.boundHandleResize = this.handleResize.bind(this);
+					this.init();
 				}
-			});
-		}
 
-		private tick = (currentTime: number) => {
-			for (let row = 0; row < this.rows; row++) {
-				if (currentTime >= this.rowState[row].lastEndTime) {
-					this.createDanmaku(row);
+				init() {
+					this.updateFontSize();
+					this.rowState = Array.from({ length: this.rows }, () => ({ lastEndTime: 0 }));
+					this.start();
+					window.addEventListener("resize", this.boundHandleResize);
+				}
+
+				updateFontSize() {
+					const screenWidth = window.innerWidth;
+					this.fontSize = Math.max(48, Math.min(80, screenWidth * 0.06));
+				}
+
+				measureText(text) {
+					const canvas = document.createElement("canvas");
+					const ctx = canvas.getContext("2d");
+					if (!ctx) return text.length * this.fontSize;
+					ctx.font = `900 ${this.fontSize}px sans-serif`;
+					return ctx.measureText(text).width;
+				}
+
+				getRandomText() {
+					return this.lines[Math.floor(Math.random() * this.lines.length)];
+				}
+
+				createDanmaku(row, initialOffset = 0) {
+					const text = this.getRandomText();
+					const textWidth = this.measureText(text);
+					const screenWidth = window.innerWidth;
+					const totalDistance = screenWidth + textWidth;
+					const duration = totalDistance / this.speed;
+
+					const el = document.createElement("p");
+					el.className = "danmaku-item";
+					el.textContent = text;
+					el.style.fontSize = `${this.fontSize}px`;
+					el.style.top = `${(row / this.rows) * 100}%`;
+					el.style.left = `${screenWidth + initialOffset}px`;
+					el.style.opacity = String(this.opacity);
+
+					this.container.appendChild(el);
+
+					const timeUntilFullyEntered = (textWidth + this.gap) / this.speed;
+					this.rowState[row].lastEndTime = performance.now() + timeUntilFullyEntered * 1000;
+
+					gsap.to(el, {
+						x: -totalDistance,
+						duration: duration,
+						ease: "none",
+						onComplete: () => {
+							el.remove();
+						}
+					});
+				}
+
+				tick = currentTime => {
+					for (let row = 0; row < this.rows; row++) {
+						if (currentTime >= this.rowState[row].lastEndTime) {
+							this.createDanmaku(row);
+						}
+					}
+					this.animationFrameId = requestAnimationFrame(this.tick);
+				};
+
+				start() {
+					this.container.innerHTML = "";
+					this.startTime = performance.now();
+
+					for (let row = 0; row < this.rows; row++) {
+						const initialDelay = (row * 0.3 + Math.random() * 0.5) * 1000;
+						this.rowState[row].lastEndTime = this.startTime + initialDelay;
+					}
+
+					this.animationFrameId = requestAnimationFrame(this.tick);
+				}
+
+				handleResize() {
+					cancelAnimationFrame(this.animationFrameId);
+					gsap.killTweensOf(this.container.querySelectorAll(".danmaku-item"));
+					this.container.innerHTML = "";
+					this.updateFontSize();
+					this.start();
+				}
+
+				destroy() {
+					cancelAnimationFrame(this.animationFrameId);
+					gsap.killTweensOf(this.container.querySelectorAll(".danmaku-item"));
+					window.removeEventListener("resize", this.boundHandleResize);
 				}
 			}
-			this.animationFrameId = requestAnimationFrame(this.tick);
-		};
 
-		private start() {
-			this.container.innerHTML = "";
-			this.startTime = performance.now();
-
-			for (let row = 0; row < this.rows; row++) {
-				const initialDelay = (row * 0.3 + Math.random() * 0.5) * 1000;
-				this.rowState[row].lastEndTime = this.startTime + initialDelay;
-			}
-
-			this.animationFrameId = requestAnimationFrame(this.tick);
-		}
-
-		private handleResize() {
-			cancelAnimationFrame(this.animationFrameId);
-			gsap.killTweensOf(".danmaku-item");
-			this.container.innerHTML = "";
-			this.updateFontSize();
-			this.start();
-		}
-
-		destroy() {
-			cancelAnimationFrame(this.animationFrameId);
-			gsap.killTweensOf(".danmaku-item");
-			window.removeEventListener("resize", this.boundHandleResize);
-		}
-	}
-
-	// 初始化所有彈幕容器
-	document.querySelectorAll(".danmaku-container").forEach(container => {
-		if (container instanceof HTMLElement) {
 			new DanmakuSystem(container);
-		}
-	});
+		});
+	})();
 </script>
