@@ -16,7 +16,7 @@ const floors = venueData;
 			<div class="content-wrapper">
 				<!-- Floor Selection -->
 				<div id="floor-selection" class="menu-panel">
-					<p class="hint">請選擇地圖</p>
+					<p class="hint">請選擇樓層</p>
 					<div class="floor-buttons" data-lenis-prevent>
 						{floors.map(floor => <FloorButton id={floor.id} label={floor.label} description={floor.description} />)}
 					</div>
@@ -54,19 +54,8 @@ const floors = venueData;
 				</button>
 			</div>
 
-			<!-- Background -->
-			<div class="background-container">
-				<div id="bg-all" class="bg-layer active">
-					<div class="placeholder-map">3D Map Overview</div>
-				</div>
-				{
-					floors.map(floor => (
-						<div id={`bg-${floor.id}`} class="bg-layer">
-							<div class="placeholder-map">{floor.label} Floor Plan</div>
-						</div>
-					))
-				}
-			</div>
+			<!-- 3D Canvas -->
+			<canvas id="venue-canvas"></canvas>
 		</div>
 	</main>
 </Layout>
@@ -79,6 +68,15 @@ const floors = venueData;
 		background-color: #a67c37;
 		color: white;
 		position: relative;
+	}
+
+	#venue-canvas {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 55%;
+		height: 100%;
+		z-index: 0;
 	}
 
 	.venue-container {
@@ -97,6 +95,8 @@ const floors = venueData;
 		margin-bottom: 1rem;
 		font-family: "GenKiMinTW", serif;
 		font-weight: 700;
+		position: relative;
+		z-index: 100;
 	}
 
 	.content-wrapper {
@@ -207,46 +207,6 @@ const floors = venueData;
 		border-radius: 3px;
 	}
 
-	.background-container {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 0;
-		pointer-events: none;
-	}
-
-	.bg-layer {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		opacity: 0;
-		transition: opacity 0.6s ease-in-out;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.bg-layer.active {
-		opacity: 1;
-	}
-
-	.placeholder-map {
-		width: 80%;
-		height: 60%;
-		background: rgba(255, 255, 255, 0.1);
-		border: 2px dashed rgba(255, 255, 255, 0.3);
-		border-radius: 20px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 2rem;
-		color: rgba(255, 255, 255, 0.5);
-	}
-
 	.emergency-btn-container {
 		margin-top: 2rem;
 		z-index: 10;
@@ -273,26 +233,409 @@ const floors = venueData;
 
 	@media (max-width: 1024px) {
 		.venue-container {
-			padding: 6rem 2rem 2rem;
+			padding: 5rem 1.5rem 1.5rem;
 		}
 		.menu-panel {
-			width: 300px;
+			width: 100%;
+			max-width: 100%;
+			z-index: 20;
 		}
 		.title {
-			font-size: 3rem;
+			font-size: 2.5rem;
+		}
+		.content-wrapper {
+			flex-direction: column;
+			min-height: auto;
+			max-height: 40vh;
+		}
+		.floor-buttons {
+			max-height: 30vh;
+		}
+		#venue-canvas {
+			width: 100%;
+			height: 50%;
+			top: auto;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.venue-container {
+			padding: 4.5rem 1rem 1rem;
+		}
+		.title {
+			font-size: 2rem;
+		}
+		.hint {
+			font-size: 1.1rem;
+		}
+		.floor-buttons {
+			gap: 1rem;
 		}
 	}
 </style>
 
 <script>
 	import gsap from "gsap";
+	import * as THREE from "three";
+	import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+	import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+	// Floor configuration - separate GLB files for each floor
+	// Only load floors that exist in the venue data (2F, 3F, 4F)
+	const FLOOR_MODELS = [
+		{ id: "2F", path: "/2026/models/searchcentermodel_2f.glb", yOffset: 0 },
+		{ id: "3F", path: "/2026/models/searchcentermodel_3f.glb", yOffset: 0.5 },
+		{ id: "4F", path: "/2026/models/searchcentermodel_4f.glb", yOffset: 1.0 }
+	];
+
+	const FLOOR_GAP = 20; // Gap between stacked floors
+	const CAMERA_ANGLE = Math.PI / 1.7; // Front-left angle (rotated left)
+
+	let scene: THREE.Scene;
+	let camera: THREE.PerspectiveCamera;
+	let renderer: THREE.WebGLRenderer;
+	let controls: OrbitControls;
+	let floorGroups: Map<string, THREE.Group> = new Map();
+	let currentFloor: string | null = null;
+	let animationId: number;
+	let modelGroup: THREE.Group;
+
+	function initThree() {
+		const canvas = document.getElementById("venue-canvas") as HTMLCanvasElement;
+		if (!canvas) return;
+
+		// Scene
+		scene = new THREE.Scene();
+		scene.background = new THREE.Color(0xa67c37);
+
+		// Camera - use canvas dimensions for aspect ratio
+		const canvasRect = canvas.getBoundingClientRect();
+		camera = new THREE.PerspectiveCamera(45, canvasRect.width / canvasRect.height, 0.1, 1000);
+		camera.position.set(-8, 6, 8);
+		camera.lookAt(0, 0, 0);
+
+		// Renderer - use canvas dimensions
+		renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+		renderer.setSize(canvasRect.width, canvasRect.height);
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+		// Controls
+		controls = new OrbitControls(camera, renderer.domElement);
+		controls.enableDamping = true;
+		controls.dampingFactor = 0.05;
+		controls.minDistance = 5;
+		controls.maxDistance = 20;
+		controls.maxPolarAngle = Math.PI / 2.2;
+		controls.target.set(0, 1, 0);
+
+		// Lighting
+		const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+		scene.add(ambientLight);
+
+		const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+		directionalLight.position.set(5, 10, 5);
+		directionalLight.castShadow = true;
+		directionalLight.shadow.mapSize.width = 2048;
+		directionalLight.shadow.mapSize.height = 2048;
+		scene.add(directionalLight);
+
+		const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
+		fillLight.position.set(-5, 5, -5);
+		scene.add(fillLight);
+
+		// Create model group
+		modelGroup = new THREE.Group();
+		modelGroup.rotation.y = CAMERA_ANGLE;
+		scene.add(modelGroup);
+
+		// Load all floor models
+		loadAllFloors();
+
+		// Handle resize
+		window.addEventListener("resize", onWindowResize);
+
+		// Start animation loop
+		animate();
+	}
+
+	async function loadAllFloors() {
+		const loader = new GLTFLoader();
+
+		const loadPromises = FLOOR_MODELS.map(
+			floorConfig =>
+				new Promise<void>((resolve, reject) => {
+					loader.load(
+						floorConfig.path,
+						gltf => {
+							const floorGroup = new THREE.Group();
+							floorGroup.name = floorConfig.id;
+
+							// Add all children to the floor group
+							while (gltf.scene.children.length > 0) {
+								const child = gltf.scene.children[0];
+								floorGroup.add(child);
+							}
+
+							// Enable shadows on all meshes
+							floorGroup.traverse(child => {
+								if (child instanceof THREE.Mesh) {
+									child.castShadow = true;
+									child.receiveShadow = true;
+
+									// Make materials transparent-capable for animations
+									if (child.material) {
+										const materials = Array.isArray(child.material) ? child.material : [child.material];
+										materials.forEach(mat => {
+											if (mat instanceof THREE.MeshStandardMaterial || mat instanceof THREE.MeshBasicMaterial) {
+												mat.transparent = true;
+												mat.opacity = 1;
+											}
+										});
+									}
+								}
+							});
+
+							// Store original Y position
+							floorGroup.userData.originalY = 0;
+							floorGroup.userData.floorIndex = FLOOR_MODELS.findIndex(f => f.id === floorConfig.id);
+
+							floorGroups.set(floorConfig.id, floorGroup);
+							modelGroup.add(floorGroup);
+
+							console.log(`Loaded floor: ${floorConfig.id}`);
+							resolve();
+						},
+						undefined,
+						error => {
+							console.error(`Error loading floor ${floorConfig.id}:`, error);
+							reject(error);
+						}
+					);
+				})
+		);
+
+		try {
+			await Promise.all(loadPromises);
+			console.log("All floors loaded");
+
+			// Center and scale the entire model
+			centerAndScaleModel();
+
+			// Apply initial stacked state
+			showAllFloorsStacked();
+		} catch (error) {
+			console.error("Error loading floors:", error);
+		}
+	}
+
+	function centerAndScaleModel() {
+		// Calculate bounding box of entire model
+		const box = new THREE.Box3().setFromObject(modelGroup);
+		const center = box.getCenter(new THREE.Vector3());
+		const size = box.getSize(new THREE.Vector3());
+
+		// Center horizontally, keep at ground level
+		modelGroup.position.x = -center.x;
+		modelGroup.position.z = -center.z;
+
+		// Scale to fit nicely - larger for better visibility
+		const maxDim = Math.max(size.x, size.y, size.z);
+		const scale = 8 / maxDim;
+		modelGroup.scale.setScalar(scale);
+
+		// Update each floor's original Y after scaling
+		floorGroups.forEach((group, _floorId) => {
+			group.userData.originalY = group.position.y;
+		});
+	}
+
+	function showAllFloorsStacked() {
+		currentFloor = null;
+
+		floorGroups.forEach((group, _floorId) => {
+			const floorIndex = group.userData.floorIndex || 0;
+
+			// Show floor
+			group.visible = true;
+
+			// Animate to stacked position with gap
+			const targetY = (group.userData.originalY || 0) + floorIndex * FLOOR_GAP;
+
+			gsap.to(group.position, {
+				y: targetY,
+				duration: 0.8,
+				ease: "power2.inOut"
+			});
+
+			// Fade in all meshes
+			group.traverse(child => {
+				if (child instanceof THREE.Mesh && child.material) {
+					const materials = Array.isArray(child.material) ? child.material : [child.material];
+					materials.forEach(mat => {
+						if ("opacity" in mat) {
+							gsap.to(mat, {
+								opacity: 1,
+								duration: 0.5
+							});
+						}
+					});
+				}
+			});
+		});
+
+		// Reset camera to overview position
+		gsap.to(camera.position, {
+			x: -8,
+			y: 6,
+			z: 8,
+			duration: 1,
+			ease: "power2.inOut"
+		});
+
+		gsap.to(controls.target, {
+			x: 0,
+			y: 1.5,
+			z: 0,
+			duration: 1,
+			ease: "power2.inOut"
+		});
+	}
+
+	function showSingleFloor(floorId: string) {
+		currentFloor = floorId;
+
+		floorGroups.forEach((group, fId) => {
+			const isTarget = fId === floorId;
+
+			if (isTarget) {
+				// Show selected floor
+				group.visible = true;
+
+				gsap.to(group.position, {
+					y: group.userData.originalY || 0,
+					duration: 0.6,
+					ease: "power2.inOut"
+				});
+
+				// Fade in
+				group.traverse(child => {
+					if (child instanceof THREE.Mesh && child.material) {
+						const materials = Array.isArray(child.material) ? child.material : [child.material];
+						materials.forEach(mat => {
+							if ("opacity" in mat) {
+								gsap.to(mat, {
+									opacity: 1,
+									duration: 0.4
+								});
+							}
+						});
+					}
+				});
+			} else {
+				// Hide other floors
+				group.traverse(child => {
+					if (child instanceof THREE.Mesh && child.material) {
+						const materials = Array.isArray(child.material) ? child.material : [child.material];
+						materials.forEach(mat => {
+							if ("opacity" in mat) {
+								gsap.to(mat, {
+									opacity: 0,
+									duration: 0.3,
+									onComplete: () => {
+										group.visible = false;
+									}
+								});
+							}
+						});
+					}
+				});
+
+				// Fallback for groups without mesh materials
+				gsap.delayedCall(0.3, () => {
+					if (currentFloor !== fId) {
+						group.visible = false;
+					}
+				});
+			}
+		});
+
+		// Adjust camera for single floor view
+		const targetGroup = floorGroups.get(floorId);
+		const floorIndex = targetGroup?.userData.floorIndex || 0;
+		const cameraY = 4 + floorIndex * 0.3;
+
+		gsap.to(camera.position, {
+			x: -6,
+			y: cameraY,
+			z: 6,
+			duration: 1,
+			ease: "power2.inOut"
+		});
+
+		gsap.to(controls.target, {
+			x: 0,
+			y: 0.5,
+			z: 0,
+			duration: 1,
+			ease: "power2.inOut"
+		});
+	}
+
+	function onWindowResize() {
+		const canvas = document.getElementById("venue-canvas") as HTMLCanvasElement;
+		if (!canvas) return;
+
+		const canvasRect = canvas.getBoundingClientRect();
+		camera.aspect = canvasRect.width / canvasRect.height;
+		camera.updateProjectionMatrix();
+		renderer.setSize(canvasRect.width, canvasRect.height);
+	}
+
+	function animate() {
+		animationId = requestAnimationFrame(animate);
+		controls.update();
+		renderer.render(scene, camera);
+	}
+
+	function cleanup() {
+		if (animationId) {
+			cancelAnimationFrame(animationId);
+		}
+		window.removeEventListener("resize", onWindowResize);
+
+		// Dispose of geometries and materials
+		floorGroups.forEach(group => {
+			group.traverse(child => {
+				if (child instanceof THREE.Mesh) {
+					child.geometry?.dispose();
+					if (child.material) {
+						const materials = Array.isArray(child.material) ? child.material : [child.material];
+						materials.forEach(mat => mat.dispose());
+					}
+				}
+			});
+		});
+
+		floorGroups.clear();
+
+		if (renderer) {
+			renderer.dispose();
+		}
+		if (controls) {
+			controls.dispose();
+		}
+	}
 
 	function initVenue() {
 		const floorSelection = document.getElementById("floor-selection");
 		const advancedMenu = document.getElementById("advanced-menu");
 		const backBtn = document.getElementById("back-btn");
 		const floorBtns = document.querySelectorAll(".floor-btn");
-		const bgLayers = document.querySelectorAll(".bg-layer");
 		const roomListContainers = document.querySelectorAll(".room-list-container");
 		const hint = document.querySelector(".hint");
 
@@ -317,6 +660,9 @@ const floors = venueData;
 			const targetRoomList = document.getElementById(`room-list-${floorId}`);
 			if (!targetRoomList) return;
 
+			// Update 3D view
+			showSingleFloor(floorId);
+
 			const tl = gsap.timeline();
 
 			// 1. Exit Floor Selection
@@ -336,11 +682,6 @@ const floors = venueData;
 				advancedMenu?.classList.remove("hidden");
 				roomListContainers.forEach(container => container.classList.add("hidden"));
 				targetRoomList.classList.remove("hidden");
-
-				// Switch background
-				bgLayers.forEach(layer => layer.classList.remove("active"));
-				const targetBg = document.getElementById(`bg-${floorId}`);
-				if (targetBg) targetBg.classList.add("active");
 			});
 
 			// 2. Enter Advanced Menu
@@ -364,6 +705,9 @@ const floors = venueData;
 			const activeRoomList = Array.from(roomListContainers).find(c => !c.classList.contains("hidden"));
 			if (!activeRoomList) return;
 
+			// Update 3D view
+			showAllFloorsStacked();
+
 			const tl = gsap.timeline();
 
 			// 1. Exit Advanced Menu
@@ -383,11 +727,6 @@ const floors = venueData;
 			tl.add(() => {
 				advancedMenu?.classList.add("hidden");
 				floorSelection?.classList.remove("hidden");
-
-				// Switch background back to all
-				bgLayers.forEach(layer => layer.classList.remove("active"));
-				const bgAll = document.getElementById("bg-all");
-				if (bgAll) bgAll.classList.add("active");
 			});
 
 			// 2. Enter Floor Selection
@@ -408,9 +747,19 @@ const floors = venueData;
 		}
 	}
 
+	// Initialize Three.js
+	initThree();
+
 	// Run on initial load
 	initVenue();
 
 	// Run on View Transitions navigation
-	document.addEventListener("astro:after-swap", initVenue);
+	document.addEventListener("astro:after-swap", () => {
+		cleanup();
+		initThree();
+		initVenue();
+	});
+
+	// Cleanup on page unload
+	document.addEventListener("astro:before-swap", cleanup);
 </script>

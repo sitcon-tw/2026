@@ -139,6 +139,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 	import { Octree } from "three/examples/jsm/math/Octree.js";
 	import { Capsule } from "three/examples/jsm/math/Capsule.js";
+	import { fade } from "astro:transitions";
 
 	// helpers (type guards / utils)
 	function mustGetEl<T extends HTMLElement>(id: string): T {
@@ -251,7 +252,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 	const gltfLoader = new GLTFLoader();
 
 	// Load player model (stone.glb)
-	const stoneUrl = new URL("../../assets/stone.glb", import.meta.url).href;
+	const stoneUrl = "/2026/models/stone.glb";
 	gltfLoader.load(
 		stoneUrl,
 		gltf => {
@@ -266,6 +267,26 @@ import { Move, ChevronUp } from "@lucide/astro";
 				for (const m of materials) {
 					const mat = m as THREE.MeshStandardMaterial;
 					if (mat?.map) setTextureToSRGB(mat.map);
+				}
+			});
+
+			stoneModel.traverse(obj => {
+				console.log(obj.name);
+				if (obj.name === "Hand_L") {
+					leftArm = obj;
+					console.log("Found left hand:", obj.name);
+				}
+				if (obj.name === "Hand_R") {
+					rightArm = obj;
+					console.log("Found right hand:", obj.name);
+				}
+				if (obj.name === "Leaf_L") {
+					leftLeaf = obj;
+					console.log("Found left leaf:", obj.name);
+				}
+				if (obj.name === "Leaf_R") {
+					rightLeaf = obj;
+					console.log("Found right leaf:", obj.name);
 				}
 			});
 
@@ -306,7 +327,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 	);
 
 	// Load world GLB
-	const glbUrl = new URL("../../assets/academia-sinica.glb", import.meta.url).href;
+	const glbUrl = "/2026/models/academia-sinica.glb";
 
 	gltfLoader.load(
 		glbUrl,
@@ -348,6 +369,18 @@ import { Move, ChevronUp } from "@lucide/astro";
 	let playerOnFloor: boolean = false;
 	let playerTargetRotation: number = 0; // Target Y rotation for the player model
 
+	// Arm swing animation
+	let leftArm: THREE.Object3D | null = null;
+	let rightArm: THREE.Object3D | null = null;
+	let leftLeaf: THREE.Object3D | null = null;
+	let rightLeaf: THREE.Object3D | null = null;
+	let armSwingTime: number = 0;
+	let leafSwayTime: number = 0;
+	const ARM_SWING_SPEED = 10; // Speed of arm swing
+	const ARM_SWING_AMOUNT = 0.5; // Amount of rotation (radians)
+	const LEAF_SWAY_SPEED = 2; // Speed of leaf sway
+	const LEAF_SWAY_AMOUNT = 0.3; // Amount of rotation (radians)
+
 	const GRAVITY = 25;
 	const JUMP_SPEED = 8.0;
 
@@ -362,19 +395,27 @@ import { Move, ChevronUp } from "@lucide/astro";
 	}
 
 	function playerCollisions(): void {
-		const result = worldOctree.capsuleIntersect(playerCollider);
 		playerOnFloor = false;
 
-		if (result) {
-			playerOnFloor = result.normal.y > 0;
+		// Multiple iterations to handle complex geometry and prevent getting stuck
+		for (let i = 0; i < 3; i++) {
+			const result = worldOctree.capsuleIntersect(playerCollider);
 
-			// push out penetration
-			playerCollider.translate(result.normal.clone().multiplyScalar(result.depth));
+			if (result) {
+				if (result.normal.y > 0) {
+					playerOnFloor = true;
+				}
 
-			// slide along walls
-			if (!playerOnFloor) {
-				const dot = result.normal.dot(playerVelocity);
-				if (dot < 0) playerVelocity.addScaledVector(result.normal, -dot);
+				// push out penetration
+				playerCollider.translate(result.normal.clone().multiplyScalar(result.depth));
+
+				// slide along walls
+				if (result.normal.y <= 0) {
+					const dot = result.normal.dot(playerVelocity);
+					if (dot < 0) playerVelocity.addScaledVector(result.normal, -dot);
+				}
+			} else {
+				break; // No collision, exit early
 			}
 		}
 	}
@@ -737,6 +778,40 @@ import { Move, ChevronUp } from "@lucide/astro";
 			// Update player rotation to face movement direction
 			if (move.lengthSq() > 0.01) {
 				playerTargetRotation = Math.atan2(move.x, move.z) + Math.PI;
+			}
+
+			// Arm swing animation when walking (swing along Y axis)
+			const isWalking = move.lengthSq() > 0.01 && playerOnFloor;
+			if (isWalking) {
+				armSwingTime += dt * ARM_SWING_SPEED;
+				const swingAngle = Math.sin(armSwingTime) * ARM_SWING_AMOUNT;
+
+				if (leftArm) {
+					leftArm.rotation.y = swingAngle;
+				}
+				if (rightArm) {
+					rightArm.rotation.y = -swingAngle; // Opposite phase
+				}
+			} else {
+				// Smoothly return arms to rest position
+				armSwingTime = 0;
+				if (leftArm && Math.abs(leftArm.rotation.y) > 0.01) {
+					leftArm.rotation.z *= 0.85;
+				}
+				if (rightArm && Math.abs(rightArm.rotation.y) > 0.01) {
+					rightArm.rotation.z *= 0.85;
+				}
+			}
+
+			// Leaf sway animation (always active, sway along Y axis to the sides)
+			leafSwayTime += dt * LEAF_SWAY_SPEED;
+			const leafSwayAngle = Math.sin(leafSwayTime) * LEAF_SWAY_AMOUNT;
+
+			if (leftLeaf) {
+				leftLeaf.rotation.z = -LEAF_SWAY_AMOUNT + leafSwayAngle; // Sway outward left
+			}
+			if (rightLeaf) {
+				rightLeaf.rotation.z = LEAF_SWAY_AMOUNT - leafSwayAngle; // Sway outward right
 			}
 
 			const jumpPressed = !isTouchDevice ? keys.space : jumpRequested;
