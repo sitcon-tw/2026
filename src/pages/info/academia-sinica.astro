@@ -202,12 +202,25 @@ import { Move, ChevronUp } from "@lucide/astro";
 	colliders.add(floor);
 
 	// Debug visuals
-	const playerMesh = new THREE.Mesh(new THREE.CapsuleGeometry(0.35, 1.25, 8, 16), new THREE.MeshStandardMaterial({ color: 0xddddff }));
+	// Player dimensions (matching the original capsule: radius 0.35, height ~1.95)
+	const playerWidth = 0.7; // 2 * radius
+	const playerHeight = 1.95; // total capsule height
+	const playerDepth = 0.7; // 2 * radius
+
+	// Player mesh - will be replaced by stone.glb
+	let playerMesh: THREE.Object3D = new THREE.Mesh(new THREE.BoxGeometry(playerWidth, playerHeight, playerDepth), new THREE.MeshStandardMaterial({ color: 0xddddff, wireframe: true }));
 	playerMesh.castShadow = true;
 	scene.add(playerMesh);
 
-	const debugHelpers: THREE.BoxHelper[] = [];
-	let debugVisible: boolean = false;
+	// Debug box helper for physics visualization
+	const playerBoxHelper = new THREE.Box3Helper(
+		new THREE.Box3(new THREE.Vector3(-playerWidth / 2, -playerHeight / 2, -playerDepth / 2), new THREE.Vector3(playerWidth / 2, playerHeight / 2, playerDepth / 2)),
+		0x00ff00
+	);
+	scene.add(playerBoxHelper);
+
+	const debugHelpers: THREE.Object3D[] = [playerBoxHelper];
+	let debugVisible: boolean = true;
 
 	function createBoundingBox(object: THREE.Object3D, color = 0xffff00): THREE.BoxHelper {
 		const helper = new THREE.BoxHelper(object, color);
@@ -217,7 +230,6 @@ import { Move, ChevronUp } from "@lucide/astro";
 		debugHelpers.push(helper);
 		return helper;
 	}
-	createBoundingBox(playerMesh, 0xff00ff);
 
 	// Octree
 	const worldOctree = new Octree();
@@ -231,8 +243,46 @@ import { Move, ChevronUp } from "@lucide/astro";
 	// Build an initial octree so the player collides with the floor even if the GLB fails to load.
 	rebuildOctree();
 
-	// Load GLB
+	// GLTFLoader (declare before use)
 	const gltfLoader = new GLTFLoader();
+
+	// Load player model (stone.glb)
+	const stoneUrl = new URL("../../assets/stone.glb", import.meta.url).href;
+	gltfLoader.load(
+		stoneUrl,
+		gltf => {
+			const stoneModel = gltf.scene;
+
+			stoneModel.traverse(obj => {
+				if (!isMesh(obj)) return;
+				obj.castShadow = true;
+				obj.receiveShadow = true;
+
+				const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+				for (const m of materials) {
+					const mat = m as THREE.MeshStandardMaterial;
+					if (mat?.map) setTextureToSRGB(mat.map);
+				}
+			});
+
+			// Scale stone to fit player box
+			const box = new THREE.Box3().setFromObject(stoneModel);
+			const size = box.getSize(new THREE.Vector3());
+			const scale = Math.min(playerWidth / size.x, playerHeight / size.y, playerDepth / size.z);
+			stoneModel.scale.setScalar(scale * 0.9);
+
+			// Replace placeholder mesh with stone model
+			scene.remove(playerMesh);
+			playerMesh = stoneModel;
+			scene.add(playerMesh);
+
+			console.log("Loaded stone.glb as player model");
+		},
+		undefined,
+		err => console.error("Failed to load stone.glb", err)
+	);
+
+	// Load world GLB
 	const glbUrl = new URL("../../assets/academia-sinica.glb", import.meta.url).href;
 
 	gltfLoader.load(
@@ -264,8 +314,11 @@ import { Move, ChevronUp } from "@lucide/astro";
 		err => console.error("Failed to load academia-sinica.glb", err)
 	);
 
-	// Player controller (Capsule)
-	const playerCollider = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1.6, 0), 0.35);
+	// Player controller (Box collider approximated with capsule for Octree compatibility)
+	// Box dimensions: width=0.7, height=1.95, depth=0.7
+	// Keep capsule for collision (Octree only supports capsule/sphere)
+	// But we'll treat it as a box visually
+	const playerCollider = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, playerHeight - 0.35, 0), 0.35);
 	playerCollider.translate(new THREE.Vector3(0, 3, 0));
 
 	const playerVelocity = new THREE.Vector3();
@@ -341,7 +394,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 		if (document.pointerLockElement !== canvas) return;
 		const sens = 0.002;
 		yaw -= e.movementX * sens;
-		pitch -= e.movementY * sens;
+		pitch += e.movementY * sens;
 		pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
 	});
 
@@ -375,7 +428,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 		lastLookY = e.clientY;
 
 		yaw -= dx * touchLookSens;
-		pitch -= dy * touchLookSens;
+		pitch += dy * touchLookSens;
 		pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
 	});
 
@@ -505,11 +558,90 @@ import { Move, ChevronUp } from "@lucide/astro";
 	const desiredCam = new THREE.Vector3();
 	const ray = new THREE.Ray();
 
+	// Zoom control
+	let followDistance = 6.0;
+	const minZoom = 2.0;
+	const maxZoom = 15.0;
+
+	// Wheel zoom
+	canvas.addEventListener(
+		"wheel",
+		(e: WheelEvent) => {
+			e.preventDefault();
+			const zoomSpeed = 0.002;
+			followDistance += e.deltaY * zoomSpeed;
+			followDistance = Math.max(minZoom, Math.min(maxZoom, followDistance));
+		},
+		{ passive: false }
+	);
+
+	// Pinch zoom (touch)
+	let lastPinchDist: number | null = null;
+
+	canvas.addEventListener(
+		"touchstart",
+		(e: TouchEvent) => {
+			if (e.touches.length === 2) {
+				e.preventDefault();
+				const dx = e.touches[0].clientX - e.touches[1].clientX;
+				const dy = e.touches[0].clientY - e.touches[1].clientY;
+				lastPinchDist = Math.hypot(dx, dy);
+			}
+		},
+		{ passive: false }
+	);
+
+	canvas.addEventListener(
+		"touchmove",
+		(e: TouchEvent) => {
+			if (e.touches.length === 2 && lastPinchDist !== null) {
+				e.preventDefault();
+				const dx = e.touches[0].clientX - e.touches[1].clientX;
+				const dy = e.touches[0].clientY - e.touches[1].clientY;
+				const dist = Math.hypot(dx, dy);
+				const delta = lastPinchDist - dist;
+				followDistance += delta * 0.02;
+				followDistance = Math.max(minZoom, Math.min(maxZoom, followDistance));
+				lastPinchDist = dist;
+			}
+		},
+		{ passive: false }
+	);
+
+	canvas.addEventListener("touchend", (e: TouchEvent) => {
+		if (e.touches.length < 2) {
+			lastPinchDist = null;
+		}
+	});
+
+	// Prevent default browser zoom (Ctrl+wheel, pinch on document)
+	document.addEventListener(
+		"wheel",
+		(e: WheelEvent) => {
+			if (e.ctrlKey) e.preventDefault();
+		},
+		{ passive: false }
+	);
+
+	document.addEventListener(
+		"gesturestart",
+		(e: Event) => {
+			e.preventDefault();
+		},
+		{ passive: false }
+	);
+
+	document.addEventListener(
+		"gesturechange",
+		(e: Event) => {
+			e.preventDefault();
+		},
+		{ passive: false }
+	);
+
 	function updateThirdPersonCamera(dt: number): void {
 		const end = playerCollider.end;
 		cameraTarget.set(end.x, end.y + 0.15, end.z);
-
-		const followDistance = 6.0;
 		const followHeight = 2.4;
 
 		const offset = new THREE.Vector3(0, 0, followDistance);
@@ -571,9 +703,14 @@ import { Move, ChevronUp } from "@lucide/astro";
 		const playerPos = playerCollider.end.clone().add(playerCollider.start).multiplyScalar(0.5);
 		playerMesh.position.copy(playerPos);
 
+		// Update debug box helper position
+		playerBoxHelper.box.setFromCenterAndSize(playerPos, new THREE.Vector3(playerWidth, playerHeight, playerDepth));
+
 		for (const helper of debugHelpers) {
 			helper.visible = debugVisible;
-			helper.update();
+			if ((helper as THREE.BoxHelper).update) {
+				(helper as THREE.BoxHelper).update();
+			}
 		}
 
 		updateThirdPersonCamera(dt);
