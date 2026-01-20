@@ -207,20 +207,24 @@ import { Move, ChevronUp } from "@lucide/astro";
 	const playerHeight = 1.95; // total capsule height
 	const playerDepth = 0.7; // 2 * radius
 
+	// Actual dimensions after model is loaded and scaled
+	let actualPlayerWidth = playerWidth;
+	let actualPlayerHeight = playerHeight;
+	let actualPlayerDepth = playerDepth;
+
 	// Player mesh - will be replaced by stone.glb
 	let playerMesh: THREE.Object3D = new THREE.Mesh(new THREE.BoxGeometry(playerWidth, playerHeight, playerDepth), new THREE.MeshStandardMaterial({ color: 0xddddff, wireframe: true }));
 	playerMesh.castShadow = true;
 	scene.add(playerMesh);
 
-	// Debug box helper for physics visualization
-	const playerBoxHelper = new THREE.Box3Helper(
-		new THREE.Box3(new THREE.Vector3(-playerWidth / 2, -playerHeight / 2, -playerDepth / 2), new THREE.Vector3(playerWidth / 2, playerHeight / 2, playerDepth / 2)),
-		0x00ff00
-	);
+	// Debug box helper for physics visualization (rotatable wireframe box)
+	const playerBoxGeometry = new THREE.BoxGeometry(playerWidth, playerHeight, playerDepth);
+	const playerBoxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+	const playerBoxHelper = new THREE.Mesh(playerBoxGeometry, playerBoxMaterial);
 	scene.add(playerBoxHelper);
 
 	const debugHelpers: THREE.Object3D[] = [playerBoxHelper];
-	let debugVisible: boolean = true;
+	let debugVisible: boolean = false;
 
 	function createBoundingBox(object: THREE.Object3D, color = 0xffff00): THREE.BoxHelper {
 		const helper = new THREE.BoxHelper(object, color);
@@ -265,15 +269,34 @@ import { Move, ChevronUp } from "@lucide/astro";
 				}
 			});
 
-			// Scale stone to fit player box
+			// Scale stone to fit player box, then scale up 1.5x
 			const box = new THREE.Box3().setFromObject(stoneModel);
 			const size = box.getSize(new THREE.Vector3());
-			const scale = Math.min(playerWidth / size.x, playerHeight / size.y, playerDepth / size.z);
-			stoneModel.scale.setScalar(scale * 0.9);
+			const baseScale = Math.min(playerWidth / size.x, playerHeight / size.y, playerDepth / size.z);
+			const finalScale = baseScale * 1.5;
+			stoneModel.scale.setScalar(finalScale);
+
+			// Update actual player dimensions based on scaled model
+			const scaledBox = new THREE.Box3().setFromObject(stoneModel);
+			const scaledSize = scaledBox.getSize(new THREE.Vector3());
+			actualPlayerWidth = scaledSize.x;
+			actualPlayerHeight = scaledSize.y;
+			actualPlayerDepth = scaledSize.z;
+
+			// Center the model geometry so origin is at center
+			const center = scaledBox.getCenter(new THREE.Vector3());
+			stoneModel.position.sub(center);
+
+			// Rotate 180 degrees so character faces forward when walking
+			stoneModel.rotation.y = Math.PI;
+
+			// Wrap in a group so position.copy works correctly
+			const wrapper = new THREE.Group();
+			wrapper.add(stoneModel);
 
 			// Replace placeholder mesh with stone model
 			scene.remove(playerMesh);
-			playerMesh = stoneModel;
+			playerMesh = wrapper;
 			scene.add(playerMesh);
 
 			console.log("Loaded stone.glb as player model");
@@ -323,6 +346,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 
 	const playerVelocity = new THREE.Vector3();
 	let playerOnFloor: boolean = false;
+	let playerTargetRotation: number = 0; // Target Y rotation for the player model
 
 	const GRAVITY = 25;
 	const JUMP_SPEED = 8.0;
@@ -390,12 +414,36 @@ import { Move, ChevronUp } from "@lucide/astro";
 	let pitch: number = 0;
 	const pitchLimit: number = Math.PI / 2 - 0.05;
 
-	document.addEventListener("mousemove", (e: MouseEvent) => {
-		if (document.pointerLockElement !== canvas) return;
-		const sens = 0.002;
-		yaw -= e.movementX * sens;
-		pitch += e.movementY * sens;
+	// Mouse drag for camera control (no pointer lock)
+	let isMouseDragging = false;
+	let lastMouseX = 0;
+	let lastMouseY = 0;
+
+	canvas.addEventListener("mousedown", (e: MouseEvent) => {
+		if (isTouchDevice) return;
+		isMouseDragging = true;
+		lastMouseX = e.clientX;
+		lastMouseY = e.clientY;
+	});
+
+	canvas.addEventListener("mousemove", (e: MouseEvent) => {
+		if (isTouchDevice || !isMouseDragging) return;
+		const sens = 0.005;
+		const dx = e.clientX - lastMouseX;
+		const dy = e.clientY - lastMouseY;
+		lastMouseX = e.clientX;
+		lastMouseY = e.clientY;
+		yaw -= dx * sens;
+		pitch += dy * sens;
 		pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
+	});
+
+	canvas.addEventListener("mouseup", () => {
+		isMouseDragging = false;
+	});
+
+	canvas.addEventListener("mouseleave", () => {
+		isMouseDragging = false;
 	});
 
 	// Touch look
@@ -438,21 +486,13 @@ import { Move, ChevronUp } from "@lucide/astro";
 		lookPointerId = null;
 	});
 
-	// Start / pointer lock
-	instructions.addEventListener("click", async () => {
+	// Start game
+	instructions.addEventListener("click", () => {
+		enabled = true;
+		instructions.style.display = "none";
 		if (isTouchDevice) {
-			enabled = true;
-			instructions.style.display = "none";
 			touchControls.style.display = "block";
-			return;
 		}
-		await canvas.requestPointerLock();
-	});
-
-	document.addEventListener("pointerlockchange", () => {
-		if (isTouchDevice) return;
-		enabled = document.pointerLockElement === canvas;
-		instructions.style.display = enabled ? "none" : "flex";
 	});
 
 	// Keyboard
@@ -694,6 +734,11 @@ import { Move, ChevronUp } from "@lucide/astro";
 
 			if (move.lengthSq() > 0) move.normalize();
 
+			// Update player rotation to face movement direction
+			if (move.lengthSq() > 0.01) {
+				playerTargetRotation = Math.atan2(move.x, move.z) + Math.PI;
+			}
+
 			const jumpPressed = !isTouchDevice ? keys.space : jumpRequested;
 			jumpRequested = false;
 
@@ -703,8 +748,18 @@ import { Move, ChevronUp } from "@lucide/astro";
 		const playerPos = playerCollider.end.clone().add(playerCollider.start).multiplyScalar(0.5);
 		playerMesh.position.copy(playerPos);
 
-		// Update debug box helper position
-		playerBoxHelper.box.setFromCenterAndSize(playerPos, new THREE.Vector3(playerWidth, playerHeight, playerDepth));
+		// Smoothly rotate player to face movement direction
+		const currentRotation = playerMesh.rotation.y;
+		let rotationDiff = playerTargetRotation - currentRotation;
+		// Normalize angle difference to [-PI, PI]
+		while (rotationDiff > Math.PI) rotationDiff -= Math.PI * 2;
+		while (rotationDiff < -Math.PI) rotationDiff += Math.PI * 2;
+		playerMesh.rotation.y += rotationDiff * 0.15;
+
+		// Update debug box helper position, rotation, and size
+		playerBoxHelper.position.copy(playerPos);
+		playerBoxHelper.rotation.y = playerMesh.rotation.y;
+		playerBoxHelper.scale.set(actualPlayerWidth / playerWidth, actualPlayerHeight / playerHeight, actualPlayerDepth / playerDepth);
 
 		for (const helper of debugHelpers) {
 			helper.visible = debugVisible;
