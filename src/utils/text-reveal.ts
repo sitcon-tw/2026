@@ -269,7 +269,7 @@ if (typeof window !== "undefined") {
             document
                 .querySelectorAll<HTMLElement>(".text-reveal-title, .text-reveal-paragraph")
                 .forEach((el) => {
-                    el.dataset.textRevealed = "false";
+                    delete el.dataset.textRevealed;
                 });
             cleanupTextReveal();
             initTextReveal();
