@@ -258,29 +258,36 @@ export function cleanupTextReveal(): void {
 
 // 自動初始化
 if (typeof window !== "undefined") {
-    // 頁面首次載入
-    document.addEventListener("DOMContentLoaded", () => {
-        initTextReveal();
-    });
+    const w = window as any;
 
-    // Astro 頁面切換後重新初始化
-    document.addEventListener("astro:page-load", () => {
-        initTextReveal();
-    });
+    // 避免在 SPA / 多次載入同一模組時重複綁定事件監聽器
+    if (!w.__textRevealListenersInitialized) {
+        w.__textRevealListenersInitialized = true;
 
-    // 視窗大小改變時重新計算
-    let resizeTimeout: ReturnType<typeof setTimeout>;
-    window.addEventListener("resize", () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            // 重新拆分文字並刷新動畫
-            document
-                .querySelectorAll<HTMLElement>(".text-reveal-title, .text-reveal-paragraph")
-                .forEach((el) => {
-                    delete el.dataset.textRevealed;
-                });
-            cleanupTextReveal();
+        // 頁面首次載入
+        document.addEventListener("DOMContentLoaded", () => {
             initTextReveal();
-        }, 300);
-    });
+        });
+
+        // Astro 頁面切換後重新初始化
+        document.addEventListener("astro:page-load", () => {
+            initTextReveal();
+        });
+
+        // 視窗大小改變時重新計算
+        let resizeTimeout: ReturnType<typeof setTimeout>;
+        window.addEventListener("resize", () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                // 重新拆分文字並刷新動畫
+                document
+                    .querySelectorAll<HTMLElement>(".text-reveal-title, .text-reveal-paragraph")
+                    .forEach((el) => {
+                        el.dataset.textRevealed = "false";
+                    });
+                cleanupTextReveal();
+                initTextReveal();
+            }, 300);
+        });
+    }
 }
