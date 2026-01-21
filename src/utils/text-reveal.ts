@@ -86,14 +86,22 @@ function splitTextIntoLines(element: HTMLElement): void {
 	// 獲取元素的可用寬度
 	const containerWidth = element.clientWidth;
 
+	// 若元素尚未完成排版或為隱藏狀態，可能導致寬度為 0，
+	// 此時不進行行拆分，避免使用無效的寬度計算。
+	if (containerWidth <= 0) {
+		if (measureEl.parentNode === element) {
+			element.removeChild(measureEl);
+		}
+		return;
+	}
 	// 將文字拆分成單詞（支援中英文混合）
 	// 中文字元各自成為一個單位，英文單詞為一個單位
 	const segments: string[] = [];
 	let currentWord = "";
 
 	for (const char of text) {
-		// 中文字元範圍
-		if (/[\u4e00-\u9fff\u3400-\u4dbf]/.test(char)) {
+		// 中文字元範圍（擴充支援 CJK 擴展區與相容表意文字）
+		if (/[\u4e00-\u9fff\u3400-\u4dbf\u{20000}-\u{2a6df}\u{2a700}-\u{2ebef}\uf900-\ufaff]/u.test(char)) {
 			if (currentWord) {
 				segments.push(currentWord);
 				currentWord = "";
