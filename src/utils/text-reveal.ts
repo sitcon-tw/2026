@@ -92,8 +92,8 @@ function splitTextIntoLines(element: HTMLElement): void {
     let currentWord = "";
 
     for (const char of text) {
-        // 中文字元範圍
-        if (/[\u4e00-\u9fff\u3400-\u4dbf]/.test(char)) {
+        // 中文字元範圍（擴充支援 CJK 擴展區與相容表意文字）
+        if (/[\u4e00-\u9fff\u3400-\u4dbf\u{20000}-\u{2a6df}\u{2a700}-\u{2ebef}\uf900-\ufaff]/u.test(char)) {
             if (currentWord) {
                 segments.push(currentWord);
                 currentWord = "";
