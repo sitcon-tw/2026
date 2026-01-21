@@ -30,7 +30,9 @@ team_data_raw.forEach(person => {
 			position: ROLE_MAP[team.role] || team.role,
 			avatar_url: `/2026/img/avatar/back/${person.name}.webp`,
 			link: person.link,
-			description: person.description
+			description: person.description,
+			mode: person.mode,
+			color: person.color
 		});
 	});
 });

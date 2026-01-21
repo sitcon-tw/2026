@@ -9,8 +9,17 @@ const { index, member, name, description } = Astro.props;
 
 	<div class="person-group">
 		{
-			member.map((person: { name: string; position: string; avatar_url: string; link?: string; description?: string }) => (
-				<GridPerson team={name} name={person.name} position={person.position} avatar_url={person.avatar_url} link={person.link} description={person.description} />
+			member.map((person: { name: string; position: string; avatar_url: string; link?: string; description?: string; mode?: string; color?: string }) => (
+				<GridPerson
+					team={name}
+					name={person.name}
+					position={person.position}
+					avatar_url={person.avatar_url}
+					link={person.link}
+					description={person.description}
+					mode={person.mode}
+					color={person.color}
+				/>
 			))
 		}
 	</div>

@@ -13,7 +13,9 @@ const { id = "member-info-modal" } = Astro.props;
 	<h1 id="member-name"></h1>
 	<h2 id="member-position"></h2>
 	<div class="avatar">
-		<img id="member-avatar-img" class="avatar-img" src="" alt="" />
+		<div class="avatar-container" id="member-avatar-container">
+			<!-- 根據 mode 動態生成層級 -->
+		</div>
 	</div>
 	<p id="member-description"></p>
 	<div class="social">
@@ -58,7 +60,7 @@ const { id = "member-info-modal" } = Astro.props;
 		// Open modal logic
 		const trigger = target.closest(".person-trigger") as HTMLElement | null;
 		if (trigger) {
-			const { name, position, avatar, link, team, description } = trigger.dataset;
+			const { name, position, avatar, link, team, description, mode, color } = trigger.dataset;
 
 			const modal = document.getElementById("member-info-modal");
 			if (modal) {
@@ -71,12 +73,44 @@ const { id = "member-info-modal" } = Astro.props;
 				if (posEl) posEl.textContent = `${team} ● ${position}` || "";
 				if (descEl) descEl.textContent = description || "";
 
-				// Update Avatar
-				const avatarImg = modal.querySelector("#member-avatar-img") as HTMLImageElement | null;
-				if (avatarImg) {
-					avatarImg.src = avatar || "";
-					avatarImg.alt = `${name} avatar`;
-					avatarImg.setAttribute("object-fit", "contain");
+				// Update Avatar - 根據 mode 生成不同結構
+				const avatarContainer = modal.querySelector("#member-avatar-container") as HTMLElement | null;
+				if (avatarContainer && name) {
+					const backImgUrl = `/2026/img/avatar/back/${name}.webp`;
+					const frontImgUrl = `/2026/img/avatar/front/${name}.webp`;
+
+					// 清空容器
+					avatarContainer.innerHTML = "";
+
+					if (mode === "nobg") {
+						// 只有後層
+						avatarContainer.innerHTML = `
+							<div class="avatar-layer avatar-back">
+								<img class="avatar-img" src="${backImgUrl}" alt="${name}" />
+							</div>
+						`;
+					} else if (mode === "color") {
+						// 只有前層 + 顏色背景
+						avatarContainer.innerHTML = `
+							<div class="avatar-layer avatar-bg" style="background-color: #${color};"></div>
+							<div class="avatar-layer avatar-front">
+								<img class="avatar-img" src="${frontImgUrl}" alt="${name}" />
+							</div>
+						`;
+					} else {
+						// 默認：雙層
+						avatarContainer.innerHTML = `
+							<div class="avatar-layer avatar-back">
+								<img class="avatar-img" src="${backImgUrl}" alt="${name}" />
+							</div>
+							<div class="avatar-layer avatar-front">
+								<img class="avatar-img" src="${frontImgUrl}" alt="${name}" />
+							</div>
+						`;
+					}
+
+					// 初始化 3D 效果
+					init3DEffectForModal(avatarContainer);
 				}
 
 				// Update Social Button
@@ -111,6 +145,70 @@ const { id = "member-info-modal" } = Astro.props;
 			return;
 		}
 	});
+
+	// 3D 視差效果（用於 popup）
+	function init3DEffectForModal(container: HTMLElement) {
+		const layers = container.querySelectorAll(".avatar-layer");
+
+		const handleMouseMove = (e: MouseEvent) => {
+			const rect = container.getBoundingClientRect();
+			const containerCenterX = rect.left + rect.width / 2;
+			const containerCenterY = rect.top + rect.height / 2;
+
+			// 計算滑鼠相對於螢幕中心的位置
+			const screenCenterX = window.innerWidth / 2;
+			const screenCenterY = window.innerHeight / 2;
+
+			const mouseX = e.clientX;
+			const mouseY = e.clientY;
+
+			// 相對於螢幕中心的偏移量（標準化到 -1 到 1）
+			const offsetX = (mouseX - screenCenterX) / screenCenterX;
+			const offsetY = (mouseY - screenCenterY) / screenCenterY;
+
+			// 相對於元素中心的偏移量
+			const localOffsetX = (mouseX - containerCenterX) / (rect.width / 2);
+			const localOffsetY = (mouseY - containerCenterY) / (rect.height / 2);
+
+			layers.forEach(layer => {
+				const isBack = layer.classList.contains("avatar-back");
+				const isBg = layer.classList.contains("avatar-bg");
+
+				// 後層（back）移動速度更快，製造 3D 效果
+				let speedMultiplier = 1;
+				if (isBack) {
+					speedMultiplier = 1.8; // 後層快 30%
+				} else if (isBg) {
+					speedMultiplier = 0; // 背景不動
+				}
+
+				const maxOffset = 10; // 最大偏移量（像素）
+				const translateX = offsetX * maxOffset * speedMultiplier + localOffsetX * 5 * speedMultiplier;
+				const translateY = offsetY * maxOffset * speedMultiplier + localOffsetY * 5 * speedMultiplier;
+
+				// skew 旋轉效果
+				const maxSkew = 0; // 最大 skew 角度
+				const skewX = -localOffsetY * maxSkew * speedMultiplier;
+				const skewY = localOffsetX * maxSkew * speedMultiplier;
+
+				(layer as HTMLElement).style.transform = `scale(1.125) translate(${translateX}px, ${translateY}px) skew(${skewX}deg, ${skewY}deg)`;
+			});
+		};
+
+		const handleMouseLeave = () => {
+			layers.forEach(layer => {
+				(layer as HTMLElement).style.transform = "scale(1.125) translate(0, 0) skew(0, 0)";
+			});
+		};
+
+		// 移除舊的監聽器（如果有）
+		container.removeEventListener("mousemove", handleMouseMove as any);
+		container.removeEventListener("mouseleave", handleMouseLeave);
+
+		// 添加新的監聽器
+		container.addEventListener("mousemove", handleMouseMove);
+		container.addEventListener("mouseleave", handleMouseLeave);
+	}
 </script>
 
 <style>
@@ -205,6 +303,43 @@ const { id = "member-info-modal" } = Astro.props;
 		align-self: flex-end;
 	}
 
+	.avatar-container {
+		position: relative;
+		width: 10rem;
+		height: 10rem;
+		border-radius: 1rem;
+		overflow: hidden;
+	}
+
+	.avatar-layer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform: scale(1.125);
+		transition: transform 0.1s ease-out;
+		will-change: transform;
+	}
+
+	.avatar-bg {
+		z-index: 0;
+	}
+
+	.avatar-back {
+		z-index: 1;
+	}
+
+	.avatar-front {
+		z-index: 2;
+	}
+
+	.avatar-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
 	#member-social-btn {
 		padding: 0.5rem 1rem;
 		background-color: #000;
@@ -231,14 +366,6 @@ const { id = "member-info-modal" } = Astro.props;
 		font-weight: 700;
 		line-height: 1.5;
 		word-break: break-word;
-	}
-
-	.avatar-img {
-		width: 10rem;
-		height: 10rem;
-		border-radius: 1rem;
-		background-color: #ccc;
-		object-fit: cover;
 	}
 
 	@media (max-width: 64rem) {

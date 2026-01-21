@@ -1,5 +1,9 @@
 ---
-const { name, position, avatar_url, link, team_name, team_index, style, description } = Astro.props;
+const { name, position, avatar_url, link, team_name, team_index, style, description, mode, color } = Astro.props;
+
+// 判斷圖片路徑
+const backImgUrl = `/2026/img/avatar/back/${name}.webp`;
+const frontImgUrl = `/2026/img/avatar/front/${name}.webp`;
 ---
 
 <div
@@ -11,11 +15,40 @@ const { name, position, avatar_url, link, team_name, team_index, style, descript
 	data-avatar={avatar_url}
 	data-link={link}
 	data-description={description}
+	data-mode={mode}
+	data-color={color}
 	data-open-modal="member-info-modal"
 	style={style}
 	aria-label={name}
 >
-	<img class="avatar-img" src={avatar_url} alt={name} height={180} width={180} />
+	<div class="avatar-container">
+		{
+			mode === "nobg" ? (
+				// <!-- 只有後層 -->
+				<div class="avatar-layer avatar-back">
+					<img class="avatar-img" src={backImgUrl} alt={name} height={180} width={180} />
+				</div>
+			) : mode === "color" ? (
+				// <!-- 只有前層 + 顏色背景 -->
+				<>
+					<div class="avatar-layer avatar-bg" style={`background-color: #${color};`} />
+					<div class="avatar-layer avatar-front">
+						<img class="avatar-img" src={frontImgUrl} alt={name} height={180} width={180} />
+					</div>
+				</>
+			) : (
+				// <!-- 默認：雙層 -->
+				<>
+					<div class="avatar-layer avatar-back">
+						<img class="avatar-img" src={backImgUrl} alt={name} height={180} width={180} />
+					</div>
+					<div class="avatar-layer avatar-front">
+						<img class="avatar-img" src={frontImgUrl} alt={name} height={180} width={180} />
+					</div>
+				</>
+			)
+		}
+	</div>
 </div>
 
 <style>
@@ -24,7 +57,7 @@ const { name, position, avatar_url, link, team_name, team_index, style, descript
 		position: relative;
 		width: fit-content;
 		border-radius: 62.5rem;
-		background-color: #ac782b;
+		background-color: transparent;
 		margin: 2rem;
 		cursor: pointer;
 		border: none;
@@ -38,11 +71,123 @@ const { name, position, avatar_url, link, team_name, team_index, style, descript
 		filter: drop-shadow(0 1rem 1rem #0000002d);
 	}
 
-	.avatar-img {
+	.avatar-container {
+		position: relative;
 		width: 10rem;
 		height: 10rem;
 		border-radius: 9999px;
+		overflow: hidden;
+	}
+
+	.avatar-layer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-radius: 9999px;
+		transform: scale(1.125);
+		transition: transform 0.1s ease-out;
+		will-change: transform;
+	}
+
+	.avatar-bg {
+		z-index: 0;
+	}
+
+	.avatar-back {
+		z-index: 1;
+	}
+
+	.avatar-front {
+		z-index: 2;
+	}
+
+	.avatar-img {
+		width: 100%;
+		height: 100%;
+		border-radius: 9999px;
 		object-fit: cover;
-		background-color: #7e590f;
 	}
 </style>
+
+<script>
+	// 3D 視差效果
+	function init3DEffect() {
+		const exploreItems = document.querySelectorAll(".explore-item");
+
+		exploreItems.forEach(item => {
+			const layers = item.querySelectorAll(".avatar-layer");
+
+			item.addEventListener("mousemove", (e: MouseEvent) => {
+				const rect = item.getBoundingClientRect();
+				const itemCenterX = rect.left + rect.width / 2;
+				const itemCenterY = rect.top + rect.height / 2;
+
+				// 計算滑鼠相對於螢幕中心的位置
+				const screenCenterX = window.innerWidth / 2;
+				const screenCenterY = window.innerHeight / 2;
+
+				const mouseX = e.clientX;
+				const mouseY = e.clientY;
+
+				// 相對於螢幕中心的偏移量（標準化到 -1 到 1）
+				const offsetX = (mouseX - screenCenterX) / screenCenterX;
+				const offsetY = (mouseY - screenCenterY) / screenCenterY;
+
+				// 相對於元素中心的偏移量
+				const localOffsetX = (mouseX - itemCenterX) / (rect.width / 2);
+				const localOffsetY = (mouseY - itemCenterY) / (rect.height / 2);
+
+				layers.forEach((layer, index) => {
+					const isBack = layer.classList.contains("avatar-back");
+					const isBg = layer.classList.contains("avatar-bg");
+
+					// 後層（back）移動速度更快，製造 3D 效果
+					// bg 層不移動
+					let speedMultiplier = 1;
+					if (isBack) {
+						speedMultiplier = 1.8; // 後層快 30%
+					} else if (isBg) {
+						speedMultiplier = 0; // 背景不動
+					}
+
+					const maxOffset = 8; // 最大偏移量（像素）
+					const translateX = offsetX * maxOffset * speedMultiplier + localOffsetX * 3 * speedMultiplier;
+					const translateY = offsetY * maxOffset * speedMultiplier + localOffsetY * 3 * speedMultiplier;
+
+					// skew 旋轉效果
+					const maxSkew = 0; // 最大 skew 角度
+					const skewX = -localOffsetY * maxSkew * speedMultiplier;
+					const skewY = localOffsetX * maxSkew * speedMultiplier;
+
+					(layer as HTMLElement).style.transform = `scale(1.125) translate(${translateX}px, ${translateY}px) skew(${skewX}deg, ${skewY}deg)`;
+				});
+			});
+
+			item.addEventListener("mouseleave", () => {
+				// 重置所有層的變形
+				layers.forEach(layer => {
+					(layer as HTMLElement).style.transform = "scale(1.125) translate(0, 0) skew(0, 0)";
+				});
+			});
+		});
+	}
+
+	// 初始化
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", init3DEffect);
+	} else {
+		init3DEffect();
+	}
+
+	// 當新元素添加到 DOM 時重新初始化（用於動態佈局）
+	const observer = new MutationObserver(() => {
+		init3DEffect();
+	});
+
+	const universe = document.getElementById("explore-universe");
+	if (universe) {
+		observer.observe(universe, { childList: true });
+	}
+</script>

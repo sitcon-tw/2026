@@ -31,7 +31,9 @@ team_data_raw.forEach(person => {
 			position: ROLE_MAP[team.role] || team.role,
 			avatar_url: `/2026/img/avatar/back/${person.name}.webp`,
 			link: person.link,
-			description: person.description
+			description: person.description,
+			mode: person.mode,
+			color: person.color
 		});
 	});
 });
@@ -53,7 +55,7 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 			<div id="explore-universe">
 				{
 					team_data.map((team, index) => {
-						return team.member.map((member: { name: string; position: string; avatar_url: string; link: string; description: string }) => (
+						return team.member.map((member: { name: string; position: string; avatar_url: string; link: string; description: string; mode?: string; color?: string }) => (
 							<ExplorePerson
 								name={member.name}
 								avatar_url={member.avatar_url}
@@ -62,6 +64,8 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 								description={member.description}
 								team_index={index}
 								team_name={team.name}
+								mode={member.mode}
+								color={member.color}
 								style=""
 							/>
 						));
