@@ -86,6 +86,14 @@ function splitTextIntoLines(element: HTMLElement): void {
     // 獲取元素的可用寬度
     const containerWidth = element.clientWidth;
 
+    // 若元素尚未完成排版或為隱藏狀態，可能導致寬度為 0，
+    // 此時不進行行拆分，避免使用無效的寬度計算。
+    if (containerWidth <= 0) {
+        if (measureEl.parentNode === element) {
+            element.removeChild(measureEl);
+        }
+        return;
+    }
     // 將文字拆分成單詞（支援中英文混合）
     // 中文字元各自成為一個單位，英文單詞為一個單位
     const segments: string[] = [];
