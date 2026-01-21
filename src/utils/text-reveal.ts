@@ -279,8 +279,8 @@ if (typeof window !== "undefined") {
 		resizeTimeout = setTimeout(() => {
 			// 重新拆分文字並刷新動畫
 			document.querySelectorAll<HTMLElement>(".text-reveal-title, .text-reveal-paragraph").forEach(el => {
-				el.dataset.textRevealed = "false";
-				el.dataset.animationInitialized = "false";
+				delete el.dataset.textRevealed;
+				delete el.dataset.animationInitialized;
 			});
 			cleanupTextReveal();
 			initTextReveal();
