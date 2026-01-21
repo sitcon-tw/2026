@@ -175,6 +175,9 @@ function splitTextIntoLines(element: HTMLElement): void {
  * 初始化標題的滾動動畫
  */
 function initTitleReveal(element: HTMLElement): void {
+	// 如果元素已經有動畫，跳過
+	if (element.dataset.animationInitialized === "true") return;
+
 	splitTextIntoLines(element);
 
 	const spans = element.querySelectorAll(".text-reveal-content");
@@ -198,12 +201,18 @@ function initTitleReveal(element: HTMLElement): void {
 			toggleActions: "play none none none"
 		}
 	});
+
+	// 標記元素已初始化動畫
+	element.dataset.animationInitialized = "true";
 }
 
 /**
  * 初始化段落的滾動動畫
  */
 function initParagraphReveal(element: HTMLElement): void {
+	// 如果元素已經有動畫，跳過
+	if (element.dataset.animationInitialized === "true") return;
+
 	splitTextIntoLines(element);
 
 	const spans = element.querySelectorAll(".text-reveal-content");
@@ -227,6 +236,9 @@ function initParagraphReveal(element: HTMLElement): void {
 			toggleActions: "play none none none"
 		}
 	});
+
+	// 標記元素已初始化動畫
+	element.dataset.animationInitialized = "true";
 }
 
 /**
@@ -258,38 +270,28 @@ export function cleanupTextReveal(): void {
 
 // 自動初始化
 if (typeof window !== "undefined") {
-	const w = window as any;
+	// 頁面首次載入
+	document.addEventListener("DOMContentLoaded", () => {
+		initTextReveal();
+	});
 
-	// 避免在 SPA / 多次載入同一模組時重複綁定事件監聽器
-	if (!w.__textRevealListenersInitialized) {
-		w.__textRevealListenersInitialized = true;
+	// Astro 頁面切換後重新初始化
+	document.addEventListener("astro:page-load", () => {
+		initTextReveal();
+	});
 
-		// 頁面首次載入
-		if (document.readyState === "loading") {
-			document.addEventListener("DOMContentLoaded", () => {
-				initTextReveal();
+	// 視窗大小改變時重新計算
+	let resizeTimeout: ReturnType<typeof setTimeout>;
+	window.addEventListener("resize", () => {
+		clearTimeout(resizeTimeout);
+		resizeTimeout = setTimeout(() => {
+			// 重新拆分文字並刷新動畫
+			document.querySelectorAll<HTMLElement>(".text-reveal-title, .text-reveal-paragraph").forEach(el => {
+				delete el.dataset.textRevealed;
+				delete el.dataset.animationInitialized;
 			});
-		} else {
+			cleanupTextReveal();
 			initTextReveal();
-		}
-
-		// Astro 頁面切換後重新初始化
-		document.addEventListener("astro:page-load", () => {
-			initTextReveal();
-		});
-
-		// 視窗大小改變時重新計算
-		let resizeTimeout: ReturnType<typeof setTimeout>;
-		window.addEventListener("resize", () => {
-			clearTimeout(resizeTimeout);
-			resizeTimeout = setTimeout(() => {
-				// 重新拆分文字並刷新動畫
-				document.querySelectorAll<HTMLElement>(".text-reveal-title, .text-reveal-paragraph").forEach(el => {
-					el.dataset.textRevealed = "false";
-				});
-				cleanupTextReveal();
-				initTextReveal();
-			}, 300);
-		});
-	}
+		}, 300);
+	});
 }
