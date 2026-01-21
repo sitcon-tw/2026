@@ -58,5 +58,51 @@
 				]
 			}
 		]
+	},
+	"team": {
+		"general": {
+			"name": "General Coordinator",
+			"description": "The core team that coordinates the entire conference, responsible for coordinating operations across all teams and setting conference direction and policies. We are the navigators of the conference, ensuring smooth execution and achievement of goals."
+		},
+		"administration": {
+			"name": "Administration",
+			"description": "Handles all administrative affairs of the conference, including documentation, meeting minutes, and internal communication coordination. We are the lubricant of team operations, ensuring all processes run smoothly."
+		},
+		"agenda": {
+			"name": "Agenda",
+			"description": "Responsible for all conference agenda planning and speaker invitations, the core content producers of the conference. We review numerous technical submissions and select the most suitable topics to ensure attendees receive the highest quality content."
+		},
+		"operations": {
+			"name": "Operations",
+			"description": "The on-site guardians of the conference day, responsible for traffic flow planning, equipment setup, and emergency response. We are the unsung heroes ensuring smooth event execution, requiring strong adaptability to face various challenges."
+		},
+		"design": {
+			"name": "Design",
+			"description": "Responsible for the conference's main visual design and merchandise, using colors and lines to depict SITCON's appearance. We pursue visual perfection, dedicated to materializing abstract concepts and bringing the most perfect visual feast to everyone."
+		},
+		"finance": {
+			"name": "Finance",
+			"description": "Manages the conference's financial affairs, ensuring every sponsorship and budget allocation achieves maximum effectiveness. We need care and patience to handle complex accounting and budget planning, serving as the solid backbone behind the event."
+		},
+		"recording": {
+			"name": "Recording",
+			"description": "Captures every exciting moment of the conference through the lens, responsible for event photography and video documentation. We are the guardians of conference memories, preserving every moment of emotion permanently."
+		},
+		"production": {
+			"name": "Production",
+			"description": "Responsible for the conference's audio-visual equipment and livestream systems, ensuring sessions are smoothly presented to all participants. We combine technology with art, making every presentation perfectly delivered."
+		},
+		"development": {
+			"name": "Development",
+			"description": "Dedicated to building the digital foundation of the conference with code, maintaining stable operation of the website and app. We are a group of technology-loving developers, transforming imaginative designs into actual interactive experiences. Welcome to exchange ideas here!"
+		},
+		"editorial": {
+			"name": "Editorial",
+			"description": "Responsible for producing and proofreading all text content for the conference, including website copy, promotional materials, and press releases. We convey SITCON's spirit through words, ensuring every message accurately reaches the target audience."
+		},
+		"marketing": {
+			"name": "Marketing",
+			"description": "Responsible for external promotion and community management of the conference, making SITCON known to more people through various channels. We are the spokespersons of the conference, promoting the event to the world with creativity and passion."
+		}
 	}
 }

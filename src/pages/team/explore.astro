@@ -6,30 +6,12 @@ import ExplorePerson from "@/components/page/ExplorePerson.astro";
 import { List } from "@lucide/astro";
 
 import team_data_raw from "@/data/team.json";
+import zh_Hant from "@/i18n/zh-Hant.json";
+
+import "@/src/assets/team.css";
 
 // GROUP METADATA
-const TEAM_METADATA: Record<string, { name: string; description: string }> = {
-	development: {
-		name: "開發組",
-		description: "致力於用程式碼構築年會的數位基石，維護官網與 App 的穩定運作。我們是一群熱愛技術的開發者，將天馬行空的設計轉化為實際的互動體驗，歡迎來這裡交流切磋！"
-	},
-	design: {
-		name: "設計組",
-		description: "負責年會的主視覺與周邊設計，用色彩與線條描繪出 SITCON 的模樣。我們追求視覺上的極致，致力於將抽象的概念具象化，帶給大家最完美的視覺饗宴。"
-	},
-	agenda: {
-		name: "議程組",
-		description: "負責年會所有的議程規劃與講師邀請，是年會內容的核心產出者。我們需要閱讀大量的技術投稿，並從中篩選出最適合年會的議題，確保會眾能聽到最優質的內容。"
-	},
-	finance: {
-		name: "財務組",
-		description: "掌管年會的財政大權，確保每一分贊助與預算都能發揮最大效益。我們需要細心與耐心，處理繁雜的報帳與預算編列，是活動背後最堅實的後盾。"
-	},
-	venue: {
-		name: "場務組",
-		description: "年會當天的現場守護神，負責動線規劃、設備架設與突發狀況處理。我們是活動順利進行的幕後功臣，需要強大的應變能力來面對各種挑戰。"
-	}
-};
+const TEAM_METADATA = zh_Hant.team;
 
 const ROLE_MAP: Record<string, string> = {
 	head: "組長",
@@ -590,93 +572,6 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 </script>
 
 <style>
-	.nav-mask-bottom {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100vw;
-		height: 8rem;
-		background: linear-gradient(to top, #ac782b, transparent);
-		z-index: 10;
-		pointer-events: none;
-	}
-
-	:global(.explore-item) {
-		opacity: 0;
-		visibility: hidden;
-	}
-
-	.anchor {
-		position: fixed;
-		bottom: 2rem;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 99;
-		display: inline-flex;
-		align-items: center;
-		justify-content: flex-start;
-		overflow-x: auto;
-		max-width: 90vw;
-		padding: 0.5rem;
-	}
-
-	#switch-icon {
-		padding-inline: 0.7rem;
-		margin-right: 0;
-	}
-
-	#switch-text {
-		margin-left: 0;
-	}
-
-	.anchor-box {
-		display: flex;
-		align-items: center;
-		width: fit-content;
-		padding: 0.7rem 1.25rem;
-		margin: 0.125rem;
-		height: 2.5rem;
-		border-radius: 0.25rem;
-		background-color: #f5f6ee;
-		color: #222222;
-		cursor: pointer;
-		flex-shrink: 0;
-		white-space: nowrap;
-	}
-
-	.anchor-switch {
-		display: flex;
-	}
-
-	.anchor-text-span {
-		font-size: 1rem;
-		font-weight: 500;
-		text-align: center;
-	}
-
-	.anchor-btn {
-		text-decoration: none;
-		transition:
-			transform 0.3s ease,
-			background-color 0.3s ease,
-			color 0.3s ease;
-	}
-
-	.anchor-btn:hover {
-		transform: translateY(-0.25rem);
-	}
-
-	.anchor-switch .anchor-box,
-	.anchor-btn.active {
-		background-color: #222222;
-		color: #f5f6ee;
-	}
-
-	.anchor-switch .anchor-box .anchor-text-span,
-	.anchor-btn.active .anchor-text-span {
-		font-weight: 700;
-	}
-
 	.explore-container {
 		position: relative;
 		width: 100vw;
@@ -709,9 +604,5 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 		background: linear-gradient(to bottom, #ac782b, transparent);
 		z-index: 10;
 		pointer-events: none;
-	}
-
-	main {
-		min-height: 100vh;
 	}
 </style>
