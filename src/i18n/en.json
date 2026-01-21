@@ -104,5 +104,23 @@
 			"name": "Marketing",
 			"description": "Responsible for external promotion and community management of the conference, making SITCON known to more people through various channels. We are the spokespersons of the conference, promoting the event to the world with creativity and passion."
 		}
+	},
+	"role": {
+		"chief": "Chief Coordinator",
+		"deputy_chief": "Deputy Chief",
+		"head": "Team Leader",
+		"deputy": "Deputy Leader",
+		"member": "Member",
+		"treasurer": "Treasurer",
+		"agenda_lead": "Agenda Section Lead",
+		"ops_mobility_lead": "Mobility Section Lead",
+		"ops_registration_lead": "Registration Section Lead",
+		"ops_catering_lead": "Catering Section Lead",
+		"ops_logistics_lead": "Logistics Section Lead",
+		"ops_mobility": "Mobility Section",
+		"ops_registration": "Registration Section",
+		"ops_catering": "Catering Section",
+		"ops_logistics": "Logistics Section",
+		"marketing_helper": "Marketing Helper"
 	}
 }

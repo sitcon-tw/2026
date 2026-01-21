@@ -157,5 +157,23 @@
 			"name": "行銷組",
 			"description": "負責年會的對外宣傳與社群經營，透過各種管道讓更多人認識 SITCON。我們是年會的代言人，用創意與熱情將活動推廣給全世界。"
 		}
+	},
+	"role": {
+		"chief": "總召",
+		"deputy_chief": "副召",
+		"head": "組長",
+		"deputy": "副組長",
+		"member": "組員",
+		"treasurer": "出納",
+		"agenda_lead": "議程股股長",
+		"ops_mobility_lead": "機動股長",
+		"ops_registration_lead": "報到股長",
+		"ops_catering_lead": "餐飲股長",
+		"ops_logistics_lead": "物流股長",
+		"ops_mobility": "機動股",
+		"ops_registration": "報到股",
+		"ops_catering": "餐飲股",
+		"ops_logistics": "物流股",
+		"marketing_helper": "小精靈"
 	}
 }

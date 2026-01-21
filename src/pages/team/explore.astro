@@ -8,15 +8,11 @@ import { List } from "@lucide/astro";
 import team_data_raw from "@/data/team.json";
 import zh_Hant from "@/i18n/zh-Hant.json";
 
-import "@/src/assets/team.css";
+import "@/assets/team.css";
 
 // GROUP METADATA
 const TEAM_METADATA = zh_Hant.team;
-
-const ROLE_MAP: Record<string, string> = {
-	head: "組長",
-	member: "組員"
-};
+const ROLE_MAP = zh_Hant.role;
 
 const teamsMap = new Map();
 
@@ -33,7 +29,7 @@ team_data_raw.forEach(person => {
 		teamsMap.get(team.name).member.push({
 			name: person.name,
 			position: ROLE_MAP[team.role] || team.role,
-			avatar_url: `/2026/img/avatar/${person.name}.jpg`,
+			avatar_url: `/2026/img/avatar/back/${person.name}.webp`,
 			link: person.link,
 			description: person.description
 		});
