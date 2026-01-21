@@ -8,7 +8,9 @@
 				"role": "chief"
 			}
 		],
-		"link": "https://qian30.net"
+		"link": "https://qian30.net",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "Windless",
@@ -117,7 +119,8 @@
 				"role": "member"
 			}
 		],
-		"link": "https://github.com/yorukot"
+		"link": "https://github.com/yorukot",
+		"mode": "nobg"
 	},
 	{
 		"name": "Nathan",
@@ -161,7 +164,9 @@
 				"role": "member"
 			}
 		],
-		"link": "https://gravatar.com/instantlycyclef76de870a9"
+		"link": "https://gravatar.com/instantlycyclef76de870a9",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "凱文 Kevinowo",
@@ -240,7 +245,9 @@
 				"role": "head"
 			}
 		],
-		"link": "https://fearnot.tw/"
+		"link": "https://fearnot.tw/",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "思惟",
@@ -313,7 +320,8 @@
 				"name": "operations",
 				"role": "ops_catering"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "hikari",
@@ -323,7 +331,8 @@
 				"name": "operations",
 				"role": "ops_catering"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "微波爐",
@@ -333,7 +342,8 @@
 				"name": "operations",
 				"role": "ops_catering"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "小葉",
@@ -355,7 +365,9 @@
 				"role": "ops_catering"
 			}
 		],
-		"link": "linktr.ee/masonzeng"
+		"link": "linktr.ee/masonzeng",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "雪",
@@ -387,7 +399,8 @@
 				"name": "operations",
 				"role": "ops_registration"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "m0ver!ght_",
@@ -397,7 +410,8 @@
 				"name": "operations",
 				"role": "ops_registration"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "喵寶",
@@ -407,7 +421,8 @@
 				"name": "operations",
 				"role": "ops_registration"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "Una",
@@ -439,7 +454,9 @@
 				"role": "ops_mobility"
 			}
 		],
-		"link": "https://yimang.tw"
+		"link": "https://yimang.tw",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "hsy",
@@ -450,7 +467,8 @@
 				"role": "ops_mobility"
 			}
 		],
-		"link": "https://sitcon.org/2026/"
+		"link": "https://sitcon.org/2026/",
+		"mode": "nobg"
 	},
 	{
 		"name": "小羊",
@@ -460,7 +478,8 @@
 				"name": "operations",
 				"role": "ops_mobility"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "Hui",
@@ -470,7 +489,8 @@
 				"name": "operations",
 				"role": "ops_mobility"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "BC",
@@ -481,7 +501,9 @@
 				"role": "ops_mobility"
 			}
 		],
-		"link": "https://bcxy.me"
+		"link": "https://bcxy.me",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "愷蛤",
@@ -514,7 +536,9 @@
 				"role": "ops_mobility"
 			}
 		],
-		"link": "https://leafish.xyz/"
+		"link": "https://leafish.xyz/",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "許",
@@ -535,7 +559,9 @@
 				"role": "ops_mobility"
 			}
 		],
-		"link": "https://maimai.sega.com"
+		"link": "https://maimai.sega.com",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "草蝦",
@@ -556,7 +582,8 @@
 				"role": "ops_mobility"
 			}
 		],
-		"link": "https://tribbie.betan.gay"
+		"link": "https://tribbie.betan.gay",
+		"mode": "nobg"
 	},
 	{
 		"name": "101",
@@ -566,7 +593,8 @@
 				"name": "operations",
 				"role": "ops_mobility"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "茉莉",
@@ -576,7 +604,8 @@
 				"name": "operations",
 				"role": "ops_mobility"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "Jim",
@@ -586,7 +615,8 @@
 				"name": "operations",
 				"role": "ops_mobility"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "Zhenyuan",
@@ -608,7 +638,9 @@
 				"role": "ops_mobility"
 			}
 		],
-		"link": "https://github.com/RokuSennyou"
+		"link": "https://github.com/RokuSennyou",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "雪泥",
@@ -666,7 +698,9 @@
 				"role": "ops_mobility"
 			}
 		],
-		"link": "https://reurl.cc/zKGZdy"
+		"link": "https://reurl.cc/zKGZdy",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "海鷗",
@@ -681,7 +715,9 @@
 				"role": "member"
 			}
 		],
-		"link": "https://www.instagram.com/kyle9410_chen/"
+		"link": "https://www.instagram.com/kyle9410_chen/",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "小志",
@@ -703,7 +739,8 @@
 				"role": "ops_mobility"
 			}
 		],
-		"link": "https://leo-lee.dev"
+		"link": "https://leo-lee.dev",
+		"mode": "nobg"
 	},
 	{
 		"name": "洛濰",
@@ -713,7 +750,8 @@
 				"name": "operations",
 				"role": "ops_mobility"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "小徐",
@@ -733,7 +771,8 @@
 				"name": "operations",
 				"role": "ops_mobility"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "kiki",
@@ -744,7 +783,8 @@
 				"role": "head"
 			}
 		],
-		"link": "https://www.instagram.com/kaichess/"
+		"link": "https://www.instagram.com/kaichess/",
+		"mode": "nobg"
 	},
 	{
 		"name": "章魚",
@@ -765,7 +805,9 @@
 				"name": "design",
 				"role": "member"
 			}
-		]
+		],
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "開根號",
@@ -837,7 +879,9 @@
 				"name": "design",
 				"role": "member"
 			}
-		]
+		],
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "Harrison",
@@ -859,7 +903,9 @@
 				"role": "member"
 			}
 		],
-		"link": "https://youtu.be/qq3NOnr5trY"
+		"link": "https://youtu.be/qq3NOnr5trY",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "兆翌",
@@ -980,7 +1026,9 @@
 				"role": "member"
 			}
 		],
-		"link": "https://portal.offsec.com"
+		"link": "https://portal.offsec.com",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "Edward",
@@ -1034,7 +1082,8 @@
 				"name": "production",
 				"role": "head"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "御痕",
@@ -1056,7 +1105,9 @@
 				"role": "deputy"
 			}
 		],
-		"link": "https://bio.whl.tw"
+		"link": "https://bio.whl.tw",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "Camel",
@@ -1067,7 +1118,9 @@
 				"role": "member"
 			}
 		],
-		"link": "https://www.instagram.com/camel._0311"
+		"link": "https://www.instagram.com/camel._0311",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "小弘",
@@ -1088,7 +1141,8 @@
 				"name": "production",
 				"role": "member"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "安得",
@@ -1185,7 +1239,8 @@
 				"role": "member"
 			}
 		],
-		"link": "https://www.linkedin.com/in/崇傑-黃-b31ba9383/"
+		"link": "https://www.linkedin.com/in/崇傑-黃-b31ba9383/",
+		"mode": "nobg"
 	},
 	{
 		"name": "Stanley",
@@ -1196,7 +1251,9 @@
 				"role": "member"
 			}
 		],
-		"link": "stanley1106.dev"
+		"link": "stanley1106.dev",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "!Tony2100",
@@ -1217,7 +1274,8 @@
 				"name": "production",
 				"role": "member"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "白龍",
@@ -1228,7 +1286,9 @@
 				"role": "member"
 			}
 		],
-		"link": "https://fury.tw"
+		"link": "https://fury.tw",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "大麻",
@@ -1239,7 +1299,9 @@
 				"role": "member"
 			}
 		],
-		"link": "https://onyx0824.github.io/"
+		"link": "https://onyx0824.github.io/",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "嘎嘎",
@@ -1249,7 +1311,9 @@
 				"name": "production",
 				"role": "member"
 			}
-		]
+		],
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "Ting",
@@ -1260,7 +1324,9 @@
 				"role": "member"
 			}
 		],
-		"link": "https://ting.ovh/"
+		"link": "https://ting.ovh/",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "Liam",
@@ -1295,7 +1361,8 @@
 				"name": "production",
 				"role": "member"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "Haco",
@@ -1362,7 +1429,8 @@
 				"role": "member"
 			}
 		],
-		"link": "https://wolf-yuan.dev/"
+		"link": "https://wolf-yuan.dev/",
+		"mode": "nobg"
 	},
 	{
 		"name": "冠霖",
@@ -1372,7 +1440,8 @@
 				"name": "production",
 				"role": "member"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "91",
@@ -1392,7 +1461,8 @@
 				"name": "production",
 				"role": "member"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "毛哥EM",
@@ -1428,7 +1498,9 @@
 				"role": "member"
 			}
 		],
-		"link": "https://nelsongx.com"
+		"link": "https://nelsongx.com",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "飛翔",
@@ -1512,7 +1584,8 @@
 				"name": "editorial",
 				"role": "member"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "13",
@@ -1544,7 +1617,8 @@
 				"role": "member"
 			}
 		],
-		"link": "https://www.instagram.com/eatcheng_1110?igsh=dWRjMmExa2hobmk5"
+		"link": "https://www.instagram.com/eatcheng_1110?igsh=dWRjMmExa2hobmk5",
+		"mode": "nobg"
 	},
 	{
 		"name": "Pocky",
@@ -1581,7 +1655,9 @@
 				"role": "head"
 			}
 		],
-		"link": "https://moon-jam.me"
+		"link": "https://moon-jam.me",
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "Ricky Lu",
