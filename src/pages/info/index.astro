@@ -39,24 +39,24 @@ function getActivityImage(file: string): ImageMetadata {
 
 	<main class="activities">
 		<div class="activities-container">
-			<h1 class="activities-title">{info.activitiesHeading}</h1>
+			<h1 class="activities-title text-reveal-title">{info.activitiesHeading}</h1>
 			{
 				sections?.map(section => (
 					<div class="activities-section">
-						<h2 class="section-title">{section.title}</h2>
+						<h2 class="section-title text-reveal-title">{section.title}</h2>
 
 						{section.activities?.map(activity => {
 							return (
 								<div class="activity" class:list={{ "activity-reverse": activity.image?.position === "right" }}>
 									<Image class="activity-image" src={getActivityImage(activity.image.url)} alt={activity.image.alt ?? activity.title} loading="lazy" />
 									<div>
-										<h3 class="activity-title">{activity.title}</h3>
+										<h3 class="activity-title text-reveal-title">{activity.title}</h3>
 										{activity.body
 											?.split("\n\n")
 											.map(paragraph => paragraph.trim())
 											.filter(Boolean)
 											.map(paragraph => (
-												<p class="activity-paragraph">{paragraph}</p>
+												<p class="activity-paragraph text-reveal-paragraph">{paragraph}</p>
 											))}
 									</div>
 								</div>

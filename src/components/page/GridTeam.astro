@@ -4,8 +4,8 @@ const { index, member, name, description } = Astro.props;
 ---
 
 <div class="team" id={`team-${index}`}>
-	<h2 class="title">{name}</h2>
-	<p class="text">{description}</p>
+	<h2 class="title text-reveal-title">{name}</h2>
+	<p class="text text-reveal-paragraph">{description}</p>
 
 	<div class="person-group">
 		{

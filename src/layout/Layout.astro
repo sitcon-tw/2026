@@ -140,6 +140,8 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 		<!-- End Google Tag Manager (noscript) -->
 		<script>
 			import Lenis from "lenis";
+			import "@/utils/text-reveal";
+
 			let lenis: InstanceType<typeof Lenis> | null = null;
 
 			const initLenis = () => {

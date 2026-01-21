@@ -16,8 +16,8 @@ const { name, position, avatar_url, link, team, description } = Astro.props;
 >
 	<Image class="avatar-img" src={avatar_url} width={200} height={200} alt={`${name} avatar`} />
 	<div class="text-group">
-		<p class="name">{name}</p>
-		<p class="position">{position}</p>
+		<p class="name text-reveal-title">{name}</p>
+		<p class="position text-reveal-paragraph">{position}</p>
 	</div>
 </div>
 
