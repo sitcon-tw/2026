@@ -286,16 +286,14 @@ const t = useTranslations(lang).venue;
 	import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 	import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-	// Floor configuration - separate GLB files for each floor
-	// Only load floors that exist in the venue data (2F, 3F, 4F)
 	const FLOOR_MODELS = [
 		{ id: "2F", path: "/2026/models/searchcentermodel_2f.glb", yOffset: 0 },
 		{ id: "3F", path: "/2026/models/searchcentermodel_3f.glb", yOffset: 0.5 },
 		{ id: "4F", path: "/2026/models/searchcentermodel_4f.glb", yOffset: 1.0 }
 	];
 
-	const FLOOR_GAP = 20; // Gap between stacked floors
-	const CAMERA_ANGLE = Math.PI / 1.7; // Front-left angle (rotated left)
+	const FLOOR_GAP = 20;
+	const CAMERA_ANGLE = Math.PI / -3;
 
 	let scene: THREE.Scene;
 	let camera: THREE.PerspectiveCamera;
