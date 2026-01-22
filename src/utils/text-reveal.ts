@@ -198,7 +198,7 @@ function initTitleReveal(element: HTMLElement): void {
 			trigger: element,
 			start: "top 85%",
 			end: "bottom 20%",
-			toggleActions: "play none none none"
+			toggleActions: "play none none reset"
 		}
 	});
 
@@ -233,7 +233,7 @@ function initParagraphReveal(element: HTMLElement): void {
 			trigger: element,
 			start: "top 90%",
 			end: "bottom 20%",
-			toggleActions: "play none none none"
+			toggleActions: "play none none reset"
 		}
 	});
 

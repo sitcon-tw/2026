@@ -1,11 +1,11 @@
 <div class="dialogue-section">
 	<div class="title-container">
-		<h2 class="fade-in">時代的劇本已被打破，劃一的旋律變得七零八落</h2>
-		<h2 class="fade-in">在這混沌的時代，平衡能否被我們重新尋回？</h2>
+		<h2 class="text-reveal-title">時代的劇本已被打破，劃一的旋律變得七零八落</h2>
+		<h2 class="text-reveal-title">在這混沌的時代，平衡能否被我們重新尋回？</h2>
 	</div>
 
 	<div class="content-grid">
-		<div class="theme-content fade-in">
+		<div class="theme-content text-reveal-paragraph">
 			<p>
 				身處 2026，作為資訊人與學生的我們，正身在時代變革的風口浪尖。AI
 				的崛起挑戰了傳統的開發模式，定義資訊人價值的技術壁壘正逐漸崩塌。當創造的權力民主化，個體技術不再能作為我們的護城河時，「協作」成了我們最重要的課題。我們正迎向一場尋求與
@@ -18,7 +18,7 @@
 		</div>
 	</div>
 
-	<div class="about-container fade-in">
+	<div class="about-container text-reveal-paragraph">
 		<div class="about-content">
 			<h3>關於 SITCON</h3>
 			<p>
@@ -65,8 +65,7 @@
 		max-width: 650px;
 	}
 
-	.theme-content p,
-	.about-content p {
+	.content-grid {
 		font-family: "GenKiGothicTW", sans-serif;
 		font-size: 1.125rem;
 		line-height: 2;
@@ -141,26 +140,3 @@
 		}
 	}
 </style>
-
-<script>
-	import { gsap } from "gsap";
-	import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-	gsap.registerPlugin(ScrollTrigger);
-
-	// Fade in animation
-	const fadeElements = document.querySelectorAll(".fade-in");
-	fadeElements.forEach(el => {
-		gsap.from(el, {
-			opacity: 0,
-			y: 30,
-			duration: 1.2,
-			ease: "power2.out",
-			scrollTrigger: {
-				trigger: el,
-				start: "top 85%",
-				toggleActions: "play none none none"
-			}
-		});
-	});
-</script>

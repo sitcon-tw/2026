@@ -139,13 +139,6 @@ const speakers = [
 		align-items: center;
 	}
 
-	.speaker-list {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		gap: 3rem;
-	}
-
 	.speaker-item {
 		width: 100%;
 		font-size: 3rem;
@@ -161,10 +154,10 @@ const speakers = [
 	}
 
 	.speaker-item h2 {
-		margin: 0;
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
+		line-height: 1.7;
 	}
 
 	.speaker-item.active {
@@ -307,12 +300,6 @@ const speakers = [
 			max-width: 100%;
 		}
 
-		.speaker-list {
-			align-items: flex-start;
-			width: 100%;
-			gap: 1.5rem;
-		}
-
 		.speaker-item {
 			font-size: 1.5rem;
 			align-items: flex-start;
@@ -382,7 +369,10 @@ const speakers = [
 	import { gsap } from "gsap";
 	const items = document.querySelectorAll(".speaker-item");
 	const imgelement = document.getElementById("speaker-img");
+	const speakerlist = document.querySelector(".speaker-list");
+	const desktopimg = document.querySelector(".desktop-img");
 	let currentindex = 0;
+	let ishovering = false;
 
 	function updateview(index: number) {
 		items.forEach(item => {
@@ -404,10 +394,42 @@ const speakers = [
 		item.addEventListener("mouseenter", () => {
 			updateview(index);
 			stopautoplay();
+			ishovering = true;
 		});
 
 		item.addEventListener("mouseleave", () => {
-			startautoplay();
+			// 不立即重置，讓 speakerlist 的 mouseleave 處理
+		});
+
+		item.addEventListener("mousemove", e => {
+			if (!desktopimg || !speakerlist) return;
+			const { clientX, clientY } = e as MouseEvent;
+			const { left, width } = item.getBoundingClientRect();
+			const { top: listTop, height: listHeight } = speakerlist.getBoundingClientRect();
+			const x = clientX - left;
+			const y = clientY - listTop;
+			// X 相對於當前 item，Y 相對於整個 speaker-list
+			const translatex = gsap.utils.mapRange(0, width, -60, 60, x);
+			const translatey = gsap.utils.mapRange(0, listHeight, -60, 60, y);
+
+			gsap.to(desktopimg, {
+				x: translatex,
+				y: translatey,
+				duration: 0.15,
+				ease: "power2.out"
+			});
+		});
+	});
+
+	speakerlist?.addEventListener("mouseleave", () => {
+		ishovering = false;
+		startautoplay();
+		// 重置圖片位置
+		gsap.to(desktopimg, {
+			x: 0,
+			y: 0,
+			duration: 0.4,
+			ease: "power2.out"
 		});
 	});
 
@@ -427,32 +449,4 @@ const speakers = [
 	}
 
 	startautoplay();
-
-	const speakerimage = document.querySelector(".speaker-image");
-	const desktopimg = document.querySelector(".desktop-img");
-
-	speakerimage?.addEventListener("mousemove", e => {
-		const { clientX, clientY } = e as MouseEvent;
-		const { left, top, width, height } = speakerimage.getBoundingClientRect();
-		const x = clientX - left;
-		const y = clientY - top;
-		const rotatex = gsap.utils.mapRange(0, height, -10, 10, y);
-		const rotatey = gsap.utils.mapRange(0, width, 10, -10, x);
-
-		gsap.to(desktopimg, {
-			rotateX: rotatex,
-			rotateY: rotatey,
-			duration: 0.4,
-			ease: "power2.out"
-		});
-	});
-
-	speakerimage?.addEventListener("mouseleave", () => {
-		gsap.to(desktopimg, {
-			rotateX: 0,
-			rotateY: 0,
-			duration: 0.4,
-			ease: "power2.out"
-		});
-	});
 </script>

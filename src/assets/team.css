@@ -1,8 +1,8 @@
 .nav-mask-bottom {
-	position: fixed;
+	position: sticky;
 	bottom: 0;
 	left: 0;
-	width: 100vw;
+	width: 100%;
 	height: 8rem;
 	background: linear-gradient(to top, #ac782b, transparent);
 	z-index: 10;
@@ -15,16 +15,15 @@
 }
 
 .anchor {
-	position: fixed;
+	position: sticky;
 	bottom: 2rem;
-	left: 50%;
-	transform: translateX(-50%);
+	left: 0%;
 	z-index: 99;
-	display: inline-flex;
+	display: flex;
 	align-items: center;
-	justify-content: flex-start;
+	justify-content: center;
 	overflow-x: auto;
-	max-width: 90vw;
+	width: 100%;
 	padding: 0.5rem;
 }
 

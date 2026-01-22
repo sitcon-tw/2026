@@ -36,7 +36,6 @@ const images = [
 		display: flex;
 		gap: 24px;
 		width: max-content;
-
 		align-items: flex-start;
 		will-change: transform;
 	}
@@ -125,15 +124,15 @@ const images = [
 	if (container && photoWall) {
 		gsap.fromTo(
 			container,
-			{ x: () => (photoWall.clientWidth - container.scrollWidth) / 2 },
+			{ x: () => 500 },
 			{
-				x: () => -(container.scrollWidth - photoWall.clientWidth + 100),
+				x: () => -(container.scrollWidth - photoWall.clientWidth + 500),
 				ease: "none",
 				scrollTrigger: {
 					trigger: photoWall,
 					start: "top bottom",
 					end: "bottom top",
-					scrub: 1
+					scrub: 0.3
 				}
 			}
 		);
