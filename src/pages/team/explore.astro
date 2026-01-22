@@ -75,6 +75,7 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 								color={member.color}
 								shape="circle"
 								showText={false}
+								className="explore-item"
 								style=""
 							/>
 						));
@@ -370,10 +371,12 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 
 		// Get items and shuffle them for randomness
 		let items = gsap.utils.toArray(".explore-item") as HTMLElement[];
+		console.log(`Total items found: ${items.length}, filtering for index: ${targetIndex}`);
 
 		// Filter items if targetIndex is set
 		if (targetIndex !== null) {
-			items = items.filter(item => item.dataset.teamIndex === targetIndex);
+			items = items.filter(item => String(item.dataset.teamIndex) === String(targetIndex));
+			console.log(`Filtered items: ${items.length}`);
 		}
 
 		items.sort(() => Math.random() - 0.5);
@@ -383,7 +386,7 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 		// Hide filtered out items
 		const allItems = gsap.utils.toArray(".explore-item") as HTMLElement[];
 		allItems.forEach(item => {
-			const shouldShow = targetIndex === null || item.dataset.teamIndex === targetIndex;
+			const shouldShow = targetIndex === null || String(item.dataset.teamIndex) === String(targetIndex);
 			if (!shouldShow) {
 				if (animate) {
 					gsap.to(item, {
@@ -618,5 +621,23 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 		background: linear-gradient(to bottom, #ac782b, transparent);
 		z-index: 10;
 		pointer-events: none;
+	}
+
+	.nav-mask-bottom {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+		height: 8rem;
+		background: linear-gradient(to top, #ac782b, transparent);
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	.explore-item {
+		position: absolute;
+		left: 0;
+		top: 0;
+		margin: 0;
 	}
 </style>

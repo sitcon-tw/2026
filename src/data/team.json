@@ -1085,8 +1085,7 @@
 				"name": "production",
 				"role": "head"
 			}
-		],
-		"mode": "nobg"
+		]
 	},
 	{
 		"name": "御痕",

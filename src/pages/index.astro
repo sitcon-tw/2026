@@ -10,11 +10,12 @@ import Sponsor from "@/components/index/Sponsor.astro";
 import Discuss from "@/components/index/Discuss.astro";
 import Coc from "@/components/index/Coc.astro";
 const lang = Astro.props.lang ?? "zh";
+const isProd = import.meta.env.PROD;
 ---
 
 <Layout lang={lang}>
 	<Hero lang={lang} />
-	<Speaker lang={lang} />
+	{isProd && <Speaker lang={lang} />}
 	<DemoShow lang={lang} />
 	<GetTicket lang={lang} />
 	<JoinUs lang={lang} />

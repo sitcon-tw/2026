@@ -9,11 +9,6 @@
 	pointer-events: none;
 }
 
-.explore-item {
-	opacity: 0;
-	visibility: hidden;
-}
-
 .anchor {
 	position: fixed;
 	bottom: 2rem;
