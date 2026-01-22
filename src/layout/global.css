@@ -35,6 +35,7 @@ h5,
 h6 {
 	font-family: "GenKiMinTW", serif;
 	font-weight: normal;
+	word-break: break-word;
 }
 
 code,
@@ -49,6 +50,7 @@ h2 {
 p {
 	line-height: 1.5;
 	margin-bottom: 1rem;
+	word-break: break-word;
 }
 
 @media (max-width: 600px) {

@@ -1,142 +1,47 @@
 <div class="dialogue-section">
-	<div class="title-container">
-		<h2 class="text-reveal-title">時代的劇本已被打破，劃一的旋律變得七零八落</h2>
-		<h2 class="text-reveal-title">在這混沌的時代，平衡能否被我們重新尋回？</h2>
-	</div>
-
-	<div class="content-grid">
-		<div class="theme-content text-reveal-paragraph">
-			<p>
-				身處 2026，作為資訊人與學生的我們，正身在時代變革的風口浪尖。AI
-				的崛起挑戰了傳統的開發模式，定義資訊人價值的技術壁壘正逐漸崩塌。當創造的權力民主化，個體技術不再能作為我們的護城河時，「協作」成了我們最重要的課題。我們正迎向一場尋求與
-				AI、同儕、跨域夥伴協奏平衡的盛大混沌。但，如果「亂」不是阻礙，而是新平衡的起點呢？
-			</p>
-			<p>
-				在即興音樂的 JamSession 中，演奏不再有指揮，當 Jam 的節拍對不上，就讓我們一起創造新的節拍。當 Jam 的合聲不完美，這正是我們這個世代，兼容並蓄、豪邁不羈、百家爭鳴的聲音。在 SITCON
-				2026，我們邀請你一起加入這場 Jam。讓我們駕馭混沌，在紛亂中找到節奏，在協作中尋求共鳴。
-			</p>
-		</div>
-	</div>
-
-	<div class="about-container text-reveal-paragraph">
-		<div class="about-content">
-			<h3>關於 SITCON</h3>
-			<p>
-				學生計算機年會（Students’ Information Technology Conference）自 2012
-				年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神，希望引領更多學子踏入資訊的殿堂，更冀望所有對資訊有興趣的學生，能夠在年會裏齊聚一堂，彼此激盪、傳承、啟發，達到「學以致用」、「教學相長」的實際展現。
-			</p>
-		</div>
-	</div>
+	<h2>時代的劇本已被打破，劃一的旋律變得七零八落<br />在這混沌的時代，平衡能否被我們重新尋回？</h2>
+	<p class="text-reveal-paragraph">
+		身處 2026，作為資訊人與學生的我們，正身在時代變革的風口浪尖。AI
+		的崛起挑戰了傳統的開發模式，定義資訊人價值的技術壁壘正逐漸崩塌。當創造的權力民主化，個體技術不再能作為我們的護城河時，「協作」成了我們最重要的課題。我們正迎向一場尋求與
+		AI、同儕、跨域夥伴協奏平衡的盛大混沌。但，如果「亂」不是阻礙，而是新平衡的起點呢？
+	</p>
+	<p class="text-reveal-paragraph">
+		在即興音樂的 JamSession 中，演奏不再有指揮，當 Jam 的節拍對不上，就讓我們一起創造新的節拍。當 Jam 的合聲不完美，這正是我們這個世代，兼容並蓄、豪邁不羈、百家爭鳴的聲音。在 SITCON
+		2026，我們邀請你一起加入這場 Jam。讓我們駕馭混沌，在紛亂中找到節奏，在協作中尋求共鳴。
+	</p>
+	<p class="text-reveal-paragraph intro">
+		學生計算機年會（Students’ Information Technology Conference）自 2012
+		年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神，希望引領更多學子踏入資訊的殿堂，更冀望所有對資訊有興趣的學生，能夠在年會裏齊聚一堂，彼此激盪、傳承、啟發，達到「學以致用」、「教學相長」的實際展現。
+	</p>
 </div>
 
 <style>
 	.dialogue-section {
-		position: relative;
-		width: 100%;
+		border: red 2px solid;
 		max-width: 1920px;
 		margin: 0 auto;
-		padding: 8rem 5rem 0rem 5rem;
-		color: #fff;
-		display: flex;
-		flex-direction: column;
-		gap: 6rem;
-		box-sizing: border-box;
-	}
-
-	.title-container {
-		text-align: center;
-		margin-bottom: 2rem;
+		padding: 8rem 2rem;
 	}
 
 	h2 {
 		font-family: "GenKiMinTW", serif;
 		font-size: 2.5rem;
 		line-height: 1.6;
-		margin: 0;
-		word-break: keep-all;
-		font-weight: 700;
+		text-align: center;
+		text-wrap: balance;
+		margin-bottom: 6rem;
 	}
 
-	.content-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 4rem;
-		align-items: center;
-		max-width: 650px;
-	}
-
-	.content-grid {
-		font-family: "GenKiGothicTW", sans-serif;
+	p {
 		font-size: 1.125rem;
 		line-height: 2;
 		margin-bottom: 2rem;
 		text-align: justify;
+		max-width: 45rem;
 	}
 
-	.theme-content p:last-child,
-	.about-content p:last-child {
-		margin-bottom: 0;
-	}
-
-	.about-content h3 {
-		display: none;
-		font-family: "GenKiGothicTW", sans-serif;
-		font-size: 2.25rem;
-		font-weight: 700;
-		margin-bottom: 2rem;
-	}
-
-	.about-container {
-		display: flex;
-		justify-content: flex-end;
-	}
-
-	.about-content {
-		max-width: 600px;
-	}
-
-	@media (max-width: 992px) {
-		.content-grid {
-			grid-template-columns: 1fr;
-			gap: 3rem;
-			max-width: 100%;
-		}
-
-		h2 {
-			font-size: 2rem;
-		}
-
-		.about-container {
-			justify-content: center;
-		}
-
-		.about-content {
-			max-width: 100%;
-		}
-
-		.about-content h3 {
-			display: block;
-		}
-	}
-
-	@media (max-width: 600px) {
-		h2 {
-			font-size: 1.8rem;
-		}
-
-		.dialogue-section {
-			padding: 4rem 1.5rem;
-			gap: 4rem;
-		}
-
-		.theme-content p,
-		.about-content p {
-			font-size: 1rem;
-		}
-
-		.about-content h3 {
-			font-size: 1.75rem;
-			margin-bottom: 1.5rem;
-		}
+	.intro {
+		margin-left: auto;
+		margin-top: 5rem;
 	}
 </style>
