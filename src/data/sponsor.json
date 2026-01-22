@@ -12,7 +12,7 @@
 	],
 	"cohost": [
 		{
-			"logo": "SITCON.svg",
+			"logo": "iis.png",
 			"title_zh": "中央研究院資訊科學研究所",
 			"title_en": "",
 
@@ -21,7 +21,7 @@
 			"url": "https://www.iis.sinica.edu.tw/"
 		},
 		{
-			"logo": "ocf.svg",
+			"logo": "ocf.png",
 			"title_zh": "財團法人開放文化基金會",
 			"title_en": "Open Culture Foundation",
 
@@ -32,7 +32,7 @@
 	],
 	"organizer": [
 		{
-			"logo": "SITCON.svg",
+			"logo": "itsa.png",
 			"title_zh": "智慧創新跨域人才培育計畫",
 			"title_en": "",
 

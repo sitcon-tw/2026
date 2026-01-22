@@ -8,7 +8,7 @@ import { Grip } from "@lucide/astro";
 import team_data_raw from "@/data/team.json";
 import { useTranslations, type Lang } from "@/utils/i18n";
 
-import "@/assets/team.css";
+import "@/components/page/team.css";
 
 interface Props {
 	lang?: Lang;
@@ -64,7 +64,7 @@ const forum_url = "https://forum/";
 		<div class="top">
 			<div class="top-left">
 				<h1 class="top-title text-reveal-title">{t.title}</h1>
-				<p class="top-text text-reveal-paragraph">{t.description}</p>
+				<p class="top-text text-reveal-paragraph" set:html={t.description} />
 			</div>
 			<div class="top-right">
 				<div class="top-right-btn-group">

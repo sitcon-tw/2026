@@ -144,10 +144,42 @@
 				"interval": "Frequency: Every 15~20 minutes"
 			},
 			"public": {
-				"placeholder": "Public transportation information will be provided soon"
+				"youbike": {
+					"title": "YouBike",
+					"description": "YouBike 2.0 stations near Academia Sinica",
+					"stations": ["Academia Sinica Humanities and Social Sciences Building", "Academia Sinica Sports Center East Side", "Yanjiuyuan Jiuzhuang Street Intersection"]
+				},
+				"bus": {
+					"title": "Bus",
+					"routes": [
+						{
+							"from": "MRT Nangang Station",
+							"description": "Take the train/HSR to Nangang Station, then take a bus from Exit 2 of MRT Nangang Station",
+							"to": "Academia Sinica",
+							"buses": ["212 Express", "270"]
+						},
+						{
+							"from": "Nangang Exhibition Center",
+							"description": "Take the MRT to Nangang Exhibition Center Station, then take a bus from Exit 5",
+							"to": "Academia Sinica",
+							"buses": ["205", "212", "276", "306", "306 Express"]
+						}
+					]
+				}
 			},
 			"drive": {
-				"placeholder": "Driving directions will be provided soon"
+				"car": {
+					"title": "Driving",
+					"description": "Parking is available inside Academia Sinica. Exchange your ID for a pass at the front gate. For parking fees, please refer to the <a href='https://www.sinica.edu.tw/cp_rules/doc/4202'>Academia Sinica Vehicle Parking Regulations</a>."
+				},
+				"motorcycle": {
+					"title": "Motorcycle",
+					"description": "Motorcycles are not allowed inside the campus. Free parking is available at the right side of the main gate, across from the main gate, and near Hu Shih Park (no liability for safekeeping)."
+				},
+				"references": [
+					{ "name": "Academia Sinica Vehicle Parking Regulations", "url": "https://www.sinica.edu.tw/cp_rules/doc/4202" },
+					{ "name": "Academia Sinica Parking Q&A", "url": "https://www.sinica.edu.tw/ch/articles/168" }
+				]
 			}
 		},
 		"sections": [

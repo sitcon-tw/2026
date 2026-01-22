@@ -1,5 +1,6 @@
 ---
 import { useTranslations, type Lang } from "@/utils/i18n";
+const isProd = import.meta.env.PROD;
 
 interface Props {
 	lang?: Lang;
@@ -23,9 +24,15 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 	<div class="title-group">
 		<h3 class="text-reveal-title">{t.subtitle}</h3>
 		<h1 class="text-reveal-title">{t.title}</h1>
-		<div class="cta-btn">
-			<a href={`${prefix}/agenda`} class="btn">{t.cta}</a>
-		</div>
+		{
+			isProd && (
+				<div class="cta-btn">
+					<a href={`${prefix}/agenda`} class="btn">
+						{t.cta}
+					</a>
+				</div>
+			)
+		}
 	</div>
 
 	<div class="desc-group">
