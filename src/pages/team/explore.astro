@@ -2,7 +2,7 @@
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
 import MemberInfo from "@/components/page/MemberInfo.astro";
-import ExplorePerson from "@/components/page/ExplorePerson.astro";
+import GridPerson from "@/components/page/GridPerson.astro";
 import { List } from "@lucide/astro";
 
 import team_data_raw from "@/data/team.json";
@@ -56,16 +56,18 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 				{
 					team_data.map((team, index) => {
 						return team.member.map((member: { name: string; position: string; avatar_url: string; link: string; description: string; mode?: string; color?: string }) => (
-							<ExplorePerson
+							<GridPerson
 								name={member.name}
 								avatar_url={member.avatar_url}
 								position={member.position}
 								link={member.link}
 								description={member.description}
-								team_index={index}
-								team_name={team.name}
+								teamIndex={index}
+								team={team.name}
 								mode={member.mode}
 								color={member.color}
+								shape="circle"
+								showText={false}
 								style=""
 							/>
 						));

@@ -71,7 +71,11 @@ const { id = "member-info-modal" } = Astro.props;
 
 				if (nameEl) nameEl.textContent = name || "";
 				if (posEl) posEl.textContent = `${team} ● ${position}` || "";
-				if (descEl) descEl.textContent = description || "";
+				if (descEl) {
+					// 將 \n 轉換成 <br> 以支援換行
+					const descText = (description || "").replace(/\\n/g, "\n").replace(/\n/g, "<br>");
+					descEl.innerHTML = descText;
+				}
 
 				// Update Avatar - 根據 mode 生成不同結構
 				const avatarContainer = modal.querySelector("#member-avatar-container") as HTMLElement | null;
@@ -146,15 +150,18 @@ const { id = "member-info-modal" } = Astro.props;
 		}
 	});
 
-	// 3D 視差效果（用於 popup）
+	// 3D 視差效果（用於 popup）- 全螢幕追蹤
+	let currentModalMouseHandler: ((e: MouseEvent) => void) | null = null;
+
 	function init3DEffectForModal(container: HTMLElement) {
 		const layers = container.querySelectorAll(".avatar-layer");
 
-		const handleMouseMove = (e: MouseEvent) => {
-			const rect = container.getBoundingClientRect();
-			const containerCenterX = rect.left + rect.width / 2;
-			const containerCenterY = rect.top + rect.height / 2;
+		// 移除舊的全域監聽器（如果有）
+		if (currentModalMouseHandler) {
+			document.removeEventListener("mousemove", currentModalMouseHandler);
+		}
 
+		const handleMouseMove = (e: MouseEvent) => {
 			// 計算滑鼠相對於螢幕中心的位置
 			const screenCenterX = window.innerWidth / 2;
 			const screenCenterY = window.innerHeight / 2;
@@ -166,10 +173,6 @@ const { id = "member-info-modal" } = Astro.props;
 			const offsetX = (mouseX - screenCenterX) / screenCenterX;
 			const offsetY = (mouseY - screenCenterY) / screenCenterY;
 
-			// 相對於元素中心的偏移量
-			const localOffsetX = (mouseX - containerCenterX) / (rect.width / 2);
-			const localOffsetY = (mouseY - containerCenterY) / (rect.height / 2);
-
 			layers.forEach(layer => {
 				const isBack = layer.classList.contains("avatar-back");
 				const isBg = layer.classList.contains("avatar-bg");
@@ -177,37 +180,48 @@ const { id = "member-info-modal" } = Astro.props;
 				// 後層（back）移動速度更快，製造 3D 效果
 				let speedMultiplier = 1;
 				if (isBack) {
-					speedMultiplier = 1.8; // 後層快 30%
+					speedMultiplier = 1.8;
 				} else if (isBg) {
 					speedMultiplier = 0; // 背景不動
 				}
 
-				const maxOffset = 10; // 最大偏移量（像素）
-				const translateX = offsetX * maxOffset * speedMultiplier + localOffsetX * 5 * speedMultiplier;
-				const translateY = offsetY * maxOffset * speedMultiplier + localOffsetY * 5 * speedMultiplier;
+				const maxOffset = 5; // 最大偏移量（像素）
+				const translateX = offsetX * maxOffset * speedMultiplier;
+				const translateY = offsetY * maxOffset * speedMultiplier;
 
-				// skew 旋轉效果
-				const maxSkew = 0; // 最大 skew 角度
-				const skewX = -localOffsetY * maxSkew * speedMultiplier;
-				const skewY = localOffsetX * maxSkew * speedMultiplier;
-
-				(layer as HTMLElement).style.transform = `scale(1.125) translate(${translateX}px, ${translateY}px) skew(${skewX}deg, ${skewY}deg)`;
+				(layer as HTMLElement).style.transform = `scale(1.125) translate(${translateX}px, ${translateY}px)`;
 			});
 		};
 
-		const handleMouseLeave = () => {
-			layers.forEach(layer => {
-				(layer as HTMLElement).style.transform = "scale(1.125) translate(0, 0) skew(0, 0)";
-			});
-		};
+		currentModalMouseHandler = handleMouseMove;
 
-		// 移除舊的監聽器（如果有）
-		container.removeEventListener("mousemove", handleMouseMove as any);
-		container.removeEventListener("mouseleave", handleMouseLeave);
+		// 全螢幕追蹤滑鼠
+		document.addEventListener("mousemove", handleMouseMove);
+	}
 
-		// 添加新的監聽器
-		container.addEventListener("mousemove", handleMouseMove);
-		container.addEventListener("mouseleave", handleMouseLeave);
+	// 關閉 modal 時清除監聽器
+	function cleanup3DEffectForModal() {
+		if (currentModalMouseHandler) {
+			document.removeEventListener("mousemove", currentModalMouseHandler);
+			currentModalMouseHandler = null;
+		}
+	}
+
+	// 監聽 modal 關閉
+	const modalObserver = new MutationObserver(mutations => {
+		mutations.forEach(mutation => {
+			if (mutation.type === "attributes" && mutation.attributeName === "class") {
+				const modal = mutation.target as HTMLElement;
+				if (!modal.classList.contains("show")) {
+					cleanup3DEffectForModal();
+				}
+			}
+		});
+	});
+
+	const memberModal = document.getElementById("member-info-modal");
+	if (memberModal) {
+		modalObserver.observe(memberModal, { attributes: true });
 	}
 </script>
 

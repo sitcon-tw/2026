@@ -120,7 +120,8 @@
 			}
 		],
 		"link": "https://github.com/yorukot",
-		"mode": "nobg"
+		"mode": "color",
+		"color": "31354E"
 	},
 	{
 		"name": "Nathan",
@@ -180,7 +181,9 @@
 				"name": "development",
 				"role": "member"
 			}
-		]
+		],
+		"mode": "color",
+		"color": "FFF"
 	},
 	{
 		"name": "chilin.h (麒麟)",
@@ -436,7 +439,7 @@
 		"link": "https://www.instagram.com/una_chiao2.5?igsh=YWltYWlpczhwZzcy&utm_source=qr"
 	},
 	{
-		"name": " Abby",
+		"name": "Abby",
 		"description": "",
 		"teams": [
 			{
@@ -1075,8 +1078,8 @@
 		"link": "https://www.instagram.com/yichih_0126.jpg?igsh=emw4bWJrNWhyNjZh"
 	},
 	{
-		"name": "Brian",
-		"description": "",
+		"name": "Brian Jhan",
+		"description": "嗨我是製播組的Brian\n你熟悉的Brian 今天有好好活著呦~",
 		"teams": [
 			{
 				"name": "production",
@@ -1466,7 +1469,7 @@
 	},
 	{
 		"name": "毛哥EM",
-		"description": "",
+		"description": "沒事幹嘛弄這麼難寫的網頁。\n每張圖得一個個 Photoshop",
 		"teams": [
 			{
 				"name": "development",

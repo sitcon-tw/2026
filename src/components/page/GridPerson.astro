@@ -1,14 +1,19 @@
 ---
-const { name, position, avatar_url, link, team, description, mode, color } = Astro.props;
+const { name, position, avatar_url, link, team, description, mode, color, shape = "square", showText = true, style, teamIndex } = Astro.props;
 
 // 判斷圖片路徑
 const backImgUrl = `/2026/img/avatar/back/${name}.webp`;
 const frontImgUrl = `/2026/img/avatar/front/${name}.webp`;
+
+// 根據 shape 決定 border-radius 和 class
+const isCircle = shape === "circle";
+import "./GridPerson.css";
 ---
 
 <div
-	class="person person-trigger"
+	class={`person person-trigger ${isCircle ? "person-circle" : ""}`}
 	data-team={team}
+	data-team-index={teamIndex}
 	data-name={name}
 	data-position={position}
 	data-avatar={avatar_url}
@@ -18,108 +23,48 @@ const frontImgUrl = `/2026/img/avatar/front/${name}.webp`;
 	data-color={color}
 	data-open-modal="member-info-modal"
 	aria-label={name}
+	style={style}
 >
-	<div class="avatar-container">
+	<div class={`avatar-container ${isCircle ? "avatar-container-circle" : ""}`}>
 		{
 			mode === "nobg" ? (
 				// <!-- 只有後層 -->
-				<div class="avatar-layer avatar-back">
+				<div class={`avatar-layer avatar-back ${isCircle ? "avatar-layer-circle" : ""}`}>
 					<img class="avatar-img" src={backImgUrl} alt={`${name} avatar`} width={200} height={200} />
 				</div>
 			) : mode === "color" ? (
 				// <!-- 只有前層 + 顏色背景 -->
 				<>
-					<div class="avatar-layer avatar-bg" style={`background-color: #${color};`} />
-					<div class="avatar-layer avatar-front">
+					<div class={`avatar-layer avatar-bg ${isCircle ? "avatar-layer-circle" : ""}`} style={`background-color: #${color};`} />
+					<div class={`avatar-layer avatar-front ${isCircle ? "avatar-layer-circle" : ""}`}>
 						<img class="avatar-img" src={frontImgUrl} alt={`${name} avatar`} width={200} height={200} />
 					</div>
 				</>
 			) : (
 				// <!-- 默認：雙層 -->
 				<>
-					<div class="avatar-layer avatar-back">
+					<div class={`avatar-layer avatar-back ${isCircle ? "avatar-layer-circle" : ""}`}>
 						<img class="avatar-img" src={backImgUrl} alt={`${name} avatar`} width={200} height={200} />
 					</div>
-					<div class="avatar-layer avatar-front">
+					<div class={`avatar-layer avatar-front ${isCircle ? "avatar-layer-circle" : ""}`}>
 						<img class="avatar-img" src={frontImgUrl} alt={`${name} avatar`} width={200} height={200} />
 					</div>
 				</>
 			)
 		}
 	</div>
-	<div class="text-group">
-		<div class="name text-reveal-title">{name}</div>
-		<div class="position text-reveal-paragraph">{position}</div>
-	</div>
+	{
+		showText && (
+			<div class="text-group">
+				<div class="name text-reveal-title">{name}</div>
+				<div class="position text-reveal-paragraph">{position}</div>
+			</div>
+		)
+	}
 </div>
 
-<style>
-	.person {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 1rem;
-		max-width: 20rem;
-		margin: 2rem 1.5rem;
-		cursor: pointer;
-		transition:
-			transform 0.3s ease,
-			filter 0.3s ease;
-	}
-
-	.person:hover {
-		transform: translateY(-0.5rem);
-		filter: drop-shadow(0 1rem 1rem #0000002d);
-	}
-
-	.avatar-container {
-		position: relative;
-		width: 10rem;
-		height: 10rem;
-		border-radius: 1rem;
-		overflow: hidden;
-	}
-
-	.avatar-layer {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		border-radius: 1rem;
-		transform: scale(1.125);
-		transition: transform 0.1s ease-out;
-		will-change: transform;
-	}
-
-	.avatar-bg {
-		z-index: 0;
-	}
-
-	.avatar-back {
-		z-index: 1;
-	}
-
-	.avatar-front {
-		z-index: 2;
-	}
-
-	.avatar-img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.text-group {
-		width: 10rem;
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-	}
-</style>
-
 <script>
-	// 3D 視差效果（用於網格視圖）
+	// 3D 視差效果
 	function init3DEffectForGrid() {
 		const personItems = document.querySelectorAll(".person");
 
@@ -128,50 +73,22 @@ const frontImgUrl = `/2026/img/avatar/front/${name}.webp`;
 			if (!container) return;
 
 			const layers = container.querySelectorAll(".avatar-layer");
+			const isCircle = item.classList.contains("person-circle");
 
+			// Grid 模式：只在頭像範圍內追蹤滑鼠
 			const handleMouseMove = (e: MouseEvent) => {
 				const rect = container.getBoundingClientRect();
 				const containerCenterX = rect.left + rect.width / 2;
 				const containerCenterY = rect.top + rect.height / 2;
 
-				// 計算滑鼠相對於螢幕中心的位置
-				const screenCenterX = window.innerWidth / 2;
-				const screenCenterY = window.innerHeight / 2;
-
 				const mouseX = e.clientX;
 				const mouseY = e.clientY;
 
-				// 相對於螢幕中心的偏移量（標準化到 -1 到 1）
-				const offsetX = (mouseX - screenCenterX) / screenCenterX;
-				const offsetY = (mouseY - screenCenterY) / screenCenterY;
-
-				// 相對於元素中心的偏移量
+				// 相對於頭像中心的偏移量（標準化到 -1 到 1）
 				const localOffsetX = (mouseX - containerCenterX) / (rect.width / 2);
 				const localOffsetY = (mouseY - containerCenterY) / (rect.height / 2);
 
-				layers.forEach(layer => {
-					const isBack = layer.classList.contains("avatar-back");
-					const isBg = layer.classList.contains("avatar-bg");
-
-					// 後層（back）移動速度更快，製造 3D 效果
-					let speedMultiplier = 1;
-					if (isBack) {
-						speedMultiplier = 1.8; // 後層快 30%
-					} else if (isBg) {
-						speedMultiplier = 0; // 背景不動
-					}
-
-					const maxOffset = 8; // 最大偏移量（像素）
-					const translateX = offsetX * maxOffset * speedMultiplier + localOffsetX * 3 * speedMultiplier;
-					const translateY = offsetY * maxOffset * speedMultiplier + localOffsetY * 3 * speedMultiplier;
-
-					// skew 旋轉效果
-					const maxSkew = 0; // 最大 skew 角度
-					const skewX = -localOffsetY * maxSkew * speedMultiplier;
-					const skewY = localOffsetX * maxSkew * speedMultiplier;
-
-					(layer as HTMLElement).style.transform = `scale(1.125) translate(${translateX}px, ${translateY}px) skew(${skewX}deg, ${skewY}deg)`;
-				});
+				applyTransform(layers, localOffsetX, localOffsetY);
 			};
 
 			const handleMouseLeave = () => {
@@ -180,15 +97,82 @@ const frontImgUrl = `/2026/img/avatar/front/${name}.webp`;
 				});
 			};
 
-			item.addEventListener("mousemove", handleMouseMove);
-			item.addEventListener("mouseleave", handleMouseLeave);
+			// Grid 模式（方形）：只監聽頭像 hover
+			if (!isCircle) {
+				item.addEventListener("mousemove", handleMouseMove);
+				item.addEventListener("mouseleave", handleMouseLeave);
+			}
+		});
+	}
+
+	// 探索模式：全螢幕追蹤（當 modal 打開時）
+	function initExploreMode() {
+		let activeItem: Element | null = null;
+
+		// 監聽 modal 打開
+		document.addEventListener("click", e => {
+			const trigger = (e.target as HTMLElement).closest(".person-trigger.person-circle") as HTMLElement | null;
+			if (trigger) {
+				activeItem = trigger;
+				const layers = trigger.querySelectorAll(".avatar-layer");
+
+				// 開始全螢幕追蹤
+				const handleGlobalMouseMove = (e: MouseEvent) => {
+					const modal = document.getElementById("member-info-modal");
+					if (!modal || !modal.classList.contains("show")) {
+						document.removeEventListener("mousemove", handleGlobalMouseMove);
+						activeItem = null;
+						// 重置 transform
+						layers.forEach(layer => {
+							(layer as HTMLElement).style.transform = "scale(1.125) translate(0, 0) skew(0, 0)";
+						});
+						return;
+					}
+
+					// 相對於螢幕中心的偏移量（標準化到 -1 到 1）
+					const screenCenterX = window.innerWidth / 2;
+					const screenCenterY = window.innerHeight / 2;
+					const offsetX = (e.clientX - screenCenterX) / screenCenterX;
+					const offsetY = (e.clientY - screenCenterY) / screenCenterY;
+
+					applyTransform(layers, offsetX, offsetY);
+				};
+
+				document.addEventListener("mousemove", handleGlobalMouseMove);
+			}
+		});
+	}
+
+	// 通用的 transform 應用函數
+	function applyTransform(layers: NodeListOf<Element>, offsetX: number, offsetY: number) {
+		layers.forEach(layer => {
+			const isBack = layer.classList.contains("avatar-back");
+			const isBg = layer.classList.contains("avatar-bg");
+
+			// 後層（back）移動速度更快，製造 3D 效果
+			let speedMultiplier = 1;
+			if (isBack) {
+				speedMultiplier = 1.8;
+			} else if (isBg) {
+				speedMultiplier = 0; // 背景不動
+			}
+
+			const maxOffset = 5; // 最大偏移量（像素）
+			const translateX = offsetX * maxOffset * speedMultiplier;
+			const translateY = offsetY * maxOffset * speedMultiplier;
+
+			(layer as HTMLElement).style.transform = `scale(1.125) translate(${translateX}px, ${translateY}px)`;
 		});
 	}
 
 	// 初始化
 	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", init3DEffectForGrid);
+		document.addEventListener("DOMContentLoaded", () => {
+			init3DEffectForGrid();
+			initExploreMode();
+		});
 	} else {
 		init3DEffectForGrid();
+		initExploreMode();
 	}
 </script>
