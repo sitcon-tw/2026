@@ -1,24 +1,24 @@
+---
+import { useTranslations, type Lang } from "@/utils/i18n";
+
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).dialogue;
+---
+
 <div class="dialogue-section">
-	<h2>時代的劇本已被打破，劃一的旋律變得七零八落<br />在這混沌的時代，平衡能否被我們重新尋回？</h2>
-	<p class="text-reveal-paragraph">
-		身處 2026，作為資訊人與學生的我們，正身在時代變革的風口浪尖。AI
-		的崛起挑戰了傳統的開發模式，定義資訊人價值的技術壁壘正逐漸崩塌。當創造的權力民主化，個體技術不再能作為我們的護城河時，「協作」成了我們最重要的課題。我們正迎向一場尋求與
-		AI、同儕、跨域夥伴協奏平衡的盛大混沌。但，如果「亂」不是阻礙，而是新平衡的起點呢？
-	</p>
-	<p class="text-reveal-paragraph">
-		在即興音樂的 JamSession 中，演奏不再有指揮，當 Jam 的節拍對不上，就讓我們一起創造新的節拍。當 Jam 的合聲不完美，這正是我們這個世代，兼容並蓄、豪邁不羈、百家爭鳴的聲音。在 SITCON
-		2026，我們邀請你一起加入這場 Jam。讓我們駕馭混沌，在紛亂中找到節奏，在協作中尋求共鳴。
-	</p>
-	<p class="text-reveal-paragraph intro">
-		學生計算機年會（Students’ Information Technology Conference）自 2012
-		年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神，希望引領更多學子踏入資訊的殿堂，更冀望所有對資訊有興趣的學生，能夠在年會裏齊聚一堂，彼此激盪、傳承、啟發，達到「學以致用」、「教學相長」的實際展現。
-	</p>
+	<h2 set:html={t.headline} />
+	<p class="text-reveal-paragraph">{t.paragraph1}</p>
+	<p class="text-reveal-paragraph">{t.paragraph2}</p>
+	<p class="text-reveal-paragraph intro">{t.paragraph3}</p>
 </div>
 
 <style>
 	.dialogue-section {
-		border: red 2px solid;
-		max-width: 1920px;
+		max-width: var(--max-width);
 		margin: 0 auto;
 		padding: 8rem 2rem;
 	}

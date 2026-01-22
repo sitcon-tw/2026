@@ -1,5 +1,13 @@
 ---
-const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，在開始籌備時會寄信通知你，絕不錯過任何消息！", "到 GitLab 查看今年的籌備歷程！"];
+import { useTranslations, type Lang } from "@/utils/i18n";
+
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).discuss;
+const messages = t.messages;
 ---
 
 <section class="chat-section">
@@ -11,11 +19,11 @@ const messages = ["一起在郵件論壇討論籌備！", "填寫跳坑表單，
 		</div>
 
 		<div class="info-container">
-			<h2 class="section-title text-reveal-title">參與討論</h2>
+			<h2 class="section-title text-reveal-title">{t.title}</h2>
 			<div class="btn-group">
-				<a href="#" class="btn-pill">預約跳坑</a>
-				<a href="#" class="btn-pill">郵件論壇</a>
-				<a href="#" class="btn-pill">籌備紀錄</a>
+				<a href="#" class="btn-pill">{t.buttons.reserve}</a>
+				<a href="#" class="btn-pill">{t.buttons.forum}</a>
+				<a href="#" class="btn-pill">{t.buttons.records}</a>
 			</div>
 		</div>
 	</div>

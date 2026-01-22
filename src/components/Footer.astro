@@ -1,5 +1,5 @@
 ---
-import zhHant from "@/i18n/zh-Hant.json";
+import zhHant from "@/i18n/zh.json";
 
 const socialLinks = [
 	{ name: "Facebook", url: "fb" },
@@ -19,11 +19,11 @@ const socialLinks = [
 	</div>
 	<div class="info">
 		{
-			zhHant.footer.map(info => (
+			zhHant.footer.map((info: { title: string; gridLayout?: boolean; links: { url: string; name: string }[] }) => (
 				<div class="info-item">
 					<h3>{info.title}</h3>
 					<div class={`info-item-links ${info.gridLayout ? "grid-layout" : ""}`}>
-						{info.links.map(line => (
+						{info.links.map((line: { url: string; name: string }) => (
 							<a href={line.url}>{line.name}</a>
 						))}
 					</div>

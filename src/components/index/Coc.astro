@@ -1,17 +1,21 @@
 ---
+import { useTranslations, type Lang } from "@/utils/i18n";
 
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).coc;
 ---
 
 <section>
 	<div class="content">
-		<h1 class="text-reveal-title">行為準則</h1>
+		<h1 class="text-reveal-title">{t.title}</h1>
 		<div class="content-coc">
-			<p class="text-reveal-paragraph">SITCON 非常歡迎<br class="mobile-br" />所有年齡、身分、背景的與會者！</p>
+			<p class="text-reveal-paragraph" set:html={t.paragraph1} />
 
-			<p class="text-reveal-paragraph">
-				為了讓大家都能愉快的參加 SITCON，<br />
-				請所有參與者遵循行為準則<br class="mobile-br" />共創一個友善的環境。
-			</p>
+			<p class="text-reveal-paragraph" set:html={t.paragraph2} />
 		</div>
 
 		<div class="mobile-cocLink">

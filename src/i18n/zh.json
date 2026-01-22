@@ -6,12 +6,141 @@
 		"team": "團隊成員",
 		"openMenu": "開啟選單"
 	},
+	"landing": {
+		"location": ["中央研究院", "人文社會科學館"],
+		"date": "2026/03/28",
+		"cta": "我要報名"
+	},
+	"dialogue": {
+		"headline": "時代的劇本已被打破，劃一的旋律變得七零八落<br />在這混沌的時代，平衡能否被我們重新尋回？",
+		"paragraph1": "身處 2026，作為資訊人與學生的我們，正身在時代變革的風口浪尖。AI 的崛起挑戰了傳統的開發模式，定義資訊人價值的技術壁壘正逐漸崩塌。當創造的權力民主化，個體技術不再能作為我們的護城河時，「協作」成了我們最重要的課題。我們正迎向一場尋求與 AI、同儕、跨域夥伴協奏平衡的盛大混沌。但，如果「亂」不是阻礙，而是新平衡的起點呢？",
+		"paragraph2": "在即興音樂的 JamSession 中，演奏不再有指揮，當 Jam 的節拍對不上，就讓我們一起創造新的節拍。當 Jam 的合聲不完美，這正是我們這個世代，兼容並蓄、豪邁不羈、百家爭鳴的聲音。在 SITCON 2026，我們邀請你一起加入這場 Jam。讓我們駕馭混沌，在紛亂中找到節奏，在協作中尋求共鳴。",
+		"paragraph3": "學生計算機年會（Students' Information Technology Conference）自 2012 年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神，希望引領更多學子踏入資訊的殿堂，更冀望所有對資訊有興趣的學生，能夠在年會裏齊聚一堂，彼此激盪、傳承、啟發，達到「學以致用」、「教學相長」的實際展現。"
+	},
+	"speaker": {
+		"title1": "年會",
+		"title2": "邀請講者",
+		"cta": "查看議程表"
+	},
+	"demoShow": {
+		"subtitle": "2026 全新",
+		"title": "Demo 展",
+		"cta": "查看議程表",
+		"description": "Demo 展投稿以現場專案展示為核心，<br />輔以靜態海報與短影音呈現學生個人或團隊的專案。"
+	},
+	"coc": {
+		"title": "行為準則",
+		"paragraph1": "SITCON 非常歡迎<br class=\"mobile-br\" />所有年齡、身分、背景的與會者！",
+		"paragraph2": "為了讓大家都能愉快的參加 SITCON，<br />請所有參與者遵循行為準則<br class=\"mobile-br\" />共創一個友善的環境。"
+	},
+	"discuss": {
+		"title": "參與討論",
+		"messages": ["一起在郵件論壇討論籌備！", "填寫跳坑表單，在開始籌備時會寄信通知你，絕不錯過任何消息！", "到 GitLab 查看今年的籌備歷程！"],
+		"buttons": {
+			"reserve": "預約跳坑",
+			"forum": "郵件論壇",
+			"records": "籌備紀錄"
+		}
+	},
+	"ticket": {
+		"title": "索票方式",
+		"oscvpass": {
+			"title": "開源貢獻票",
+			"englishTitle": "OSCVPASS",
+			"description": [
+				"資格限制：對開源專案有貢獻者。",
+				"在 2025/01/21 23:59 前申請且通過者，有機會可以搶到 SITCON 2025 開源貢獻票邀請碼。申請表單、申請資格及更詳細的申請說明，請參考開源貢獻者快速通關",
+				"關於歷年來 OSCVPass 申請通過者的專案列表，請參考 OSCVPass 專案介紹。"
+			],
+			"verticalTitle": "開源貢獻票"
+		},
+		"general": {
+			"title": "一般票",
+			"englishTitle": "GENERAL",
+			"description": ["一般大眾皆可參與。", "請關注 SITCON 官方網站及社群媒體以獲取最新售票資訊。"],
+			"verticalTitle": "一般票"
+		},
+		"longDistance": {
+			"title": "遠道而來票",
+			"englishTitle": "LONG DISTANCE",
+			"description": ["居住地距離會場較遠的參與者。", "需提供相關證明文件。"],
+			"verticalTitle": "遠道而來票"
+		},
+		"buttons": {
+			"getTicket": "立即索票",
+			"addCalendar": "加入行事曆"
+		},
+		"location": "中央研究院 人文社會科學館"
+	},
+	"joinUs": {
+		"title1": "加入我們",
+		"title2": "引領未來",
+		"description": "自 2013 年以來，SITCON 始終秉持著「不向與會者收費」的初心，<br />致力於推廣學生資訊教育。我們鼓勵參與者跳脫思想框架、發掘潛在的可能性，<br />並為學子們提供寶貴的學習與交流機會，陪伴無數學生踏入資訊領域的殿堂。",
+		"stats": ["> 累積逾 14,000 名與會者", "> 超過 500 位學生講者", "> 舉辦逾 500 場聚會和講座、10 場夏令營", "> 扶植近 1,400 名熱愛資訊的志工"],
+		"buttons": {
+			"sponsorRequest": "贊助徵求",
+			"personalSponsor": "個人贊助"
+		}
+	},
+	"sponsor": {
+		"main": "主辦單位",
+		"cohost": "合辦單位",
+		"organizer": "協辦單位",
+		"pilot": "領航級",
+		"deep": "深耕級",
+		"personalSponsor": "個人贊助",
+		"visitWebsite": "前往官網",
+		"sponsorLevel": "贊助等級",
+		"sponsorName": "贊助商名稱",
+		"sponsorDesc": "這裡會是贊助商的詳細介紹文案"
+	},
+	"venue": {
+		"title": "會場地圖",
+		"selectFloor": "請選擇樓層",
+		"backToFloor": "返回樓層選擇",
+		"emergency": "緊急逃生指引"
+	},
+	"agenda": {
+		"title": "議程表"
+	},
+	"teamPage": {
+		"title": "團隊成員",
+		"description": "SITCON 年會每年皆是許多志工奉獻時間與精神所舉辦，沒有大家的付出，就不可能會有如此內容豐富且高品質的年會，希望大家在參加之餘，也不要忘記背後工作人員的付出。若你對參與 SITCON 年會的籌備有興趣，歡迎填寫跳坑表單或是關注 SITCON 的郵件論壇，明年的籌備開始時，你就會收到相關的資訊！",
+		"formButton": "跳坑表單",
+		"forumButton": "郵件論壇",
+		"exploreMode": "探索模式",
+		"listMode": "列表模式"
+	},
+	"academiaSinica": {
+		"instruction": "點擊螢幕開始逛中研院！"
+	},
 	"info": {
 		"mainHeading": "活動資訊",
 		"mainDetails": ["2026/3/28", "中央研究院 人文社會科學館", "台北市南港區研究院路 2 段 128 號"],
 		"mainButton": "交通指引",
 		"intoAcademiaSinica": "進入中研院",
 		"activitiesHeading": "年會活動",
+		"transport": {
+			"title": "交通指引",
+			"tabs": {
+				"shuttle": "大會接駁車",
+				"public": "大眾運輸工具",
+				"drive": "自行開車 / 機車"
+			},
+			"shuttle": {
+				"from": "捷運南港展覽館站 2A 出口",
+				"to": "中研院 人文社會科學館",
+				"location": "地點：台北捷運站南港展覽館 2A 出口（當天會有人舉牌引導）",
+				"time": "接駁車發車時間：7:45~10:00",
+				"interval": "班距：15~20 分鐘一班"
+			},
+			"public": {
+				"placeholder": "你覺得我會知道大眾運輸要怎麼走嗎"
+			},
+			"drive": {
+				"placeholder": "我看起來像是有車的人嗎"
+			}
+		},
 		"sections": [
 			{
 				"title": "我是第一次來，想認識新朋友",

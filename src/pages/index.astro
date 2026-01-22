@@ -9,17 +9,18 @@ import JoinUs from "@/components/index/JoinUs.astro";
 import Sponsor from "@/components/index/Sponsor.astro";
 import Discuss from "@/components/index/Discuss.astro";
 import Coc from "@/components/index/Coc.astro";
+const lang = Astro.props.lang ?? "zh";
 ---
 
-<Layout>
-	<Hero />
-	<Speaker />
-	<DemoShow />
-	<GetTicket />
-	<JoinUs />
-	<Sponsor />
-	<Discuss />
-	<Coc />
+<Layout lang={lang}>
+	<Hero lang={lang} />
+	<Speaker lang={lang} />
+	<DemoShow lang={lang} />
+	<GetTicket lang={lang} />
+	<JoinUs lang={lang} />
+	<Sponsor lang={lang} />
+	<Discuss lang={lang} />
+	<Coc lang={lang} />
 	<Footer />
 </Layout>
 

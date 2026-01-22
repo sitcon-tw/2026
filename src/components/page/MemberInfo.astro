@@ -60,7 +60,7 @@ const { id = "member-info-modal" } = Astro.props;
 		// Open modal logic
 		const trigger = target.closest(".person-trigger") as HTMLElement | null;
 		if (trigger) {
-			const { name, position, avatar, link, team, description, mode, color } = trigger.dataset;
+			const { name, position, link, team, description, mode, color } = trigger.dataset;
 
 			const modal = document.getElementById("member-info-modal");
 			if (modal) {

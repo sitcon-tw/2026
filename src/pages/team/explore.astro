@@ -6,13 +6,20 @@ import GridPerson from "@/components/page/GridPerson.astro";
 import { List } from "@lucide/astro";
 
 import team_data_raw from "@/data/team.json";
-import zh_Hant from "@/i18n/zh-Hant.json";
+import { useTranslations, type Lang } from "@/utils/i18n";
 
 import "@/assets/team.css";
 
-// GROUP METADATA
-const TEAM_METADATA = zh_Hant.team;
-const ROLE_MAP = zh_Hant.role;
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const i18n = useTranslations(lang);
+const TEAM_METADATA = i18n.team;
+const ROLE_MAP = i18n.role;
+const t = i18n.teamPage;
+const prefix = lang === "en" ? "/2026/en" : "/2026";
 
 const teamsMap = new Map();
 
@@ -21,14 +28,14 @@ team_data_raw.forEach(person => {
 		if (!teamsMap.has(team.name)) {
 			teamsMap.set(team.name, {
 				id: team.name,
-				name: TEAM_METADATA[team.name]?.name || team.name,
-				description: TEAM_METADATA[team.name]?.description || "",
+				name: (TEAM_METADATA as Record<string, { name: string; description: string }>)[team.name]?.name || team.name,
+				description: (TEAM_METADATA as Record<string, { name: string; description: string }>)[team.name]?.description || "",
 				member: []
 			});
 		}
 		teamsMap.get(team.name).member.push({
 			name: person.name,
-			position: ROLE_MAP[team.role] || team.role,
+			position: (ROLE_MAP as Record<string, string>)[team.role] || team.role,
 			avatar_url: `/2026/img/avatar/back/${person.name}.webp`,
 			link: person.link,
 			description: person.description,
@@ -49,7 +56,7 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 });
 ---
 
-<Layout>
+<Layout title={lang === "en" ? "Team - SITCON 2026" : "團隊成員 - SITCON 2026"} lang={lang}>
 	<main>
 		<div class="explore-container">
 			<div id="explore-universe">
@@ -81,12 +88,12 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 
 		<!-- anchor -->
 		<div class="anchor">
-			<a class="anchor-switch anchor-btn" href="/2026/team/" aria-label="切換至列表模式">
+			<a class="anchor-switch anchor-btn" href={`${prefix}/team/`} aria-label={lang === "en" ? "Switch to list mode" : "切換至列表模式"}>
 				<div class="anchor-box" id="switch-icon">
 					<List size={18} />
 				</div>
 				<div class="anchor-box" id="switch-text">
-					<span class="anchor-text-span">列表模式</span>
+					<span class="anchor-text-span">{t.listMode}</span>
 				</div>
 			</a>
 			{

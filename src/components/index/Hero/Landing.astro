@@ -1,5 +1,12 @@
 ---
+import { useTranslations, type Lang } from "@/utils/i18n";
 
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).landing;
 ---
 
 <div class="landing-section">
@@ -15,18 +22,18 @@
 	<!-- 右下角資訊 -->
 	<div class="info-wrapper">
 		<div class="location">
-			<p>中央研究院</p>
-			<p>人文社會科學館</p>
+			<p>{t.location[0]}</p>
+			<p>{t.location[1]}</p>
 		</div>
-		<div class="date">2026/03/28</div>
+		<div class="date">{t.date}</div>
 	</div>
 
 	<!-- 左下角報名按鈕預留 -->
 	<div class="cta-wrapper">
 		<div class="cta-container" id="cta-container">
-			<a href="https://tickets.sitcon.org/zh-Hant/sitcon2026" target="_blank">
+			<a href="https://tickets.sitcon.org/zh/sitcon2026" target="_blank">
 				<div class="cta-text-layer">
-					<span class="cta-text">我要報名</span>
+					<span class="cta-text">{t.cta}</span>
 					<span class="arrow">›</span>
 				</div>
 			</a>
@@ -435,7 +442,7 @@
 				if (textLayer) textLayer.style.opacity = "0";
 
 				setTimeout(() => {
-					window.location.href = "https://tickets.sitcon.org/zh-Hant/sitcon2026";
+					window.location.href = "https://tickets.sitcon.org/zh/sitcon2026";
 				}, 300);
 			} else {
 				currentX = 0;

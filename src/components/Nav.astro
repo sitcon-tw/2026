@@ -1,20 +1,32 @@
 ---
-import zhHant from "@/i18n/zh-Hant.json";
+import { useTranslations, type Lang } from "@/utils/i18n";
 import { Menu, X } from "@lucide/astro";
 
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang);
+const prefix = lang === "en" ? "/2026/en" : "/2026";
+
 const navItems = [
-	{ label: zhHant.nav.info, href: "/2026/info" },
-	{ label: zhHant.nav.agenda, href: "/2026/agenda" },
-	{ label: zhHant.nav.venue, href: "/2026/venue" },
-	{ label: zhHant.nav.team, href: "/2026/team" }
+	{ label: t.nav.info, href: `${prefix}/info` },
+	{ label: t.nav.agenda, href: `${prefix}/agenda` },
+	{ label: t.nav.venue, href: `${prefix}/venue` },
+	{ label: t.nav.team, href: `${prefix}/team` }
 ];
+
+const alternatePrefix = lang === "en" ? "/2026" : "/2026/en";
+const currentPath = Astro.url.pathname.replace(/^\/2026(\/en)?/, "");
+const alternateHref = `${alternatePrefix}${currentPath || "/"}`;
 ---
 
 <nav>
 	<div class="nav-container">
 		<div class="nav-logo-container">
 			<a href="/2026/" id="logo" aria-label="SITCON 2026"><img id="logo-svg" src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
-			<button class="hamburger" aria-expanded="false" aria-label={zhHant.nav.openMenu}>
+			<button class="hamburger" aria-expanded="false" aria-label={t.nav.openMenu}>
 				<Menu id="menu-icon" />
 				<X id="x-icon" />
 			</button>
@@ -27,6 +39,9 @@ const navItems = [
 					</a>
 				))
 			}
+			<a href={alternateHref} class="nav-item lang-switch" aria-label={lang === "en" ? "切換至中文" : "Switch to English"}>
+				{lang === "en" ? "中文" : "EN"}
+			</a>
 		</div>
 	</div>
 </nav>

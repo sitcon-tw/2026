@@ -5,8 +5,8 @@
 	"compilerOptions": {
 		"checkJs": false,
 		"target": "es2022",
-		"module": "nodenext",
-		"moduleResolution": "nodenext",
+		"module": "esnext",
+		"moduleResolution": "bundler",
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"baseUrl": ".",

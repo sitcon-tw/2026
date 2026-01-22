@@ -3,20 +3,22 @@ import Layout from "@/layout/Layout.astro";
 // import { ShieldAlert } from "lucide-astro";
 import FloorButton from "@/components/venue/FloorButton.astro";
 import RoomItem from "@/components/venue/RoomItem.astro";
-import venueData from "@/data/venue.json";
+import floors from "@/data/venue.json";
+import { useTranslations } from "@/utils/i18n";
 
-const floors = venueData;
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).venue;
 ---
 
-<Layout title="會場地圖 - SITCON 2026">
+<Layout title={lang === "en" ? "Venue Map - SITCON 2026" : "會場地圖 - SITCON 2026"} lang={lang}>
 	<main>
 		<div class="venue-container">
-			<h1 class="title">會場地圖</h1>
+			<h1 class="title">{t.title}</h1>
 
 			<div class="content-wrapper">
 				<!-- Floor Selection -->
 				<div id="floor-selection" class="menu-panel">
-					<p class="hint">請選擇樓層</p>
+					<p class="hint">{t.selectFloor}</p>
 					<div class="floor-buttons" data-lenis-prevent>
 						{floors.map(floor => <FloorButton id={floor.id} label={floor.label} description={floor.description} />)}
 					</div>
@@ -26,7 +28,8 @@ const floors = venueData;
 				<div id="advanced-menu" class="menu-panel hidden">
 					<div class="back-btn-wrapper">
 						<button id="back-btn" class="back-btn">
-							<span class="arrow">&lt;</span> 返回樓層選擇
+							<span class="arrow">&lt;</span>
+							{t.backToFloor}
 						</button>
 					</div>
 
@@ -50,7 +53,7 @@ const floors = venueData;
 			<div class="emergency-btn-container">
 				<button class="emergency-btn">
 					<!-- <ShieldAlert size={20} /> -->
-					緊急逃生指引
+					{t.emergency}
 				</button>
 			</div>
 

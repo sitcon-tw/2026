@@ -99,7 +99,7 @@ import "./GridPerson.css";
 
 			// Grid 模式（方形）：只監聽頭像 hover
 			if (!isCircle) {
-				item.addEventListener("mousemove", handleMouseMove);
+				item.addEventListener("mousemove", handleMouseMove as EventListener);
 				item.addEventListener("mouseleave", handleMouseLeave);
 			}
 		});
@@ -107,13 +107,10 @@ import "./GridPerson.css";
 
 	// 探索模式：全螢幕追蹤（當 modal 打開時）
 	function initExploreMode() {
-		let activeItem: Element | null = null;
-
 		// 監聽 modal 打開
 		document.addEventListener("click", e => {
 			const trigger = (e.target as HTMLElement).closest(".person-trigger.person-circle") as HTMLElement | null;
 			if (trigger) {
-				activeItem = trigger;
 				const layers = trigger.querySelectorAll(".avatar-layer");
 
 				// 開始全螢幕追蹤
@@ -121,7 +118,6 @@ import "./GridPerson.css";
 					const modal = document.getElementById("member-info-modal");
 					if (!modal || !modal.classList.contains("show")) {
 						document.removeEventListener("mousemove", handleGlobalMouseMove);
-						activeItem = null;
 						// 重置 transform
 						layers.forEach(layer => {
 							(layer as HTMLElement).style.transform = "scale(1.125) translate(0, 0) skew(0, 0)";

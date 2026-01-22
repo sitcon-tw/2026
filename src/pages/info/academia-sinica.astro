@@ -1,6 +1,10 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import { Move, ChevronUp } from "@lucide/astro";
+import { useTranslations } from "@/utils/i18n";
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).academiaSinica;
 ---
 
 <style>
@@ -115,7 +119,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 
 <Layout>
 	<div id="instructions">
-		<span>點擊螢幕開始逛中研院！</span>
+		<span>{t.instruction}</span>
 	</div>
 
 	<div id="touchControls">
@@ -139,7 +143,6 @@ import { Move, ChevronUp } from "@lucide/astro";
 	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 	import { Octree } from "three/examples/jsm/math/Octree.js";
 	import { Capsule } from "three/examples/jsm/math/Capsule.js";
-	import { fade } from "astro:transitions";
 
 	// helpers (type guards / utils)
 	function mustGetEl<T extends HTMLElement>(id: string): T {

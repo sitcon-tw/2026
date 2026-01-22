@@ -2,14 +2,21 @@
 import Landing from "./Hero/Landing.astro";
 import Dialogue from "./Hero/Dialogue.astro";
 import PhotoWall from "./Hero/PhotoWall.astro";
+import type { Lang } from "@/utils/i18n";
+
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
 ---
 
 <section class="hero-container">
 	<div class="bg-fixed">
 		<canvas id="bg-canvas"></canvas>
 	</div>
-	<Landing />
-	<Dialogue />
+	<Landing lang={lang} />
+	<Dialogue lang={lang} />
 	<PhotoWall />
 </section>
 

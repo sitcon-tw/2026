@@ -6,12 +6,20 @@ import MemberInfo from "@/components/page/MemberInfo.astro";
 import { Grip } from "@lucide/astro";
 
 import team_data_raw from "@/data/team.json";
-import zh_Hant from "@/i18n/zh-Hant.json";
+import { useTranslations, type Lang } from "@/utils/i18n";
 
 import "@/assets/team.css";
 
-const TEAM_METADATA = zh_Hant.team;
-const ROLE_MAP = zh_Hant.role;
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const i18n = useTranslations(lang);
+const TEAM_METADATA = i18n.team;
+const ROLE_MAP = i18n.role;
+const t = i18n.teamPage;
+const prefix = lang === "en" ? "/2026/en" : "/2026";
 
 const teamsMap = new Map();
 
@@ -20,14 +28,14 @@ team_data_raw.forEach(person => {
 		if (!teamsMap.has(team.name)) {
 			teamsMap.set(team.name, {
 				id: team.name,
-				name: TEAM_METADATA[team.name]?.name || team.name,
-				description: TEAM_METADATA[team.name]?.description || "",
+				name: (TEAM_METADATA as Record<string, { name: string; description: string }>)[team.name]?.name || team.name,
+				description: (TEAM_METADATA as Record<string, { name: string; description: string }>)[team.name]?.description || "",
 				member: []
 			});
 		}
 		teamsMap.get(team.name).member.push({
 			name: person.name,
-			position: ROLE_MAP[team.role] || team.role,
+			position: (ROLE_MAP as Record<string, string>)[team.role] || team.role,
 			avatar_url: `/2026/img/avatar/back/${person.name}.webp`,
 			link: person.link,
 			description: person.description,
@@ -51,20 +59,17 @@ const form_url = "https://forms.gle/";
 const forum_url = "https://forum/";
 ---
 
-<Layout>
+<Layout title={lang === "en" ? "Team - SITCON 2026" : "團隊成員 - SITCON 2026"} lang={lang}>
 	<main>
 		<div class="top">
 			<div class="top-left">
-				<h1 class="top-title text-reveal-title">團隊成員</h1>
-				<p class="top-text text-reveal-paragraph">
-					SITCON 年會每年皆是許多志工奉獻時間與精神所舉辦，沒有大家的付出，就不可能會有如此內容豐富且高品質的年會，希望大家在參加之餘，也不要忘記背後工作人員的付出。若你對參與 SITCON
-					年會的籌備有興趣，歡迎填寫跳坑表單或是關注 SITCON 的郵件論壇，明年的籌備開始時，你就會收到相關的資訊！
-				</p>
+				<h1 class="top-title text-reveal-title">{t.title}</h1>
+				<p class="top-text text-reveal-paragraph">{t.description}</p>
 			</div>
 			<div class="top-right">
 				<div class="top-right-btn-group">
-					<a href={form_url} target="_blank" class="top-right-btn">跳坑表單</a>
-					<a href={forum_url} target="_blank" class="top-right-btn">郵件論壇</a>
+					<a href={form_url} target="_blank" class="top-right-btn">{t.formButton}</a>
+					<a href={forum_url} target="_blank" class="top-right-btn">{t.forumButton}</a>
 				</div>
 			</div>
 		</div>
@@ -72,18 +77,18 @@ const forum_url = "https://forum/";
 
 		<!-- anchor -->
 		<div class="anchor">
-			<a class="anchor-switch anchor-btn" href="/2026/team/explore" aria-label="切換至探索模式">
+			<a class="anchor-switch anchor-btn" href={`${prefix}/team/explore`} aria-label={lang === "en" ? "Switch to explore mode" : "切換至探索模式"}>
 				<div class="anchor-box" id="switch-icon">
 					<Grip size={18} />
 				</div>
 				<div class="anchor-box" id="switch-text">
-					<span class="anchor-text-span">探索模式</span>
+					<span class="anchor-text-span">{t.exploreMode}</span>
 				</div>
 			</a>
 			{
 				team_data.map((team, index) => {
 					return (
-						<a class="anchor-btn anchor-box" href={`#team-${index}`} aria-label={`前往 ${team.name}`}>
+						<a class="anchor-btn anchor-box" href={`#team-${index}`} aria-label={`${lang === "en" ? "Go to" : "前往"} ${team.name}`}>
 							<span class="anchor-indicator" />
 							<span class="anchor-text-span">{team.name}</span>
 						</a>

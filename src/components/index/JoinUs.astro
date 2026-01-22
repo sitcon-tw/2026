@@ -1,30 +1,32 @@
 ---
 import { ExternalLink } from "@lucide/astro";
+import { useTranslations, type Lang } from "@/utils/i18n";
+
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).joinUs;
 ---
 
 <section>
 	<div class="title">
-		<h1 class="text-reveal-title">加入我們</h1>
-		<h1 class="text-reveal-title">引領未來</h1>
+		<h1 class="text-reveal-title">{t.title1}</h1>
+		<h1 class="text-reveal-title">{t.title2}</h1>
 	</div>
 	<div class="content-container">
 		<div class="content-text">
-			<p class="text-reveal-paragraph">
-				自 2013 年以來，SITCON 始終秉持著「不向與會者收費」的初心，<br />致力於推廣學生資訊教育。我們鼓勵參與者跳脫思想框架、發掘潛在的可能性，<br
-				/>並為學子們提供寶貴的學習與交流機會，陪伴無數學生踏入資訊領域的殿堂。
-			</p>
+			<p class="text-reveal-paragraph" set:html={t.description} />
 		</div>
 		<div class="content-list">
-			<p class="text-reveal-paragraph">&gt; 累積逾 14,000 名與會者</p>
-			<p class="text-reveal-paragraph">&gt; 超過 500 位學生講者</p>
-			<p class="text-reveal-paragraph">&gt; 舉辦逾 500 場聚會和講座、10 場夏令營</p>
-			<p class="text-reveal-paragraph">&gt; 扶植近 1,400 名熱愛資訊的志工</p>
+			{t.stats.map((stat: string) => <p class="text-reveal-paragraph">{stat}</p>)}
 		</div>
 		<div class="content-btn">
 			<a href="#">
 				<div class="hover-bg"></div>
 				<span>
-					贊助徵求
+					{t.buttons.sponsorRequest}
 					<ExternalLink class="arrow-icon" />
 				</span>
 			</a>
@@ -32,7 +34,7 @@ import { ExternalLink } from "@lucide/astro";
 			<a href="#">
 				<div class="hover-bg"></div>
 				<span>
-					個人贊助
+					{t.buttons.personalSponsor}
 					<ExternalLink class="arrow-icon" />
 				</span>
 			</a>

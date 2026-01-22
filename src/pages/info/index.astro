@@ -1,12 +1,12 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
-import zhHant from "@/i18n/zh-Hant.json";
-import { Image } from "astro:assets";
-import academiaSinica from "@/assets/academia-sinica.svg";
+import { useTranslations } from "@/utils/i18n";
 import { X } from "@lucide/astro";
-
-const { info } = zhHant;
+import { Image } from "astro:assets";
+const lang = Astro.props.lang ?? "zh";
+const i18n = useTranslations(lang);
+const { info } = i18n;
 const { sections } = info;
 
 const activityImages = import.meta.glob<{ default: ImageMetadata }>("/src/assets/activities/*.{png,jpg,jpeg,webp,gif,svg}", { eager: true });
@@ -19,13 +19,13 @@ function getActivityImage(file: string): ImageMetadata {
 }
 ---
 
-<Layout>
+<Layout title={lang === "en" ? "Event Info - SITCON 2026" : "活動資訊 - SITCON 2026"} lang={lang}>
 	<header class="hero">
 		<div class="hero-content">
 			<h1 class="hero-title">{info.mainHeading}</h1>
 
 			<div class="hero-details">
-				{info.mainDetails.map(detail => <p class="hero-detail">{detail}</p>)}
+				{info.mainDetails.map((detail: string) => <p class="hero-detail">{detail}</p>)}
 			</div>
 
 			<button class="hero-button" data-open-transport>{info.mainButton}</button>
@@ -33,7 +33,7 @@ function getActivityImage(file: string): ImageMetadata {
 
 		<button class="hero-into-button" id="into-academia-sinica">{info.intoAcademiaSinica}</button>
 		<div class="hero-bg" aria-hidden="true">
-			<Image src={academiaSinica} alt="" class="hero-bg-img" />
+			<img src="/2026/img/academia-sinica.svg" alt="" class="hero-bg-img" />
 		</div>
 	</header>
 
@@ -41,11 +41,11 @@ function getActivityImage(file: string): ImageMetadata {
 		<div class="activities-container">
 			<h1 class="activities-title text-reveal-title">{info.activitiesHeading}</h1>
 			{
-				sections?.map(section => (
+				sections?.map((section: { title: string; activities?: { title: string; body?: string; image: { url: string; alt?: string; position?: string } }[] }) => (
 					<div class="activities-section">
 						<h2 class="section-title text-reveal-title">{section.title}</h2>
 
-						{section.activities?.map(activity => {
+						{section.activities?.map((activity: { title: string; body?: string; image: { url: string; alt?: string; position?: string } }) => {
 							return (
 								<div class="activity" class:list={{ "activity-reverse": activity.image?.position === "right" }}>
 									<Image class="activity-image" src={getActivityImage(activity.image.url)} alt={activity.image.alt ?? activity.title} loading="lazy" />
@@ -53,9 +53,9 @@ function getActivityImage(file: string): ImageMetadata {
 										<h3 class="activity-title text-reveal-title">{activity.title}</h3>
 										{activity.body
 											?.split("\n\n")
-											.map(paragraph => paragraph.trim())
+											.map((paragraph: string) => paragraph.trim())
 											.filter(Boolean)
-											.map(paragraph => (
+											.map((paragraph: string) => (
 												<p class="activity-paragraph text-reveal-paragraph">{paragraph}</p>
 											))}
 									</div>
@@ -71,44 +71,44 @@ function getActivityImage(file: string): ImageMetadata {
 	<dialog class="modal" data-transport-dialog>
 		<div class="modal-card">
 			<div class="modal-header">
-				<h2 class="modal-title">交通指引</h2>
+				<h2 class="modal-title">{info.transport.title}</h2>
 				<button class="modal-x" type="button" data-close-transport><X /></button>
 			</div>
 
 			<div class="modal-body">
-				<div class="modal-button-container" role="tablist" aria-label="交通方式">
-					<button class="modal-button is-active" type="button" data-transport-tab="shuttle" role="tab" aria-selected="true">大會接駁車</button>
+				<div class="modal-button-container" role="tablist" aria-label={info.transport.title}>
+					<button class="modal-button is-active" type="button" data-transport-tab="shuttle" role="tab" aria-selected="true">{info.transport.tabs.shuttle}</button>
 
-					<button class="modal-button" type="button" data-transport-tab="public" role="tab" aria-selected="false">大眾運輸工具</button>
+					<button class="modal-button" type="button" data-transport-tab="public" role="tab" aria-selected="false">{info.transport.tabs.public}</button>
 
-					<button class="modal-button" type="button" data-transport-tab="drive" role="tab" aria-selected="false">自行開車 / 機車</button>
+					<button class="modal-button" type="button" data-transport-tab="drive" role="tab" aria-selected="false">{info.transport.tabs.drive}</button>
 				</div>
 
 				<section class="transport-panel" data-transport-panel="shuttle" role="tabpanel">
 					<div class="transport-route">
-						<div class="transport-route-left">捷運南港展覽館站 2A 出口</div>
+						<div class="transport-route-left">{info.transport.shuttle.from}</div>
 
 						<div class="transport-route-line" aria-hidden="true"></div>
 
-						<div class="transport-route-right">中研院 人文社會科學館</div>
+						<div class="transport-route-right">{info.transport.shuttle.to}</div>
 					</div>
 
 					<div class="transport-card">
-						<p>地點：台北捷運站南港展覽館 2A 出口（當天會有人舉牌引導）</p>
-						<p>接駁車發車時間：7:45~10:00</p>
-						<p>班距：15~20 分鐘一班</p>
+						<p>{info.transport.shuttle.location}</p>
+						<p>{info.transport.shuttle.time}</p>
+						<p>{info.transport.shuttle.interval}</p>
 					</div>
 				</section>
 
 				<section class="transport-panel" data-transport-panel="public" role="tabpanel" hidden>
 					<div class="transport-card">
-						<p>你覺得我會知道大眾運輸要怎麼走嗎</p>
+						<p>{info.transport.public.placeholder}</p>
 					</div>
 				</section>
 
 				<section class="transport-panel" data-transport-panel="drive" role="tabpanel" hidden>
 					<div class="transport-card">
-						<p>我看起來像是有車的人嗎</p>
+						<p>{info.transport.drive.placeholder}</p>
 					</div>
 				</section>
 			</div>

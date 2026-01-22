@@ -1,4 +1,14 @@
 ---
+import { useTranslations, type Lang } from "@/utils/i18n";
+
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).speaker;
+const prefix = lang === "en" ? "/2026/en" : "/2026";
+
 const speakers = [
 	{
 		name: "OsGa",
@@ -30,9 +40,9 @@ const speakers = [
 
 <section class="speaker-section">
 	<div class="title">
-		<h2 class="text-reveal-title">年會</h2>
+		<h2 class="text-reveal-title">{t.title1}</h2>
 		<div class="line"></div>
-		<h2 class="text-reveal-title">邀請講者</h2>
+		<h2 class="text-reveal-title">{t.title2}</h2>
 	</div>
 
 	<div class="content-wrapper">
@@ -59,7 +69,7 @@ const speakers = [
 		</div>
 	</div>
 
-	<a href="#" class="cta-btn">查看議程表</a>
+	<a href={`${prefix}/agenda`} class="cta-btn">{t.cta}</a>
 
 	<div class="bg-optimized">
 		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
@@ -372,7 +382,6 @@ const speakers = [
 	const speakerlist = document.querySelector(".speaker-list");
 	const desktopimg = document.querySelector(".desktop-img");
 	let currentindex = 0;
-	let ishovering = false;
 
 	function updateview(index: number) {
 		items.forEach(item => {
@@ -394,7 +403,6 @@ const speakers = [
 		item.addEventListener("mouseenter", () => {
 			updateview(index);
 			stopautoplay();
-			ishovering = true;
 		});
 
 		item.addEventListener("mouseleave", () => {
@@ -422,7 +430,6 @@ const speakers = [
 	});
 
 	speakerlist?.addEventListener("mouseleave", () => {
-		ishovering = false;
 		startautoplay();
 		// 重置圖片位置
 		gsap.to(desktopimg, {

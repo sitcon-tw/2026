@@ -1,24 +1,32 @@
 ---
+import { useTranslations, type Lang } from "@/utils/i18n";
+
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).sponsor;
 const logoSrc = "/2026/img/SITCON-withname.svg";
 
 // 正式資料匯入會改用 json 儲存
 const sponsors = {
-	main: { name: "SITCON 學生計算機年會", desc: "學生自發組成的研討會，秉持著以學生為主軸的核心精神。", type: "主辦單位" },
+	main: { name: "SITCON 學生計算機年會", desc: "學生自發組成的研討會，秉持著以學生為主軸的核心精神。", type: t.main },
 	cohost: Array.from({ length: 2 }).map((_, i) => ({
-		name: `合辦單位 ${i + 1}`,
+		name: `${t.cohost} ${i + 1}`,
 		desc: "感謝合辦單位的強力支援！",
-		type: "合辦單位"
+		type: t.cohost
 	})),
-	organizer: { name: "協辦單位 A", desc: "協助場地與設備支援。", type: "協辦單位" },
+	organizer: { name: "協辦單位 A", desc: "協助場地與設備支援。", type: t.organizer },
 	pilot: Array.from({ length: 15 }).map((_, i) => ({
-		name: `領航級贊助 ${i + 1}`,
-		desc: `這是領航級贊助商 ${i + 1} 的詳細介紹文案......`,
-		type: "領航級"
+		name: `${t.pilot}贊助 ${i + 1}`,
+		desc: `這是${t.pilot}贊助商 ${i + 1} 的詳細介紹文案......`,
+		type: t.pilot
 	})),
 	deep: Array.from({ length: 9 }).map((_, i) => ({
-		name: `深耕級贊助 ${i + 1}`,
-		desc: `這是深耕級贊助商 ${i + 1} 的詳細介紹文案......`,
-		type: "深耕級"
+		name: `${t.deep}贊助 ${i + 1}`,
+		desc: `這是${t.deep}贊助商 ${i + 1} 的詳細介紹文案......`,
+		type: t.deep
 	}))
 };
 ---
@@ -28,14 +36,14 @@ const sponsors = {
 		<div class="section-group">
 			<div class="top-tier-grid">
 				<div class="tier-item">
-					<h3 class="tier-title">主辦單位</h3>
+					<h3 class="tier-title">{t.main}</h3>
 					<button class="logo-box sponsor-trigger" data-name={sponsors.main.name} data-desc={sponsors.main.desc} data-type={sponsors.main.type} data-img={logoSrc}>
 						<img src={logoSrc} alt={sponsors.main.name} />
 					</button>
 				</div>
 
 				<div class="tier-item">
-					<h3 class="tier-title">合辦單位</h3>
+					<h3 class="tier-title">{t.cohost}</h3>
 					<div class="logo-row-2">
 						{
 							sponsors.cohost.map(s => (
@@ -48,7 +56,7 @@ const sponsors = {
 				</div>
 
 				<div class="tier-item">
-					<h3 class="tier-title">協辦單位</h3>
+					<h3 class="tier-title">{t.organizer}</h3>
 					<button class="logo-box sponsor-trigger" data-name={sponsors.organizer.name} data-desc={sponsors.organizer.desc} data-type={sponsors.organizer.type} data-img={logoSrc}>
 						<img src={logoSrc} alt={sponsors.organizer.name} />
 					</button>
@@ -57,7 +65,7 @@ const sponsors = {
 		</div>
 
 		<div class="section-group">
-			<h3 class="tier-title text-reveal-title">領航級</h3>
+			<h3 class="tier-title text-reveal-title">{t.pilot}</h3>
 			<div class="main-grid">
 				{
 					sponsors.pilot.map(s => (
@@ -70,7 +78,7 @@ const sponsors = {
 		</div>
 
 		<div class="section-group">
-			<h3 class="tier-title text-reveal-title">深耕級</h3>
+			<h3 class="tier-title text-reveal-title">{t.deep}</h3>
 			<div class="main-grid">
 				{
 					sponsors.deep.map(s => (
@@ -79,8 +87,8 @@ const sponsors = {
 						</button>
 					))
 				}
-				<button class="logo-box center-box person-sponsor sponsor-trigger" data-name="個人贊助" data-desc="感謝所有熱情的個人贊助者！" data-type="個人贊助">
-					<span>個人贊助</span>
+				<button class="logo-box center-box person-sponsor sponsor-trigger" data-name={t.personalSponsor} data-desc="感謝所有熱情的個人贊助者！" data-type={t.personalSponsor}>
+					<span>{t.personalSponsor}</span>
 				</button>
 			</div>
 		</div>
@@ -98,7 +106,7 @@ const sponsors = {
 
 		<div class="dialog-content">
 			<div class="header">
-				<span id="dialog-type" class="badge">贊助等級</span>
+				<span id="dialog-type" class="badge">{t.sponsorLevel}</span>
 			</div>
 
 			<div class="logo-area">
@@ -106,12 +114,12 @@ const sponsors = {
 			</div>
 
 			<div class="text-area">
-				<h2 id="dialog-title">贊助商名稱</h2>
-				<p id="dialog-desc">這裡會是贊助商的詳細介紹文案</p>
+				<h2 id="dialog-title">{t.sponsorName}</h2>
+				<p id="dialog-desc">{t.sponsorDesc}</p>
 			</div>
 
 			<div class="action-area">
-				<a href="#" target="_blank" class="visit-btn">前往官網</a>
+				<a href="#" target="_blank" class="visit-btn">{t.visitWebsite}</a>
 			</div>
 		</div>
 	</div>
