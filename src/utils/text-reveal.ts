@@ -28,6 +28,11 @@ function splitByBrTags(element: HTMLElement): void {
 	// 如果已經處理過，跳過
 	if (element.dataset.textRevealed === "true") return;
 
+	// 保存原始 HTML
+	if (!element.dataset.originalHtml) {
+		element.dataset.originalHtml = element.innerHTML;
+	}
+
 	const html = element.innerHTML;
 	// 以 <br>, <br/>, <br /> 或帶有 class 的 br 標籤分割
 	const lines = html.split(/<br[^>]*\/?>/gi).filter(line => line.trim() !== "");
@@ -63,6 +68,11 @@ function splitByBrTags(element: HTMLElement): void {
 function splitTextIntoLines(element: HTMLElement): void {
 	// 如果已經處理過，跳過
 	if (element.dataset.textRevealed === "true") return;
+
+	// 保存原始 HTML
+	if (!element.dataset.originalHtml) {
+		element.dataset.originalHtml = element.innerHTML;
+	}
 
 	// 如果有 br 標籤，使用 br 分割
 	if (hasBrTags(element)) {
@@ -282,11 +292,19 @@ if (typeof window !== "undefined") {
 
 	// 視窗大小改變時重新計算
 	let resizeTimeout: ReturnType<typeof setTimeout>;
+	let lastWidth = window.innerWidth;
+
 	window.addEventListener("resize", () => {
+		if (window.innerWidth === lastWidth) return;
+		lastWidth = window.innerWidth;
+
 		clearTimeout(resizeTimeout);
 		resizeTimeout = setTimeout(() => {
 			// 重新拆分文字並刷新動畫
 			document.querySelectorAll<HTMLElement>(".text-reveal-title, .text-reveal-paragraph").forEach(el => {
+				if (el.dataset.originalHtml) {
+					el.innerHTML = el.dataset.originalHtml;
+				}
 				delete el.dataset.textRevealed;
 				delete el.dataset.animationInitialized;
 			});
