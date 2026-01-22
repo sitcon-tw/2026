@@ -9,11 +9,12 @@ interface Props {
 const lang = Astro.props.lang ?? "zh";
 const t = useTranslations(lang);
 const prefix = lang === "en" ? "/2026/en" : "/2026";
+const isProd = import.meta.env.PROD;
 
 const navItems = [
 	{ label: t.nav.info, href: `${prefix}/info` },
-	{ label: t.nav.agenda, href: `${prefix}/agenda` },
-	{ label: t.nav.venue, href: `${prefix}/venue` },
+	...(!isProd ? [{ label: t.nav.agenda, href: `${prefix}/agenda` }] : []),
+	...(!isProd ? [{ label: t.nav.venue, href: `${prefix}/venue` }] : []),
 	{ label: t.nav.team, href: `${prefix}/team` }
 ];
 
