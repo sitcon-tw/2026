@@ -15,7 +15,7 @@
 		"headline": "時代的劇本已被打破，劃一的旋律變得七零八落<br />在這混沌的時代，平衡能否被我們重新尋回？",
 		"paragraph1": "身處 2026，作為資訊人與學生的我們，正身在時代變革的風口浪尖。AI 的崛起挑戰了傳統的開發模式，定義資訊人價值的技術壁壘正逐漸崩塌。當創造的權力民主化，個體技術不再能作為我們的護城河時，「協作」成了我們最重要的課題。我們正迎向一場尋求與 AI、同儕、跨域夥伴協奏平衡的盛大混沌。但，如果「亂」不是阻礙，而是新平衡的起點呢？",
 		"paragraph2": "在即興音樂的 JamSession 中，演奏不再有指揮，當 Jam 的節拍對不上，就讓我們一起創造新的節拍。當 Jam 的合聲不完美，這正是我們這個世代，兼容並蓄、豪邁不羈、百家爭鳴的聲音。在 SITCON 2026，我們邀請你一起加入這場 Jam。讓我們駕馭混沌，在紛亂中找到節奏，在協作中尋求共鳴。",
-		"paragraph3": "學生計算機年會（Students' Information Technology Conference）自 2012 年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神，希望引領更多學子踏入資訊的殿堂，更冀望所有對資訊有興趣的學生，能夠在年會裏齊聚一堂，彼此激盪、傳承、啟發，達到「學以致用」、「教學相長」的實際展現。"
+		"paragraph3": "學生計算機年會（Students’ Information Technology Conference）自 2012 年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神，希望引領更多學子踏入資訊的殿堂，更冀望所有對資訊有興趣的學生，能夠在年會裏齊聚一堂，彼此激盪、傳承、啟發，達到「學以致用、教學相長」的實際展現。"
 	},
 	"speaker": {
 		"title1": "年會",
@@ -26,7 +26,7 @@
 		"subtitle": "2026 全新",
 		"title": "Demo 展",
 		"cta": "查看議程表",
-		"description": "Demo 展投稿以現場專案展示為核心，<br />輔以靜態海報與短影音呈現學生個人或團隊的專案。"
+		"description": "Demo 展投稿以現場專案演示（如網頁遊戲、互動應用、機器人等可以現場互動或操作的作品）為核心，輔以靜態海報與短影音呈現學生個人或團隊的專案。"
 	},
 	"coc": {
 		"title": "行為準則",
@@ -49,21 +49,25 @@
 			"englishTitle": "OSCVPASS",
 			"description": [
 				"資格限制：對開源專案有貢獻者。",
-				"在 2025/01/21 23:59 前申請且通過者，有機會可以搶到 SITCON 2025 開源貢獻票邀請碼。申請表單、申請資格及更詳細的申請說明，請參考開源貢獻者快速通關",
-				"關於歷年來 OSCVPass 申請通過者的專案列表，請參考 OSCVPass 專案介紹。"
+				"在 2026/01/17 23:59 前申請且通過者，有機會可以獲得 SITCON 2026 開源貢獻票邀請碼。申請表單、申請資格及更詳細的申請說明，請參考<a href=https://ocf.tw/p/oscvpass/>開源貢獻者快速通關</a>。",
+				"關於歷年來 OSCVPass 申請通過者的專案列表，請參考 <a href=https://oscvpass.ocf.tw/?fbclid=IwAR0sFst9sZwPoLKRUwzOIpg-M_V7gZSZu3lvStcV3rqpRnZKjT6A1pl2nRU>OSCVPass 專案介紹</a>。"
 			],
 			"verticalTitle": "開源貢獻票"
 		},
 		"general": {
 			"title": "一般票",
 			"englishTitle": "GENERAL",
-			"description": ["一般大眾皆可參與。", "請關注 SITCON 官方網站及社群媒體以獲取最新售票資訊。"],
+			"description": ["第一波索票：2026/01/25 20:00～2026/02/07 23:59", "第二波索票：2026/02/23 20:00～2026/03/01 23:59"],
 			"verticalTitle": "一般票"
 		},
 		"longDistance": {
 			"title": "遠道而來票",
 			"englishTitle": "LONG DISTANCE",
-			"description": ["居住地距離會場較遠的參與者。", "需提供相關證明文件。"],
+			"description": [
+				"資格限制：住在偏鄉或離島、海外地區的學生。",
+				"先到先審制，報名者需在 2026/01/17 23:59 前填寫<a href=https://forms.gle/2rr5WYuuLQ6WgVkP7>申請表單</a>。",
+				"申請資格及更詳細的申請說明，請參考 <a href=https://hackmd.io/lYvvY7y_RaCr4ilKdq-XTQ>SITCON 2026 遠道而來票</a>。"
+			],
 			"verticalTitle": "遠道而來票"
 		},
 		"buttons": {
@@ -75,7 +79,7 @@
 	"joinUs": {
 		"title1": "加入我們",
 		"title2": "引領未來",
-		"description": "自 2013 年以來，SITCON 始終秉持著「不向與會者收費」的初心，<br />致力於推廣學生資訊教育。我們鼓勵參與者跳脫思想框架、發掘潛在的可能性，<br />並為學子們提供寶貴的學習與交流機會，陪伴無數學生踏入資訊領域的殿堂。",
+		"description": "自 2013 年以來，SITCON 始終秉持著「不向與會者收費」的初心，<br />致力於推廣學生資訊教育。我們鼓勵參與者跳脫思想框架、發掘潛在的可能性，<br />並為學子們提供寶貴的學習與交流機會，陪伴無數學生踏入資訊領域的殿堂。<br />如果您也認同 SITCON 的理念，歡迎以實際行動支持資訊教育的種子散播至臺灣的每個角落。",
 		"stats": ["> 累積逾 14,000 名與會者", "> 超過 500 位學生講者", "> 舉辦逾 500 場聚會和講座、10 場夏令營", "> 扶植近 1,400 名熱愛資訊的志工"],
 		"buttons": {
 			"sponsorRequest": "贊助徵求",
@@ -84,11 +88,16 @@
 	},
 	"sponsor": {
 		"main": "主辦單位",
-		"cohost": "合辦單位",
+		"cohost": "共同主辦",
 		"organizer": "協辦單位",
-		"pilot": "領航級",
-		"deep": "深耕級",
+		"sponsorNavigator": "領航級",
+		"sponsorDeepCultivation": "深耕級",
+		"sponsorVisionary": "前瞻級",
+		"sponsorNewSprout": "新芽級",
 		"personalSponsor": "個人贊助",
+		"personalSponsorThanks": "感謝所有熱情的個人贊助者！",
+		"mediaPartners": "媒體夥伴",
+		"supporters": "特別感謝",
 		"visitWebsite": "前往官網",
 		"sponsorLevel": "贊助等級",
 		"sponsorName": "贊助商名稱",

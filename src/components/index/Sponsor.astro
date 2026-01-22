@@ -1,96 +1,136 @@
 ---
 import { useTranslations, type Lang } from "@/utils/i18n";
+import sponsors from "@/data/sponsor.json";
 
 interface Props {
 	lang?: Lang;
 }
 
+interface Sponsor {
+	logo: string;
+	title_zh: string;
+	title_en: string;
+	description_zh: string;
+	description_en: string;
+	url: string;
+}
+
 const lang = Astro.props.lang ?? "zh";
 const t = useTranslations(lang).sponsor;
-const logoSrc = "/2026/img/SITCON-withname.svg";
 
-// 正式資料匯入會改用 json 儲存
-const sponsors = {
-	main: { name: "SITCON 學生計算機年會", desc: "學生自發組成的研討會，秉持著以學生為主軸的核心精神。", type: t.main },
-	cohost: Array.from({ length: 2 }).map((_, i) => ({
-		name: `${t.cohost} ${i + 1}`,
-		desc: "感謝合辦單位的強力支援！",
-		type: t.cohost
-	})),
-	organizer: { name: "協辦單位 A", desc: "協助場地與設備支援。", type: t.organizer },
-	pilot: Array.from({ length: 15 }).map((_, i) => ({
-		name: `${t.pilot}贊助 ${i + 1}`,
-		desc: `這是${t.pilot}贊助商 ${i + 1} 的詳細介紹文案......`,
-		type: t.pilot
-	})),
-	deep: Array.from({ length: 9 }).map((_, i) => ({
-		name: `${t.deep}贊助 ${i + 1}`,
-		desc: `這是${t.deep}贊助商 ${i + 1} 的詳細介紹文案......`,
-		type: t.deep
-	}))
-};
+const getTitle = (s: Sponsor) => (lang === "en" && s.title_en ? s.title_en : s.title_zh);
+const getDesc = (s: Sponsor) => (lang === "en" && s.description_en ? s.description_en : s.description_zh);
+const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
+
+const supportersList = sponsors.supporters as Sponsor[];
 ---
 
 <section class="sponsor-container">
 	<div class="content-wrapper">
-		<div class="section-group">
-			<div class="top-tier-grid">
-				<div class="tier-item">
-					<h3 class="tier-title">{t.main}</h3>
-					<button class="logo-box sponsor-trigger" data-name={sponsors.main.name} data-desc={sponsors.main.desc} data-type={sponsors.main.type} data-img={logoSrc}>
-						<img src={logoSrc} alt={sponsors.main.name} />
-					</button>
-				</div>
+		<div class="top-tier-grid">
+			<div class="tier-item">
+				<h3 class="tier-title">{t.main}</h3>
+				{
+					sponsors.main.map(s => (
+						<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.main} data-img={getLogo(s)} data-url={s.url}>
+							<img src={getLogo(s)} alt={getTitle(s)} />
+						</button>
+					))
+				}
+			</div>
 
-				<div class="tier-item">
-					<h3 class="tier-title">{t.cohost}</h3>
-					<div class="logo-row-2">
-						{
-							sponsors.cohost.map(s => (
-								<button class="logo-box sponsor-trigger" data-name={s.name} data-desc={s.desc} data-type={s.type} data-img={logoSrc}>
-									<img src={logoSrc} alt={s.name} />
-								</button>
-							))
-						}
-					</div>
-				</div>
-
-				<div class="tier-item">
-					<h3 class="tier-title">{t.organizer}</h3>
-					<button class="logo-box sponsor-trigger" data-name={sponsors.organizer.name} data-desc={sponsors.organizer.desc} data-type={sponsors.organizer.type} data-img={logoSrc}>
-						<img src={logoSrc} alt={sponsors.organizer.name} />
-					</button>
+			<div class="tier-item">
+				<h3 class="tier-title">{t.cohost}</h3>
+				<div class="logo-row-2">
+					{
+						sponsors.cohost.map(s => (
+							<button class="logo-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.cohost} data-img={getLogo(s)} data-url={s.url}>
+								<img src={getLogo(s)} alt={getTitle(s)} />
+							</button>
+						))
+					}
 				</div>
 			</div>
-		</div>
 
-		<div class="section-group">
-			<h3 class="tier-title text-reveal-title">{t.pilot}</h3>
-			<div class="main-grid">
+			<div class="tier-item">
+				<h3 class="tier-title">{t.organizer}</h3>
 				{
-					sponsors.pilot.map(s => (
-						<button class="logo-box center-box sponsor-trigger" data-name={s.name} data-desc={s.desc} data-type={s.type} data-img={logoSrc}>
-							<img src={logoSrc} alt={s.name} />
+					sponsors.organizer.map(s => (
+						<button class="logo-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.organizer} data-img={getLogo(s)} data-url={s.url}>
+							<img src={getLogo(s)} alt={getTitle(s)} />
 						</button>
 					))
 				}
 			</div>
 		</div>
 
-		<div class="section-group">
-			<h3 class="tier-title text-reveal-title">{t.deep}</h3>
-			<div class="main-grid">
-				{
-					sponsors.deep.map(s => (
-						<button class="logo-box center-box sponsor-trigger" data-name={s.name} data-desc={s.desc} data-type={s.type} data-img={logoSrc}>
-							<img src={logoSrc} alt={s.name} />
-						</button>
-					))
-				}
-				<button class="logo-box center-box person-sponsor sponsor-trigger" data-name={t.personalSponsor} data-desc="感謝所有熱情的個人贊助者！" data-type={t.personalSponsor}>
-					<span>{t.personalSponsor}</span>
-				</button>
-			</div>
+		<h3 class="tier-title text-reveal-title">{t.sponsorNavigator}</h3>
+		<div class="main-grid">
+			{
+				sponsors.sponsorNavigator.map(s => (
+					<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.sponsorNavigator} data-img={getLogo(s)} data-url={s.url}>
+						<img src={getLogo(s)} alt={getTitle(s)} />
+					</button>
+				))
+			}
+		</div>
+
+		<h3 class="tier-title text-reveal-title">{t.sponsorDeepCultivation}</h3>
+		<div class="main-grid">
+			{
+				sponsors.sponsorDeepCultivation.map(s => (
+					<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.sponsorDeepCultivation} data-img={getLogo(s)} data-url={s.url}>
+						<img src={getLogo(s)} alt={getTitle(s)} />
+					</button>
+				))
+			}
+		</div>
+
+		<h3 class="tier-title text-reveal-title">{t.sponsorVisionary}</h3>
+		<div class="main-grid">
+			{
+				sponsors.sponsorVisionary.map(s => (
+					<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.sponsorVisionary} data-img={getLogo(s)} data-url={s.url}>
+						<img src={getLogo(s)} alt={getTitle(s)} />
+					</button>
+				))
+			}
+		</div>
+
+		<h3 class="tier-title text-reveal-title">{t.sponsorNewSprout}</h3>
+		<div class="main-grid">
+			{
+				sponsors.sponsorNewSprout.map(s => (
+					<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.sponsorNewSprout} data-img={getLogo(s)} data-url={s.url}>
+						<img src={getLogo(s)} alt={getTitle(s)} />
+					</button>
+				))
+			}
+		</div>
+
+		<h3 class="tier-title text-reveal-title">{t.mediaPartners}</h3>
+		<div class="main-grid">
+			{
+				sponsors.mediaPartners.map(s => (
+					<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.mediaPartners} data-img={getLogo(s)} data-url={s.url}>
+						<img src={getLogo(s)} alt={getTitle(s)} />
+					</button>
+				))
+			}
+		</div>
+
+		<h3 class="tier-title text-reveal-title">{t.supporters}</h3>
+		<div class="main-grid">
+			{
+				supportersList.map(s => (
+					<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.supporters} data-img={getLogo(s)} data-url={s.url}>
+						<img src={getLogo(s)} alt={getTitle(s)} />
+					</button>
+				))
+			}
+			<button class="logo-box center-box person-sponsor sponsor-trigger" data-name={t.personalSponsor} data-desc={t.personalSponsorThanks} data-type={t.personalSponsor}>
+				<span>{t.personalSponsor}</span>
+			</button>
 		</div>
 	</div>
 </section>
@@ -110,7 +150,7 @@ const sponsors = {
 			</div>
 
 			<div class="logo-area">
-				<img id="dialog-img" src="" alt="Sponsor Logo" />
+				<img id="dialog-img" alt="Sponsor Logo" />
 			</div>
 
 			<div class="text-area">
@@ -138,7 +178,7 @@ const sponsors = {
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
-		gap: 5rem;
+		gap: 1rem;
 	}
 
 	.tier-title {
@@ -196,7 +236,7 @@ const sponsors = {
 	.logo-row-2 {
 		display: flex;
 		justify-content: center;
-		gap: 2rem;
+		gap: 1rem;
 	}
 
 	.main-grid {
@@ -482,6 +522,7 @@ const sponsors = {
 	const dialogDesc = document.getElementById("dialog-desc");
 	const dialogType = document.getElementById("dialog-type");
 	const dialogImg = document.getElementById("dialog-img") as HTMLImageElement | null;
+	const visitBtn = document.querySelector(".visit-btn") as HTMLAnchorElement | null;
 
 	const closeDialogAnim = () => {
 		if (!dialog) return;
@@ -501,12 +542,16 @@ const sponsors = {
 		const trigger = (e.target as Element)?.closest(".sponsor-trigger") as HTMLElement | null;
 
 		if (trigger && dialog) {
-			const { name, desc, type, img } = trigger.dataset;
+			const { name, desc, type, img, url } = trigger.dataset;
 
 			if (dialogTitle) dialogTitle.textContent = name ?? null;
 			if (dialogDesc) dialogDesc.textContent = desc ?? null;
 			if (dialogType) dialogType.textContent = type ?? null;
 			if (dialogImg && img) dialogImg.src = img;
+			if (visitBtn) {
+				visitBtn.href = url || "#";
+				visitBtn.style.display = url ? "inline-block" : "none";
+			}
 
 			dialog.showModal();
 		}

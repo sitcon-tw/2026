@@ -3,20 +3,10 @@ import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
 import { useTranslations } from "@/utils/i18n";
 import { X } from "@lucide/astro";
-import { Image } from "astro:assets";
 const lang = Astro.props.lang ?? "zh";
 const i18n = useTranslations(lang);
 const { info } = i18n;
 const { sections } = info;
-
-const activityImages = import.meta.glob<{ default: ImageMetadata }>("/src/assets/activities/*.{png,jpg,jpeg,webp,gif,svg}", { eager: true });
-
-function getActivityImage(file: string): ImageMetadata {
-	const key = `/src/assets/activities/${file}`;
-	const mod = activityImages[key];
-	if (!mod) throw new Error(`Missing activity image: ${key}`);
-	return (mod as any).default;
-}
 ---
 
 <Layout title={lang === "en" ? "Event Info - SITCON 2026" : "活動資訊 - SITCON 2026"} lang={lang}>
@@ -48,7 +38,7 @@ function getActivityImage(file: string): ImageMetadata {
 						{section.activities?.map((activity: { title: string; body?: string; image: { url: string; alt?: string; position?: string } }) => {
 							return (
 								<div class="activity" class:list={{ "activity-reverse": activity.image?.position === "right" }}>
-									<Image class="activity-image" src={getActivityImage(activity.image.url)} alt={activity.image.alt ?? activity.title} loading="lazy" />
+									<img class="activity-image" src="" alt={activity.image.alt ?? activity.title} loading="lazy" />
 									<div>
 										<h3 class="activity-title text-reveal-title">{activity.title}</h3>
 										{activity.body
