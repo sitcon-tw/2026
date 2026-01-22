@@ -14,6 +14,15 @@ const t = i18n.ticket;
 
 const tickets = [
 	{
+		id: "student",
+		title: t.student.title,
+		englishTitle: t.student.englishTitle,
+		color: "#D8C08A",
+		icon: CodeXml,
+		description: t.student.description,
+		verticalTitle: t.student.verticalTitle
+	},
+	{
 		id: "oscvpass",
 		title: t.oscvpass.title,
 		englishTitle: t.oscvpass.englishTitle,
@@ -228,7 +237,7 @@ const danmakuLines: string[] = danmakuData.lines;
 	}
 
 	.ticket-main-inner {
-		width: 55rem;
+		width: 50rem;
 		padding: 3rem;
 		display: flex;
 		flex-direction: column;
