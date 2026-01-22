@@ -9,7 +9,7 @@
 	pointer-events: none;
 }
 
-:global(.explore-item) {
+.explore-item {
 	opacity: 0;
 	visibility: hidden;
 }
