@@ -4,7 +4,7 @@ const { index, member, name, description } = Astro.props;
 ---
 
 <div class="team" id={`team-${index}`}>
-	<h2 class="title text-reveal-title">{name}</h2>
+	<h2 class="text-reveal-title">{name}</h2>
 	<p class="text text-reveal-paragraph">{description}</p>
 
 	<div class="person-group">
@@ -26,26 +26,33 @@ const { index, member, name, description } = Astro.props;
 </div>
 
 <style>
-	.title {
+	.team {
+		margin-bottom: 3rem;
+	}
+
+	h2 {
 		font-size: 3rem;
 		font-weight: 700;
 		font-family: "GenKiMinTW";
-		margin-bottom: 3rem;
+		margin-bottom: 1.5rem;
 	}
 
 	.text {
 		max-width: 34rem;
+		margin-bottom: 2rem;
 	}
 
 	.person-group {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: start;
+		gap: 2.5rem;
 	}
 
-	@media (max-width: 64rem) {
-		.team {
-			margin-bottom: 3.5rem;
+	@media (max-width: 640px) {
+		.person-group {
+			justify-content: center;
+			gap: 1.5rem;
 		}
 	}
 </style>

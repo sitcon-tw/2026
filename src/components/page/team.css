@@ -15,16 +15,21 @@
 }
 
 .anchor {
-	position: sticky;
+	position: fixed;
 	bottom: 2rem;
 	left: 0%;
 	z-index: 99;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: start;
 	overflow-x: auto;
 	width: 100%;
 	padding: 0.5rem;
+	width: fit-content;
+	scrollbar-width: none; /* Firefox */
+	left: 50%;
+	transform: translateX(-50%);
+	max-width: 90vw;
 }
 
 #switch-icon {
@@ -86,4 +91,5 @@
 
 main {
 	min-height: 100vh;
+	position: relative;
 }

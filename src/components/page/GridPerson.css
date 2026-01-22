@@ -4,7 +4,6 @@
 	align-items: center;
 	gap: 1rem;
 	max-width: 20rem;
-	margin: 2rem 1.5rem;
 	cursor: pointer;
 	transition:
 		transform 0.3s ease,
@@ -71,8 +70,15 @@
 }
 
 .text-group {
-	width: 10rem;
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+	.avatar-container {
+		width: 6rem;
+		height: 6rem;
+	}
 }

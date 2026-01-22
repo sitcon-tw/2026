@@ -370,25 +370,35 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 
 		// Get items and shuffle them for randomness
 		let items = gsap.utils.toArray(".explore-item") as HTMLElement[];
-		items.sort(() => Math.random() - 0.5);
 
-		// If targetIndex is present, prioritize those items by moving them to the front
-		// and mark them for central placement
+		// Filter items if targetIndex is set
 		if (targetIndex !== null) {
-			items.sort((a, b) => {
-				const aIsTarget = a.dataset.teamIndex === targetIndex;
-				const bIsTarget = b.dataset.teamIndex === targetIndex;
-				if (aIsTarget && !bIsTarget) return -1;
-				if (!aIsTarget && bIsTarget) return 1;
-				return 0;
-			});
+			items = items.filter(item => item.dataset.teamIndex === targetIndex);
 		}
+
+		items.sort(() => Math.random() - 0.5);
 
 		const placed: { centerX: number; centerY: number }[] = [];
 
-		items.forEach(item => {
-			const isTarget = targetIndex !== null && item.dataset.teamIndex === targetIndex;
+		// Hide filtered out items
+		const allItems = gsap.utils.toArray(".explore-item") as HTMLElement[];
+		allItems.forEach(item => {
+			const shouldShow = targetIndex === null || item.dataset.teamIndex === targetIndex;
+			if (!shouldShow) {
+				if (animate) {
+					gsap.to(item, {
+						autoAlpha: 0,
+						duration: 0.3,
+						ease: "power2.out",
+						pointerEvents: "none"
+					});
+				} else {
+					gsap.set(item, { autoAlpha: 0, pointerEvents: "none" });
+				}
+			}
+		});
 
+		items.forEach(item => {
 			let x = 0;
 			let y = 0;
 			let tries = 0;
@@ -405,25 +415,13 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 				});
 			}
 
-			// 1. Try Random Placement (Preference for center if target)
+			// 1. Try Random Placement
 			while (!success && tries < maxTries) {
 				let col, row;
 
-				if (isTarget && tries < 50) {
-					// Target: Try placing near center
-					const radius = 1;
-					const minC = Math.max(0, centerCol - radius);
-					const maxC = Math.min(maxCols - 1, centerCol + radius);
-					const minR = Math.max(0, centerRow - radius);
-					const maxR = Math.min(maxRows - 1, centerRow + radius);
-
-					col = Math.floor(Math.random() * (maxC - minC + 1)) + minC;
-					row = Math.floor(Math.random() * (maxR - minR + 1)) + minR;
-				} else {
-					// Random: Anywhere in view
-					col = Math.floor(Math.random() * maxCols);
-					row = Math.floor(Math.random() * maxRows);
-				}
+				// Random: Anywhere in view
+				col = Math.floor(Math.random() * maxCols);
+				row = Math.floor(Math.random() * maxRows);
 
 				x = offsetX + col * colWidth;
 
@@ -562,6 +560,7 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 	initPanZoom();
 
 	// Anchor Listeners
+	let currentActiveIndex: string | null = null;
 	const anchorBtns = document.querySelectorAll(".anchor-btn");
 	anchorBtns.forEach(btn => {
 		btn.addEventListener("click", e => {
@@ -569,13 +568,19 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 			if (btn.tagName === "A") return;
 			e.preventDefault();
 
-			anchorBtns.forEach(b => b.classList.remove("active"));
-			btn.classList.add("active");
-
 			const index = (btn as HTMLElement).dataset.index;
 
-			// Shuffle items, centering the selected team
-			layoutItems(index || null, true);
+			// Toggle: if clicking the same button, deactivate it
+			if (currentActiveIndex === index) {
+				anchorBtns.forEach(b => b.classList.remove("active"));
+				currentActiveIndex = null;
+				layoutItems(null, true);
+			} else {
+				anchorBtns.forEach(b => b.classList.remove("active"));
+				btn.classList.add("active");
+				currentActiveIndex = index || null;
+				layoutItems(index || null, true);
+			}
 		});
 	});
 </script>
