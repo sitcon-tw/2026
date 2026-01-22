@@ -341,6 +341,24 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 		);
 	};
 
+	const getOver640 = (w: number) => (w <= 640 ? false : true);
+
+	let lastOver640 = getOver640((document.querySelector(".explore-container") as HTMLElement | null)?.offsetWidth ?? window.innerWidth);
+
+	const handleResize = () => {
+		const container = document.querySelector(".explore-container") as HTMLElement | null;
+		const w = container?.offsetWidth ?? window.innerWidth;
+
+		const over640 = getOver640(w);
+		if (over640 === lastOver640) return;
+
+		lastOver640 = over640;
+		layoutItems(currentActiveIndex, false);
+	};
+
+	window.addEventListener("resize", handleResize);
+	window.addEventListener("orientationchange", handleResize);
+
 	const layoutItems = (targetIndex: string | null = null, animate = false) => {
 		const container = document.querySelector(".explore-container") as HTMLElement;
 		if (!container) return;
@@ -349,8 +367,17 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 		const height = container.offsetHeight;
 
 		// Initial constraints
-		const imageSize = 180;
-		const imageGap = 64;
+		let imageSize = 180;
+		let imageGap = 64;
+
+		if (width <= 640) {
+			imageSize = 128;
+			imageGap = 20;
+		} else if (width <= 900) {
+			imageSize = 160;
+			imageGap = 48;
+		}
+
 		const minDistance = imageSize + imageGap;
 
 		// Grid configuration
