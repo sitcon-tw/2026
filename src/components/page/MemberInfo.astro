@@ -13,7 +13,9 @@ const { id = "member-info-modal" } = Astro.props;
 	<h1 id="member-name"></h1>
 	<h2 id="member-position"></h2>
 	<div class="avatar">
-		<img id="member-avatar-img" class="avatar-img" src="" alt="" />
+		<div class="avatar-container" id="member-avatar-container">
+			<!-- 根據 mode 動態生成層級 -->
+		</div>
 	</div>
 	<p id="member-description"></p>
 	<div class="social">
@@ -58,7 +60,7 @@ const { id = "member-info-modal" } = Astro.props;
 		// Open modal logic
 		const trigger = target.closest(".person-trigger") as HTMLElement | null;
 		if (trigger) {
-			const { name, position, avatar, social, team, description } = trigger.dataset;
+			const { name, position, link, team, description, mode, color } = trigger.dataset;
 
 			const modal = document.getElementById("member-info-modal");
 			if (modal) {
@@ -69,22 +71,58 @@ const { id = "member-info-modal" } = Astro.props;
 
 				if (nameEl) nameEl.textContent = name || "";
 				if (posEl) posEl.textContent = `${team} ● ${position}` || "";
-				if (descEl) descEl.textContent = description || "";
+				if (descEl) {
+					// 將 \n 轉換成 <br> 以支援換行
+					const descText = (description || "").replace(/\\n/g, "\n").replace(/\n/g, "<br>");
+					descEl.innerHTML = descText;
+				}
 
-				// Update Avatar
-				const avatarImg = modal.querySelector("#member-avatar-img") as HTMLImageElement | null;
-				if (avatarImg) {
-					avatarImg.src = avatar || "";
-					avatarImg.alt = `${name} avatar`;
-					avatarImg.setAttribute("object-fit", "contain");
+				// Update Avatar - 根據 mode 生成不同結構
+				const avatarContainer = modal.querySelector("#member-avatar-container") as HTMLElement | null;
+				if (avatarContainer && name) {
+					const backImgUrl = `/2026/img/avatar/back/${name}.webp`;
+					const frontImgUrl = `/2026/img/avatar/front/${name}.webp`;
+
+					// 清空容器
+					avatarContainer.innerHTML = "";
+
+					if (mode === "nobg") {
+						// 只有後層
+						avatarContainer.innerHTML = `
+							<div class="avatar-layer avatar-back">
+								<img class="avatar-img" src="${backImgUrl}" alt="${name}" />
+							</div>
+						`;
+					} else if (mode === "color") {
+						// 只有前層 + 顏色背景
+						avatarContainer.innerHTML = `
+							<div class="avatar-layer avatar-bg" style="background-color: #${color};"></div>
+							<div class="avatar-layer avatar-front">
+								<img class="avatar-img" src="${frontImgUrl}" alt="${name}" />
+							</div>
+						`;
+					} else {
+						// 默認：雙層
+						avatarContainer.innerHTML = `
+							<div class="avatar-layer avatar-back">
+								<img class="avatar-img" src="${backImgUrl}" alt="${name}" />
+							</div>
+							<div class="avatar-layer avatar-front">
+								<img class="avatar-img" src="${frontImgUrl}" alt="${name}" />
+							</div>
+						`;
+					}
+
+					// 初始化 3D 效果
+					init3DEffectForModal(avatarContainer);
 				}
 
 				// Update Social Button
 				const socialBtn = modal.querySelector("#member-social-btn") as HTMLElement | null;
 				if (socialBtn) {
-					socialBtn.setAttribute("data-url", social || "");
-					socialBtn.textContent = getSocialText(social || "");
-					socialBtn.style.display = social ? "inline-block" : "none";
+					socialBtn.setAttribute("data-url", link || "");
+					socialBtn.textContent = getSocialText(link || "");
+					socialBtn.style.display = link ? "inline-block" : "none";
 					socialBtn.setAttribute("aria-label", socialBtn.textContent || "");
 				}
 
@@ -111,6 +149,80 @@ const { id = "member-info-modal" } = Astro.props;
 			return;
 		}
 	});
+
+	// 3D 視差效果（用於 popup）- 全螢幕追蹤
+	let currentModalMouseHandler: ((e: MouseEvent) => void) | null = null;
+
+	function init3DEffectForModal(container: HTMLElement) {
+		const layers = container.querySelectorAll(".avatar-layer");
+
+		// 移除舊的全域監聽器（如果有）
+		if (currentModalMouseHandler) {
+			document.removeEventListener("mousemove", currentModalMouseHandler);
+		}
+
+		const handleMouseMove = (e: MouseEvent) => {
+			// 計算滑鼠相對於螢幕中心的位置
+			const screenCenterX = window.innerWidth / 2;
+			const screenCenterY = window.innerHeight / 2;
+
+			const mouseX = e.clientX;
+			const mouseY = e.clientY;
+
+			// 相對於螢幕中心的偏移量（標準化到 -1 到 1）
+			const offsetX = (mouseX - screenCenterX) / screenCenterX;
+			const offsetY = (mouseY - screenCenterY) / screenCenterY;
+
+			layers.forEach(layer => {
+				const isBack = layer.classList.contains("avatar-back");
+				const isBg = layer.classList.contains("avatar-bg");
+
+				// 後層（back）移動速度更快，製造 3D 效果
+				let speedMultiplier = 1;
+				if (isBack) {
+					speedMultiplier = 1.8;
+				} else if (isBg) {
+					speedMultiplier = 0; // 背景不動
+				}
+
+				const maxOffset = 5; // 最大偏移量（像素）
+				const translateX = offsetX * maxOffset * speedMultiplier;
+				const translateY = offsetY * maxOffset * speedMultiplier;
+
+				(layer as HTMLElement).style.transform = `scale(1.125) translate(${translateX}px, ${translateY}px)`;
+			});
+		};
+
+		currentModalMouseHandler = handleMouseMove;
+
+		// 全螢幕追蹤滑鼠
+		document.addEventListener("mousemove", handleMouseMove);
+	}
+
+	// 關閉 modal 時清除監聽器
+	function cleanup3DEffectForModal() {
+		if (currentModalMouseHandler) {
+			document.removeEventListener("mousemove", currentModalMouseHandler);
+			currentModalMouseHandler = null;
+		}
+	}
+
+	// 監聽 modal 關閉
+	const modalObserver = new MutationObserver(mutations => {
+		mutations.forEach(mutation => {
+			if (mutation.type === "attributes" && mutation.attributeName === "class") {
+				const modal = mutation.target as HTMLElement;
+				if (!modal.classList.contains("show")) {
+					cleanup3DEffectForModal();
+				}
+			}
+		});
+	});
+
+	const memberModal = document.getElementById("member-info-modal");
+	if (memberModal) {
+		modalObserver.observe(memberModal, { attributes: true });
+	}
 </script>
 
 <style>
@@ -205,6 +317,43 @@ const { id = "member-info-modal" } = Astro.props;
 		align-self: flex-end;
 	}
 
+	.avatar-container {
+		position: relative;
+		width: 10rem;
+		height: 10rem;
+		border-radius: 1rem;
+		overflow: hidden;
+	}
+
+	.avatar-layer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform: scale(1.125);
+		transition: transform 0.1s ease-out;
+		will-change: transform;
+	}
+
+	.avatar-bg {
+		z-index: 0;
+	}
+
+	.avatar-back {
+		z-index: 1;
+	}
+
+	.avatar-front {
+		z-index: 2;
+	}
+
+	.avatar-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
 	#member-social-btn {
 		padding: 0.5rem 1rem;
 		background-color: #000;
@@ -230,15 +379,6 @@ const { id = "member-info-modal" } = Astro.props;
 		font-size: 1rem;
 		font-weight: 700;
 		line-height: 1.5;
-		word-break: break-word;
-	}
-
-	.avatar-img {
-		width: 10rem;
-		height: 10rem;
-		border-radius: 1rem;
-		background-color: #fff;
-		object-fit: contain;
 	}
 
 	@media (max-width: 64rem) {

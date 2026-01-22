@@ -1,6 +1,10 @@
 // @ts-check
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
@@ -11,12 +15,26 @@ export default defineConfig({
 	build: {
 		format: "directory"
 	},
+	vite: {
+		resolve: {
+			alias: {
+				"@": path.resolve(__dirname, "./src")
+			}
+		}
+	},
+	i18n: {
+		defaultLocale: "zh",
+		locales: ["zh", "en"],
+		routing: {
+			prefixDefaultLocale: false // / 是中文
+		}
+	},
 	integrations: [
 		sitemap({
 			i18n: {
-				defaultLocale: "zh-Hant",
+				defaultLocale: "zh",
 				locales: {
-					"zh-Hant": "zh-TW",
+					zh: "zh-TW",
 					en: "en-US"
 				}
 			},

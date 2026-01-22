@@ -2,164 +2,80 @@
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
 import MemberInfo from "@/components/page/MemberInfo.astro";
-import ExplorePerson from "@/components/page/ExplorePerson.astro";
+import GridPerson from "@/components/page/GridPerson.astro";
 import { List } from "@lucide/astro";
 
-const team_data = [
-	{
-		name: "開發組",
-		description: "致力於用程式碼構築年會的數位基石，維護官網與 App 的穩定運作。我們是一群熱愛技術的開發者，將天馬行空的設計轉化為實際的互動體驗，歡迎來這裡交流切磋！",
-		member: [
-			{
-				name: "開發組名_0",
-				position: "組長",
-				avatar_url: "https://api.iconify.design/mdi:code-tags.svg?color=%23f5f6ee",
-				social_link: "https://github.com/sitcon-tw",
-				description: "熱愛開源技術，喜歡探索新技術的極限。致力於讓 SITCON 官網體驗更流暢。"
-			},
-			{
-				name: "開發組名_1",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:terminal.svg?color=%23f5f6ee",
-				social_link: "",
-				description: "專注於後端開發，確保系統穩定運行。喜歡在半夜寫 Code，享受寧靜的 Coding 時光。"
-			},
-			{
-				name: "開發組名_2",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:git.svg?color=%23f5f6ee",
-				social_link: "https://example.com",
-				description: "版本控制大師，隨時準備好解救大家的 Merge Conflict。相信 Git 是世界上最好的發明。"
-			},
-			{
-				name: "開發組名_3",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:bug-outline.svg?color=%23f5f6ee",
-				social_link: "https://twitter.com/dev_3",
-				description: "Bug 獵人，看到 Bug 就會興奮。目標是寫出沒有 Bug 的程式碼（雖然是不可能的任務）。"
-			},
-			{
-				name: "開發組名_4",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:database.svg?color=%23f5f6ee",
-				social_link: "https://instagram.com/life_of_4",
-				description: "資料庫管家，小心翼翼地守護著每一筆資料。對於資料結構有著極高的潔癖。"
-			}
-		]
-	},
-	{
-		name: "議程組",
-		description: "負責年會所有的議程規劃與講師邀請，是年會內容的核心產出者。我們需要閱讀大量的技術投稿，並從中篩選出最適合年會的議題，確保會眾能聽到最優質的內容。",
-		member: [
-			{
-				name: "議程組名_5",
-				position: "組長",
-				avatar_url: "https://api.iconify.design/mdi:calendar-clock.svg?color=%23f5f6ee",
-				social_link: "https://medium.com/@agenda_lead",
-				description: "時間管理大師，精確掌握每一場議程的進度。致力於帶來最多元、最有趣的議程內容。"
-			},
-			{
-				name: "議程組名_6",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:microphone.svg?color=%23f5f6ee",
-				social_link: "",
-				description: "喜歡聆聽各種技術分享，從中尋找靈感。希望能讓每一位講者都能在舞台上發光發熱。"
-			},
-			{
-				name: "議程組名_7",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:presentation.svg?color=%23f5f6ee",
-				social_link: "https://github.com/agenda_review",
-				description: "簡報設計愛好者，對於視覺呈現有著極高的要求。協助講者將複雜的技術概念轉化為易懂的圖表。"
-			},
-			{
-				name: "議程組名_8",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:script-text.svg?color=%23f5f6ee",
-				social_link: "https://twitter.com/talks_hunter",
-				description: "文字工作的熱愛者，負責撰寫動人的議程介紹。希望能透過文字吸引更多人來參與 SITCON。"
-			}
-		]
-	},
-	{
-		name: "財務組",
-		description: "掌管年會的財政大權，確保每一分贊助與預算都能發揮最大效益。我們需要細心與耐心，處理繁雜的報帳與預算編列，是活動背後最堅實的後盾。",
-		member: [
-			{
-				name: "財務組名_10",
-				position: "組長",
-				avatar_url: "https://api.iconify.design/mdi:finance.svg?color=%23f5f6ee",
-				social_link: "https://instagram.com/money_keeper",
-				description: "精打細算的財務長，每一筆支出都要經過嚴格審核。目標是讓 SITCON 的財務狀況永遠健康。"
-			},
-			{
-				name: "財務組名_11",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:calculator.svg?color=%23f5f6ee",
-				social_link: "https://linkedin.com/in/finance_pro",
-				description: "Excel 表格達人，能用最快的速度整理好所有數據。對於數字有著極高的敏感度。"
-			}
-		]
-	},
-	{
-		name: "場務組",
-		description: "年會當天的現場守護神，負責動線規劃、設備架設與突發狀況處理。我們是活動順利進行的幕後功臣，需要強大的應變能力來面對各種挑戰。",
-		member: [
-			{
-				name: "場務組名_12",
-				position: "組長",
-				avatar_url: "https://api.iconify.design/mdi:map-marker-radius.svg?color=%23f5f6ee",
-				social_link: "https://twitter.com/field_ops",
-				description: "場地規劃專家，熟悉每一個角落的配置。確保動線順暢，讓會眾能輕鬆找到想去的地方。"
-			},
-			{
-				name: "場務組名_13",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:power-plug.svg?color=%23f5f6ee",
-				social_link: "",
-				description: "電力供應守護者，確保每一個插座都有電。隨身攜帶延長線，隨時準備支援電力需求。"
-			},
-			{
-				name: "場務組名_14",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:video-input-antenna.svg?color=%23f5f6ee",
-				social_link: "https://facebook.com/venue_staff",
-				description: "視聽設備達人，確保投影與音響效果完美呈現。對於線材收納有著近乎強迫症的堅持。"
-			},
-			{
-				name: "場務組名_16",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:account-hard-hat.svg?color=%23f5f6ee",
-				social_link: "",
-				description: "安全第一的守護者，時刻注意現場的安全狀況。遇到突發狀況總能冷靜應對，化險為夷。"
-			},
-			{
-				name: "場務組名_17",
-				position: "組員",
-				avatar_url: "https://api.iconify.design/mdi:cctv.svg?color=%23f5f6ee",
-				social_link: "https://instagram.com/behind_scenes",
-				description: "默默付出的幕後英雄，總是出現在最需要的地方。喜歡觀察人群，確保每一個人都玩得開心。"
-			}
-		]
-	}
-];
+import team_data_raw from "@/data/team.json";
+import { useTranslations, type Lang } from "@/utils/i18n";
+
+import "@/components/page/team.css";
+
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const i18n = useTranslations(lang);
+const TEAM_METADATA = i18n.team;
+const ROLE_MAP = i18n.role;
+const t = i18n.teamPage;
+const prefix = lang === "en" ? "/2026/en" : "/2026";
+
+const teamsMap = new Map();
+
+team_data_raw.forEach(person => {
+	person.teams.forEach(team => {
+		if (!teamsMap.has(team.name)) {
+			teamsMap.set(team.name, {
+				id: team.name,
+				name: (TEAM_METADATA as Record<string, { name: string; description: string }>)[team.name]?.name || team.name,
+				description: (TEAM_METADATA as Record<string, { name: string; description: string }>)[team.name]?.description || "",
+				member: []
+			});
+		}
+		teamsMap.get(team.name).member.push({
+			name: person.name,
+			position: (ROLE_MAP as Record<string, string>)[team.role] || team.role,
+			avatar_url: `/2026/img/avatar/back/${person.name}.webp`,
+			link: person.link,
+			description: person.description,
+			mode: person.mode,
+			color: person.color
+		});
+	});
+});
+
+const team_data = Array.from(teamsMap.values()).map((team: any) => {
+	// ensure head is first
+	team.member.sort((a: any, b: any) => {
+		if (a.position === ROLE_MAP.head && b.position !== ROLE_MAP.head) return -1;
+		if (a.position !== ROLE_MAP.head && b.position === ROLE_MAP.head) return 1;
+		return 0;
+	});
+	return team;
+});
 ---
 
-<Layout>
+<Layout title={lang === "en" ? "Team - SITCON 2026" : "團隊成員 - SITCON 2026"} lang={lang}>
 	<main>
 		<div class="explore-container">
 			<div id="explore-universe">
 				{
 					team_data.map((team, index) => {
-						return team.member.map(member => (
-							<ExplorePerson
+						return team.member.map((member: { name: string; position: string; avatar_url: string; link: string; description: string; mode?: string; color?: string }) => (
+							<GridPerson
 								name={member.name}
 								avatar_url={member.avatar_url}
 								position={member.position}
-								social_link={member.social_link}
+								link={member.link}
 								description={member.description}
-								team_index={index}
-								team_name={team.name}
+								teamIndex={index}
+								team={team.name}
+								mode={member.mode}
+								color={member.color}
+								shape="circle"
+								showText={false}
+								className="explore-item"
 								style=""
 							/>
 						));
@@ -173,12 +89,12 @@ const team_data = [
 
 		<!-- anchor -->
 		<div class="anchor">
-			<a class="anchor-switch anchor-btn" href="/2026/team/" aria-label="切換至列表模式">
-				<div class="anchor-box anchor-icon">
+			<a class="anchor-switch anchor-btn" href={`${prefix}/team/`} aria-label={lang === "en" ? "Switch to list mode" : "切換至列表模式"}>
+				<div class="anchor-box" id="switch-icon">
 					<List size={18} />
 				</div>
-				<div class="anchor-box">
-					<span class="anchor-text-span">列表模式</span>
+				<div class="anchor-box" id="switch-text">
+					<span class="anchor-text-span">{t.listMode}</span>
 				</div>
 			</a>
 			{
@@ -455,25 +371,37 @@ const team_data = [
 
 		// Get items and shuffle them for randomness
 		let items = gsap.utils.toArray(".explore-item") as HTMLElement[];
-		items.sort(() => Math.random() - 0.5);
+		console.log(`Total items found: ${items.length}, filtering for index: ${targetIndex}`);
 
-		// If targetIndex is present, prioritize those items by moving them to the front
-		// and mark them for central placement
+		// Filter items if targetIndex is set
 		if (targetIndex !== null) {
-			items.sort((a, b) => {
-				const aIsTarget = a.dataset.teamIndex === targetIndex;
-				const bIsTarget = b.dataset.teamIndex === targetIndex;
-				if (aIsTarget && !bIsTarget) return -1;
-				if (!aIsTarget && bIsTarget) return 1;
-				return 0;
-			});
+			items = items.filter(item => String(item.dataset.teamIndex) === String(targetIndex));
+			console.log(`Filtered items: ${items.length}`);
 		}
+
+		items.sort(() => Math.random() - 0.5);
 
 		const placed: { centerX: number; centerY: number }[] = [];
 
-		items.forEach(item => {
-			const isTarget = targetIndex !== null && item.dataset.teamIndex === targetIndex;
+		// Hide filtered out items
+		const allItems = gsap.utils.toArray(".explore-item") as HTMLElement[];
+		allItems.forEach(item => {
+			const shouldShow = targetIndex === null || String(item.dataset.teamIndex) === String(targetIndex);
+			if (!shouldShow) {
+				if (animate) {
+					gsap.to(item, {
+						autoAlpha: 0,
+						duration: 0.3,
+						ease: "power2.out",
+						pointerEvents: "none"
+					});
+				} else {
+					gsap.set(item, { autoAlpha: 0, pointerEvents: "none" });
+				}
+			}
+		});
 
+		items.forEach(item => {
 			let x = 0;
 			let y = 0;
 			let tries = 0;
@@ -490,25 +418,13 @@ const team_data = [
 				});
 			}
 
-			// 1. Try Random Placement (Preference for center if target)
+			// 1. Try Random Placement
 			while (!success && tries < maxTries) {
 				let col, row;
 
-				if (isTarget && tries < 50) {
-					// Target: Try placing near center
-					const radius = 1;
-					const minC = Math.max(0, centerCol - radius);
-					const maxC = Math.min(maxCols - 1, centerCol + radius);
-					const minR = Math.max(0, centerRow - radius);
-					const maxR = Math.min(maxRows - 1, centerRow + radius);
-
-					col = Math.floor(Math.random() * (maxC - minC + 1)) + minC;
-					row = Math.floor(Math.random() * (maxR - minR + 1)) + minR;
-				} else {
-					// Random: Anywhere in view
-					col = Math.floor(Math.random() * maxCols);
-					row = Math.floor(Math.random() * maxRows);
-				}
+				// Random: Anywhere in view
+				col = Math.floor(Math.random() * maxCols);
+				row = Math.floor(Math.random() * maxRows);
 
 				x = offsetX + col * colWidth;
 
@@ -647,6 +563,7 @@ const team_data = [
 	initPanZoom();
 
 	// Anchor Listeners
+	let currentActiveIndex: string | null = null;
 	const anchorBtns = document.querySelectorAll(".anchor-btn");
 	anchorBtns.forEach(btn => {
 		btn.addEventListener("click", e => {
@@ -654,93 +571,24 @@ const team_data = [
 			if (btn.tagName === "A") return;
 			e.preventDefault();
 
-			anchorBtns.forEach(b => b.classList.remove("active"));
-			btn.classList.add("active");
-
 			const index = (btn as HTMLElement).dataset.index;
 
-			// Shuffle items, centering the selected team
-			layoutItems(index || null, true);
+			// Toggle: if clicking the same button, deactivate it
+			if (currentActiveIndex === index) {
+				anchorBtns.forEach(b => b.classList.remove("active"));
+				currentActiveIndex = null;
+				layoutItems(null, true);
+			} else {
+				anchorBtns.forEach(b => b.classList.remove("active"));
+				btn.classList.add("active");
+				currentActiveIndex = index || null;
+				layoutItems(index || null, true);
+			}
 		});
 	});
 </script>
 
 <style>
-	.nav-mask-bottom {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 100vw;
-		height: 8rem;
-		background: linear-gradient(to top, #ac782b, transparent);
-		z-index: 10;
-		pointer-events: none;
-	}
-
-	:global(.explore-item) {
-		opacity: 0;
-		visibility: hidden;
-	}
-
-	.anchor {
-		position: fixed;
-		bottom: 2rem;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 99;
-		display: inline-flex;
-		align-items: center;
-		justify-content: flex-start;
-		overflow-x: auto;
-		max-width: 90vw;
-		padding: 0.5rem;
-	}
-
-	.anchor-box {
-		display: flex;
-		align-items: center;
-		width: fit-content;
-		padding: 0.7rem 1.25rem;
-		margin: 0.125rem;
-		height: 2.5rem;
-		border-radius: 0.25rem;
-		background-color: #f5f6ee;
-		color: #222222;
-		cursor: pointer;
-		flex-shrink: 0;
-		white-space: nowrap;
-	}
-
-	.anchor-switch {
-		display: flex;
-	}
-
-	.anchor-text-span {
-		font-size: 1rem;
-		font-weight: 500;
-		text-align: center;
-	}
-
-	.anchor-btn {
-		text-decoration: none;
-		transition: transform 0.2s ease;
-	}
-
-	.anchor-btn:hover {
-		transform: translateY(-0.25rem);
-	}
-
-	.anchor-switch .anchor-box,
-	.anchor-btn.active {
-		background-color: #222222;
-		color: #f5f6ee;
-	}
-
-	.anchor-switch .anchor-box .anchor-text-span,
-	.anchor-btn.active .anchor-text-span {
-		font-weight: 700;
-	}
-
 	.explore-container {
 		position: relative;
 		width: 100vw;
@@ -775,7 +623,21 @@ const team_data = [
 		pointer-events: none;
 	}
 
-	main {
-		min-height: 100vh;
+	.nav-mask-bottom {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+		height: 8rem;
+		background: linear-gradient(to top, #ac782b, transparent);
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	.explore-item {
+		position: absolute;
+		left: 0;
+		top: 0;
+		margin: 0;
 	}
 </style>

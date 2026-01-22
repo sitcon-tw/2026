@@ -1,6 +1,10 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import { Move, ChevronUp } from "@lucide/astro";
+import { useTranslations } from "@/utils/i18n";
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).academiaSinica;
 ---
 
 <style>
@@ -115,7 +119,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 
 <Layout>
 	<div id="instructions">
-		<span>點擊螢幕開始逛中研院！</span>
+		<span>{t.instruction}</span>
 	</div>
 
 	<div id="touchControls">
@@ -136,101 +140,368 @@ import { Move, ChevronUp } from "@lucide/astro";
 
 <script>
 	import * as THREE from "three";
-	import * as CANNON from "cannon-es";
+	import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+	import { Octree } from "three/examples/jsm/math/Octree.js";
+	import { Capsule } from "three/examples/jsm/math/Capsule.js";
+
+	// helpers (type guards / utils)
+	function mustGetEl<T extends HTMLElement>(id: string): T {
+		const el = document.getElementById(id);
+		if (!el) throw new Error(`Missing DOM: #${id}`);
+		return el as T;
+	}
+
+	function isMesh(obj: THREE.Object3D): obj is THREE.Mesh {
+		return (obj as THREE.Mesh).isMesh === true;
+	}
+
+	// Some projects have mixed three versions. Make texture SRGB in a typed-safe way.
+	type LegacyTextureEncoding = { encoding: number };
+	function setTextureToSRGB(tex: THREE.Texture): void {
+		// Modern three: texture.colorSpace exists
+		if ("colorSpace" in tex) {
+			tex.colorSpace = THREE.SRGBColorSpace;
+			return;
+		}
+		// Legacy three: texture.encoding existed (and sRGBEncoding constant may not be in typings)
+		// Numeric value of THREE.sRGBEncoding was 3001 in older versions.
+		(tex as unknown as LegacyTextureEncoding).encoding = 3001;
+	}
 
 	// DOM
-	const canvas = document.getElementById("c");
-	const instructions = document.getElementById("instructions");
-	const touchControls = document.getElementById("touchControls");
-	const joy = document.getElementById("joy");
-	const joyKnob = document.getElementById("joyKnob");
-	const jumpBtn = document.getElementById("jump");
-	if (!canvas || !instructions || !touchControls || !joy || !joyKnob || !jumpBtn) throw new Error("Missing DOM");
+	const canvas = mustGetEl<HTMLCanvasElement>("c");
+	const instructions = mustGetEl<HTMLDivElement>("instructions");
+	const touchControls = mustGetEl<HTMLDivElement>("touchControls");
+	const joy = mustGetEl<HTMLDivElement>("joy");
+	const joyKnob = mustGetEl<HTMLDivElement>("joyKnob");
+	const jumpBtn = mustGetEl<HTMLButtonElement>("jump");
 
-	const isTouchDevice = (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) || navigator.maxTouchPoints > 0;
+	const isTouchDevice: boolean = (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) || navigator.maxTouchPoints > 0;
 
 	// THREE
 	const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 	const scene = new THREE.Scene();
-	scene.background = new THREE.Color(0x87ceeb);
-	scene.fog = new THREE.Fog(0x87ceeb, 20, 160);
+	scene.background = new THREE.Color(0xa97c21);
+	scene.fog = new THREE.Fog(0xa97c21, 20, 160);
 
 	const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 500);
-	camera.position.set(0, 1, 5);
+	camera.position.set(0, 2, 6);
 
 	scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.0));
 	const sun = new THREE.DirectionalLight(0xffffff, 1.0);
 	sun.position.set(10, 20, 10);
 	scene.add(sun);
 
-	const floor = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshStandardMaterial({ color: 0x3a7d44 }));
+	// Colliders group: put meshes you want collision with in here
+	const colliders = new THREE.Group();
+	scene.add(colliders);
+
+	const floor = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshStandardMaterial({ color: 0x3c2d0e }));
 	floor.rotation.x = -Math.PI / 2;
-	scene.add(floor);
+	floor.receiveShadow = true;
+	colliders.add(floor);
 
-	const boxMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: 0xffcc00 }));
-	scene.add(boxMesh);
+	// Debug visuals
+	// Player dimensions (matching the original capsule: radius 0.35, height ~1.95)
+	const playerWidth = 0.7; // 2 * radius
+	const playerHeight = 1.95; // total capsule height
+	const playerDepth = 0.7; // 2 * radius
 
-	// CANNON
-	const world = new CANNON.World({ gravity: new CANNON.Vec3(0, -20, 0) });
-	world.allowSleep = true;
+	// Actual dimensions after model is loaded and scaled
+	let actualPlayerWidth = playerWidth;
+	let actualPlayerHeight = playerHeight;
+	let actualPlayerDepth = playerDepth;
 
-	const matPlayer = new CANNON.Material("player");
-	const matGround = new CANNON.Material("ground");
-	const matBox = new CANNON.Material("box");
-
-	world.addContactMaterial(new CANNON.ContactMaterial(matPlayer, matGround, { friction: 0.0, restitution: 0.0 }));
-	world.addContactMaterial(new CANNON.ContactMaterial(matPlayer, matBox, { friction: 0.0, restitution: 0.0 }));
-
-	const groundBody = new CANNON.Body({ type: CANNON.Body.STATIC, material: matGround });
-	groundBody.addShape(new CANNON.Plane());
-	groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
-	world.addBody(groundBody);
-
-	const boxBody = new CANNON.Body({ mass: 0, material: matBox, position: new CANNON.Vec3(2, 1, 0) });
-	boxBody.addShape(new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 0.5)));
-	world.addBody(boxBody);
-
-	// Player setting
-	const playerRadius = 0.5;
-	const playerBody = new CANNON.Body({
-		mass: 5,
-		material: matPlayer,
-		position: new CANNON.Vec3(0, 3, 0),
-		shape: new CANNON.Sphere(playerRadius)
-	});
-	playerBody.allowSleep = false;
-	world.addBody(playerBody);
-
-	// Set to zero because we don't want to let the user see the ball
-	const playerMesh = new THREE.Mesh(new THREE.SphereGeometry(0, 24, 24), new THREE.MeshStandardMaterial({ color: 0xddddff }));
+	// Player mesh - will be replaced by stone.glb
+	let playerMesh: THREE.Object3D = new THREE.Mesh(new THREE.BoxGeometry(playerWidth, playerHeight, playerDepth), new THREE.MeshStandardMaterial({ color: 0xddddff, wireframe: true }));
+	playerMesh.castShadow = true;
 	scene.add(playerMesh);
 
-	let enabled = false;
-	let yaw = 0;
-	let pitch = 0;
-	const pitchLimit = Math.PI / 2 - 0.05;
+	// Debug box helper for physics visualization (rotatable wireframe box)
+	const playerBoxGeometry = new THREE.BoxGeometry(playerWidth, playerHeight, playerDepth);
+	const playerBoxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+	const playerBoxHelper = new THREE.Mesh(playerBoxGeometry, playerBoxMaterial);
+	scene.add(playerBoxHelper);
 
-	document.addEventListener("mousemove", e => {
-		if (document.pointerLockElement !== canvas) return;
-		const sens = 0.002;
-		yaw -= e.movementX * sens;
-		pitch -= e.movementY * sens;
+	const debugHelpers: THREE.Object3D[] = [playerBoxHelper];
+	let debugVisible: boolean = false;
+
+	function createBoundingBox(object: THREE.Object3D, color = 0xffff00): THREE.BoxHelper {
+		const helper = new THREE.BoxHelper(object, color);
+		helper.visible = debugVisible;
+		helper.update();
+		scene.add(helper);
+		debugHelpers.push(helper);
+		return helper;
+	}
+
+	// Octree
+	const worldOctree = new Octree();
+
+	function rebuildOctree(): void {
+		worldOctree.clear();
+		colliders.updateMatrixWorld(true);
+		worldOctree.fromGraphNode(colliders);
+	}
+
+	// Build an initial octree so the player collides with the floor even if the GLB fails to load.
+	rebuildOctree();
+
+	// GLTFLoader (declare before use)
+	const gltfLoader = new GLTFLoader();
+
+	// Load player model (stone.glb)
+	const stoneUrl = "/2026/models/stone.glb";
+	gltfLoader.load(
+		stoneUrl,
+		gltf => {
+			const stoneModel = gltf.scene;
+
+			stoneModel.traverse(obj => {
+				if (!isMesh(obj)) return;
+				obj.castShadow = true;
+				obj.receiveShadow = true;
+
+				const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+				for (const m of materials) {
+					const mat = m as THREE.MeshStandardMaterial;
+					if (mat?.map) setTextureToSRGB(mat.map);
+				}
+			});
+
+			stoneModel.traverse(obj => {
+				console.log(obj.name);
+				if (obj.name === "Hand_L") {
+					leftArm = obj;
+					console.log("Found left hand:", obj.name);
+				}
+				if (obj.name === "Hand_R") {
+					rightArm = obj;
+					console.log("Found right hand:", obj.name);
+				}
+				if (obj.name === "Leaf_L") {
+					leftLeaf = obj;
+					console.log("Found left leaf:", obj.name);
+				}
+				if (obj.name === "Leaf_R") {
+					rightLeaf = obj;
+					console.log("Found right leaf:", obj.name);
+				}
+			});
+
+			// Scale stone to fit player box, then scale up 1.5x
+			const box = new THREE.Box3().setFromObject(stoneModel);
+			const size = box.getSize(new THREE.Vector3());
+			const baseScale = Math.min(playerWidth / size.x, playerHeight / size.y, playerDepth / size.z);
+			const finalScale = baseScale * 1.5;
+			stoneModel.scale.setScalar(finalScale);
+
+			// Update actual player dimensions based on scaled model
+			const scaledBox = new THREE.Box3().setFromObject(stoneModel);
+			const scaledSize = scaledBox.getSize(new THREE.Vector3());
+			actualPlayerWidth = scaledSize.x;
+			actualPlayerHeight = scaledSize.y;
+			actualPlayerDepth = scaledSize.z;
+
+			// Center the model geometry so origin is at center
+			const center = scaledBox.getCenter(new THREE.Vector3());
+			stoneModel.position.sub(center);
+
+			// Rotate 180 degrees so character faces forward when walking
+			stoneModel.rotation.y = Math.PI;
+
+			// Wrap in a group so position.copy works correctly
+			const wrapper = new THREE.Group();
+			wrapper.add(stoneModel);
+
+			// Replace placeholder mesh with stone model
+			scene.remove(playerMesh);
+			playerMesh = wrapper;
+			scene.add(playerMesh);
+
+			console.log("Loaded stone.glb as player model");
+		},
+		undefined,
+		err => console.error("Failed to load stone.glb", err)
+	);
+
+	// Load world GLB
+	const glbUrl = "/2026/models/academia-sinica.glb";
+
+	gltfLoader.load(
+		glbUrl,
+		gltf => {
+			const model = gltf.scene;
+
+			model.traverse(obj => {
+				if (!isMesh(obj)) return;
+
+				obj.castShadow = true;
+				obj.receiveShadow = true;
+
+				// material can be Material or Material[]
+				const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+				for (const m of materials) {
+					const mat = m as THREE.MeshStandardMaterial;
+					if (mat?.map) setTextureToSRGB(mat.map);
+				}
+			});
+
+			model.position.set(0, 5, -50);
+			colliders.add(model);
+
+			rebuildOctree();
+			createBoundingBox(model, 0xff8800);
+		},
+		undefined,
+		err => console.error("Failed to load academia-sinica.glb", err)
+	);
+
+	// Player controller (Box collider approximated with capsule for Octree compatibility)
+	// Box dimensions: width=0.7, height=1.95, depth=0.7
+	// Keep capsule for collision (Octree only supports capsule/sphere)
+	// But we'll treat it as a box visually
+	const playerCollider = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, playerHeight - 0.35, 0), 0.35);
+	playerCollider.translate(new THREE.Vector3(0, 3, 0));
+
+	const playerVelocity = new THREE.Vector3();
+	let playerOnFloor: boolean = false;
+	let playerTargetRotation: number = 0; // Target Y rotation for the player model
+
+	// Arm swing animation
+	let leftArm: THREE.Object3D | null = null;
+	let rightArm: THREE.Object3D | null = null;
+	let leftLeaf: THREE.Object3D | null = null;
+	let rightLeaf: THREE.Object3D | null = null;
+	let armSwingTime: number = 0;
+	let leafSwayTime: number = 0;
+	const ARM_SWING_SPEED = 10; // Speed of arm swing
+	const ARM_SWING_AMOUNT = 0.5; // Amount of rotation (radians)
+	const LEAF_SWAY_SPEED = 2; // Speed of leaf sway
+	const LEAF_SWAY_AMOUNT = 0.3; // Amount of rotation (radians)
+
+	const GRAVITY = 25;
+	const JUMP_SPEED = 8.0;
+
+	function getForwardRightOnPlane(): { forward: THREE.Vector3; right: THREE.Vector3 } {
+		const forward = new THREE.Vector3();
+		camera.getWorldDirection(forward);
+		forward.y = 0;
+		forward.normalize();
+
+		const right = new THREE.Vector3().crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
+		return { forward, right };
+	}
+
+	function playerCollisions(): void {
+		playerOnFloor = false;
+
+		// Multiple iterations to handle complex geometry and prevent getting stuck
+		for (let i = 0; i < 3; i++) {
+			const result = worldOctree.capsuleIntersect(playerCollider);
+
+			if (result) {
+				if (result.normal.y > 0) {
+					playerOnFloor = true;
+				}
+
+				// push out penetration
+				playerCollider.translate(result.normal.clone().multiplyScalar(result.depth));
+
+				// slide along walls
+				if (result.normal.y <= 0) {
+					const dot = result.normal.dot(playerVelocity);
+					if (dot < 0) playerVelocity.addScaledVector(result.normal, -dot);
+				}
+			} else {
+				break; // No collision, exit early
+			}
+		}
+	}
+
+	function stepPlayer(dt: number, move: THREE.Vector3, jumpPressed: boolean): void {
+		if (!playerOnFloor) playerVelocity.y -= GRAVITY * dt;
+
+		const accel = playerOnFloor ? 50 : 25;
+		if (move.lengthSq() > 0) playerVelocity.addScaledVector(move, accel * dt);
+
+		const maxSpeed = playerOnFloor ? 9 : 7;
+		const horiz = new THREE.Vector3(playerVelocity.x, 0, playerVelocity.z);
+		const hLen = horiz.length();
+		if (hLen > maxSpeed) {
+			horiz.multiplyScalar(maxSpeed / hLen);
+			playerVelocity.x = horiz.x;
+			playerVelocity.z = horiz.z;
+		}
+
+		if (jumpPressed && playerOnFloor) {
+			playerVelocity.y = JUMP_SPEED;
+			playerOnFloor = false;
+		}
+
+		const damping = playerOnFloor ? 10 : 1;
+		const dampFactor = Math.exp(-damping * dt);
+		playerVelocity.x *= dampFactor;
+		playerVelocity.z *= dampFactor;
+
+		playerCollider.translate(playerVelocity.clone().multiplyScalar(dt));
+		playerCollisions();
+	}
+
+	// Third-person camera + camera collision
+	let enabled: boolean = false;
+	let yaw: number = Math.PI;
+	let pitch: number = 0;
+	const pitchLimit: number = Math.PI / 2 - 0.05;
+
+	// Mouse drag for camera control (no pointer lock)
+	let isMouseDragging = false;
+	let lastMouseX = 0;
+	let lastMouseY = 0;
+
+	canvas.addEventListener("mousedown", (e: MouseEvent) => {
+		if (isTouchDevice) return;
+		isMouseDragging = true;
+		lastMouseX = e.clientX;
+		lastMouseY = e.clientY;
+	});
+
+	canvas.addEventListener("mousemove", (e: MouseEvent) => {
+		if (isTouchDevice || !isMouseDragging) return;
+		const sens = 0.005;
+		const dx = e.clientX - lastMouseX;
+		const dy = e.clientY - lastMouseY;
+		lastMouseX = e.clientX;
+		lastMouseY = e.clientY;
+		yaw -= dx * sens;
+		pitch += dy * sens;
 		pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
 	});
 
-	let lookPointerId: number | null = null;
-	let lastLookX = 0;
-	let lastLookY = 0;
-	const touchLookSens = 0.005;
+	canvas.addEventListener("mouseup", () => {
+		isMouseDragging = false;
+	});
 
-	function isInside(el: Element, x: number, y: number) {
+	canvas.addEventListener("mouseleave", () => {
+		isMouseDragging = false;
+	});
+
+	// Touch look
+	let lookPointerId: number | null = null;
+	let lastLookX: number = 0;
+	let lastLookY: number = 0;
+	const touchLookSens: number = 0.005;
+
+	function isInside(el: Element, x: number, y: number): boolean {
 		const r = el.getBoundingClientRect();
 		return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
 	}
 
-	canvas.addEventListener("pointerdown", e => {
+	canvas.addEventListener("pointerdown", (e: PointerEvent) => {
 		if (!isTouchDevice) return;
 		if (isInside(joy, e.clientX, e.clientY) || isInside(jumpBtn, e.clientX, e.clientY)) return;
 		lookPointerId = e.pointerId;
@@ -239,7 +510,7 @@ import { Move, ChevronUp } from "@lucide/astro";
 		canvas.setPointerCapture(e.pointerId);
 	});
 
-	canvas.addEventListener("pointermove", e => {
+	canvas.addEventListener("pointermove", (e: PointerEvent) => {
 		if (!isTouchDevice) return;
 		if (lookPointerId !== e.pointerId) return;
 
@@ -249,42 +520,44 @@ import { Move, ChevronUp } from "@lucide/astro";
 		lastLookY = e.clientY;
 
 		yaw -= dx * touchLookSens;
-		pitch -= dy * touchLookSens;
+		pitch += dy * touchLookSens;
 		pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
 	});
 
-	canvas.addEventListener("pointerup", e => {
+	canvas.addEventListener("pointerup", (e: PointerEvent) => {
 		if (!isTouchDevice) return;
 		if (lookPointerId !== e.pointerId) return;
 		lookPointerId = null;
 	});
 
-	// Start
-	instructions.addEventListener("click", async () => {
+	// Start game
+	instructions.addEventListener("click", () => {
+		enabled = true;
+		instructions.style.display = "none";
 		if (isTouchDevice) {
-			enabled = true;
-			instructions.style.display = "none";
 			touchControls.style.display = "block";
-			return;
 		}
-		await canvas.requestPointerLock();
 	});
 
-	document.addEventListener("pointerlockchange", () => {
-		if (isTouchDevice) return;
-		enabled = document.pointerLockElement === canvas;
-		instructions.style.display = enabled ? "none" : "flex";
-	});
+	// Keyboard
+	const keys: Record<"w" | "a" | "s" | "d" | "space", boolean> = {
+		w: false,
+		a: false,
+		s: false,
+		d: false,
+		space: false
+	};
 
-	const keys = { w: false, a: false, s: false, d: false, space: false };
-	window.addEventListener("keydown", e => {
+	window.addEventListener("keydown", (e: KeyboardEvent) => {
 		if (e.code === "KeyW") keys.w = true;
 		if (e.code === "KeyA") keys.a = true;
 		if (e.code === "KeyS") keys.s = true;
 		if (e.code === "KeyD") keys.d = true;
 		if (e.code === "Space") keys.space = true;
+		if (e.code === "KeyB") debugVisible = !debugVisible;
 	});
-	window.addEventListener("keyup", e => {
+
+	window.addEventListener("keyup", (e: KeyboardEvent) => {
 		if (e.code === "KeyW") keys.w = false;
 		if (e.code === "KeyA") keys.a = false;
 		if (e.code === "KeyS") keys.s = false;
@@ -292,18 +565,19 @@ import { Move, ChevronUp } from "@lucide/astro";
 		if (e.code === "Space") keys.space = false;
 	});
 
+	// Touch joystick
 	let joyActiveId: number | null = null;
-	let joyCenterX = 0;
-	let joyCenterY = 0;
-	let joyX = 0;
-	let joyY = 0;
-	const joyMax = 46;
+	let joyCenterX: number = 0;
+	let joyCenterY: number = 0;
+	let joyX: number = 0;
+	let joyY: number = 0;
+	const joyMax: number = 46;
 
-	function setKnob(dx: number, dy: number) {
-		joyKnob!.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+	function setKnob(dx: number, dy: number): void {
+		joyKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
 	}
 
-	function setJoyFromDelta(dx: number, dy: number) {
+	function setJoyFromDelta(dx: number, dy: number): void {
 		const len = Math.hypot(dx, dy) || 1;
 		const clamped = Math.min(len, joyMax);
 		const nx = (dx / len) * clamped;
@@ -313,14 +587,14 @@ import { Move, ChevronUp } from "@lucide/astro";
 		joyY = ny / joyMax;
 	}
 
-	function resetJoy() {
+	function resetJoy(): void {
 		joyActiveId = null;
 		joyX = 0;
 		joyY = 0;
 		setKnob(0, 0);
 	}
 
-	joy.addEventListener("pointerdown", e => {
+	joy.addEventListener("pointerdown", (e: PointerEvent) => {
 		if (!isTouchDevice) return;
 		joyActiveId = e.pointerId;
 		const r = joy.getBoundingClientRect();
@@ -330,37 +604,29 @@ import { Move, ChevronUp } from "@lucide/astro";
 		setJoyFromDelta(e.clientX - joyCenterX, e.clientY - joyCenterY);
 	});
 
-	joy.addEventListener("pointermove", e => {
+	joy.addEventListener("pointermove", (e: PointerEvent) => {
 		if (!isTouchDevice) return;
 		if (joyActiveId !== e.pointerId) return;
 		setJoyFromDelta(e.clientX - joyCenterX, e.clientY - joyCenterY);
 	});
 
-	joy.addEventListener("pointerup", e => {
+	joy.addEventListener("pointerup", (e: PointerEvent) => {
 		if (!isTouchDevice) return;
 		if (joyActiveId !== e.pointerId) return;
 		resetJoy();
 	});
-	joy.addEventListener("pointercancel", resetJoy);
+	joy.addEventListener("pointercancel", () => resetJoy());
 
-	let jumpRequested = false;
-	jumpBtn.addEventListener("pointerdown", e => {
+	// Touch jump
+	let jumpRequested: boolean = false;
+	jumpBtn.addEventListener("pointerdown", (e: PointerEvent) => {
 		if (!isTouchDevice) return;
 		jumpRequested = true;
 		jumpBtn.setPointerCapture(e.pointerId);
 	});
 
-	function isGrounded() {
-		const from = playerBody.position.clone();
-		const to = playerBody.position.clone();
-		to.y -= playerRadius + 0.12;
-		const ray = new CANNON.Ray(from, to);
-		const result = new CANNON.RaycastResult();
-		ray.intersectWorld(world, { skipBackfaces: true, result });
-		return result.hasHit;
-	}
-
-	function resize() {
+	// Resize
+	function resize(): void {
 		const w = window.innerWidth;
 		const h = window.innerHeight;
 		renderer.setSize(w, h, false);
@@ -370,64 +636,219 @@ import { Move, ChevronUp } from "@lucide/astro";
 	addEventListener("resize", resize);
 	resize();
 
-	// Loop
-	const clock = new THREE.Clock();
-	const fixedTimeStep = 1 / 60;
-	const maxSubSteps = 5;
+	// Camera smoothing + collision
+	const cameraPos = new THREE.Vector3();
+	const cameraTarget = new THREE.Vector3();
+	const desiredCam = new THREE.Vector3();
+	const ray = new THREE.Ray();
 
-	function stepPlayer() {
-		if (!enabled) return;
+	// Zoom control
+	let followDistance = 6.0;
+	const minZoom = 2.0;
+	const maxZoom = 15.0;
 
-		const forward = new THREE.Vector3(0, 0, -1).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
-		const right = new THREE.Vector3(1, 0, 0).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
+	// Wheel zoom
+	canvas.addEventListener(
+		"wheel",
+		(e: WheelEvent) => {
+			e.preventDefault();
+			const zoomSpeed = 0.002;
+			followDistance += e.deltaY * zoomSpeed;
+			followDistance = Math.max(minZoom, Math.min(maxZoom, followDistance));
+		},
+		{ passive: false }
+	);
 
-		const move = new THREE.Vector3();
+	// Pinch zoom (touch)
+	let lastPinchDist: number | null = null;
 
-		if (!isTouchDevice) {
-			if (keys.w) move.add(forward);
-			if (keys.s) move.sub(forward);
-			if (keys.d) move.add(right);
-			if (keys.a) move.sub(right);
-		} else {
-			move.addScaledVector(forward, -joyY);
-			move.addScaledVector(right, joyX);
+	canvas.addEventListener(
+		"touchstart",
+		(e: TouchEvent) => {
+			if (e.touches.length === 2) {
+				e.preventDefault();
+				const dx = e.touches[0].clientX - e.touches[1].clientX;
+				const dy = e.touches[0].clientY - e.touches[1].clientY;
+				lastPinchDist = Math.hypot(dx, dy);
+			}
+		},
+		{ passive: false }
+	);
+
+	canvas.addEventListener(
+		"touchmove",
+		(e: TouchEvent) => {
+			if (e.touches.length === 2 && lastPinchDist !== null) {
+				e.preventDefault();
+				const dx = e.touches[0].clientX - e.touches[1].clientX;
+				const dy = e.touches[0].clientY - e.touches[1].clientY;
+				const dist = Math.hypot(dx, dy);
+				const delta = lastPinchDist - dist;
+				followDistance += delta * 0.02;
+				followDistance = Math.max(minZoom, Math.min(maxZoom, followDistance));
+				lastPinchDist = dist;
+			}
+		},
+		{ passive: false }
+	);
+
+	canvas.addEventListener("touchend", (e: TouchEvent) => {
+		if (e.touches.length < 2) {
+			lastPinchDist = null;
+		}
+	});
+
+	// Prevent default browser zoom (Ctrl+wheel, pinch on document)
+	document.addEventListener(
+		"wheel",
+		(e: WheelEvent) => {
+			if (e.ctrlKey) e.preventDefault();
+		},
+		{ passive: false }
+	);
+
+	document.addEventListener(
+		"gesturestart",
+		(e: Event) => {
+			e.preventDefault();
+		},
+		{ passive: false }
+	);
+
+	document.addEventListener(
+		"gesturechange",
+		(e: Event) => {
+			e.preventDefault();
+		},
+		{ passive: false }
+	);
+
+	function updateThirdPersonCamera(dt: number): void {
+		const end = playerCollider.end;
+		cameraTarget.set(end.x, end.y + 0.15, end.z);
+		const followHeight = 2.4;
+
+		const offset = new THREE.Vector3(0, 0, followDistance);
+		offset.applyEuler(new THREE.Euler(pitch, yaw, 0, "YXZ"));
+
+		desiredCam.set(cameraTarget.x - offset.x, cameraTarget.y + followHeight - offset.y, cameraTarget.z - offset.z);
+
+		const dir = desiredCam.clone().sub(cameraTarget);
+		const maxDist = dir.length();
+		if (maxDist > 0.0001) {
+			dir.multiplyScalar(1 / maxDist);
+			ray.origin.copy(cameraTarget);
+			ray.direction.copy(dir);
+
+			const hit = worldOctree.rayIntersect(ray);
+			if (hit && hit.distance < maxDist) {
+				const safeDist = Math.max(hit.distance - 0.25, 0.8);
+				desiredCam.copy(cameraTarget).addScaledVector(dir, safeDist);
+			}
 		}
 
-		if (move.lengthSq() > 0) move.normalize();
+		const smooth = 1 - Math.exp(-12 * dt);
+		cameraPos.lerpVectors(camera.position, desiredCam, smooth);
+		camera.position.copy(cameraPos);
 
-		const grounded = isGrounded();
-		const speed = grounded ? 8 : 6;
-
-		playerBody.velocity.x = move.x * speed;
-		playerBody.velocity.z = move.z * speed;
-
-		const jumpPressed = !isTouchDevice ? keys.space : jumpRequested;
-		if (jumpPressed && grounded) playerBody.velocity.y = 7;
-		jumpRequested = false;
-
-		camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, "YXZ"));
+		camera.lookAt(cameraTarget);
 	}
 
-	function syncVisuals() {
-		playerMesh.position.set(playerBody.position.x, playerBody.position.y, playerBody.position.z);
+	// Loop
+	const clock = new THREE.Clock();
 
-		const eye = 1;
-		camera.position.set(playerBody.position.x, playerBody.position.y + eye, playerBody.position.z);
-
-		boxMesh.position.set(boxBody.position.x, boxBody.position.y, boxBody.position.z);
-		boxMesh.quaternion.set(boxBody.quaternion.x, boxBody.quaternion.y, boxBody.quaternion.z, boxBody.quaternion.w);
-	}
-
-	function animate() {
+	function animate(): void {
 		requestAnimationFrame(animate);
 
 		const dt = Math.min(clock.getDelta(), 0.033);
-		stepPlayer();
 
-		if (enabled) world.step(fixedTimeStep, dt, maxSubSteps);
+		if (enabled) {
+			const { forward, right } = getForwardRightOnPlane();
+			const move = new THREE.Vector3();
 
-		syncVisuals();
+			if (!isTouchDevice) {
+				if (keys.w) move.add(forward);
+				if (keys.s) move.sub(forward);
+				if (keys.d) move.add(right);
+				if (keys.a) move.sub(right);
+			} else {
+				move.addScaledVector(forward, -joyY);
+				move.addScaledVector(right, joyX);
+			}
+
+			if (move.lengthSq() > 0) move.normalize();
+
+			// Update player rotation to face movement direction
+			if (move.lengthSq() > 0.01) {
+				playerTargetRotation = Math.atan2(move.x, move.z) + Math.PI;
+			}
+
+			// Arm swing animation when walking (swing along Y axis)
+			const isWalking = move.lengthSq() > 0.01 && playerOnFloor;
+			if (isWalking) {
+				armSwingTime += dt * ARM_SWING_SPEED;
+				const swingAngle = Math.sin(armSwingTime) * ARM_SWING_AMOUNT;
+
+				if (leftArm) {
+					leftArm.rotation.y = swingAngle;
+				}
+				if (rightArm) {
+					rightArm.rotation.y = -swingAngle; // Opposite phase
+				}
+			} else {
+				// Smoothly return arms to rest position
+				armSwingTime = 0;
+				if (leftArm && Math.abs(leftArm.rotation.y) > 0.01) {
+					leftArm.rotation.z *= 0.85;
+				}
+				if (rightArm && Math.abs(rightArm.rotation.y) > 0.01) {
+					rightArm.rotation.z *= 0.85;
+				}
+			}
+
+			// Leaf sway animation (always active, sway along Y axis to the sides)
+			leafSwayTime += dt * LEAF_SWAY_SPEED;
+			const leafSwayAngle = Math.sin(leafSwayTime) * LEAF_SWAY_AMOUNT;
+
+			if (leftLeaf) {
+				leftLeaf.rotation.z = -LEAF_SWAY_AMOUNT + leafSwayAngle; // Sway outward left
+			}
+			if (rightLeaf) {
+				rightLeaf.rotation.z = LEAF_SWAY_AMOUNT - leafSwayAngle; // Sway outward right
+			}
+
+			const jumpPressed = !isTouchDevice ? keys.space : jumpRequested;
+			jumpRequested = false;
+
+			stepPlayer(dt, move, jumpPressed);
+		}
+
+		const playerPos = playerCollider.end.clone().add(playerCollider.start).multiplyScalar(0.5);
+		playerMesh.position.copy(playerPos);
+
+		// Smoothly rotate player to face movement direction
+		const currentRotation = playerMesh.rotation.y;
+		let rotationDiff = playerTargetRotation - currentRotation;
+		// Normalize angle difference to [-PI, PI]
+		while (rotationDiff > Math.PI) rotationDiff -= Math.PI * 2;
+		while (rotationDiff < -Math.PI) rotationDiff += Math.PI * 2;
+		playerMesh.rotation.y += rotationDiff * 0.15;
+
+		// Update debug box helper position, rotation, and size
+		playerBoxHelper.position.copy(playerPos);
+		playerBoxHelper.rotation.y = playerMesh.rotation.y;
+		playerBoxHelper.scale.set(actualPlayerWidth / playerWidth, actualPlayerHeight / playerHeight, actualPlayerDepth / playerDepth);
+
+		for (const helper of debugHelpers) {
+			helper.visible = debugVisible;
+			if ((helper as THREE.BoxHelper).update) {
+				(helper as THREE.BoxHelper).update();
+			}
+		}
+
+		updateThirdPersonCamera(dt);
 		renderer.render(scene, camera);
 	}
+
 	animate();
 </script>

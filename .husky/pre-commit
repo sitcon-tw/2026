@@ -1,3 +1,7 @@
-# .husky/pre-commit
-prettier $(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g') --write --ignore-unknown
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+git -c core.quotepath=false diff --cached --name-only --diff-filter=ACMR -z \
+  | xargs -0 pnpm exec prettier --write --ignore-unknown
+
 git update-index --again

@@ -2,24 +2,37 @@
 import Nav from "@/components/Nav.astro";
 import "lenis/dist/lenis.css";
 import "./global.css";
+import { langMeta, getAlternateUrl, type Lang } from "@/utils/i18n";
 
 interface Props {
 	title?: string;
 	description?: string;
 	ogImage?: string;
+	lang?: Lang;
 }
 
-const {
-	title = "Jam the Chaos - SITCON 2026",
-	description = "SITCON 2026 學生計算機年會徵稿開始！主題「Jam the Chaos」，邀請對資訊技術有熱情的學生投稿分享你的創新想法、專案經驗與技術見解。2026/03/28 於中央研究院人文社會科學館盛大舉辦。",
-	ogImage = "/2026/og-image.webp"
-} = Astro.props;
+const lang = Astro.props.lang ?? "zh";
+const meta = langMeta[lang];
 
-const siteUrl = "https://sitcon.org/2026/";
-const fullOgImage = new URL(ogImage, siteUrl).toString();
+const defaultTitles = {
+	zh: "Jam the Chaos - SITCON 2026",
+	en: "Jam the Chaos - SITCON 2026"
+};
+
+const defaultDescriptions = {
+	zh: "SITCON 2026 學生計算機年會徵稿開始！主題「Jam the Chaos」，邀請對資訊技術有熱情的學生投稿分享你的創新想法、專案經驗與技術見解。2026/03/28 於中央研究院人文社會科學館盛大舉辦。",
+	en: "SITCON 2026 - Students' Information Technology Conference. Theme: 'Jam the Chaos'. Join us on 2026/03/28 at Academia Sinica Humanities and Social Sciences Building."
+};
+
+const title = defaultTitles[lang];
+const description = defaultDescriptions[lang];
+
+const siteUrl = lang === "en" ? "https://sitcon.org/2026/en/" : "https://sitcon.org/2026/";
+const alternateLang = lang === "en" ? "zh" : "en";
+const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 ---
 
-<html lang="zh-Hant-TW" transition:name="root" transition:animate="none">
+<html lang={meta.htmlLang} transition:name="root" transition:animate="none">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -30,9 +43,10 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 		<meta name="title" content={title} />
 		<meta name="description" content={description} />
 		<meta name="keywords" content="SITCON,學生計算機年會,2026,徵稿,CFP,Call for Proposals,資訊技術,程式設計,開源,學生社群,技術研討會,Jam the Chaos,中央研究院,投稿,演講,工作坊" />
-		<meta name="author" content="SITCON 學生計算機年會籌備團隊" />
+		<meta name="author" content="SITCON" />
 		<meta name="robots" content="index, follow" />
 		<link rel="canonical" href={siteUrl} />
+		<link rel="alternate" hreflang={langMeta[alternateLang].htmlLang} href={`https://sitcon.org${alternateUrl}`} />
 
 		<link rel="icon" type="image/png" href="/2026/cfp/favicon/favicon-96x96.png" sizes="96x96" />
 		<link rel="icon" type="image/svg+xml" href="/2026/cfp/favicon/favicon.svg" />
@@ -45,24 +59,25 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 		<meta property="og:url" content={siteUrl} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content={fullOgImage} />
+		<meta property="og:image" content="https://sitcon.org/2026/og-image.webp" />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
-		<meta property="og:locale" content="zh_TW" />
-		<meta property="og:site_name" content="SITCON 學生計算機年會" />
+		<meta property="og:locale" content={meta.ogLocale} />
+		<meta property="og:site_name" content="SITCON" />
 
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:url" content={siteUrl} />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={fullOgImage} />
+		<meta name="twitter:image" content="https://sitcon.org/2026/og-image.webp" />
 		<meta name="twitter:site" content="@SITCONtw" />
 		<meta name="twitter:creator" content="@SITCONtw" />
 
 		<meta name="theme-color" content="#010121" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-		<link rel="alternate" hreflang="zh-Hant-TW" href={siteUrl} />
+		<link rel="alternate" hreflang="zh-TW" href="https://sitcon.org/2026/" />
+		<link rel="alternate" hreflang="en" href="https://sitcon.org/2026/en/" />
 
 		<link rel="preconnect" href="https://font.emtech.cc" />
 		<link rel="preconnect" href="https://www.googletagmanager.com" />
@@ -130,8 +145,8 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 		<!-- End Google Tag Manager -->
 	</head>
 	<body>
-		<a href="#main-content" class="skip-link">跳至主要內容</a>
-		<Nav />
+		<a href="#main-content" class="skip-link">{lang === "en" ? "Skip to main content" : "跳至主要內容"}</a>
+		<Nav lang={lang} />
 		<div id="main-content">
 			<slot />
 		</div>
@@ -140,6 +155,8 @@ const fullOgImage = new URL(ogImage, siteUrl).toString();
 		<!-- End Google Tag Manager (noscript) -->
 		<script>
 			import Lenis from "lenis";
+			import "@/utils/text-reveal";
+
 			let lenis: InstanceType<typeof Lenis> | null = null;
 
 			const initLenis = () => {

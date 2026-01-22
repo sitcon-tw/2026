@@ -1,0 +1,140 @@
+---
+const images = [
+	{ src: "/2026/img/Hero/photo-wall/image 6.jpg", alt: "SITCON 講者在舞台上進行技術演講的照片" },
+	{ src: "/2026/img/Hero/photo-wall/image 8.jpg", alt: "SITCON 進行夏令營在大教室的照片" },
+	{ src: "/2026/img/Hero/photo-wall/image 9.jpg", alt: "SITCON 在中央研究院中，最大的會議廳進行講座的照片" },
+	{ src: "/2026/img/Hero/photo-wall/image 13.jpg", alt: "SITCON 講者在舞台上進行技術演講的照片" },
+	{ src: "/2026/img/Hero/photo-wall/image 14.jpg", alt: "SITCON 場外交流區，參與者彼此聊天與交換心得的照片" }
+];
+---
+
+<section class="photo-wall">
+	<div class="photo-container">
+		{
+			images.map((img, index) => (
+				<div class={`photo-item item-${index}`}>
+					<div class="img-wrapper">
+						<img src={img.src} alt={img.alt} />
+					</div>
+				</div>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.photo-wall {
+		width: 100%;
+		padding: 0 0 400px;
+		margin: 3rem 0;
+		display: flex;
+		justify-content: flex-start;
+		overflow: hidden;
+	}
+
+	.photo-container {
+		display: flex;
+		gap: 24px;
+		width: max-content;
+		align-items: flex-start;
+		will-change: transform;
+	}
+
+	.photo-item {
+		flex: 0 0 350px;
+		aspect-ratio: 3 / 4;
+		position: relative;
+	}
+
+	.img-wrapper {
+		width: 100%;
+		height: 100%;
+		background-color: #ccc; /* 遵守規範：佔位符 */
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		overflow: hidden;
+	}
+
+	.photo-item img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	/* 階梯式排列 (左上到右下) */
+	.item-0 {
+		transform: translateY(0);
+	}
+	.item-1 {
+		transform: translateY(80px);
+	}
+	.item-2 {
+		transform: translateY(160px);
+	}
+	.item-3 {
+		transform: translateY(240px);
+	}
+	.item-4 {
+		transform: translateY(320px);
+	}
+
+	@media (max-width: 768px) {
+		.photo-wall {
+			padding: 40px 0 150px;
+		}
+		.photo-container {
+			display: flex;
+			gap: 16px;
+			width: max-content;
+			padding: 0;
+			justify-content: flex-start;
+		}
+		.photo-item {
+			flex: 0 0 180px;
+			aspect-ratio: 3 / 4;
+		}
+		/* 窄版維持階梯式排列，但間距縮小 */
+		.item-0 {
+			transform: translateY(0);
+		}
+		.item-1 {
+			transform: translateY(20px);
+		}
+		.item-2 {
+			transform: translateY(40px);
+		}
+		.item-3 {
+			transform: translateY(60px);
+		}
+		.item-4 {
+			transform: translateY(80px);
+		}
+	}
+</style>
+
+<script>
+	import { gsap } from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	const container = document.querySelector(".photo-container");
+	const photoWall = document.querySelector(".photo-wall");
+
+	if (container && photoWall) {
+		gsap.fromTo(
+			container,
+			{ x: () => 500 },
+			{
+				x: () => -(container.scrollWidth - photoWall.clientWidth + 500),
+				ease: "none",
+				scrollTrigger: {
+					trigger: photoWall,
+					start: "top bottom",
+					end: "bottom top",
+					scrub: 0.3
+				}
+			}
+		);
+	}
+</script>

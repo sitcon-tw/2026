@@ -3,13 +3,185 @@
 		"info": "Information",
 		"agenda": "Agenda",
 		"venue": "Venue",
-		"team": "Team"
+		"team": "Team",
+		"openMenu": "Open Menu"
+	},
+	"landing": {
+		"location": ["Academia Sinica", "Humanities and Social Sciences Building"],
+		"date": "2026/03/28",
+		"cta": "Register Now"
+	},
+	"dialogue": {
+		"headline": "The script of the era has been shattered, the uniform melody has fallen apart<br />In this chaotic age, can we find balance once again?",
+		"paragraph1": "In 2026, as IT professionals and students, we stand at the forefront of a transformative era. The rise of AI challenges traditional development models, and the technical barriers that once defined our value are gradually crumbling. When the power to create becomes democratized and individual technical skills can no longer serve as our moat, \"collaboration\" becomes our most important lesson. We are heading into a grand chaos seeking harmony with AI, peers, and cross-domain partners. But what if \"chaos\" is not an obstacle, but the starting point of a new balance?",
+		"paragraph2": "In the JamSession of improvisational music, there is no conductor. When the Jam's beat doesn't sync, let's create a new beat together. When the Jam's harmony isn't perfect, this is precisely the sound of our generation—inclusive, bold, and diverse. At SITCON 2026, we invite you to join this Jam. Let us harness the chaos, find rhythm in disorder, and seek resonance in collaboration.",
+		"paragraph3": "Students' Information Technology Conference (SITCON), initiated in 2012, is student-centered and student-organized. We are committed to student IT education and promoting the open-source spirit, hoping to guide more students into the realm of information technology. We also hope that all students interested in IT can gather at the conference to inspire, pass on knowledge, and learn from each other, achieving the practical demonstration of \"learning by doing\" and \"teaching and learning together.\""
+	},
+	"speaker": {
+		"title1": "Annual",
+		"title2": "Invited Speakers",
+		"cta": "View Agenda"
+	},
+	"demoShow": {
+		"subtitle": "2026 Brand New",
+		"title": "Demo Show",
+		"cta": "View Agenda",
+		"description": "Demo Show submissions focus on live project demonstrations,<br />supplemented by static posters and short videos showcasing student individual or team projects."
+	},
+	"coc": {
+		"title": "Code of Conduct",
+		"paragraph1": "SITCON warmly welcomes<br class=\"mobile-br\" />attendees of all ages, identities, and backgrounds!",
+		"paragraph2": "To ensure everyone can enjoy SITCON,<br />please follow our Code of Conduct<br class=\"mobile-br\" />to create a friendly environment together."
+	},
+	"discuss": {
+		"title": "Join Discussion",
+		"messages": [
+			"Discuss preparations together on the mailing list!",
+			"Fill out the sign-up form and we'll notify you when preparations begin—never miss any news!",
+			"Check out this year's preparation progress on GitLab!"
+		],
+		"buttons": {
+			"reserve": "Sign Up",
+			"forum": "Mailing List",
+			"records": "Preparation Records"
+		}
+	},
+	"ticket": {
+		"title": "How to Get Tickets",
+		"oscvpass": {
+			"title": "Open Source Contributor Pass",
+			"englishTitle": "OSCVPASS",
+			"description": [
+				"Eligibility: Those who have contributed to open source projects.",
+				"If you apply and are approved by 2025/01/21 23:59, you may have the opportunity to receive a SITCON 2025 OSCVPASS invitation code. For application forms, eligibility, and more detailed instructions, please refer to the Open Source Contributor Fast Pass.",
+				"For the list of projects from past approved OSCVPass applicants, please refer to the OSCVPass Project Introduction."
+			],
+			"verticalTitle": "OSCVPASS"
+		},
+		"general": {
+			"title": "General Admission",
+			"englishTitle": "GENERAL",
+			"description": ["Open to the general public.", "Please follow SITCON's official website and social media for the latest ticket information."],
+			"verticalTitle": "General"
+		},
+		"longDistance": {
+			"title": "Long Distance Ticket",
+			"englishTitle": "LONG DISTANCE",
+			"description": ["For participants who live far from the venue.", "Supporting documents required."],
+			"verticalTitle": "Long Distance"
+		},
+		"buttons": {
+			"getTicket": "Get Ticket Now",
+			"addCalendar": "Add to Calendar"
+		},
+		"location": "Academia Sinica, Humanities and Social Sciences Building"
+	},
+	"joinUs": {
+		"title1": "Join Us",
+		"title2": "Lead the Future",
+		"description": "Since 2013, SITCON has always upheld the principle of \"free admission for all attendees,\"<br />dedicated to promoting student IT education. We encourage participants to think outside the box, discover potential possibilities,<br />and provide students with valuable learning and networking opportunities, accompanying countless students into the realm of information technology.",
+		"stats": ["> Over 14,000 cumulative attendees", "> More than 500 student speakers", "> Over 500 meetups and talks, 10 summer camps", "> Nearly 1,400 passionate IT volunteers nurtured"],
+		"buttons": {
+			"sponsorRequest": "Sponsorship Request",
+			"personalSponsor": "Personal Sponsorship"
+		}
+	},
+	"sponsor": {
+		"main": "Organizer",
+		"cohost": "Co-organizer",
+		"organizer": "Co-host",
+		"sponsorNavigator": "Navigator Level",
+		"sponsorDeepCultivation": "Deep Cultivation Level",
+		"sponsorVisionary": "Visionary Level",
+		"sponsorNewSprout": "New Sprout Level",
+		"personalSponsor": "Personal Sponsors",
+		"personalSponsorThanks": "Thank you to all our passionate personal sponsors!",
+		"mediaPartners": "Media Partners",
+		"supporters": "Special Thanks",
+		"visitWebsite": "Visit Website",
+		"sponsorLevel": "Sponsor Level",
+		"sponsorName": "Sponsor Name",
+		"sponsorDesc": "Detailed introduction of the sponsor will be displayed here"
+	},
+	"venue": {
+		"title": "Venue Map",
+		"selectFloor": "Please select a floor",
+		"backToFloor": "Back to floor selection",
+		"emergency": "Emergency Evacuation Guide"
+	},
+	"agenda": {
+		"title": "Agenda"
+	},
+	"teamPage": {
+		"title": "Team Members",
+		"description": "The SITCON annual conference is organized by many volunteers who dedicate their time and effort. Without everyone's contributions, it would be impossible to have such a content-rich and high-quality conference. We hope that while attending, you will not forget the hard work of the staff behind the scenes. If you are interested in participating in the preparation of SITCON, please fill out the sign-up form or follow SITCON's mailing list. When next year's preparation begins, you will receive relevant information!",
+		"formButton": "Sign-up Form",
+		"forumButton": "Mailing List",
+		"exploreMode": "Explore Mode",
+		"listMode": "List Mode"
+	},
+	"academiaSinica": {
+		"instruction": "Click the screen to explore Academia Sinica!"
 	},
 	"info": {
 		"mainHeading": "Information",
 		"mainDetails": ["2026/3/28", "Academia Sinica, Humanities and Social Sciences Building", "No. 128, Sec. 2, Academia Rd., Nangang District, Taipei City"],
 		"mainButton": "Transportation Guide",
+		"intoAcademiaSinica": "Enter Academia Sinica",
 		"activitiesHeading": "Conference Activities",
+		"transport": {
+			"title": "Transportation Guide",
+			"tabs": {
+				"shuttle": "Conference Shuttle",
+				"public": "Public Transportation",
+				"drive": "By Car / Motorcycle"
+			},
+			"shuttle": {
+				"from": "MRT Nangang Exhibition Center Station Exit 2A",
+				"to": "Academia Sinica, Humanities and Social Sciences Building",
+				"location": "Location: Taipei MRT Nangang Exhibition Center Station Exit 2A (staff will guide you on the day)",
+				"time": "Shuttle departure time: 7:45~10:00",
+				"interval": "Frequency: Every 15~20 minutes"
+			},
+			"public": {
+				"youbike": {
+					"title": "YouBike",
+					"description": "YouBike 2.0 stations near Academia Sinica",
+					"stations": ["Academia Sinica Humanities and Social Sciences Building", "Academia Sinica Sports Center East Side", "Yanjiuyuan Jiuzhuang Street Intersection"]
+				},
+				"bus": {
+					"title": "Bus",
+					"routes": [
+						{
+							"from": "MRT Nangang Station",
+							"description": "Take the train/HSR to Nangang Station, then take a bus from Exit 2 of MRT Nangang Station",
+							"to": "Academia Sinica",
+							"buses": ["212 Express", "270"]
+						},
+						{
+							"from": "Nangang Exhibition Center",
+							"description": "Take the MRT to Nangang Exhibition Center Station, then take a bus from Exit 5",
+							"to": "Academia Sinica",
+							"buses": ["205", "212", "276", "306", "306 Express"]
+						}
+					]
+				}
+			},
+			"drive": {
+				"car": {
+					"title": "Driving",
+					"description": "Parking is available inside Academia Sinica. Exchange your ID for a pass at the front gate. For parking fees, please refer to the <a href='https://www.sinica.edu.tw/cp_rules/doc/4202'>Academia Sinica Vehicle Parking Regulations</a>."
+				},
+				"motorcycle": {
+					"title": "Motorcycle",
+					"description": "Motorcycles are not allowed inside the campus. Free parking is available at the right side of the main gate, across from the main gate, and near Hu Shih Park (no liability for safekeeping)."
+				},
+				"references": [
+					{ "name": "Academia Sinica Vehicle Parking Regulations", "url": "https://www.sinica.edu.tw/cp_rules/doc/4202" },
+					{ "name": "Academia Sinica Parking Q&A", "url": "https://www.sinica.edu.tw/ch/articles/168" }
+				]
+			}
+		},
 		"sections": [
 			{
 				"title": "First time here and want to meet new friends",
@@ -58,5 +230,120 @@
 				]
 			}
 		]
+	},
+	"footer": [
+		{
+			"title": "Navigation",
+			"links": [
+				{ "name": "Event Info (incl. Transportation)", "url": "#" },
+				{ "name": "Agenda", "url": "#" },
+				{ "name": "Venue Map", "url": "#" },
+				{ "name": "Registration", "url": "#" },
+				{ "name": "SITCON Team", "url": "#" },
+				{ "name": "Partners", "url": "#" },
+				{ "name": "Resources", "url": "#" }
+			]
+		},
+		{
+			"title": "SITCON Projects",
+			"links": [
+				{ "name": "Sponsorship Request", "url": "#" },
+				{ "name": "Call for Paper", "url": "#" },
+				{ "name": "Hour of Code", "url": "#" },
+				{ "name": "SITCON Camp", "url": "#" },
+				{ "name": "SITCON Hackathon", "url": "#" },
+				{ "name": "Hall of Frame", "url": "https://sitcon.org/hacker/" }
+			]
+		},
+		{
+			"title": "Contact",
+			"links": [
+				{ "name": "General Inquiries\ncontact@sitcon.org", "url": "mailto:contact@sitcon.org" },
+				{ "name": "Ticket Information\nticket@sitcon.org", "url": "mailto:ticket@sitcon.org" }
+			]
+		},
+		{
+			"title": "Past Events",
+			"gridLayout": true,
+			"links": [
+				{ "name": "2025", "url": "https://sitcon.org/2025" },
+				{ "name": "2024", "url": "https://sitcon.org/2024" },
+				{ "name": "2023", "url": "https://sitcon.org/2023" },
+				{ "name": "2022", "url": "https://sitcon.org/2022" },
+				{ "name": "2021", "url": "https://sitcon.org/2021" },
+				{ "name": "2020", "url": "https://sitcon.org/2020" },
+				{ "name": "2019", "url": "https://sitcon.org/2019" },
+				{ "name": "2018", "url": "https://sitcon.org/2018" },
+				{ "name": "2017", "url": "https://sitcon.org/2017" },
+				{ "name": "2016", "url": "https://sitcon.org/2016" },
+				{ "name": "2015", "url": "https://sitcon.org/2015" },
+				{ "name": "2014", "url": "https://sitcon.org/2014" },
+				{ "name": "2013", "url": "https://sitcon.org/2013" }
+			]
+		}
+	],
+	"team": {
+		"general": {
+			"name": "General Coordinator",
+			"description": "The core team that coordinates the entire conference, responsible for coordinating operations across all teams and setting conference direction and policies. We are the navigators of the conference, ensuring smooth execution and achievement of goals."
+		},
+		"administration": {
+			"name": "Administration",
+			"description": "Handles all administrative affairs of the conference, including documentation, meeting minutes, and internal communication coordination. We are the lubricant of team operations, ensuring all processes run smoothly."
+		},
+		"agenda": {
+			"name": "Agenda",
+			"description": "Responsible for all conference agenda planning and speaker invitations, the core content producers of the conference. We review numerous technical submissions and select the most suitable topics to ensure attendees receive the highest quality content."
+		},
+		"operations": {
+			"name": "Operations",
+			"description": "The on-site guardians of the conference day, responsible for traffic flow planning, equipment setup, and emergency response. We are the unsung heroes ensuring smooth event execution, requiring strong adaptability to face various challenges."
+		},
+		"design": {
+			"name": "Design",
+			"description": "Responsible for the conference's main visual design and merchandise, using colors and lines to depict SITCON's appearance. We pursue visual perfection, dedicated to materializing abstract concepts and bringing the most perfect visual feast to everyone."
+		},
+		"finance": {
+			"name": "Finance",
+			"description": "Manages the conference's financial affairs, ensuring every sponsorship and budget allocation achieves maximum effectiveness. We need care and patience to handle complex accounting and budget planning, serving as the solid backbone behind the event."
+		},
+		"recording": {
+			"name": "Recording",
+			"description": "Captures every exciting moment of the conference through the lens, responsible for event photography and video documentation. We are the guardians of conference memories, preserving every moment of emotion permanently."
+		},
+		"production": {
+			"name": "Production",
+			"description": "Responsible for the conference's audio-visual equipment and livestream systems, ensuring sessions are smoothly presented to all participants. We combine technology with art, making every presentation perfectly delivered."
+		},
+		"development": {
+			"name": "Development",
+			"description": "Dedicated to building the digital foundation of the conference with code, maintaining stable operation of the website and app. We are a group of technology-loving developers, transforming imaginative designs into actual interactive experiences. Welcome to exchange ideas here!"
+		},
+		"editorial": {
+			"name": "Editorial",
+			"description": "Responsible for producing and proofreading all text content for the conference, including website copy, promotional materials, and press releases. We convey SITCON's spirit through words, ensuring every message accurately reaches the target audience."
+		},
+		"marketing": {
+			"name": "Marketing",
+			"description": "Responsible for external promotion and community management of the conference, making SITCON known to more people through various channels. We are the spokespersons of the conference, promoting the event to the world with creativity and passion."
+		}
+	},
+	"role": {
+		"chief": "Chief Coordinator",
+		"deputy_chief": "Deputy Chief",
+		"head": "Team Leader",
+		"deputy": "Deputy Leader",
+		"member": "Member",
+		"treasurer": "Treasurer",
+		"agenda_lead": "Agenda Section Lead",
+		"ops_mobility_lead": "Mobility Section Lead",
+		"ops_registration_lead": "Registration Section Lead",
+		"ops_catering_lead": "Catering Section Lead",
+		"ops_logistics_lead": "Logistics Section Lead",
+		"ops_mobility": "Mobility Section",
+		"ops_registration": "Registration Section",
+		"ops_catering": "Catering Section",
+		"ops_logistics": "Logistics Section",
+		"marketing_helper": "Marketing Helper"
 	}
 }

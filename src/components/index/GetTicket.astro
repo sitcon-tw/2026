@@ -2,38 +2,43 @@
 import { Plane, Users, CodeXml } from "@lucide/astro";
 import Danmaku from "./effects/Danmaku.astro";
 import danmakuData from "../../data/danmakuLines.json";
+import { useTranslations, type Lang } from "@/utils/i18n";
+
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const i18n = useTranslations(lang);
+const t = i18n.ticket;
 
 const tickets = [
 	{
 		id: "oscvpass",
-		title: "開源貢獻票",
-		englishTitle: "OSCVPASS",
+		title: t.oscvpass.title,
+		englishTitle: t.oscvpass.englishTitle,
 		color: "#e6d3a3",
 		icon: CodeXml,
-		description: [
-			"資格限制：對開源專案有貢獻者。",
-			"在 2025/01/21 23:59 前申請且通過者，有機會可以搶到 SITCON 2025 開源貢獻票邀請碼。",
-			"關於歷年來 OSCVPass 申請通過者的專案列表，請參考 OSCVPass 專案介紹。"
-		],
-		verticalTitle: "開源貢獻票"
+		description: t.oscvpass.description,
+		verticalTitle: t.oscvpass.verticalTitle
 	},
 	{
 		id: "general",
-		title: "一般票",
-		englishTitle: "GENERAL",
+		title: t.general.title,
+		englishTitle: t.general.englishTitle,
 		color: "#e0e0e0",
 		icon: Users,
-		description: ["一般大眾皆可參與。", "請關注 SITCON 官方網站及社群媒體以獲取最新售票資訊。", "憑 QR Code 入場。"],
-		verticalTitle: "一般票"
+		description: t.general.description,
+		verticalTitle: t.general.verticalTitle
 	},
 	{
 		id: "long-distance",
-		title: "遠道而來票",
-		englishTitle: "DISTANCE",
+		title: t.longDistance.title,
+		englishTitle: t.longDistance.englishTitle,
 		color: "#c5a880",
 		icon: Plane,
-		description: ["居住地距離會場較遠的參與者。", "需提供相關證明文件。", "補助部分交通或住宿。"],
-		verticalTitle: "遠道而來票"
+		description: t.longDistance.description,
+		verticalTitle: t.longDistance.verticalTitle
 	}
 ];
 
@@ -43,7 +48,7 @@ const danmakuLines: string[] = danmakuData.lines;
 <section>
 	<div class="container">
 		<div class="title">
-			<h1>索票方式</h1>
+			<h1 class="text-reveal-title">{t.title}</h1>
 		</div>
 
 		<div class="ticket-container">
@@ -83,13 +88,25 @@ const danmakuLines: string[] = danmakuData.lines;
 										</div>
 									</div>
 								</div>
-
-								<div class="ticket-divider">
-									<div class="dashed-line" />
+								<ul class="ticket-desc">
+									{ticket.description.map((item: string) => (
+										<li>{item}</li>
+									))}
+								</ul>
+								<div class="ticket-actions">
+									<button class="btn-primary">{t.buttons.getTicket}</button>
+									<button class="btn-secondary">{t.buttons.addCalendar}</button>
 								</div>
 
 								<div class="ticket-stub">
 									<div class="ticket-vertical-text">{ticket.verticalTitle}</div>
+									<div class="ticket-info">
+										<div class="ticket-info-corner">
+											<div class="ticket-date">{i18n.landing.date}</div>
+											<div class="ticket-location">{t.location}</div>
+										</div>
+										<div class="ticket-sitcon-small">SITCON 2026</div>
+									</div>
 								</div>
 							</div>
 						</div>

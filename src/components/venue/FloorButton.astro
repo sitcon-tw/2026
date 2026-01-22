@@ -1,0 +1,70 @@
+---
+interface Props {
+	id: string;
+	label: string;
+	description: string;
+}
+
+const { id, label, description } = Astro.props;
+---
+
+<button class="floor-btn" data-floor={id}>
+	<div class="floor-badge">{label}</div>
+	<div class="floor-info">
+		<div class="floor-name">{label}</div>
+		<div class="floor-desc">{description}</div>
+	</div>
+</button>
+
+<style>
+	.floor-btn {
+		display: flex;
+		align-items: center;
+		background: rgba(255, 255, 255, 0.05);
+		border: 2px solid white;
+		border-radius: 16px;
+		padding: 1.2rem;
+		cursor: pointer;
+		text-align: left;
+		color: white;
+		transition: all 0.2s;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		width: 100%;
+	}
+
+	.floor-btn:hover {
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	.floor-badge {
+		background: #22c55e;
+		color: white;
+		width: 60px;
+		height: 60px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 12px;
+		font-weight: 800;
+		font-size: 1.5rem;
+		margin-right: 1.5rem;
+		flex-shrink: 0;
+	}
+
+	.floor-info {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.floor-name {
+		font-size: 1.8rem;
+		font-weight: 700;
+		line-height: 1.2;
+	}
+
+	.floor-desc {
+		font-size: 1rem;
+		opacity: 0.9;
+		margin-top: 0.2rem;
+	}
+</style>

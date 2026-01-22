@@ -70,8 +70,8 @@
 
 #### 描述
 
-- [ ] 文字淡入
-- [ ] 每張照片都是從最右邊開始往左滑，Animate on Scroll，用 GSAP。效果請參考：https://palermo.ddd.live/
+- [x] 文字淡入
+- [x] 每張照片都是從最右邊開始往左滑，Animate on Scroll，用 GSAP。效果請參考：https://palermo.ddd.live/
 
 #### 邀請講者
 

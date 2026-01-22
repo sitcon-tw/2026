@@ -1,11 +1,15 @@
 ---
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
+import { useTranslations } from "@/utils/i18n";
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).agenda;
 ---
 
-<Layout>
+<Layout title={lang === "en" ? "Agenda - SITCON 2026" : "議程表 - SITCON 2026"} lang={lang}>
 	<main>
-		<h1>議程表</h1>
+		<h1>{t.title}</h1>
 	</main>
 	<Footer />
 </Layout>

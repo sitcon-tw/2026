@@ -1,38 +1,48 @@
 ---
+import { useTranslations, type Lang } from "@/utils/i18n";
+
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).speaker;
+const prefix = lang === "en" ? "/2026/en" : "/2026";
+
 const speakers = [
 	{
-		name: "OsGa",
+		name: "???",
 		desc: "崴崴孟孟旅行三百天",
-		img: "https://placehold.co/367x492/png?text=OsGa"
+		img: "https://placehold.co/367x492/png?text=???"
 	},
 	{
-		name: "毛哥em",
-		desc: "厲害崴孟讓旅途順暢無阻",
-		img: "https://placehold.co/367x492/png?text=em"
+		name: "???",
+		desc: "崴崴孟孟旅行三百天",
+		img: "https://placehold.co/367x492/png?text=???"
 	},
 	{
-		name: "凱文 kevin",
-		desc: "崴孟合作 什麼難關都不怕",
-		img: "https://placehold.co/367x492/png?text=kevin"
+		name: "???",
+		desc: "崴崴孟孟旅行三百天",
+		img: "https://placehold.co/367x492/png?text=???"
 	},
 	{
-		name: "紐爾森 nelson",
-		desc: "孟寶總是心暖暖 因為崴崴寶",
-		img: "https://placehold.co/367x492/png?text=nelson"
+		name: "???",
+		desc: "崴崴孟孟旅行三百天",
+		img: "https://placehold.co/367x492/png?text=???"
 	},
 	{
-		name: "yc油成",
-		desc: "擁有豐富的數學背景",
-		img: "https://placehold.co/367x492/png?text=yc"
+		name: "???",
+		desc: "崴崴孟孟旅行三百天",
+		img: "https://placehold.co/367x492/png?text=???"
 	}
 ];
 ---
 
 <section class="speaker-section">
 	<div class="title">
-		<h2>年會</h2>
+		<h2 class="text-reveal-title">{t.title1}</h2>
 		<div class="line"></div>
-		<h2>邀請講者</h2>
+		<h2 class="text-reveal-title">{t.title2}</h2>
 	</div>
 
 	<div class="content-wrapper">
@@ -40,8 +50,8 @@ const speakers = [
 			{
 				speakers.map((person, index) => (
 					<div class:list={["speaker-item", { active: index === 0 }]} data-img={person.img}>
-						<h2>{person.name}</h2>
-						<p class="speakerdesc">{person.desc}</p>
+						<h2 class="text-reveal-title">{person.name}</h2>
+						<p class="speakerdesc text-reveal-paragraph">{person.desc}</p>
 					</div>
 				))
 			}
@@ -59,10 +69,10 @@ const speakers = [
 		</div>
 	</div>
 
-	<a href="#" class="cta-btn">查看議程表</a>
+	<a href={`${prefix}/agenda`} class="cta-btn">{t.cta}</a>
 
 	<div class="bg-optimized">
-		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewbox="0 24 150 28" preserveaspectratio="none" shape-rendering="auto">
+		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
 			<defs>
 				<path id="gentle-wave" d="m-160 44c30 0 58-8 88-8s 58 4 88 8 58-8 88-8 58 8 88 8 v44h-352z"></path>
 			</defs>
@@ -139,13 +149,6 @@ const speakers = [
 		align-items: center;
 	}
 
-	.speaker-list {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		gap: 3rem;
-	}
-
 	.speaker-item {
 		width: 100%;
 		font-size: 3rem;
@@ -161,15 +164,15 @@ const speakers = [
 	}
 
 	.speaker-item h2 {
-		margin: 0;
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
+		line-height: 1.7;
 	}
 
 	.speaker-item.active {
 		color: #a79164;
-		transform: scale(1.1);
+		transform: scale(1.125);
 		transform-origin: left center;
 	}
 
@@ -307,12 +310,6 @@ const speakers = [
 			max-width: 100%;
 		}
 
-		.speaker-list {
-			align-items: flex-start;
-			width: 100%;
-			gap: 1.5rem;
-		}
-
 		.speaker-item {
 			font-size: 1.5rem;
 			align-items: flex-start;
@@ -382,6 +379,8 @@ const speakers = [
 	import { gsap } from "gsap";
 	const items = document.querySelectorAll(".speaker-item");
 	const imgelement = document.getElementById("speaker-img");
+	const speakerlist = document.querySelector(".speaker-list");
+	const desktopimg = document.querySelector(".desktop-img");
 	let currentindex = 0;
 
 	function updateview(index: number) {
@@ -407,11 +406,41 @@ const speakers = [
 		});
 
 		item.addEventListener("mouseleave", () => {
-			startautoplay();
+			// 不立即重置，讓 speakerlist 的 mouseleave 處理
+		});
+
+		item.addEventListener("mousemove", e => {
+			if (!desktopimg || !speakerlist) return;
+			const { clientX, clientY } = e as MouseEvent;
+			const { left, width } = item.getBoundingClientRect();
+			const { top: listTop, height: listHeight } = speakerlist.getBoundingClientRect();
+			const x = clientX - left;
+			const y = clientY - listTop;
+			// X 相對於當前 item，Y 相對於整個 speaker-list
+			const translatex = gsap.utils.mapRange(0, width, -60, 60, x);
+			const translatey = gsap.utils.mapRange(0, listHeight, -60, 60, y);
+
+			gsap.to(desktopimg, {
+				x: translatex,
+				y: translatey,
+				duration: 0.15,
+				ease: "power2.out"
+			});
 		});
 	});
 
-	let timer: ReturnType<typeof setInterval> | null = null;
+	speakerlist?.addEventListener("mouseleave", () => {
+		startautoplay();
+		// 重置圖片位置
+		gsap.to(desktopimg, {
+			x: 0,
+			y: 0,
+			duration: 0.4,
+			ease: "power2.out"
+		});
+	});
+
+	let timer: number | null = null;
 
 	function startautoplay() {
 		if (timer) return;
@@ -427,32 +456,4 @@ const speakers = [
 	}
 
 	startautoplay();
-
-	const speakerimage = document.querySelector(".speaker-image");
-	const desktopimg = document.querySelector(".desktop-img");
-
-	speakerimage?.addEventListener("mousemove", e => {
-		const { clientX, clientY } = e;
-		const { left, top, width, height } = speakerimage.getBoundingClientRect();
-		const x = clientX - left;
-		const y = clientY - top;
-		const rotatex = gsap.utils.mapRange(0, height, -10, 10, y);
-		const rotatey = gsap.utils.mapRange(0, width, 10, -10, x);
-
-		gsap.to(desktopimg, {
-			rotateX: rotatex,
-			rotateY: rotatey,
-			duration: 0.4,
-			ease: "power2.out"
-		});
-	});
-
-	speakerimage?.addEventListener("mouseleave", () => {
-		gsap.to(desktopimg, {
-			rotateX: 0,
-			rotateY: 0,
-			duration: 0.4,
-			ease: "power2.out"
-		});
-	});
 </script>

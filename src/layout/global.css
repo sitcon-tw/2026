@@ -35,6 +35,7 @@ h5,
 h6 {
 	font-family: "GenKiMinTW", serif;
 	font-weight: normal;
+	word-break: break-word;
 }
 
 code,
@@ -49,6 +50,7 @@ h2 {
 p {
 	line-height: 1.5;
 	margin-bottom: 1rem;
+	word-break: break-word;
 }
 
 @media (max-width: 600px) {
@@ -72,4 +74,46 @@ p {
 
 .skip-link:focus {
 	top: 0;
+}
+
+/* ==========================================
+   Text Reveal Animation Styles
+   使用方式：
+   - 標題：class="text-reveal-title"
+   - 段落：class="text-reveal-paragraph"
+   ========================================== */
+
+.text-reveal-title,
+.text-reveal-paragraph {
+	overflow: hidden;
+}
+
+.text-reveal-wrapper {
+	display: block;
+}
+
+.text-reveal-line {
+	overflow: hidden;
+	display: block;
+	line-height: inherit;
+}
+
+.text-reveal-content {
+	display: inline-block;
+	will-change: transform, opacity;
+}
+
+/* 保持原有的文字樣式 */
+.text-reveal-title .text-reveal-content {
+	font: inherit;
+	line-height: inherit;
+}
+
+.text-reveal-paragraph .text-reveal-content {
+	font: inherit;
+	line-height: inherit;
+}
+
+img {
+	/* background-color: red; */
 }

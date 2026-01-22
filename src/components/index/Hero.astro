@@ -1,0 +1,430 @@
+---
+import Landing from "./Hero/Landing.astro";
+import Dialogue from "./Hero/Dialogue.astro";
+import PhotoWall from "./Hero/PhotoWall.astro";
+import type { Lang } from "@/utils/i18n";
+
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? "zh";
+---
+
+<section class="hero-container">
+	<div class="bg-fixed">
+		<canvas id="bg-canvas"></canvas>
+	</div>
+	<Landing lang={lang} />
+	<Dialogue lang={lang} />
+	<PhotoWall />
+</section>
+
+<style>
+	.hero-container {
+		position: relative;
+		width: 100%;
+	}
+
+	.bg-fixed {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100dvh;
+		overflow: hidden;
+		background: radial-gradient(circle at center, #c1a875 0%, #a97c21 100%); /* 漸層金色 */
+		z-index: -1;
+		animation: fadeIn 2s ease-out forwards;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	#bg-canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.hero-container :global(.landing-section),
+	.hero-container :global(.dialogue-section),
+	.hero-container :global(.photo-wall) {
+		pointer-events: none;
+	}
+
+	.hero-container :global(a),
+	.hero-container :global(button),
+	.hero-container :global(.cta-container) {
+		pointer-events: auto;
+	}
+</style>
+
+<script>
+	import * as THREE from "three";
+	// @ts-ignore - SVGLoader types may not be available
+	import { SVGLoader, type SVGResult } from "three/examples/jsm/loaders/SVGLoader";
+	import gsap from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	const canvas = document.getElementById("bg-canvas") as HTMLCanvasElement;
+	if (canvas) {
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+		camera.position.set(0, 0, 0); // Camera at center
+
+		const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+		// Lighting
+		const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+		scene.add(ambientLight);
+
+		const dirLight = new THREE.DirectionalLight(0xffffff, 4.0);
+		dirLight.position.set(5, 10, -5); // Adjusted for inside view
+		scene.add(dirLight);
+
+		// Spiral Path Config - Very large to wrap around camera
+		const spiralConfig = {
+			radius: 50,
+			height: 120,
+			wraps: 2
+		};
+
+		function getSpiralPosition(progress: number, thetaOffset: number = 0) {
+			const angle = progress * Math.PI * 2 * spiralConfig.wraps + thetaOffset;
+			const x = spiralConfig.radius * Math.cos(angle);
+			const y = (progress - 0.5) * spiralConfig.height;
+			const z = spiralConfig.radius * Math.sin(angle);
+			return new THREE.Vector3(x, y, z);
+		}
+
+		interface HeroObject {
+			mesh: THREE.Object3D;
+			pathProgress: number;
+			pathOffset: number;
+			speed: number;
+			isDragging: boolean;
+			targetPos: THREE.Vector3;
+			rotationSpeed: THREE.Euler;
+			baseScale: number;
+		}
+
+		// Meteors (Improved trails with Shaders)
+		const meteorsGroup = new THREE.Group();
+		const meteorCount = 120; // High density for the storm
+		const meteors: { mesh: THREE.Mesh; speed: number; progress: number; offset: number }[] = [];
+
+		const meteorGeometry = new THREE.CylinderGeometry(0.01, 0.2, 25, 8); // v=1(Top) is thin tail, v=0(Bottom) is thick head
+		meteorGeometry.translate(0, 12.5, 0); // Move Bottom(Head) to origin
+		meteorGeometry.rotateX(-Math.PI / 2); // Rotate so head (v=0) points forward (+Z)
+
+		const meteorShaderMaterial = new THREE.ShaderMaterial({
+			uniforms: {
+				color: { value: new THREE.Color(0xdddddd) }, // Grey-white color scheme
+				opacity: { value: 0.8 }
+			},
+			vertexShader: `
+				varying vec2 vUv;
+				void main() {
+					vUv = uv;
+					gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+				}
+			`,
+			fragmentShader: `
+				varying vec2 vUv;
+				uniform vec3 color;
+				uniform float opacity;
+				void main() {
+					// vUv.y is from 0 (head) to 1 (tail)
+					// Smooth head, long fading tail
+					float alpha = smoothstep(0.0, 0.05, vUv.y) * pow(1.0 - vUv.y, 3.0);
+					// Add a core brightness
+					gl_FragColor = vec4(color, alpha * opacity);
+				}
+			`,
+			transparent: true,
+			blending: THREE.AdditiveBlending,
+			depthWrite: false
+		});
+
+		for (let i = 0; i < meteorCount; i++) {
+			const mesh = new THREE.Mesh(meteorGeometry, meteorShaderMaterial.clone());
+			meteorsGroup.add(mesh);
+			meteors.push({
+				mesh,
+				speed: 0.001 + Math.random() * 0.002,
+				progress: Math.random(),
+				offset: Math.random() * Math.PI * 2
+			});
+		}
+		scene.add(meteorsGroup);
+
+		// Orbiting Decorative Objects
+		const heroObjects: HeroObject[] = [];
+		const decorInstanceCount = 10; // Reduced count for SVGs to highlight volumetric primitives
+
+		function createOrbitingObjects(geometry: THREE.BufferGeometry, material: THREE.Material, count: number, scaleRange: [number, number], speedRange: [number, number]) {
+			for (let i = 0; i < count; i++) {
+				const mesh = new THREE.Mesh(geometry, material);
+				const scale = scaleRange[0] + Math.random() * (scaleRange[1] - scaleRange[0]);
+				mesh.scale.setScalar(scale);
+
+				scene.add(mesh);
+				heroObjects.push({
+					mesh,
+					pathProgress: Math.random(),
+					pathOffset: Math.random() * Math.PI * 2,
+					speed: speedRange[0] + Math.random() * (speedRange[1] - speedRange[0]),
+					isDragging: false,
+					targetPos: new THREE.Vector3(),
+					rotationSpeed: new THREE.Euler(Math.random() * 0.01, Math.random() * 0.01, Math.random() * 0.01),
+					baseScale: scale
+				});
+			}
+		}
+
+		const raycaster = new THREE.Raycaster();
+		const mouse = new THREE.Vector2();
+		const plane = new THREE.Plane();
+		const intersection = new THREE.Vector3();
+		const offset = new THREE.Vector3();
+		let draggedObj: HeroObject | null = null;
+
+		function createMetalMaterial(color: any) {
+			return new THREE.MeshPhysicalMaterial({
+				color: color,
+				metalness: 0.5, // Lower metalness to let color be the subject
+				roughness: 0.2, // Smooth surface for clear reflections
+				reflectivity: 0.8,
+				clearcoat: 1.0, // High clearcoat for the "metallic" shine overlay
+				clearcoatRoughness: 0.05,
+				envMapIntensity: 1.2
+			});
+		}
+
+		const svgLoader = new SVGLoader();
+		// textureLoader removed - was declared but never used
+
+		// Add Volumetric Primitives (Cubes & Spheres & Toruses)
+		const cubeGeom = new THREE.BoxGeometry(2, 2, 2);
+		const sphereGeom = new THREE.IcosahedronGeometry(1.2, 4); // Increased detail from 1 to 4 for smoothness
+		const torusGeom = new THREE.TorusGeometry(1, 0.4, 32, 48); // Also increased torus segments for smoothness
+
+		const goldMat = createMetalMaterial(0xdaa520);
+		const silverMat = createMetalMaterial(0xdfdfdf);
+		const copperMat = createMetalMaterial(0xcc7722);
+
+		createOrbitingObjects(cubeGeom, goldMat, 25, [1.0, 1.8], [0.0004, 0.0008]);
+		createOrbitingObjects(sphereGeom, silverMat, 25, [1.2, 2.2], [0.0004, 0.0008]);
+		createOrbitingObjects(torusGeom, copperMat, 20, [1.0, 1.6], [0.0004, 0.0008]);
+
+		// round-metal.svg
+		svgLoader.load("/2026/img/Hero/round-metal.svg", (data: SVGResult) => {
+			const shapes: THREE.Shape[] = [];
+			data.paths.forEach((path: any) => shapes.push(...SVGLoader.createShapes(path)));
+			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 15, bevelEnabled: true }); // Increased depth
+			geometry.center();
+			geometry.rotateX(Math.PI); // Correct SVG flip
+
+			const baseColor = data.paths[0]?.color || 0xdaa520;
+			const material = createMetalMaterial(baseColor);
+
+			// Orbiting Background (now draggable)
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.03, 0.07], [0.0003, 0.0006]);
+		});
+
+		// stone-metal.svg
+		svgLoader.load("/2026/img/Hero/stone-metal.svg", (data: SVGResult) => {
+			const shapes: THREE.Shape[] = [];
+			data.paths.forEach((path: any) => shapes.push(...SVGLoader.createShapes(path)));
+			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 18, bevelEnabled: true }); // Increased depth
+			geometry.center();
+			geometry.rotateX(Math.PI);
+
+			const baseColor = data.paths[0]?.color || 0xdfdfdf;
+			const material = createMetalMaterial(baseColor);
+
+			// Orbiting Background (now draggable)
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.04, 0.09], [0.0003, 0.0006]);
+		});
+
+		// star-metal.svg
+		svgLoader.load("/2026/img/Hero/star-metal.svg", (data: SVGResult) => {
+			const shapes: THREE.Shape[] = [];
+			data.paths.forEach((path: any) => shapes.push(...SVGLoader.createShapes(path)));
+			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 12, bevelEnabled: true }); // Increased depth
+			geometry.center();
+			geometry.rotateX(Math.PI);
+
+			const baseColor = data.paths[0]?.color || 0xffffff;
+			const material = createMetalMaterial(baseColor);
+
+			// Orbiting Background (now draggable)
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.05, 0.12], [0.0003, 0.0006]);
+		});
+
+		// Drag Events
+		window.addEventListener("pointerdown", e => {
+			mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+			mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+			raycaster.setFromCamera(mouse, camera);
+			const intersects = raycaster.intersectObjects(
+				heroObjects.map(o => o.mesh),
+				true
+			);
+			if (intersects.length > 0) {
+				let root = intersects[0].object;
+				while (root.parent && root.parent !== scene) root = root.parent;
+				draggedObj = heroObjects.find(o => o.mesh === root) || null;
+				if (draggedObj) {
+					draggedObj.isDragging = true;
+					canvas.style.cursor = "grabbing";
+					plane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(new THREE.Vector3()).negate(), intersects[0].point);
+					if (raycaster.ray.intersectPlane(plane, intersection)) {
+						offset.copy(intersection).sub(root.position);
+					}
+				}
+			}
+		});
+
+		window.addEventListener("pointermove", e => {
+			mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+			mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+			if (draggedObj && draggedObj.isDragging) {
+				raycaster.setFromCamera(mouse, camera);
+				if (raycaster.ray.intersectPlane(plane, intersection)) {
+					draggedObj.mesh.position.copy(intersection.sub(offset));
+				}
+			} else {
+				// Hover check for cursor change
+				raycaster.setFromCamera(mouse, camera);
+				const intersects = raycaster.intersectObjects(
+					heroObjects.filter(o => o.mesh.visible).map(o => o.mesh),
+					true
+				);
+				canvas.style.cursor = intersects.length > 0 ? "grab" : "auto";
+			}
+		});
+
+		window.addEventListener("pointerup", () => {
+			if (draggedObj) {
+				draggedObj.isDragging = false;
+				draggedObj = null;
+				canvas.style.cursor = "auto";
+			}
+		});
+
+		let scrollProgress = 0;
+		let idleTime = 0;
+		let lastScrollY = 0;
+		const mouseOffset = { x: 0, y: 0 };
+		const targetMouseOffset = { x: 0, y: 0 };
+
+		window.addEventListener("pointermove", e => {
+			targetMouseOffset.x = (e.clientX / window.innerWidth - 0.5) * 5; // Horizontal sway
+			targetMouseOffset.y = (e.clientY / window.innerHeight - 0.5) * 5; // Vertical sway
+		});
+
+		function animate() {
+			requestAnimationFrame(animate);
+			idleTime += 0.0007; // Slowed down significantly (half of 0.0015)
+
+			const scrollDelta = Math.abs(window.scrollY - lastScrollY);
+			lastScrollY = window.scrollY;
+			const scrollFactor = 1 + Math.min(scrollDelta * 0.01, 2);
+
+			scrollProgress += (window.scrollY / 8000 - scrollProgress) * 0.05;
+
+			mouseOffset.x += (targetMouseOffset.x - mouseOffset.x) * 0.05;
+			mouseOffset.y += (targetMouseOffset.y - mouseOffset.y) * 0.05;
+
+			// Subtle perspective shift
+			camera.position.x = mouseOffset.x * 0.8;
+			camera.position.y = -mouseOffset.y * 0.8;
+			camera.rotation.y = -mouseOffset.x * 0.02;
+			camera.rotation.x = -mouseOffset.y * 0.02;
+
+			// Update Meteors - only show front half
+			meteors.forEach(m => {
+				m.progress = (m.progress + m.speed * 0.4 * scrollFactor) % 1; // Increased speed (was 0.15)
+				const pos = getSpiralPosition(m.progress, m.offset);
+				m.mesh.position.copy(pos);
+
+				// Rotate to look along path
+				const nextPos = getSpiralPosition((m.progress + 0.005) % 1, m.offset);
+				m.mesh.lookAt(nextPos);
+
+				// Visibility and Alpha via Uniforms
+				const isVisible = pos.z < 10;
+				m.mesh.visible = isVisible;
+				if (isVisible) {
+					// @ts-ignore
+					m.mesh.material.uniforms.opacity.value = Math.max(0, 0.4 * (1 - pos.z / 10));
+				}
+			});
+
+			// Update Orbiting Decorative Objects (now all in heroObjects and draggable)
+			heroObjects.forEach(obj => {
+				// Base progress combined with initial random progress and scroll
+				obj.pathProgress = (obj.pathProgress + obj.speed * 0.4 * scrollFactor) % 1;
+				const totalProgress = (obj.pathProgress + scrollProgress) % 1;
+				const normalizedProgress = totalProgress < 0 ? 1 + totalProgress : totalProgress;
+
+				const pathPos = getSpiralPosition(normalizedProgress, obj.pathOffset);
+
+				if (!obj.isDragging) {
+					const distanceToPath = obj.mesh.position.distanceTo(pathPos);
+					if (distanceToPath > 50) {
+						obj.mesh.position.copy(pathPos);
+					} else {
+						obj.mesh.position.lerp(pathPos, 0.05);
+					}
+
+					// Individualized slow rotation
+					obj.mesh.rotation.x += obj.rotationSpeed.x * scrollFactor;
+					obj.mesh.rotation.y += obj.rotationSpeed.y * scrollFactor;
+					obj.mesh.rotation.z += obj.rotationSpeed.z * scrollFactor;
+
+					// Lerp scale back to baseScale
+					obj.mesh.scale.lerp(new THREE.Vector3(obj.baseScale, obj.baseScale, obj.baseScale), 0.1);
+				} else {
+					// Shrink effect when dragging
+					const targetScale = obj.baseScale * 0.7; // Shrink to 70%
+					obj.mesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+				}
+
+				// Scale visibility based on Z position for smooth fade
+				const isVisible = obj.mesh.position.z < 15;
+				obj.mesh.visible = isVisible;
+				const meshWithMaterial = obj.mesh as THREE.Mesh;
+				if (isVisible && meshWithMaterial.material instanceof THREE.MeshPhysicalMaterial) {
+					meshWithMaterial.material.opacity = Math.max(0, 1.0 * (1 - (obj.mesh.position.z - 5) / 10));
+					meshWithMaterial.material.transparent = obj.mesh.position.z > 5;
+				}
+			});
+
+			renderer.render(scene, camera);
+		}
+
+		window.addEventListener("resize", () => {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		});
+
+		animate();
+	}
+</script>

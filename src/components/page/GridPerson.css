@@ -1,0 +1,88 @@
+.person {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	max-width: 20rem;
+	cursor: pointer;
+	transition:
+		transform 0.3s ease,
+		filter 0.3s ease;
+}
+
+.person:hover {
+	transform: translateY(-0.5rem);
+	filter: drop-shadow(0 1rem 1rem #0000002d);
+}
+
+.avatar-container {
+	position: relative;
+	width: 10rem;
+	height: 10rem;
+	border-radius: 1rem;
+	overflow: hidden;
+}
+
+.avatar-layer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 1rem;
+	transform: scale(1.125);
+	transition: transform 0.1s ease-out;
+	will-change: transform;
+}
+
+.avatar-layer-circle {
+	border-radius: 9999px;
+}
+
+.avatar-container-circle {
+	border-radius: 9999px;
+}
+
+.person-circle {
+	border-radius: 62.5rem;
+}
+
+.person-circle .avatar-img {
+	border-radius: 9999px;
+}
+
+.avatar-bg {
+	z-index: 0;
+}
+
+.avatar-back {
+	z-index: 1;
+}
+
+.avatar-front {
+	z-index: 2;
+}
+
+.avatar-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	pointer-events: none;
+}
+
+.text-group {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+	.avatar-container {
+		width: 6rem;
+		height: 6rem;
+	}
+}
