@@ -1,614 +1,362 @@
 ---
-import { Plane, Users, CodeXml } from "@lucide/astro";
+import { useTranslations, type Lang } from "@/utils/i18n";
 
-const tickets = [
-	{
-		id: "oscvpass",
-		title: "開源貢獻票",
-		englishTitle: "OSCVPASS",
-		color: "#e6d3a3",
-		icon: CodeXml,
-		serial: "#877855A",
-		description: [
-			"資格限制：對開源專案有貢獻者。",
-			"在 2025/01/21 23:59 前申請且通過者，有機會可以搶到 SITCON 2025 開源貢獻票邀請碼。",
-			"關於歷年來 OSCVPass 申請通過者的專案列表，請參考 OSCVPass 專案介紹。"
-		],
-		verticalTitle: "開源貢獻票"
-	},
-	{
-		id: "general",
-		title: "一般票",
-		englishTitle: "GENERAL",
-		color: "#e0e0e0",
-		icon: Users,
-		serial: "#GNR2026",
-		description: ["一般大眾皆可參與。", "請關注 SITCON 官方網站及社群媒體以獲取最新售票資訊。", "憑 QR Code 入場。"],
-		verticalTitle: "一般票"
-	},
-	{
-		id: "long-distance",
-		title: "遠道而來票",
-		englishTitle: "DISTANCE",
-		color: "#c5a880",
-		icon: Plane,
-		serial: "#LNG2026",
-		description: ["居住地距離會場較遠的參與者。", "需提供相關證明文件。", "補助部分交通或住宿。"],
-		verticalTitle: "遠道而來票"
-	}
-];
+interface Props {
+	lang?: Lang;
+}
 
-const danmakuLines = [
-	"竟然完全免費？",
-	"SITCON 自己的報名系統？",
-	"立即申請",
-	"千萬不要錯過！！！",
-	"真的假的啦也太佛？？？",
-	"免費還不衝？？",
-	"手速慢一點就沒了吧",
-	"報名入口在哪！！",
-	"這波是官方認證的香",
-	"這不是詐騙吧（是認真的）",
-	"我只問一句：還能再更爽嗎",
-	"想去 +1",
-	"我要去蹭 knowledge",
-	"我要去吸收能量",
-	"想聽神仙 talk",
-	"我只想當個快樂聽眾",
-	"SITCON 2026 Let's GO",
-	"工程師的熱情",
-	"開源精神",
-	"學生最大的年會"
-];
+const lang = Astro.props.lang ?? "zh";
+const t = useTranslations(lang).discuss;
+const messages = t.messages;
 ---
 
-<section>
+<section class="chat-section">
 	<div class="container">
-		<div class="title">
-			<h1>索票方式</h1>
+		<div class="chat-wrapper">
+			<div class="chat-mask">
+				<div class="chat-stream" id="chatStream" data-messages={JSON.stringify(messages)}></div>
+			</div>
 		</div>
 
-		<div class="ticket-container">
-			{
-				tickets.map((ticket, index) => (
-					<div class={`ticket-card ${index === 0 ? "active" : ""}`} data-index={index} style={`--bg-color: ${ticket.color};`}>
-						<div class="ticket-mobile-header">
-							<span class="mobile-title">{ticket.title}</span>
-							<div class="mobile-toggle">+</div>
-						</div>
-
-						<div class="ticket-body">
-							<div class="ticket-main">
-								<div class="ticket-main-inner">
-									<div class="ticket-top-info">
-										<div class="ticket-event-title">SITCON 2026</div>
-										<div class="ticket-serial">{ticket.serial}</div>
-									</div>
-
-									<div class="ticket-header">
-										<h2 class="ticket-title">{ticket.englishTitle}</h2>
-									</div>
-
-									<ul class="ticket-desc">
-										{ticket.description.map(item => (
-											<li>{item}</li>
-										))}
-									</ul>
-
-									<div class="ticket-actions">
-										<button class="btn-outline">立即索票</button>
-										<button class="btn-outline">加入行事曆</button>
-									</div>
-								</div>
-							</div>
-
-							<div class="ticket-divider">
-								<div class="dashed-line" />
-							</div>
-
-							<div class="ticket-stub">
-								<div class="ticket-vertical-text">{ticket.verticalTitle}</div>
-							</div>
-						</div>
-					</div>
-				))
-			}
+		<div class="info-container">
+			<h2 class="section-title text-reveal-title">{t.title}</h2>
+			<div class="btn-group">
+				<a href="#" class="btn-pill">{t.buttons.reserve}</a>
+				<a href="#" class="btn-pill">{t.buttons.forum}</a>
+				<a href="#" class="btn-pill">{t.buttons.records}</a>
+			</div>
 		</div>
 	</div>
 
-	<div class="danmaku-container" id="danmaku-container" data-lines={JSON.stringify(danmakuLines)}></div>
+	<img src="/images/decoration-logo.png" alt="" class="decor-logo" />
+	<img src="/images/decoration-paper.png" alt="" class="decor-paper" />
 </section>
 
 <style>
-	section {
+	.chat-section {
 		position: relative;
-		width: 100%;
-		min-height: 50rem;
 		overflow: hidden;
-		padding-bottom: 4rem;
+		padding: 0;
 	}
 
 	.container {
-		position: relative;
-		z-index: 10;
+		max-width: var(--max-width);
+		width: 90%;
+		margin: 0 auto;
 		display: flex;
-		flex-direction: column;
+		justify-content: space-between;
 		align-items: center;
-		height: 100%;
-		padding: 0 1.5rem;
-	}
-
-	.title {
-		font-size: 2.25rem;
-		padding-top: 6rem;
-		color: white;
-		text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-		margin-bottom: 3rem;
-	}
-
-	.title h1 {
-		font-weight: 700;
-	}
-
-	.ticket-container {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-		max-width: 80rem;
-		height: 30rem;
-		gap: 1.5rem;
-	}
-
-	.ticket-card {
+		gap: 5rem;
 		position: relative;
-		height: 100%;
-		background-color: var(--bg-color);
-		border-radius: 1.5rem;
-		overflow: hidden;
-		cursor: pointer;
-		flex: 1;
-		min-width: 6rem;
-		transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-		box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.15);
-
-		--stub-width: 6rem;
-		--notch-size: 1.5rem;
-		--notch-radius: calc(var(--notch-size) / 2);
-		--notch-center: calc(100% - var(--stub-width));
-
-		-webkit-mask-image:
-			radial-gradient(circle at var(--notch-center) 0, transparent calc(var(--notch-radius) - 0.03125rem), black var(--notch-radius)),
-			radial-gradient(circle at var(--notch-center) 100%, transparent calc(var(--notch-radius) - 0.03125rem), black var(--notch-radius));
-		mask-image:
-			radial-gradient(circle at var(--notch-center) 0, transparent calc(var(--notch-radius) - 0.03125rem), black var(--notch-radius)),
-			radial-gradient(circle at var(--notch-center) 100%, transparent calc(var(--notch-radius) - 0.03125rem), black var(--notch-radius));
-
-		-webkit-mask-composite: source-in;
-		mask-composite: intersect;
+		z-index: 2;
+		padding: 4rem 0;
 	}
 
-	.ticket-card.active {
-		flex: 10;
-		cursor: default;
-		box-shadow: 0 1.25rem 3.125rem rgba(0, 0, 0, 0.3);
-	}
-
-	.ticket-card:hover:not(.active) {
-		flex: 1.5;
-	}
-
-	.ticket-body {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-		height: 100%;
-		white-space: nowrap;
-	}
-
-	.ticket-main {
+	.chat-wrapper {
 		flex: 1;
 		min-width: 0;
-		height: 100%;
+	}
+
+	.chat-mask {
+		height: 320px;
+		width: 100%;
 		overflow: hidden;
 		position: relative;
-		opacity: 0;
-		transition: opacity 0.3s ease;
+		mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%);
+		-webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 100%);
 	}
 
-	.ticket-card.active .ticket-main {
-		opacity: 1;
-		transition-delay: 0.2s;
-	}
-
-	.ticket-main-inner {
-		width: 40rem;
-		padding: 3rem;
+	.chat-stream {
 		display: flex;
 		flex-direction: column;
+		justify-content: flex-end;
 		height: 100%;
-	}
-
-	.ticket-top-info {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-end;
-		position: absolute;
-		top: 2.5rem;
-		right: 2rem;
-		text-align: right;
-	}
-
-	.ticket-event-title {
-		font-weight: 700;
-		color: #333;
-		opacity: 0.6;
-		letter-spacing: 0.05em;
-		font-size: 1rem;
-	}
-
-	.ticket-serial {
-		font-family: monospace;
-		font-weight: 700;
-		color: #333;
-		opacity: 0.4;
-		font-size: 0.875rem;
-		letter-spacing: 0.05em;
-		margin-top: 0.25rem;
-		border: 0.0625rem solid rgba(51, 51, 51, 0.2);
-		padding: 0.1rem 0.5rem;
-		border-radius: 1rem;
-	}
-
-	.ticket-header {
-		margin-bottom: 2rem;
-		margin-top: 1rem;
-	}
-
-	.ticket-title {
-		font-size: 4.5rem;
-		font-weight: 800;
-		color: #333;
-		line-height: 1;
-		text-transform: uppercase;
-	}
-
-	.ticket-desc {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		flex: 1;
-		white-space: normal;
-	}
-
-	.ticket-desc li {
-		font-size: 1.1rem;
-		color: #333;
-		margin-bottom: 0.75rem;
-		padding-left: 1rem;
-		position: relative;
-		font-weight: 600;
-		line-height: 1.6;
-	}
-
-	.ticket-desc li::before {
-		content: "•";
-		position: absolute;
-		left: 0;
-		font-weight: bold;
-	}
-
-	.ticket-actions {
-		display: flex;
-		gap: 1rem;
-		margin-top: 2rem;
-	}
-
-	.btn-outline {
-		background: transparent;
-		color: #333;
-		border: 0.125rem solid #333;
-		padding: 0.75rem 2rem;
-		font-size: 1.125rem;
-		font-weight: 700;
-		border-radius: 50rem;
-		cursor: pointer;
-		white-space: nowrap;
-		transition: all 0.2s ease;
-	}
-
-	.btn-outline:hover {
-		background: #333;
-		color: var(--bg-color);
-	}
-
-	.ticket-divider {
-		width: 0.0625rem;
-		height: 85%;
-		align-self: center;
-		position: relative;
-		flex-shrink: 0;
-	}
-
-	.dashed-line {
-		width: 100%;
-		height: 100%;
-		border-left: 0.125rem dashed rgba(51, 51, 51, 0.3);
-	}
-
-	.ticket-stub {
-		width: 6rem;
-		min-width: 6rem;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: 2.5rem 0;
-		flex-shrink: 0;
-	}
-
-	.ticket-vertical-text {
-		writing-mode: vertical-rl;
-		font-size: 2.25rem;
-		font-weight: 900;
-		letter-spacing: 0.3em;
-		color: #333;
-		white-space: nowrap;
-		flex: 1;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.ticket-mobile-header {
-		display: none;
-	}
-
-	.danmaku-container {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		pointer-events: none;
-		z-index: 1;
-		user-select: none;
+		gap: 0.5rem;
+		padding: 1rem 0;
 		overflow: hidden;
 	}
 
-	:global(.danmaku-item) {
-		position: absolute;
-		white-space: nowrap;
-		font-weight: 900;
+	.chat-section :global(.message-bubble) {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		width: fit-content;
+		max-width: 85%;
+		flex-shrink: 0;
+		will-change: transform, opacity;
+	}
+
+	.chat-section :global(.message-bubble.is-offset) {
+		margin-left: 4rem;
+	}
+
+	.chat-section :global(.bubble-content) {
+		border-radius: 1.5rem;
+		padding: 1.1rem 1.6rem;
+		background: #c2a05a;
 		color: white;
-		opacity: 0.12;
-		will-change: transform;
+		font-size: 1.5rem;
+		font-weight: 500;
+		line-height: 1.45;
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+		max-width: 22rem;
 	}
 
-	@media (max-width: 56.25rem) {
-		.ticket-container {
-			flex-direction: column;
-			height: auto;
-			gap: 1rem;
-		}
+	.chat-section :global(.bubble-tail) {
+		margin-top: -2px;
+		margin-left: 1.5rem;
+		line-height: 0;
+	}
 
-		.ticket-card {
-			flex: none;
-			width: 100%;
-			height: auto;
-			min-width: 0;
-			max-height: 4.5rem;
-			transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-			mask-image: none;
-			-webkit-mask-image: none;
-		}
+	.chat-section :global(.bubble-tail svg) {
+		width: 20px;
+		height: 18px;
+		display: block;
+	}
 
-		.ticket-card.active {
-			flex: none;
-			max-height: 50rem;
-		}
+	.info-container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		padding-left: 5rem;
+		min-width: 25rem;
+	}
 
-		.ticket-mobile-header {
-			display: flex;
+	.section-title {
+		font-size: 6rem;
+		color: white;
+		font-family: serif;
+		margin: 0 0 1.5rem 0;
+		font-weight: 700;
+		line-height: 1.1;
+	}
+
+	.btn-group {
+		display: flex;
+		gap: 1.8rem;
+		flex-wrap: wrap;
+	}
+
+	.btn-pill {
+		background-color: #ffd172;
+		color: #634a15;
+		padding: 1rem 2.5rem;
+		border-radius: 3.75rem;
+		text-decoration: none;
+		font-weight: bold;
+		font-size: 1.4rem;
+		transition:
+			transform 0.2s,
+			background-color 0.2s;
+	}
+
+	.btn-pill:hover {
+		transform: scale(1.05);
+		background-color: #fff;
+	}
+
+	.decor-logo {
+		position: absolute;
+		right: 3rem;
+		top: 25%;
+		width: 6.25rem;
+		opacity: 0.9;
+		z-index: 1;
+	}
+
+	.decor-paper {
+		position: absolute;
+		right: -6rem;
+		bottom: -7rem;
+		width: 30rem;
+		transform: rotate(-10deg);
+		z-index: 1;
+	}
+
+	/* RWD */
+	@media screen and (max-width: 1250px) {
+		.container {
+			gap: 3rem;
+			width: 95%;
+			padding: 3rem 0;
+		}
+		.section-title {
+			font-size: 5rem;
+		}
+		.info-container {
+			padding-left: 2rem;
+			min-width: auto;
+		}
+		.chat-section :global(.message-bubble.is-offset) {
+			margin-left: 2.5rem;
+		}
+		.chat-mask {
+			height: 280px;
+		}
+		.chat-section :global(.bubble-content) {
+			max-width: 18rem;
+			font-size: 1.35rem;
+		}
+	}
+
+	@media screen and (max-width: 992px) {
+		.container {
+			flex-direction: column-reverse;
+			gap: 3rem;
+			padding: 3rem 0;
+		}
+		.info-container {
+			padding-left: 0;
 			align-items: center;
-			justify-content: space-between;
-			padding: 0 1.5rem;
-			height: 4.5rem;
-			background: rgba(0, 0, 0, 0.05);
-			width: 100%;
-			position: absolute;
-			top: 0;
-			left: 0;
-			z-index: 20;
-		}
-
-		.mobile-title {
-			font-size: 1.5rem;
-			font-weight: 900;
-			color: #333;
-		}
-
-		.mobile-toggle {
-			font-size: 2rem;
-			font-weight: 300;
-			color: #333;
-			transition: transform 0.3s;
-		}
-
-		.ticket-card.active .mobile-toggle {
-			transform: rotate(45deg);
-		}
-
-		.ticket-divider,
-		.ticket-stub {
-			display: none;
-		}
-
-		.ticket-body {
-			flex-direction: column;
-			height: auto;
-			white-space: normal;
-			margin-top: 4.5rem;
-		}
-
-		.ticket-main {
-			padding: 1.5rem;
-			opacity: 1;
+			text-align: center;
 			width: 100%;
 		}
-
-		.ticket-main-inner {
-			width: 100%;
-			padding: 0;
+		.section-title {
+			font-size: 4rem;
+			margin-bottom: 1.5rem;
 		}
-
-		.ticket-top-info {
-			display: none;
-		}
-
-		.ticket-title {
-			font-size: 2.5rem;
-		}
-
-		.ticket-actions {
-			flex-direction: column;
-			width: 100%;
-		}
-
-		.btn-outline {
-			width: 100%;
+		.btn-group {
 			justify-content: center;
+		}
+		.chat-wrapper {
+			width: 100%;
+		}
+		.chat-mask {
+			width: 100%;
+		}
+		.chat-stream {
+			align-items: center;
+		}
+		.chat-section :global(.message-bubble) {
+			max-width: 90%;
+		}
+		.chat-section :global(.message-bubble.is-offset) {
+			margin-left: 0;
+		}
+		.chat-section :global(.bubble-content) {
+			font-size: 1.2rem;
+			padding: 0.85rem 1.3rem;
+			max-width: 80vw;
+		}
+		.chat-section :global(.bubble-tail) {
+			margin-left: 1rem;
+		}
+		.chat-section :global(.bubble-tail svg) {
+			width: 16px;
+			height: 14px;
+		}
+	}
+
+	@media screen and (max-width: 576px) {
+		.container {
+			padding: 2.5rem 0;
+		}
+		.chat-mask {
+			height: 240px;
+		}
+		.section-title {
+			font-size: 3rem;
 		}
 	}
 </style>
 
 <script>
 	import { gsap } from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-	class DanmakuSystem {
-		private container: HTMLElement;
-		private lines: string[];
-		private rows: number = 6;
-		private fontSize: number = 0;
-		private speed: number = 150;
-		private gap: number = 80;
-		private rowState: { lastEndTime: number }[] = [];
-		private animationFrameId: number = 0;
-		private startTime: number = 0;
+	gsap.registerPlugin(ScrollTrigger);
 
-		constructor(container: HTMLElement, lines: string[]) {
-			this.container = container;
-			this.lines = lines;
-			this.init();
+	function initChatAnimation() {
+		const chatStreamEl = document.getElementById("chatStream");
+		if (!chatStreamEl) return;
+
+		const messagesData = chatStreamEl.dataset.messages;
+		if (!messagesData) return;
+
+		const chatStream = chatStreamEl;
+		const messages: string[] = JSON.parse(messagesData);
+		const MAX_BUBBLES = 10;
+		const INTERVAL_MS = 2800;
+
+		let messageIndex = 0;
+		let displayCount = 0;
+		let intervalId: number | null = null;
+
+		function createBubble(text: string, isOffset: boolean): HTMLElement {
+			const bubble = document.createElement("div");
+			bubble.className = `message-bubble${isOffset ? " is-offset" : ""}`;
+			bubble.innerHTML = `
+				<div class="bubble-content">${text}</div>
+				<div class="bubble-tail">
+					<svg viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M0 21.9509C4.84211 12.1674 0 0 0 0L23 1.19723V1.22056C23 1.22056 9.68421 23.1715 0 21.9509Z" fill="#C2A05A"/>
+					</svg>
+				</div>
+			`;
+			return bubble;
 		}
 
-		private init() {
-			this.updateFontSize();
-			this.rowState = Array.from({ length: this.rows }, () => ({ lastEndTime: 0 }));
-			this.start();
-			window.addEventListener("resize", this.handleResize.bind(this));
-		}
+		function addMessage(animate = true) {
+			const text = messages[messageIndex % messages.length];
+			const isOffset = displayCount % 2 === 1;
+			const bubble = createBubble(text, isOffset);
 
-		private updateFontSize() {
-			const screenWidth = window.innerWidth;
-			this.fontSize = Math.max(48, Math.min(80, screenWidth * 0.06));
-		}
+			chatStream.appendChild(bubble);
 
-		private measureText(text: string): number {
-			const canvas = document.createElement("canvas");
-			const ctx = canvas.getContext("2d");
-			if (!ctx) return text.length * this.fontSize;
-			ctx.font = `900 ${this.fontSize}px sans-serif`;
-			return ctx.measureText(text).width;
-		}
+			if (animate) {
+				gsap.set(bubble, {
+					opacity: 0,
+					scale: 0.92,
+					transformOrigin: "left bottom"
+				});
 
-		private getRandomText(): string {
-			return this.lines[Math.floor(Math.random() * this.lines.length)];
-		}
+				gsap.to(bubble, {
+					opacity: 1,
+					scale: 1,
+					duration: 0.45,
+					delay: 0.05,
+					ease: "back.out(1.4)"
+				});
+			}
 
-		private createDanmaku(row: number, initialOffset: number = 0) {
-			const text = this.getRandomText();
-			const textWidth = this.measureText(text);
-			const screenWidth = window.innerWidth;
-			const totalDistance = screenWidth + textWidth;
-			const duration = totalDistance / this.speed;
-
-			const el = document.createElement("p");
-			el.className = "danmaku-item";
-			el.textContent = text;
-			el.style.fontSize = `${this.fontSize}px`;
-			el.style.top = `${(row / this.rows) * 100}%`;
-			el.style.left = `${screenWidth + initialOffset}px`;
-
-			this.container.appendChild(el);
-
-			const timeUntilFullyEntered = (textWidth + this.gap) / this.speed;
-			this.rowState[row].lastEndTime = performance.now() + timeUntilFullyEntered * 1000;
-
-			gsap.to(el, {
-				x: -totalDistance,
-				duration: duration,
-				ease: "none",
-				onComplete: () => {
-					el.remove();
-				}
-			});
-		}
-
-		private tick = (currentTime: number) => {
-			for (let row = 0; row < this.rows; row++) {
-				if (currentTime >= this.rowState[row].lastEndTime) {
-					this.createDanmaku(row);
+			// 清理舊訊息
+			while (chatStream.children.length > MAX_BUBBLES) {
+				const oldest = chatStream.firstElementChild as HTMLElement;
+				if (oldest) {
+					gsap.to(oldest, {
+						opacity: 0,
+						duration: 0.3,
+						ease: "power2.out",
+						onComplete: () => oldest.remove()
+					});
 				}
 			}
-			this.animationFrameId = requestAnimationFrame(this.tick);
-		};
 
-		private start() {
-			this.container.innerHTML = "";
-			this.startTime = performance.now();
-			for (let row = 0; row < this.rows; row++) {
-				const initialDelay = (row * 0.3 + Math.random() * 0.5) * 1000;
-				this.rowState[row].lastEndTime = this.startTime + initialDelay;
-			}
-			this.animationFrameId = requestAnimationFrame(this.tick);
+			messageIndex++;
+			displayCount++;
 		}
 
-		private handleResize() {
-			cancelAnimationFrame(this.animationFrameId);
-			gsap.killTweensOf(".danmaku-item");
-			this.container.innerHTML = "";
-			this.updateFontSize();
-			this.start();
+		function startLoop() {
+			if (intervalId !== null) return;
+			intervalId = window.setInterval(() => addMessage(true), INTERVAL_MS);
 		}
 
-		destroy() {
-			cancelAnimationFrame(this.animationFrameId);
-			gsap.killTweensOf(".danmaku-item");
-			window.removeEventListener("resize", this.handleResize.bind(this));
+		for (let i = 0; i < 4; i++) {
+			addMessage(false);
 		}
-	}
 
-	const danmakuContainer = document.getElementById("danmaku-container");
-	if (danmakuContainer) {
-		const linesData = danmakuContainer.dataset.lines;
-		if (linesData) {
-			new DanmakuSystem(danmakuContainer, JSON.parse(linesData));
-		}
-	}
-
-	const cards = document.querySelectorAll(".ticket-card");
-
-	cards.forEach(card => {
-		card.addEventListener("click", function () {
-			const isMobile = window.innerWidth <= 900;
-
-			if (isMobile && this.classList.contains("active")) {
-				this.classList.remove("active");
-			} else {
-				cards.forEach(t => t.classList.remove("active"));
-				this.classList.add("active");
-			}
+		ScrollTrigger.create({
+			trigger: ".chat-section",
+			start: "top 85%",
+			onEnter: startLoop,
+			once: true
 		});
-	});
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initChatAnimation);
+	} else {
+		initChatAnimation();
+	}
 </script>
