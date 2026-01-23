@@ -450,15 +450,9 @@
 	},
 	"referral": {
 		"mainHeading": "Referral Code Program",
-		"heroTitle": "Share Your SITCON 2026 Referral Code",
+		"heroTitle": "Encourage your friends to attend SITCON!",
 		"heroSubtitle": "Invite Friends to Join and Get Rewards",
-		"intro": {
-			"paragraph1": "SITCON 2026 invites you to share the open-source spirit with more people.",
-			"paragraph2": "Just share your exclusive referral code with friends. When they successfully register, you'll accumulate referrals, participate in prize drawings, and have a chance to become a \"Referral Popularity King\"!",
-			"paragraph3": "The more you refer, the more opportunities you get; invite friends and earn rewards for yourself."
-		},
 		"howTo": {
-			"title": "How to Use Your Referral Code? Just Three Steps",
 			"steps": [
 				{
 					"title": "Get Your Referral Code",
