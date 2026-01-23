@@ -978,6 +978,13 @@ const danmakuLines: string[] = danmakuData.lines;
 <script>
 	const initTicketCards = () => {
 		const cards = document.querySelectorAll<HTMLElement>(".ticket-card");
+		if (cards.length === 0) return () => {};
+
+		const container = cards[0]?.closest(".ticket-container") as HTMLElement | null;
+		if (!container) return () => {};
+		if (container.dataset.ticketInit === "true") return () => {};
+		container.dataset.ticketInit = "true";
+
 		const MOBILE_BREAKPOINT = 768;
 
 		const isMobile = (): boolean => {
@@ -1054,19 +1061,24 @@ const danmakuLines: string[] = danmakuData.lines;
 			verticalTitles.forEach(fitText);
 		};
 
+		const mobileHeaderHandlers = new Map<HTMLElement, (e: Event) => void>();
+		const cardClickHandlers = new Map<HTMLElement, (e: Event) => void>();
+
 		cards.forEach(card => {
 			const mobileHeader = card.querySelector<HTMLElement>(".ticket-mobile-header");
 			if (mobileHeader) {
-				mobileHeader.addEventListener("click", e => {
+				const handler = (e: Event) => {
 					if (isMobile()) {
 						e.preventDefault();
 						e.stopPropagation();
 						handleMobileClick(card);
 					}
-				});
+				};
+				mobileHeaderHandlers.set(mobileHeader, handler);
+				mobileHeader.addEventListener("click", handler);
 			}
 
-			card.addEventListener("click", e => {
+			const cardHandler = (e: Event) => {
 				const target = e.target as HTMLElement;
 
 				if (isMobile()) {
@@ -1078,7 +1090,9 @@ const danmakuLines: string[] = danmakuData.lines;
 				}
 
 				handleDesktopClick(card);
-			});
+			};
+			cardClickHandlers.set(card, cardHandler);
+			card.addEventListener("click", cardHandler);
 		});
 
 		let lastIsMobile = isMobile();
@@ -1110,10 +1124,11 @@ const danmakuLines: string[] = danmakuData.lines;
 		};
 
 		let resizeTimeout: ReturnType<typeof setTimeout>;
-		window.addEventListener("resize", () => {
+		const resizeHandler = () => {
 			clearTimeout(resizeTimeout);
 			resizeTimeout = setTimeout(handleResize, 100);
-		});
+		};
+		window.addEventListener("resize", resizeHandler);
 
 		const observer = new ResizeObserver(() => {
 			requestAnimationFrame(adjustAllFonts);
@@ -1124,11 +1139,33 @@ const danmakuLines: string[] = danmakuData.lines;
 		requestAnimationFrame(() => {
 			setTimeout(adjustAllFonts, 50);
 		});
+
+		return () => {
+			window.removeEventListener("resize", resizeHandler);
+			clearTimeout(resizeTimeout);
+			observer.disconnect();
+			mobileHeaderHandlers.forEach((handler, header) => {
+				header.removeEventListener("click", handler);
+			});
+			cardClickHandlers.forEach((handler, card) => {
+				card.removeEventListener("click", handler);
+			});
+			container.dataset.ticketInit = "false";
+		};
+	};
+
+	let cleanup: (() => void) | null = null;
+	const mount = () => {
+		cleanup?.();
+		cleanup = initTicketCards();
 	};
 
 	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initTicketCards);
+		document.addEventListener("DOMContentLoaded", mount, { once: true });
 	} else {
-		initTicketCards();
+		mount();
 	}
+
+	document.addEventListener("astro:page-load", mount);
+	document.addEventListener("astro:before-swap", () => cleanup?.());
 </script>
