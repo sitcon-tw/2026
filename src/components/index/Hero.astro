@@ -338,8 +338,27 @@ const lang = Astro.props.lang ?? "zh";
 			targetMouseOffset.y = (e.clientY / window.innerHeight - 0.5) * 5; // Vertical sway
 		});
 
+		let animationFrameId: number | null = null;
+		let isRunning = false;
+
+		function startAnimation() {
+			if (isRunning) return;
+			isRunning = true;
+			animate();
+		}
+
+		function stopAnimation() {
+			if (!isRunning) return;
+			isRunning = false;
+			if (animationFrameId !== null) {
+				cancelAnimationFrame(animationFrameId);
+				animationFrameId = null;
+			}
+		}
+
 		function animate() {
-			requestAnimationFrame(animate);
+			if (!isRunning) return;
+			animationFrameId = requestAnimationFrame(animate);
 			idleTime += 0.0007; // Slowed down significantly (half of 0.0015)
 
 			const scrollDelta = Math.abs(window.scrollY - lastScrollY);
@@ -425,6 +444,32 @@ const lang = Astro.props.lang ?? "zh";
 			renderer.setSize(window.innerWidth, window.innerHeight);
 		});
 
-		animate();
+		startAnimation();
+
+		const getTicketSection = document.getElementById("get-ticket");
+		if (getTicketSection) {
+			let pausedByScroll = false;
+			const observer = new IntersectionObserver(
+				entries => {
+					const entry = entries[0];
+					if (!entry) return;
+
+					if (entry.isIntersecting) {
+						stopAnimation();
+						pausedByScroll = true;
+						return;
+					}
+
+					if (entry.boundingClientRect.top > 0) {
+						pausedByScroll = false;
+						startAnimation();
+					} else if (!pausedByScroll) {
+						startAnimation();
+					}
+				},
+				{ threshold: 0.1 }
+			);
+			observer.observe(getTicketSection);
+		}
 	}
 </script>
