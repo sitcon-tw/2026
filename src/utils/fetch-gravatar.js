@@ -20,17 +20,17 @@ const records = parse(csvText, {
 	relax_column_count: true
 });
 
-function isDriveUrl(url) {
+const isDriveUrl = url => {
 	return typeof url === "string" && url.includes("drive.google.com");
-}
+};
 
-function gravatarUrl(email, size = 500) {
+const gravatarUrl = (email, size = 500) => {
 	const hash = crypto.createHash("md5").update(email.trim().toLowerCase()).digest("hex");
 
 	return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`;
-}
+};
 
-async function downloadAvatar({ nickname, email }) {
+const downloadAvatar = async ({ nickname, email }) => {
 	const url = gravatarUrl(email);
 	const outPath = path.join(OUTPUT_DIR, `${nickname}.png`);
 
@@ -47,15 +47,15 @@ async function downloadAvatar({ nickname, email }) {
 		console.error(`❌ ${nickname}: ${err.message}`);
 		return { nickname, status: "error", error: err.message };
 	}
-}
+};
 
-function chunk(arr, size) {
+const chunk = (arr, size) => {
 	const out = [];
 	for (let i = 0; i < arr.length; i += size) {
 		out.push(arr.slice(i, i + size));
 	}
 	return out;
-}
+};
 
 // ---------- 主流程 ----------
 

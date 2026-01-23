@@ -54,11 +54,11 @@ const normalizeTeam = team => {
 	return TEAM_MAP[team] || team;
 };
 
-function normalizeRole(role) {
+const normalizeRole = role => {
 	return ROLE_MAP[role] || "member";
-}
+};
 
-function parseCSV(text) {
+const parseCSV = text => {
 	const rows = [];
 	let current = [];
 	let cell = "";
@@ -89,7 +89,7 @@ function parseCSV(text) {
 	current.push(cell);
 	rows.push(current);
 	return rows;
-}
+};
 
 const buildMember = row => {
 	const [name, description, link, team1, role1, team2, role2, team3, role3] = row;

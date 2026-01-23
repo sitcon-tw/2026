@@ -36,7 +36,7 @@ const { id = "member-info-modal" } = Astro.props;
 		"medium.com": "Medium"
 	};
 
-	function getSocialText(url: string) {
+	const getSocialText = (url: string) => {
 		try {
 			const urlObj = new URL(url);
 			const hostname = urlObj.hostname;
@@ -51,7 +51,7 @@ const { id = "member-info-modal" } = Astro.props;
 		} catch (e) {
 			return `前往 ${url}`;
 		}
-	}
+	};
 
 	// Unified Click Event Listener
 	document.addEventListener("click", e => {
@@ -153,7 +153,7 @@ const { id = "member-info-modal" } = Astro.props;
 	// 3D 視差效果（用於 popup）- 全螢幕追蹤
 	let currentModalMouseHandler: ((e: MouseEvent) => void) | null = null;
 
-	function init3DEffectForModal(container: HTMLElement) {
+	const init3DEffectForModal = (container: HTMLElement) => {
 		const layers = container.querySelectorAll(".avatar-layer");
 
 		// 移除舊的全域監聽器（如果有）
@@ -197,15 +197,15 @@ const { id = "member-info-modal" } = Astro.props;
 
 		// 全螢幕追蹤滑鼠
 		document.addEventListener("mousemove", handleMouseMove);
-	}
+	};
 
 	// 關閉 modal 時清除監聽器
-	function cleanup3DEffectForModal() {
+	const cleanup3DEffectForModal = () => {
 		if (currentModalMouseHandler) {
 			document.removeEventListener("mousemove", currentModalMouseHandler);
 			currentModalMouseHandler = null;
 		}
-	}
+	};
 
 	// 監聽 modal 關閉
 	const modalObserver = new MutationObserver(mutations => {

@@ -17,14 +17,14 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * 檢查元素是否包含 br 標籤
  */
-function hasBrTags(element: HTMLElement): boolean {
+const hasBrTags = (element: HTMLElement): boolean => {
 	return element.innerHTML.includes("<br");
-}
+};
 
 /**
  * 根據 br 標籤拆分文字
  */
-function splitByBrTags(element: HTMLElement): void {
+const splitByBrTags = (element: HTMLElement): void => {
 	// 如果已經處理過，跳過
 	if (element.dataset.textRevealed === "true") return;
 
@@ -54,13 +54,13 @@ function splitByBrTags(element: HTMLElement): void {
 	element.innerHTML = "";
 	element.appendChild(wrapper);
 	element.dataset.textRevealed = "true";
-}
+};
 
 /**
  * 將文字元素拆分成每一行，並包裹在 span 中
  * 使用國小數學計算每行的文字寬度
  */
-function splitTextIntoLines(element: HTMLElement): void {
+const splitTextIntoLines = (element: HTMLElement): void => {
 	// 如果已經處理過，跳過
 	if (element.dataset.textRevealed === "true") return;
 
@@ -169,12 +169,12 @@ function splitTextIntoLines(element: HTMLElement): void {
 	element.innerHTML = "";
 	element.appendChild(wrapper);
 	element.dataset.textRevealed = "true";
-}
+};
 
 /**
  * 初始化標題的滾動動畫
  */
-function initTitleReveal(element: HTMLElement): void {
+const initTitleReveal = (element: HTMLElement): void => {
 	// 如果元素已經有動畫，跳過
 	if (element.dataset.animationInitialized === "true") return;
 
@@ -204,12 +204,12 @@ function initTitleReveal(element: HTMLElement): void {
 
 	// 標記元素已初始化動畫
 	element.dataset.animationInitialized = "true";
-}
+};
 
 /**
  * 初始化段落的滾動動畫
  */
-function initParagraphReveal(element: HTMLElement): void {
+const initParagraphReveal = (element: HTMLElement): void => {
 	// 如果元素已經有動畫，跳過
 	if (element.dataset.animationInitialized === "true") return;
 
@@ -239,12 +239,12 @@ function initParagraphReveal(element: HTMLElement): void {
 
 	// 標記元素已初始化動畫
 	element.dataset.animationInitialized = "true";
-}
+};
 
 /**
  * 初始化所有文字揭示動畫
  */
-export function initTextReveal(): void {
+export const initTextReveal = (): void => {
 	// 處理標題
 	const titles = document.querySelectorAll<HTMLElement>(".text-reveal-title");
 	titles.forEach(el => initTitleReveal(el));
@@ -252,21 +252,21 @@ export function initTextReveal(): void {
 	// 處理段落
 	const paragraphs = document.querySelectorAll<HTMLElement>(".text-reveal-paragraph");
 	paragraphs.forEach(el => initParagraphReveal(el));
-}
+};
 
 /**
  * 重新初始化（用於頁面切換後）
  */
-export function refreshTextReveal(): void {
+export const refreshTextReveal = (): void => {
 	ScrollTrigger.refresh();
-}
+};
 
 /**
  * 清理所有 ScrollTrigger（用於頁面離開時）
  */
-export function cleanupTextReveal(): void {
+export const cleanupTextReveal = (): void => {
 	ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-}
+};
 
 // 自動初始化
 if (typeof window !== "undefined") {

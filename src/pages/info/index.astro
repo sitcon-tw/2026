@@ -166,7 +166,7 @@ const { sections } = info;
 		const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-transport-tab]"));
 		const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-transport-panel]"));
 
-		function activateTab(name: string) {
+		const activateTab = (name: string) => {
 			tabs.forEach(btn => {
 				const active = btn.getAttribute("data-transport-tab") === name;
 				btn.classList.toggle("is-active", active);
@@ -178,7 +178,7 @@ const { sections } = info;
 				if (active) panel.removeAttribute("hidden");
 				else panel.setAttribute("hidden", "");
 			});
-		}
+		};
 
 		openButton.addEventListener("click", () => {
 			if (typeof dialog.showModal === "function") dialog.showModal();

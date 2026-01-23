@@ -38,7 +38,7 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 </style>
 
 <script>
-	function initDanmaku() {
+	const initDanmaku = () => {
 		document.querySelectorAll<HTMLElement>(".danmaku-container").forEach(container => {
 			// Clean up any previously created danmaku items before re-initializing.
 			while (container.firstChild) {
@@ -61,24 +61,24 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 			let rowState: { lastEndTime: number }[] = [];
 			let animationFrameId = 0;
 
-			function updateFontSize() {
+			const updateFontSize = () => {
 				const screenWidth = window.innerWidth;
 				fontSize = Math.max(48, Math.min(80, screenWidth * 0.06));
-			}
+			};
 
-			function measureText(text: string): number {
+			const measureText = (text: string): number => {
 				const canvas = document.createElement("canvas");
 				const ctx = canvas.getContext("2d");
 				if (!ctx) return text.length * fontSize;
 				ctx.font = `900 ${fontSize}px sans-serif`;
 				return ctx.measureText(text).width;
-			}
+			};
 
-			function getRandomText(): string {
+			const getRandomText = (): string => {
 				return lines[Math.floor(Math.random() * lines.length)];
-			}
+			};
 
-			function createDanmaku(row: number, initialOffset = 0) {
+			const createDanmaku = (row: number, initialOffset = 0) => {
 				const text = getRandomText();
 				const textWidth = measureText(text);
 				const screenWidth = window.innerWidth;
@@ -124,18 +124,18 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 					},
 					(duration + 1) * 1000
 				);
-			}
+			};
 
-			function tick(currentTime: number) {
+			const tick = (currentTime: number) => {
 				for (let row = 0; row < rows; row++) {
 					if (currentTime >= rowState[row].lastEndTime) {
 						createDanmaku(row);
 					}
 				}
 				animationFrameId = requestAnimationFrame(tick);
-			}
+			};
 
-			function start() {
+			const start = () => {
 				container.innerHTML = "";
 				const startTime = performance.now();
 
@@ -147,14 +147,14 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 				}
 
 				animationFrameId = requestAnimationFrame(tick);
-			}
+			};
 
-			function handleResize() {
+			const handleResize = () => {
 				cancelAnimationFrame(animationFrameId);
 				container.innerHTML = "";
 				updateFontSize();
 				start();
-			}
+			};
 
 			// 初始化
 			updateFontSize();
@@ -180,7 +180,7 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 				cancelAnimationFrame(animationFrameId);
 			});
 		});
-	}
+	};
 
 	// DOM ready
 	if (document.readyState === "loading") {

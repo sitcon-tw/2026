@@ -383,7 +383,7 @@ const speakers = [
 	const desktopimg = document.querySelector(".desktop-img");
 	let currentindex = 0;
 
-	function updateview(index: number) {
+	const updateview = (index: number) => {
 		items.forEach(item => {
 			item.classList.remove("active");
 		});
@@ -397,7 +397,7 @@ const speakers = [
 		}
 
 		currentindex = index;
-	}
+	};
 
 	items.forEach((item, index) => {
 		item.addEventListener("mouseenter", () => {
@@ -442,18 +442,18 @@ const speakers = [
 
 	let timer: number | null = null;
 
-	function startautoplay() {
+	const startautoplay = () => {
 		if (timer) return;
 		timer = window.setInterval(() => {
 			const nextindex = (currentindex + 1) % items.length;
 			updateview(nextindex);
 		}, 2000);
-	}
+	};
 
-	function stopautoplay() {
+	const stopautoplay = () => {
 		if (timer) window.clearInterval(timer);
 		timer = null;
-	}
+	};
 
 	startautoplay();
 </script>
