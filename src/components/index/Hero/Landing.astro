@@ -398,14 +398,19 @@ const t = useTranslations(lang).landing;
 </style>
 
 <script>
-	const container = document.getElementById("cta-container");
-	const handle = document.getElementById("cta-handle");
-	let isDragging = false;
-	let hasMoved = false;
-	let startX = 0;
-	let currentX = 0;
+	const initLandingCta = () => {
+		const container = document.getElementById("cta-container") as HTMLElement | null;
+		const handle = document.getElementById("cta-handle") as HTMLElement | null;
+		if (!container || !handle) return () => {};
+		if (container.dataset.ctaInit === "true") return () => {};
+		container.dataset.ctaInit = "true";
 
-	if (container && handle) {
+		let isDragging = false;
+		let hasMoved = false;
+		let startX = 0;
+		let currentX = 0;
+		let redirectTimeout: number | null = null;
+
 		const getX = (e: MouseEvent | TouchEvent) => {
 			return "touches" in e ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
 		};
@@ -447,7 +452,7 @@ const t = useTranslations(lang).landing;
 				const textLayer = container.querySelector(".cta-text-layer") as HTMLElement;
 				if (textLayer) textLayer.style.opacity = "0";
 
-				setTimeout(() => {
+				redirectTimeout = window.setTimeout(() => {
 					window.location.href = "https://sitcon.org/tickets";
 				}, 300);
 			} else {
@@ -458,11 +463,13 @@ const t = useTranslations(lang).landing;
 			}
 		};
 
-		container.addEventListener("click", e => {
+		const onClick = (e: Event) => {
 			if (hasMoved) {
 				e.preventDefault();
 			}
-		});
+		};
+
+		container.addEventListener("click", onClick);
 
 		handle.addEventListener("mousedown", onStart as any);
 		window.addEventListener("mousemove", onMove as any);
@@ -471,5 +478,41 @@ const t = useTranslations(lang).landing;
 		handle.addEventListener("touchstart", onStart as any, { passive: true });
 		window.addEventListener("touchmove", onMove as any, { passive: false });
 		window.addEventListener("touchend", onEnd);
+
+		return () => {
+			if (redirectTimeout !== null) {
+				clearTimeout(redirectTimeout);
+			}
+			container.removeEventListener("click", onClick);
+			handle.removeEventListener("mousedown", onStart as any);
+			window.removeEventListener("mousemove", onMove as any);
+			window.removeEventListener("mouseup", onEnd);
+			handle.removeEventListener("touchstart", onStart as any);
+			window.removeEventListener("touchmove", onMove as any);
+			window.removeEventListener("touchend", onEnd);
+			container.dataset.ctaInit = "false";
+		};
+	};
+
+	let cleanup: (() => void) | null = null;
+	const mount = () => {
+		cleanup?.();
+		cleanup = initLandingCta();
+	};
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", mount, { once: true });
+	} else {
+		mount();
 	}
+
+	const pageLoadHandler = () => mount();
+	const beforeSwapHandler = () => {
+		cleanup?.();
+		document.removeEventListener("astro:page-load", pageLoadHandler);
+		document.removeEventListener("astro:before-swap", beforeSwapHandler);
+	};
+
+	document.addEventListener("astro:page-load", pageLoadHandler);
+	document.addEventListener("astro:before-swap", beforeSwapHandler);
 </script>

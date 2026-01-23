@@ -515,59 +515,96 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 	</style>
 
 	<script>
-		const dialog = document.getElementById("sponsor-dialog") as HTMLDialogElement | null;
-		const closeBtn = document.getElementById("close-dialog");
-		const dialogTitle = document.getElementById("dialog-title");
-		const dialogDesc = document.getElementById("dialog-desc");
-		const dialogType = document.getElementById("dialog-type");
-		const dialogImg = document.getElementById("dialog-img") as HTMLImageElement | null;
-		const visitBtn = document.querySelector(".visit-btn") as HTMLAnchorElement | null;
+		const initSponsorDialog = () => {
+			const container = document.querySelector(".sponsor-container") as HTMLElement | null;
+			if (!container) return () => {};
+			if (container.dataset.sponsorInit === "true") return () => {};
+			container.dataset.sponsorInit = "true";
 
-		const closeDialogAnim = () => {
-			if (!dialog) return;
-			dialog.classList.add("closing");
+			const dialog = document.getElementById("sponsor-dialog") as HTMLDialogElement | null;
+			const closeBtn = document.getElementById("close-dialog");
+			const dialogTitle = document.getElementById("dialog-title");
+			const dialogDesc = document.getElementById("dialog-desc");
+			const dialogType = document.getElementById("dialog-type");
+			const dialogImg = document.getElementById("dialog-img") as HTMLImageElement | null;
+			const visitBtn = document.querySelector(".visit-btn") as HTMLAnchorElement | null;
 
-			dialog.addEventListener(
-				"animationend",
-				() => {
-					dialog.close();
-					dialog.classList.remove("closing");
-				},
-				{ once: true }
-			);
+			const closeDialogAnim = () => {
+				if (!dialog) return;
+				dialog.classList.add("closing");
+
+				dialog.addEventListener(
+					"animationend",
+					() => {
+						dialog.close();
+						dialog.classList.remove("closing");
+					},
+					{ once: true }
+				);
+			};
+
+			const documentClickHandler = (e: Event) => {
+				const trigger = (e.target as Element)?.closest(".sponsor-trigger") as HTMLElement | null;
+
+				if (trigger && dialog) {
+					const { name, desc, type, img, url } = trigger.dataset;
+
+					if (dialogTitle) dialogTitle.textContent = name ?? null;
+					if (dialogDesc) dialogDesc.innerHTML = desc ?? "";
+					if (dialogType) dialogType.textContent = type ?? null;
+					if (dialogImg && img) dialogImg.src = img;
+					if (visitBtn) {
+						visitBtn.href = url || "#";
+						visitBtn.style.display = url ? "inline-block" : "none";
+					}
+
+					dialog.showModal();
+				}
+			};
+
+			document.addEventListener("click", documentClickHandler);
+
+			const closeHandler = () => {
+				closeDialogAnim();
+			};
+
+			if (closeBtn) {
+				closeBtn.addEventListener("click", closeHandler);
+			}
+
+			const dialogClickHandler = (e: Event) => {
+				if (!dialog) return;
+				const rect = dialog.getBoundingClientRect();
+				const mouseEvent = e as MouseEvent;
+				const isInDialog = mouseEvent.clientX >= rect.left && mouseEvent.clientX <= rect.right && mouseEvent.clientY >= rect.top && mouseEvent.clientY <= rect.bottom;
+				if (!isInDialog) closeDialogAnim();
+			};
+
+			if (dialog) {
+				dialog.addEventListener("click", dialogClickHandler);
+			}
+
+			return () => {
+				document.removeEventListener("click", documentClickHandler);
+				if (closeBtn) closeBtn.removeEventListener("click", closeHandler);
+				if (dialog) dialog.removeEventListener("click", dialogClickHandler);
+				container.dataset.sponsorInit = "false";
+			};
 		};
 
-		document.addEventListener("click", e => {
-			const trigger = (e.target as Element)?.closest(".sponsor-trigger") as HTMLElement | null;
+		let cleanup: (() => void) | null = null;
+		const mount = () => {
+			cleanup?.();
+			cleanup = initSponsorDialog();
+		};
 
-			if (trigger && dialog) {
-				const { name, desc, type, img, url } = trigger.dataset;
-
-				if (dialogTitle) dialogTitle.textContent = name ?? null;
-				if (dialogDesc) dialogDesc.innerHTML = desc ?? "";
-				if (dialogType) dialogType.textContent = type ?? null;
-				if (dialogImg && img) dialogImg.src = img;
-				if (visitBtn) {
-					visitBtn.href = url || "#";
-					visitBtn.style.display = url ? "inline-block" : "none";
-				}
-
-				dialog.showModal();
-			}
-		});
-
-		if (closeBtn) {
-			closeBtn.addEventListener("click", () => {
-				closeDialogAnim();
-			});
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", mount, { once: true });
+		} else {
+			mount();
 		}
 
-		if (dialog) {
-			dialog.addEventListener("click", e => {
-				const rect = dialog.getBoundingClientRect();
-				const isInDialog = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
-				if (!isInDialog) closeDialogAnim();
-			});
-		}
+		document.addEventListener("astro:page-load", mount);
+		document.addEventListener("astro:before-swap", () => cleanup?.());
 	</script>
 </section>

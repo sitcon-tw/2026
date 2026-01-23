@@ -377,83 +377,124 @@ const speakers = [
 
 <script>
 	import { gsap } from "gsap";
-	const items = document.querySelectorAll(".speaker-item");
-	const imgelement = document.getElementById("speaker-img");
-	const speakerlist = document.querySelector(".speaker-list");
-	const desktopimg = document.querySelector(".desktop-img");
-	let currentindex = 0;
 
-	const updateview = (index: number) => {
-		items.forEach(item => {
-			item.classList.remove("active");
+	const initSpeaker = () => {
+		const container = document.querySelector(".speaker-section") as HTMLElement | null;
+		if (!container) return () => {};
+		if (container.dataset.speakerInit === "true") return () => {};
+		container.dataset.speakerInit = "true";
+
+		const items = document.querySelectorAll<HTMLElement>(".speaker-item");
+		const imgelement = document.getElementById("speaker-img") as HTMLImageElement | null;
+		const speakerlist = document.querySelector<HTMLElement>(".speaker-list");
+		const desktopimg = document.querySelector<HTMLElement>(".desktop-img");
+		let currentindex = 0;
+
+		if (!speakerlist || items.length === 0) return () => {};
+
+		const updateview = (index: number) => {
+			items.forEach(item => {
+				item.classList.remove("active");
+			});
+
+			const targetitem = items[index];
+			targetitem.classList.add("active");
+
+			const newimgsrc = targetitem.getAttribute("data-img");
+			if (imgelement && newimgsrc) {
+				imgelement.src = newimgsrc;
+			}
+
+			currentindex = index;
+		};
+
+		let timer: number | null = null;
+
+		const startautoplay = () => {
+			if (timer) return;
+			timer = window.setInterval(() => {
+				const nextindex = (currentindex + 1) % items.length;
+				updateview(nextindex);
+			}, 2000);
+		};
+
+		const stopautoplay = () => {
+			if (timer) window.clearInterval(timer);
+			timer = null;
+		};
+
+		const itemEnterHandlers = new Map<HTMLElement, () => void>();
+		const itemMoveHandlers = new Map<HTMLElement, (e: MouseEvent) => void>();
+
+		items.forEach((item, index) => {
+			const enterHandler = () => {
+				updateview(index);
+				stopautoplay();
+			};
+			itemEnterHandlers.set(item, enterHandler);
+			item.addEventListener("mouseenter", enterHandler);
+
+			const moveHandler = (e: MouseEvent) => {
+				if (!desktopimg) return;
+				const { clientX, clientY } = e;
+				const { left, width } = item.getBoundingClientRect();
+				const { top: listTop, height: listHeight } = speakerlist.getBoundingClientRect();
+				const x = clientX - left;
+				const y = clientY - listTop;
+				const translatex = gsap.utils.mapRange(0, width, -60, 60, x);
+				const translatey = gsap.utils.mapRange(0, listHeight, -60, 60, y);
+
+				gsap.to(desktopimg, {
+					x: translatex,
+					y: translatey,
+					duration: 0.15,
+					ease: "power2.out"
+				});
+			};
+			itemMoveHandlers.set(item, moveHandler);
+			item.addEventListener("mousemove", moveHandler);
 		});
 
-		const targetitem = items[index];
-		targetitem.classList.add("active");
-
-		const newimgsrc = targetitem.getAttribute("data-img");
-		if (imgelement && newimgsrc) {
-			(imgelement as HTMLImageElement).src = newimgsrc;
-		}
-
-		currentindex = index;
-	};
-
-	items.forEach((item, index) => {
-		item.addEventListener("mouseenter", () => {
-			updateview(index);
-			stopautoplay();
-		});
-
-		item.addEventListener("mouseleave", () => {
-			// 不立即重置，讓 speakerlist 的 mouseleave 處理
-		});
-
-		item.addEventListener("mousemove", e => {
-			if (!desktopimg || !speakerlist) return;
-			const { clientX, clientY } = e as MouseEvent;
-			const { left, width } = item.getBoundingClientRect();
-			const { top: listTop, height: listHeight } = speakerlist.getBoundingClientRect();
-			const x = clientX - left;
-			const y = clientY - listTop;
-			// X 相對於當前 item，Y 相對於整個 speaker-list
-			const translatex = gsap.utils.mapRange(0, width, -60, 60, x);
-			const translatey = gsap.utils.mapRange(0, listHeight, -60, 60, y);
-
+		const listLeaveHandler = () => {
+			startautoplay();
+			if (!desktopimg) return;
 			gsap.to(desktopimg, {
-				x: translatex,
-				y: translatey,
-				duration: 0.15,
+				x: 0,
+				y: 0,
+				duration: 0.4,
 				ease: "power2.out"
 			});
-		});
-	});
+		};
 
-	speakerlist?.addEventListener("mouseleave", () => {
+		speakerlist.addEventListener("mouseleave", listLeaveHandler);
+
 		startautoplay();
-		// 重置圖片位置
-		gsap.to(desktopimg, {
-			x: 0,
-			y: 0,
-			duration: 0.4,
-			ease: "power2.out"
-		});
-	});
 
-	let timer: number | null = null;
-
-	const startautoplay = () => {
-		if (timer) return;
-		timer = window.setInterval(() => {
-			const nextindex = (currentindex + 1) % items.length;
-			updateview(nextindex);
-		}, 2000);
+		return () => {
+			stopautoplay();
+			itemEnterHandlers.forEach((handler, item) => {
+				item.removeEventListener("mouseenter", handler);
+			});
+			itemMoveHandlers.forEach((handler, item) => {
+				item.removeEventListener("mousemove", handler);
+			});
+			speakerlist.removeEventListener("mouseleave", listLeaveHandler);
+			container.dataset.speakerInit = "false";
+		};
 	};
 
-	const stopautoplay = () => {
-		if (timer) window.clearInterval(timer);
-		timer = null;
+	let cleanup: (() => void) | null = null;
+	const mount = () => {
+		cleanup?.();
+		cleanup = initSpeaker();
 	};
 
-	startautoplay();
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", mount, { once: true });
+	} else {
+		mount();
+	}
+
+	document.addEventListener("astro:page-load", mount);
+	document.addEventListener("astro:before-swap", () => cleanup?.());
 </script>
