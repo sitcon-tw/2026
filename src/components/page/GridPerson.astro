@@ -65,7 +65,7 @@ import "./GridPerson.css";
 
 <script>
 	// 3D 視差效果
-	function init3DEffectForGrid() {
+	const init3DEffectForGrid = () => {
 		const personItems = document.querySelectorAll(".person");
 
 		personItems.forEach(item => {
@@ -103,10 +103,10 @@ import "./GridPerson.css";
 				item.addEventListener("mouseleave", handleMouseLeave);
 			}
 		});
-	}
+	};
 
 	// 探索模式：全螢幕追蹤（當 modal 打開時）
-	function initExploreMode() {
+	const initExploreMode = () => {
 		// 監聽 modal 打開
 		document.addEventListener("click", e => {
 			const trigger = (e.target as HTMLElement).closest(".person-trigger.person-circle") as HTMLElement | null;
@@ -137,10 +137,10 @@ import "./GridPerson.css";
 				document.addEventListener("mousemove", handleGlobalMouseMove);
 			}
 		});
-	}
+	};
 
 	// 通用的 transform 應用函數
-	function applyTransform(layers: NodeListOf<Element>, offsetX: number, offsetY: number) {
+	const applyTransform = (layers: NodeListOf<Element>, offsetX: number, offsetY: number) => {
 		layers.forEach(layer => {
 			const isBack = layer.classList.contains("avatar-back");
 			const isBg = layer.classList.contains("avatar-bg");
@@ -159,7 +159,7 @@ import "./GridPerson.css";
 
 			(layer as HTMLElement).style.transform = `scale(1.125) translate(${translateX}px, ${translateY}px)`;
 		});
-	}
+	};
 
 	// 初始化
 	if (document.readyState === "loading") {

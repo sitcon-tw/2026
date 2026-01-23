@@ -19,7 +19,7 @@ const records = parse(csvText, {
 	relax_column_count: true
 });
 
-function extractDriveFileId(url) {
+const extractDriveFileId = url => {
 	if (!url) return null;
 
 	// open?id=XXXX
@@ -31,13 +31,13 @@ function extractDriveFileId(url) {
 	if (fileMatch) return fileMatch[1];
 
 	return null;
-}
+};
 
-function driveDownloadUrl(fileId) {
+const driveDownloadUrl = fileId => {
 	return `https://drive.google.com/uc?export=download&id=${fileId}`;
-}
+};
 
-async function downloadDriveAvatar({ nickname, fileId }) {
+const downloadDriveAvatar = async ({ nickname, fileId }) => {
 	const url = driveDownloadUrl(fileId);
 	const outPath = path.join(OUTPUT_DIR, `${nickname}.jpg`);
 
@@ -54,15 +54,15 @@ async function downloadDriveAvatar({ nickname, fileId }) {
 		console.error(`❌ ${nickname}: ${err.message}`);
 		return { nickname, status: "error", error: err.message };
 	}
-}
+};
 
-function chunk(arr, size) {
+const chunk = (arr, size) => {
 	const out = [];
 	for (let i = 0; i < arr.length; i += size) {
 		out.push(arr.slice(i, i + size));
 	}
 	return out;
-}
+};
 
 // -------- 主流程 --------
 

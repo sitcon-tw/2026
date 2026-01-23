@@ -790,22 +790,22 @@ const danmakuLines: string[] = danmakuData.lines;
 </style>
 
 <script>
-	function initTicketCards() {
+	const initTicketCards = () => {
 		const cards = document.querySelectorAll<HTMLElement>(".ticket-card");
 		const MOBILE_BREAKPOINT = 768;
 
-		function isMobile(): boolean {
+		const isMobile = (): boolean => {
 			return window.innerWidth <= MOBILE_BREAKPOINT;
-		}
+		};
 
-		function updateAriaExpanded(card: HTMLElement, expanded: boolean) {
+		const updateAriaExpanded = (card: HTMLElement, expanded: boolean) => {
 			const header = card.querySelector(".ticket-mobile-header");
 			if (header) {
 				header.setAttribute("aria-expanded", String(expanded));
 			}
-		}
+		};
 
-		function handleMobileClick(card: HTMLElement) {
+		const handleMobileClick = (card: HTMLElement) => {
 			if (card.classList.contains("active")) {
 				card.classList.remove("active");
 				updateAriaExpanded(card, false);
@@ -821,16 +821,16 @@ const danmakuLines: string[] = danmakuData.lines;
 					card.scrollIntoView({ behavior: "smooth", block: "nearest" });
 				}, 150);
 			}
-		}
+		};
 
-		function handleDesktopClick(card: HTMLElement) {
+		const handleDesktopClick = (card: HTMLElement) => {
 			if (!card.classList.contains("active")) {
 				cards.forEach(t => t.classList.remove("active"));
 				card.classList.add("active");
 			}
-		}
+		};
 
-		function fitText(el: HTMLElement) {
+		const fitText = (el: HTMLElement) => {
 			const wrapper = el.parentElement;
 			if (!wrapper) return;
 
@@ -855,15 +855,15 @@ const danmakuLines: string[] = danmakuData.lines;
 					el.style.fontSize = `${fontSize}px`;
 				}
 			}
-		}
+		};
 
-		function adjustAllFonts() {
+		const adjustAllFonts = () => {
 			const titles = document.querySelectorAll<HTMLElement>(".ticket-title");
 			const verticalTitles = document.querySelectorAll<HTMLElement>(".ticket-vertical-text");
 
 			titles.forEach(fitText);
 			verticalTitles.forEach(fitText);
-		}
+		};
 
 		cards.forEach(card => {
 			const mobileHeader = card.querySelector<HTMLElement>(".ticket-mobile-header");
@@ -894,7 +894,7 @@ const danmakuLines: string[] = danmakuData.lines;
 
 		let lastIsMobile = isMobile();
 
-		function handleResize() {
+		const handleResize = () => {
 			const currentIsMobile = isMobile();
 			adjustAllFonts();
 
@@ -910,7 +910,7 @@ const danmakuLines: string[] = danmakuData.lines;
 				});
 				lastIsMobile = currentIsMobile;
 			}
-		}
+		};
 
 		window.addEventListener("resize", handleResize);
 
@@ -921,7 +921,7 @@ const danmakuLines: string[] = danmakuData.lines;
 		cards.forEach(card => observer.observe(card));
 
 		requestAnimationFrame(adjustAllFonts);
-	}
+	};
 
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", initTicketCards);

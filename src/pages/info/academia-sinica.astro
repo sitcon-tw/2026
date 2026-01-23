@@ -145,19 +145,19 @@ const t = useTranslations(lang).academiaSinica;
 	import { Capsule } from "three/examples/jsm/math/Capsule.js";
 
 	// helpers (type guards / utils)
-	function mustGetEl<T extends HTMLElement>(id: string): T {
+	const mustGetEl = <T extends HTMLElement>(id: string): T => {
 		const el = document.getElementById(id);
 		if (!el) throw new Error(`Missing DOM: #${id}`);
 		return el as T;
-	}
+	};
 
-	function isMesh(obj: THREE.Object3D): obj is THREE.Mesh {
+	const isMesh = (obj: THREE.Object3D): obj is THREE.Mesh => {
 		return (obj as THREE.Mesh).isMesh === true;
-	}
+	};
 
 	// Some projects have mixed three versions. Make texture SRGB in a typed-safe way.
 	type LegacyTextureEncoding = { encoding: number };
-	function setTextureToSRGB(tex: THREE.Texture): void {
+	const setTextureToSRGB = (tex: THREE.Texture): void => {
 		// Modern three: texture.colorSpace exists
 		if ("colorSpace" in tex) {
 			tex.colorSpace = THREE.SRGBColorSpace;
@@ -166,7 +166,7 @@ const t = useTranslations(lang).academiaSinica;
 		// Legacy three: texture.encoding existed (and sRGBEncoding constant may not be in typings)
 		// Numeric value of THREE.sRGBEncoding was 3001 in older versions.
 		(tex as unknown as LegacyTextureEncoding).encoding = 3001;
-	}
+	};
 
 	// DOM
 	const canvas = mustGetEl<HTMLCanvasElement>("c");
@@ -230,23 +230,23 @@ const t = useTranslations(lang).academiaSinica;
 	const debugHelpers: THREE.Object3D[] = [playerBoxHelper];
 	let debugVisible: boolean = false;
 
-	function createBoundingBox(object: THREE.Object3D, color = 0xffff00): THREE.BoxHelper {
+	const createBoundingBox = (object: THREE.Object3D, color = 0xffff00): THREE.BoxHelper => {
 		const helper = new THREE.BoxHelper(object, color);
 		helper.visible = debugVisible;
 		helper.update();
 		scene.add(helper);
 		debugHelpers.push(helper);
 		return helper;
-	}
+	};
 
 	// Octree
 	const worldOctree = new Octree();
 
-	function rebuildOctree(): void {
+	const rebuildOctree = (): void => {
 		worldOctree.clear();
 		colliders.updateMatrixWorld(true);
 		worldOctree.fromGraphNode(colliders);
-	}
+	};
 
 	// Build an initial octree so the player collides with the floor even if the GLB fails to load.
 	rebuildOctree();
@@ -387,7 +387,7 @@ const t = useTranslations(lang).academiaSinica;
 	const GRAVITY = 25;
 	const JUMP_SPEED = 8.0;
 
-	function getForwardRightOnPlane(): { forward: THREE.Vector3; right: THREE.Vector3 } {
+	const getForwardRightOnPlane = (): { forward: THREE.Vector3; right: THREE.Vector3 } => {
 		const forward = new THREE.Vector3();
 		camera.getWorldDirection(forward);
 		forward.y = 0;
@@ -395,9 +395,9 @@ const t = useTranslations(lang).academiaSinica;
 
 		const right = new THREE.Vector3().crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
 		return { forward, right };
-	}
+	};
 
-	function playerCollisions(): void {
+	const playerCollisions = (): void => {
 		playerOnFloor = false;
 
 		// Multiple iterations to handle complex geometry and prevent getting stuck
@@ -421,9 +421,9 @@ const t = useTranslations(lang).academiaSinica;
 				break; // No collision, exit early
 			}
 		}
-	}
+	};
 
-	function stepPlayer(dt: number, move: THREE.Vector3, jumpPressed: boolean): void {
+	const stepPlayer = (dt: number, move: THREE.Vector3, jumpPressed: boolean): void => {
 		if (!playerOnFloor) playerVelocity.y -= GRAVITY * dt;
 
 		const accel = playerOnFloor ? 50 : 25;
@@ -450,7 +450,7 @@ const t = useTranslations(lang).academiaSinica;
 
 		playerCollider.translate(playerVelocity.clone().multiplyScalar(dt));
 		playerCollisions();
-	}
+	};
 
 	// Third-person camera + camera collision
 	let enabled: boolean = false;
@@ -496,10 +496,10 @@ const t = useTranslations(lang).academiaSinica;
 	let lastLookY: number = 0;
 	const touchLookSens: number = 0.005;
 
-	function isInside(el: Element, x: number, y: number): boolean {
+	const isInside = (el: Element, x: number, y: number): boolean => {
 		const r = el.getBoundingClientRect();
 		return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
-	}
+	};
 
 	canvas.addEventListener("pointerdown", (e: PointerEvent) => {
 		if (!isTouchDevice) return;
@@ -573,11 +573,11 @@ const t = useTranslations(lang).academiaSinica;
 	let joyY: number = 0;
 	const joyMax: number = 46;
 
-	function setKnob(dx: number, dy: number): void {
+	const setKnob = (dx: number, dy: number): void => {
 		joyKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-	}
+	};
 
-	function setJoyFromDelta(dx: number, dy: number): void {
+	const setJoyFromDelta = (dx: number, dy: number): void => {
 		const len = Math.hypot(dx, dy) || 1;
 		const clamped = Math.min(len, joyMax);
 		const nx = (dx / len) * clamped;
@@ -585,14 +585,14 @@ const t = useTranslations(lang).academiaSinica;
 		setKnob(nx, ny);
 		joyX = nx / joyMax;
 		joyY = ny / joyMax;
-	}
+	};
 
-	function resetJoy(): void {
+	const resetJoy = (): void => {
 		joyActiveId = null;
 		joyX = 0;
 		joyY = 0;
 		setKnob(0, 0);
-	}
+	};
 
 	joy.addEventListener("pointerdown", (e: PointerEvent) => {
 		if (!isTouchDevice) return;
@@ -626,13 +626,13 @@ const t = useTranslations(lang).academiaSinica;
 	});
 
 	// Resize
-	function resize(): void {
+	const resize = (): void => {
 		const w = window.innerWidth;
 		const h = window.innerHeight;
 		renderer.setSize(w, h, false);
 		camera.aspect = w / h;
 		camera.updateProjectionMatrix();
-	}
+	};
 	addEventListener("resize", resize);
 	resize();
 
@@ -723,7 +723,7 @@ const t = useTranslations(lang).academiaSinica;
 		{ passive: false }
 	);
 
-	function updateThirdPersonCamera(dt: number): void {
+	const updateThirdPersonCamera = (dt: number): void => {
 		const end = playerCollider.end;
 		cameraTarget.set(end.x, end.y + 0.15, end.z);
 		const followHeight = 2.4;
@@ -752,12 +752,12 @@ const t = useTranslations(lang).academiaSinica;
 		camera.position.copy(cameraPos);
 
 		camera.lookAt(cameraTarget);
-	}
+	};
 
 	// Loop
 	const clock = new THREE.Clock();
 
-	function animate(): void {
+	const animate = (): void => {
 		requestAnimationFrame(animate);
 
 		const dt = Math.min(clock.getDelta(), 0.033);
@@ -848,7 +848,7 @@ const t = useTranslations(lang).academiaSinica;
 
 		updateThirdPersonCamera(dt);
 		renderer.render(scene, camera);
-	}
+	};
 
 	animate();
 </script>

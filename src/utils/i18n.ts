@@ -8,20 +8,20 @@ export const translations = {
 	en: en
 } as const;
 
-export function getLangFromUrl(url: URL): Lang {
+export const getLangFromUrl = (url: URL): Lang => {
 	const pathname = url.pathname;
 	// Check if path starts with /en/ or /2026/en/
-	if (pathname.match(/^(\/2026)?\/en(\/|$)/)) {
+	if (pathname.match(/^(\/2026)?(\/en)(\/|$)/)) {
 		return "en";
 	}
 	return "zh";
-}
+};
 
-export function useTranslations(lang: Lang) {
+export const useTranslations = (lang: Lang) => {
 	return translations[lang];
-}
+};
 
-export function getLocalePath(path: string, lang: Lang): string {
+export const getLocalePath = (path: string, lang: Lang): string => {
 	// Remove leading /2026 if present
 	const cleanPath = path.replace(/^\/2026/, "");
 	// Remove /en prefix if present
@@ -31,11 +31,11 @@ export function getLocalePath(path: string, lang: Lang): string {
 		return `/2026/en${basePath || "/"}`;
 	}
 	return `/2026${basePath || "/"}`;
-}
+};
 
-export function getAlternateUrl(currentPath: string, targetLang: Lang): string {
+export const getAlternateUrl = (currentPath: string, targetLang: Lang): string => {
 	return getLocalePath(currentPath, targetLang);
-}
+};
 
 // Language-specific metadata
 export const langMeta = {

@@ -210,20 +210,20 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 
 		let intervalId = null;
 
-		function getVisibleImages() {
+		const getVisibleImages = () => {
 			return Array.from(allImages).filter(img => {
 				return getComputedStyle(img).display !== "none";
 			});
-		}
+		};
 
-		function activateImage(targetImg) {
+		const activateImage = targetImg => {
 			allImages.forEach(img => img.classList.remove("active"));
 			if (targetImg) {
 				targetImg.classList.add("active");
 			}
-		}
+		};
 
-		function startAutoPlay() {
+		const startAutoPlay = () => {
 			if (intervalId) clearInterval(intervalId);
 			intervalId = setInterval(() => {
 				const visibleImages = getVisibleImages();
@@ -235,14 +235,14 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 				let nextListIndex = (listIndex + 1) % visibleImages.length;
 				activateImage(visibleImages[nextListIndex]);
 			}, 3000);
-		}
+		};
 
-		function stopAutoPlay() {
+		const stopAutoPlay = () => {
 			if (intervalId) {
 				clearInterval(intervalId);
 				intervalId = null;
 			}
-		}
+		};
 
 		allImages.forEach(img => {
 			img.addEventListener("mouseenter", () => {

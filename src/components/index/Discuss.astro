@@ -269,7 +269,7 @@ const messages = t.messages;
 
 	gsap.registerPlugin(ScrollTrigger);
 
-	function initChatAnimation() {
+	const initChatAnimation = () => {
 		const chatStreamEl = document.getElementById("chatStream");
 		if (!chatStreamEl) return;
 
@@ -285,7 +285,7 @@ const messages = t.messages;
 		let displayCount = 0;
 		let intervalId: number | null = null;
 
-		function createBubble(text: string, isOffset: boolean): HTMLElement {
+		const createBubble = (text: string, isOffset: boolean): HTMLElement => {
 			const bubble = document.createElement("div");
 			bubble.className = `message-bubble${isOffset ? " is-offset" : ""}`;
 			bubble.innerHTML = `
@@ -297,9 +297,9 @@ const messages = t.messages;
 				</div>
 			`;
 			return bubble;
-		}
+		};
 
-		function addMessage(animate = true) {
+		const addMessage = (animate = true) => {
 			const text = messages[messageIndex % messages.length];
 			const isOffset = displayCount % 2 === 1;
 			const bubble = createBubble(text, isOffset);
@@ -337,12 +337,12 @@ const messages = t.messages;
 
 			messageIndex++;
 			displayCount++;
-		}
+		};
 
-		function startLoop() {
+		const startLoop = () => {
 			if (intervalId !== null) return;
 			intervalId = window.setInterval(() => addMessage(true), INTERVAL_MS);
-		}
+		};
 
 		for (let i = 0; i < 4; i++) {
 			addMessage(false);
@@ -354,7 +354,7 @@ const messages = t.messages;
 			onEnter: startLoop,
 			once: true
 		});
-	}
+	};
 
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", initChatAnimation);

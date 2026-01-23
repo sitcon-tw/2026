@@ -304,7 +304,7 @@ const t = useTranslations(lang).venue;
 	let animationId: number;
 	let modelGroup: THREE.Group;
 
-	function initThree() {
+	const initThree = () => {
 		const canvas = document.getElementById("venue-canvas") as HTMLCanvasElement;
 		if (!canvas) return;
 
@@ -362,9 +362,9 @@ const t = useTranslations(lang).venue;
 
 		// Start animation loop
 		animate();
-	}
+	};
 
-	async function loadAllFloors() {
+	const loadAllFloors = async () => {
 		const loader = new GLTFLoader();
 
 		const loadPromises = FLOOR_MODELS.map(
@@ -432,9 +432,9 @@ const t = useTranslations(lang).venue;
 		} catch (error) {
 			console.error("Error loading floors:", error);
 		}
-	}
+	};
 
-	function centerAndScaleModel() {
+	const centerAndScaleModel = () => {
 		// Calculate bounding box of entire model
 		const box = new THREE.Box3().setFromObject(modelGroup);
 		const center = box.getCenter(new THREE.Vector3());
@@ -453,9 +453,9 @@ const t = useTranslations(lang).venue;
 		floorGroups.forEach((group, _floorId) => {
 			group.userData.originalY = group.position.y;
 		});
-	}
+	};
 
-	function showAllFloorsStacked() {
+	const showAllFloorsStacked = () => {
 		currentFloor = null;
 
 		floorGroups.forEach((group, _floorId) => {
@@ -505,9 +505,9 @@ const t = useTranslations(lang).venue;
 			duration: 1,
 			ease: "power2.inOut"
 		});
-	}
+	};
 
-	function showSingleFloor(floorId: string) {
+	const showSingleFloor = (floorId: string) => {
 		currentFloor = floorId;
 
 		floorGroups.forEach((group, fId) => {
@@ -585,9 +585,9 @@ const t = useTranslations(lang).venue;
 			duration: 1,
 			ease: "power2.inOut"
 		});
-	}
+	};
 
-	function onWindowResize() {
+	const onWindowResize = () => {
 		const canvas = document.getElementById("venue-canvas") as HTMLCanvasElement;
 		if (!canvas) return;
 
@@ -595,15 +595,15 @@ const t = useTranslations(lang).venue;
 		camera.aspect = canvasRect.width / canvasRect.height;
 		camera.updateProjectionMatrix();
 		renderer.setSize(canvasRect.width, canvasRect.height);
-	}
+	};
 
-	function animate() {
+	const animate = () => {
 		animationId = requestAnimationFrame(animate);
 		controls.update();
 		renderer.render(scene, camera);
-	}
+	};
 
-	function cleanup() {
+	const cleanup = () => {
 		if (animationId) {
 			cancelAnimationFrame(animationId);
 		}
@@ -630,9 +630,9 @@ const t = useTranslations(lang).venue;
 		if (controls) {
 			controls.dispose();
 		}
-	}
+	};
 
-	function initVenue() {
+	const initVenue = () => {
 		const floorSelection = document.getElementById("floor-selection");
 		const advancedMenu = document.getElementById("advanced-menu");
 		const backBtn = document.getElementById("back-btn");
@@ -657,7 +657,7 @@ const t = useTranslations(lang).venue;
 			showSelection();
 		});
 
-		function showFloor(floorId: string) {
+		const showFloor = (floorId: string) => {
 			const targetRoomList = document.getElementById(`room-list-${floorId}`);
 			if (!targetRoomList) return;
 
@@ -700,9 +700,9 @@ const t = useTranslations(lang).venue;
 				},
 				"-=0.3"
 			);
-		}
+		};
 
-		function showSelection() {
+		const showSelection = () => {
 			const activeRoomList = Array.from(roomListContainers).find(c => !c.classList.contains("hidden"));
 			if (!activeRoomList) return;
 
@@ -745,8 +745,8 @@ const t = useTranslations(lang).venue;
 			if (hint) {
 				tl.fromTo(hint, { opacity: 0, y: 10 }, { opacity: 0.9, y: 0, duration: 0.3 }, "-=0.2");
 			}
-		}
-	}
+		};
+	};
 
 	// Initialize Three.js
 	initThree();

@@ -102,13 +102,13 @@ const lang = Astro.props.lang ?? "zh";
 			wraps: 2
 		};
 
-		function getSpiralPosition(progress: number, thetaOffset: number = 0) {
+		const getSpiralPosition = (progress: number, thetaOffset: number = 0) => {
 			const angle = progress * Math.PI * 2 * spiralConfig.wraps + thetaOffset;
 			const x = spiralConfig.radius * Math.cos(angle);
 			const y = (progress - 0.5) * spiralConfig.height;
 			const z = spiralConfig.radius * Math.sin(angle);
 			return new THREE.Vector3(x, y, z);
-		}
+		};
 
 		interface HeroObject {
 			mesh: THREE.Object3D;
@@ -175,7 +175,7 @@ const lang = Astro.props.lang ?? "zh";
 		const heroObjects: HeroObject[] = [];
 		const decorInstanceCount = 10; // Reduced count for SVGs to highlight volumetric primitives
 
-		function createOrbitingObjects(geometry: THREE.BufferGeometry, material: THREE.Material, count: number, scaleRange: [number, number], speedRange: [number, number]) {
+		const createOrbitingObjects = (geometry: THREE.BufferGeometry, material: THREE.Material, count: number, scaleRange: [number, number], speedRange: [number, number]) => {
 			for (let i = 0; i < count; i++) {
 				const mesh = new THREE.Mesh(geometry, material);
 				const scale = scaleRange[0] + Math.random() * (scaleRange[1] - scaleRange[0]);
@@ -193,7 +193,7 @@ const lang = Astro.props.lang ?? "zh";
 					baseScale: scale
 				});
 			}
-		}
+		};
 
 		const raycaster = new THREE.Raycaster();
 		const mouse = new THREE.Vector2();
@@ -202,7 +202,7 @@ const lang = Astro.props.lang ?? "zh";
 		const offset = new THREE.Vector3();
 		let draggedObj: HeroObject | null = null;
 
-		function createMetalMaterial(color: any) {
+		const createMetalMaterial = (color: any) => {
 			return new THREE.MeshPhysicalMaterial({
 				color: color,
 				metalness: 0.5, // Lower metalness to let color be the subject
@@ -212,7 +212,7 @@ const lang = Astro.props.lang ?? "zh";
 				clearcoatRoughness: 0.05,
 				envMapIntensity: 1.2
 			});
-		}
+		};
 
 		const svgLoader = new SVGLoader();
 		// textureLoader removed - was declared but never used
@@ -341,22 +341,22 @@ const lang = Astro.props.lang ?? "zh";
 		let animationFrameId: number | null = null;
 		let isRunning = false;
 
-		function startAnimation() {
+		const startAnimation = () => {
 			if (isRunning) return;
 			isRunning = true;
 			animate();
-		}
+		};
 
-		function stopAnimation() {
+		const stopAnimation = () => {
 			if (!isRunning) return;
 			isRunning = false;
 			if (animationFrameId !== null) {
 				cancelAnimationFrame(animationFrameId);
 				animationFrameId = null;
 			}
-		}
+		};
 
-		function animate() {
+		const animate = () => {
 			if (!isRunning) return;
 			animationFrameId = requestAnimationFrame(animate);
 			idleTime += 0.0007; // Slowed down significantly (half of 0.0015)
@@ -436,7 +436,7 @@ const lang = Astro.props.lang ?? "zh";
 			});
 
 			renderer.render(scene, camera);
-		}
+		};
 
 		window.addEventListener("resize", () => {
 			camera.aspect = window.innerWidth / window.innerHeight;
