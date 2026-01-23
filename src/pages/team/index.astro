@@ -65,16 +65,38 @@ const ROLE_PRIORITY = [
 	"marketing_helper"
 ];
 
-const team_data = Array.from(teamsMap.values()).map((team: any) => {
-	team.member.sort((a: any, b: any) => {
-		const getPriority = (role: string) => {
-			const index = ROLE_PRIORITY.indexOf(role);
+const TEAM_PRIORITY = [
+	"general", // 總召組
+	"administration", // 行政組
+	"agenda", // 議程組
+	"operations", // 場務組
+	"design", // 設計組
+	"finance", // 財務組
+	"recording", // 紀錄組
+	"production", // 製播組
+	"development", // 開發組
+	"editorial", // 編輯組
+	"marketing" // 行銷組
+];
+
+const team_data = Array.from(teamsMap.values())
+	.sort((a: any, b: any) => {
+		const getTeamPriority = (id: string) => {
+			const index = TEAM_PRIORITY.indexOf(id);
 			return index === -1 ? 999 : index;
 		};
-		return getPriority(a.role) - getPriority(b.role);
+		return getTeamPriority(a.id) - getTeamPriority(b.id);
+	})
+	.map((team: any) => {
+		team.member.sort((a: any, b: any) => {
+			const getPriority = (role: string) => {
+				const index = ROLE_PRIORITY.indexOf(role);
+				return index === -1 ? 999 : index;
+			};
+			return getPriority(a.role) - getPriority(b.role);
+		});
+		return team;
 	});
-	return team;
-});
 
 const form_url = "https://forms.gle/";
 const forum_url = "https://forum/";
