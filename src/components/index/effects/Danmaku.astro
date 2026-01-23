@@ -1,0 +1,191 @@
+---
+interface Props {
+	lines: string[];
+	rows?: number;
+	speed?: number;
+	gap?: number;
+	opacity?: number;
+}
+
+const { lines, rows = 6, speed = 150, gap = 80, opacity = 0.12 } = Astro.props;
+
+const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<div class="danmaku-container" id={uniqueId} data-lines={JSON.stringify(lines)} data-rows={rows} data-speed={speed} data-gap={gap} data-opacity={opacity}></div>
+
+<style define:vars={{ opacity }}>
+	.danmaku-container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 1;
+		user-select: none;
+		overflow: hidden;
+	}
+
+	:global(.danmaku-item) {
+		position: absolute;
+		white-space: nowrap;
+		font-weight: 900;
+		color: white;
+		opacity: var(--opacity);
+		will-change: transform;
+	}
+</style>
+
+<script>
+	function initDanmaku() {
+		document.querySelectorAll<HTMLElement>(".danmaku-container").forEach(container => {
+			// Clean up any previously created danmaku items before re-initializing.
+			while (container.firstChild) {
+				container.removeChild(container.firstChild);
+			}
+
+			const lines: string[] = JSON.parse(container.dataset.lines || "[]");
+			const rows = parseInt(container.dataset.rows || "6", 10);
+			const speed = parseInt(container.dataset.speed || "150", 10);
+			const gap = parseInt(container.dataset.gap || "80", 10);
+			const opacity = parseFloat(container.dataset.opacity || "0.12");
+
+			// 如果沒有彈幕資料，直接返回
+			if (!lines || lines.length === 0) {
+				console.warn("Danmaku: No lines provided");
+				return;
+			}
+
+			let fontSize = 0;
+			let rowState: { lastEndTime: number }[] = [];
+			let animationFrameId = 0;
+
+			function updateFontSize() {
+				const screenWidth = window.innerWidth;
+				fontSize = Math.max(48, Math.min(80, screenWidth * 0.06));
+			}
+
+			function measureText(text: string): number {
+				const canvas = document.createElement("canvas");
+				const ctx = canvas.getContext("2d");
+				if (!ctx) return text.length * fontSize;
+				ctx.font = `900 ${fontSize}px sans-serif`;
+				return ctx.measureText(text).width;
+			}
+
+			function getRandomText(): string {
+				return lines[Math.floor(Math.random() * lines.length)];
+			}
+
+			function createDanmaku(row: number, initialOffset = 0) {
+				const text = getRandomText();
+				const textWidth = measureText(text);
+				const screenWidth = window.innerWidth;
+				const totalDistance = screenWidth + textWidth;
+				const duration = totalDistance / speed;
+
+				const el = document.createElement("p");
+				el.className = "danmaku-item";
+				el.textContent = text;
+				el.style.fontSize = `${fontSize}px`;
+				el.style.top = `${(row / rows) * 100}%`;
+				el.style.left = `${screenWidth + initialOffset}px`;
+				el.style.opacity = String(opacity);
+				el.style.transform = "translateX(0)";
+				el.style.transition = `transform ${duration}s linear`;
+
+				container.appendChild(el);
+
+				// 強制 reflow 以確保 transition 生效
+				el.offsetHeight;
+
+				// 開始動畫
+				el.style.transform = `translateX(-${totalDistance}px)`;
+
+				const timeUntilFullyEntered = (textWidth + gap) / speed;
+				rowState[row].lastEndTime = performance.now() + timeUntilFullyEntered * 1000;
+
+				// 動畫結束後移除元素
+				el.addEventListener(
+					"transitionend",
+					() => {
+						el.remove();
+					},
+					{ once: true }
+				);
+
+				// 備用：如果 transitionend 沒觸發，用 setTimeout 清理
+				setTimeout(
+					() => {
+						if (el.parentNode) {
+							el.remove();
+						}
+					},
+					(duration + 1) * 1000
+				);
+			}
+
+			function tick(currentTime: number) {
+				for (let row = 0; row < rows; row++) {
+					if (currentTime >= rowState[row].lastEndTime) {
+						createDanmaku(row);
+					}
+				}
+				animationFrameId = requestAnimationFrame(tick);
+			}
+
+			function start() {
+				container.innerHTML = "";
+				const startTime = performance.now();
+
+				rowState = Array.from({ length: rows }, () => ({ lastEndTime: 0 }));
+
+				for (let row = 0; row < rows; row++) {
+					const initialDelay = (row * 0.3 + Math.random() * 0.5) * 1000;
+					rowState[row].lastEndTime = startTime + initialDelay;
+				}
+
+				animationFrameId = requestAnimationFrame(tick);
+			}
+
+			function handleResize() {
+				cancelAnimationFrame(animationFrameId);
+				container.innerHTML = "";
+				updateFontSize();
+				start();
+			}
+
+			// 初始化
+			updateFontSize();
+			start();
+
+			// 監聽視窗大小變化
+			let resizeTimeout: number | undefined;
+			const onResize = () => {
+				if (resizeTimeout !== undefined) {
+					clearTimeout(resizeTimeout);
+				}
+				resizeTimeout = window.setTimeout(handleResize, 200);
+			};
+
+			window.addEventListener("resize", onResize);
+
+			// 清理：在頁面卸載前移除監聽並清除計時器與動畫幀
+			window.addEventListener("beforeunload", () => {
+				if (resizeTimeout !== undefined) {
+					clearTimeout(resizeTimeout);
+				}
+				window.removeEventListener("resize", onResize);
+				cancelAnimationFrame(animationFrameId);
+			});
+		});
+	}
+
+	// DOM ready
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initDanmaku);
+	} else {
+		initDanmaku();
+	}
+</script>

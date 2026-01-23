@@ -1,5 +1,7 @@
 ---
 import { Plane, Users, CodeXml } from "@lucide/astro";
+import Danmaku from "./effects/Danmaku.astro";
+import danmakuData from "../../data/danmakuLines.json";
 import { useTranslations, type Lang } from "@/utils/i18n";
 
 interface Props {
@@ -12,11 +14,19 @@ const t = i18n.ticket;
 
 const tickets = [
 	{
+		id: "student",
+		title: t.student.title,
+		englishTitle: t.student.englishTitle,
+		color: "#D8C08A",
+		icon: CodeXml,
+		description: t.student.description,
+		verticalTitle: t.student.verticalTitle
+	},
+	{
 		id: "oscvpass",
 		title: t.oscvpass.title,
 		englishTitle: t.oscvpass.englishTitle,
 		color: "#e6d3a3",
-		pill: "#e6d3a3",
 		icon: CodeXml,
 		description: t.oscvpass.description,
 		verticalTitle: t.oscvpass.verticalTitle
@@ -26,7 +36,6 @@ const tickets = [
 		title: t.general.title,
 		englishTitle: t.general.englishTitle,
 		color: "#e0e0e0",
-		pill: "#E0E0E0",
 		icon: Users,
 		description: t.general.description,
 		verticalTitle: t.general.verticalTitle
@@ -36,107 +45,13 @@ const tickets = [
 		title: t.longDistance.title,
 		englishTitle: t.longDistance.englishTitle,
 		color: "#c5a880",
-		pill: "#c5a880",
 		icon: Plane,
 		description: t.longDistance.description,
 		verticalTitle: t.longDistance.verticalTitle
 	}
 ];
 
-const danmakuLines = [
-	"竟然完全免費？",
-	"所以我可以怎麼來？？？",
-	"SITCON 自己的報名系統？",
-	"崴崴孟孟 一起去日本",
-	"立即申請",
-	"SITCON{AloGuys_By_OsGa}",
-	"千萬不要錯過！！！",
-	"真的假的啦也太佛？？？",
-	"免費還不衝？？",
-	"我先報名了各位慢慢想",
-	"手速慢一點就沒了吧",
-	"報名入口在哪！！",
-	"這波是官方認證的香",
-	"這不是詐騙吧（是認真的）",
-	"我只問一句：還能再更爽嗎",
-	"想去 +1",
-	"想去 +100",
-	"我朋友也說要去欸",
-	"這活動也太猛了吧",
-	"欸欸欸快看這個！！！",
-	"現在報名會不會太晚？？",
-	"有人一起嗎？？",
-	"我媽問我為什麼跪著看",
-	"先存起來再說",
-	"我按了我按了我按了",
-	"我不管我就是要去",
-	"這種機會不常有欸",
-	"排程先空出來！",
-	"我直接請假",
-	"今天就決定了！",
-	"猶豫就輸了",
-	"按下去就對了",
-	"我只想說：謝謝 SITCON",
-	"系統也太酷了吧",
-	"居然還有自己的報名系統？？",
-	"報名流程順到不行",
-	"UI 好看就給過",
-	"工程師：這我可以",
-	"https://youtu.be/xvFZjo5PgG0?si=O1mpm1ICh8fXCFQG",
-	"這個我真的會去",
-	"拜託給我名額",
-	"我要當第一批報到的人",
-	"快點快點快點！！！",
-	"別滑了去報名！！",
-	"還在等什麼啦",
-	"我已經分享到群組了",
-	"已轉發給十個朋友",
-	"傳了傳了別問",
-	"看完直接心動",
-	"這就是青春嗎？？",
-	"我人已在路上（誤）",
-	"現場會不會爆滿",
-	"有沒有大佬出沒？？",
-	"我要去蹭 knowledge",
-	"我要去吸收能量",
-	"想聽神仙 talk",
-	"我只想當個快樂聽眾",
-	"這個不去會後悔吧",
-	"誰不去誰傻",
-	"不要攔我！！！",
-	"今天開始當 SITCON 粉",
-	"我願稱之為神活動",
-	"欸欸欸不要搶我名額",
-	"我就問：名額剩多少",
-	"這波真的要衝",
-	"給我一個理由不去",
-	"看完心跳加速",
-	"我要準備我的筆記本了",
-	"我已經想好要問什麼問題了",
-	"先卡位再說",
-	"晚了就只能看回放了吧",
-	"拜託讓我進！！！",
-	"我宣布：我要參加",
-	"救命我也太興奮",
-	"報名成功我就請飲料",
-	"有沒有同伴一起衝",
-	"衝衝衝衝衝",
-	"這裡是彈幕不是聊天室（但我忍不住）",
-	"我來了我來了",
-	"快開門我是粉絲",
-	"謝謝你 SITCON",
-	"SIX SEVEN!!!!",
-	"下一個：我也要做報名系統",
-	"學到了學到了",
-	"這個含金量超高",
-	"別再說了我要去",
-	"看到這句的人都去報名",
-	"你不報我報",
-	"你報了我也報",
-	"大家一起快樂出發",
-	"準備好了嗎？？？",
-	"Let’s goooooo！！！"
-];
+const danmakuLines: string[] = danmakuData.lines;
 ---
 
 <section>
@@ -144,41 +59,65 @@ const danmakuLines = [
 		<div class="title">
 			<h1 class="text-reveal-title">{t.title}</h1>
 		</div>
+
 		<div class="ticket-container">
 			{
 				tickets.map((ticket, index) => (
-					<div class={`ticket-card ${index === 0 ? "active" : ""}`} data-id={ticket.id} style={`--bg-color: ${ticket.color}; --index: ${index};`}>
-						<div class="ticket-mobile-header">
+					<div class={`ticket-card ${index === 0 ? "active" : ""}`} data-index={index} data-lang={lang} style={`--bg-color: ${ticket.color};`}>
+						<button class="ticket-mobile-header" type="button" aria-expanded={index === 0 ? "true" : "false"}>
 							<span class="mobile-title">{ticket.title}</span>
-							<ticket.icon class="mobile-icon" />
-						</div>
-						<div class="ticket-content">
-							<div class="ticket-main">
-								<div class="ticket-header">
-									<h2 class="ticket-title">{ticket.englishTitle}</h2>
-									<span class="ticket-sitcon">SITCON 2026</span>
-								</div>
-								<ul class="ticket-desc">
-									{ticket.description.map((item: string) => (
-										<li>{item}</li>
-									))}
-								</ul>
-								<div class="ticket-actions">
-									<button class="btn-primary">{t.buttons.getTicket}</button>
-									<button class="btn-secondary">{t.buttons.addCalendar}</button>
-								</div>
-							</div>
-							<div class="ticket-divider" />
-							<div class="ticket-side">
-								<div class="ticket-stub-inner">
-									<div class="ticket-pill">{ticket.pill}</div>
-									<div class="ticket-vertical-text">{ticket.verticalTitle}</div>
-									<div class="ticket-info">
-										<div class="ticket-info-corner">
-											<div class="ticket-date">{i18n.landing.date}</div>
-											<div class="ticket-location">{t.location}</div>
+							<span class="mobile-toggle" aria-hidden="true">
+								+
+							</span>
+						</button>
+
+						<div class="ticket-content-wrapper">
+							<div class="ticket-body">
+								<div class="ticket-main">
+									<div class="ticket-main-inner">
+										<div class="ticket-top-row">
+											<div class="ticket-header">
+												<div class="icon-circle">
+													<ticket.icon size={28} />
+												</div>
+												<div class="title-wrapper">
+													<h2 class="ticket-title" data-max-size="64">
+														{ticket.englishTitle}
+													</h2>
+												</div>
+											</div>
+
+											<div class="ticket-main-sitcon">SITCON 2026</div>
 										</div>
-										<div class="ticket-sitcon-small">SITCON 2026</div>
+
+										<ul class="ticket-desc">
+											{ticket.description.map(item => (
+												<li>
+													<span set:html={item} />
+												</li>
+											))}
+										</ul>
+
+										<div class="ticket-actions">
+											<div class="action-buttons">
+												<button class="btn-outline">{t.buttons.getTicket}</button>
+												<button class="btn-outline">{t.buttons.addCalendar}</button>
+											</div>
+
+											<div class="ticket-bottom-meta">
+												<span class="meta-text meta-date">{i18n.landing.date}</span>
+												<div class="barcode" />
+												<span class="meta-text meta-location">{t.location}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="ticket-stub">
+									<div class="ticket-vertical-text-wrapper">
+										<div class="ticket-vertical-text" data-max-size="28">
+											{ticket.verticalTitle}
+										</div>
 									</div>
 								</div>
 							</div>
@@ -189,15 +128,16 @@ const danmakuLines = [
 		</div>
 	</div>
 
-	<div class="danmaku-container" id="danmaku-container" data-lines={JSON.stringify(danmakuLines)}></div>
+	<Danmaku lines={danmakuLines} />
 </section>
 
 <style>
 	section {
 		position: relative;
 		width: 100%;
-		height: 56rem;
+		min-height: 50rem;
 		overflow: hidden;
+		padding-bottom: 4rem;
 	}
 
 	.container {
@@ -207,6 +147,7 @@ const danmakuLines = [
 		flex-direction: column;
 		align-items: center;
 		height: 100%;
+		padding: 0 1.5rem;
 	}
 
 	.title {
@@ -214,6 +155,7 @@ const danmakuLines = [
 		padding-top: 6rem;
 		color: white;
 		text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+		margin-bottom: 3rem;
 	}
 
 	.title h1 {
@@ -221,102 +163,163 @@ const danmakuLines = [
 	}
 
 	.ticket-container {
-		position: relative;
-		width: 67rem;
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		max-width: 80rem;
 		height: 30rem;
-		margin-top: 2rem;
-		perspective: 62.5rem;
-	}
-
-	.ticket-mobile-header {
-		display: none;
-		padding: 1.5rem 2rem;
-		justify-content: space-between;
-		align-items: center;
-		border-bottom: 0.125rem dashed rgba(0, 0, 0, 0.1);
-	}
-
-	.mobile-title {
-		font-size: 2.5rem;
-		font-weight: 900;
-		color: #333;
-	}
-
-	.mobile-icon {
-		width: 2.5rem;
-		height: 2.5rem;
-		color: #333;
+		gap: 1.5rem;
 	}
 
 	.ticket-card {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
+		position: relative;
 		height: 100%;
 		background-color: var(--bg-color);
-		border-radius: 1.25rem;
-		box-shadow: -0.3125rem 0 1.25rem rgba(0, 0, 0, 0.15);
-		cursor: pointer;
+		border-radius: 1.5rem;
 		overflow: hidden;
-		transform-origin: right center;
-		mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375rem, black 1rem), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 0.9375rem, black 1rem);
-		-webkit-mask-image: radial-gradient(circle at calc(100% - 12rem) 0, transparent 0.9375rem, black 1rem), radial-gradient(circle at calc(100% - 12rem) 100%, transparent 0.9375rem, black 1rem);
-		mask-composite: intersect;
+		cursor: pointer;
+		flex: 1;
+		min-width: 6rem;
+		transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+		box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.15);
+
+		--stub-width: 7rem;
+		--notch-size: 1.5rem;
+		--notch-radius: calc(var(--notch-size) / 2);
+		--notch-center: calc(100% - var(--stub-width));
+
+		-webkit-mask-image:
+			radial-gradient(circle at var(--notch-center) 0, transparent calc(var(--notch-radius) - 0.03125rem), black var(--notch-radius)),
+			radial-gradient(circle at var(--notch-center) 100%, transparent calc(var(--notch-radius) - 0.03125rem), black var(--notch-radius));
+		mask-image:
+			radial-gradient(circle at var(--notch-center) 0, transparent calc(var(--notch-radius) - 0.03125rem), black var(--notch-radius)),
+			radial-gradient(circle at var(--notch-center) 100%, transparent calc(var(--notch-radius) - 0.03125rem), black var(--notch-radius));
+
 		-webkit-mask-composite: source-in;
-		will-change: transform, height;
+		mask-composite: intersect;
 	}
 
 	.ticket-card.active {
+		flex: 10;
 		cursor: default;
+		box-shadow: 0 1.25rem 3.125rem rgba(0, 0, 0, 0.3);
 	}
 
-	.ticket-content {
-		display: flex;
+	.ticket-card:hover:not(.active) {
+		flex: 1.5;
+	}
+
+	.ticket-content-wrapper {
 		height: 100%;
+	}
+
+	.ticket-body {
+		display: flex;
+		flex-direction: row;
 		width: 100%;
+		height: 100%;
+		white-space: nowrap;
 	}
 
 	.ticket-main {
 		flex: 1;
+		min-width: 0;
+		height: 100%;
+		overflow: hidden;
+		position: relative;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.ticket-card.active .ticket-main {
+		opacity: 1;
+		transition-delay: 0.2s;
+	}
+
+	.ticket-main-inner {
+		width: 50rem;
 		padding: 3rem;
 		display: flex;
 		flex-direction: column;
+		height: 100%;
+	}
+
+	.ticket-top-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 2rem;
+		width: 100%;
+		gap: 1.5rem;
 	}
 
 	.ticket-header {
 		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		margin-bottom: 1.5rem;
+		align-items: center;
+		gap: 1rem;
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+	}
+
+	.title-wrapper {
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+	}
+
+	.ticket-main-sitcon {
+		font-size: 1rem;
+		font-weight: 900;
+		color: #333;
+		letter-spacing: 0.1em;
+		flex-shrink: 0;
+	}
+
+	.icon-circle {
+		width: 3.5rem;
+		height: 3.5rem;
+		background: rgba(0, 0, 0, 0.08);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #333;
+		flex-shrink: 0;
 	}
 
 	.ticket-title {
-		font-size: 5rem;
-		font-weight: 900;
+		font-size: 4rem;
+		font-weight: 800;
 		color: #333;
-		line-height: 1;
-	}
-
-	.ticket-sitcon {
-		font-size: 1.25rem;
-		font-weight: 700;
-		color: #333;
+		line-height: 1.1;
+		text-transform: uppercase;
+		white-space: nowrap;
+		margin: 0;
+		display: inline-block;
 	}
 
 	.ticket-desc {
 		list-style: none;
 		padding: 0;
-		color: #444;
-		font-size: 1.1rem;
-		line-height: 1.6;
+		margin: 0;
 		flex: 1;
+		white-space: normal;
 	}
 
 	.ticket-desc li {
+		font-size: 1.1rem;
+		color: #333;
 		margin-bottom: 0.75rem;
+		padding-left: 1rem;
 		position: relative;
-		padding-left: 1.25rem;
+		font-weight: 600;
+		line-height: 1.6;
+	}
+
+	.ticket-card[data-lang="en"] .ticket-desc li {
+		font-size: 0.85rem;
+		line-height: 1.5;
 	}
 
 	.ticket-desc li::before {
@@ -326,492 +329,602 @@ const danmakuLines = [
 		font-weight: bold;
 	}
 
+	.ticket-desc :global(a) {
+		color: #5c3611;
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+		font-weight: 700;
+		transition: opacity 0.2s;
+	}
+
+	.ticket-desc :global(a:hover) {
+		opacity: 0.7;
+	}
+
 	.ticket-actions {
 		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		margin-top: 2rem;
+		border-top: 0.125rem dashed rgba(0, 0, 0, 0.1);
+		padding-top: 2rem;
 		gap: 1.5rem;
-		margin-top: 1rem;
 	}
 
-	.btn-primary,
-	.btn-secondary {
-		padding: 0.75rem 2.5rem;
-		border-radius: 62.4375rem;
-		font-size: 1.5rem;
+	.action-buttons {
+		display: flex;
+		gap: 1rem;
+	}
+
+	.ticket-bottom-meta {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.25rem;
+		flex-shrink: 0;
+	}
+
+	.meta-text {
+		font-size: 0.85rem;
 		font-weight: 700;
-		cursor: pointer;
-		transition: all 0.3s ease;
+		color: #333;
+		opacity: 0.7;
+		letter-spacing: 0.02em;
+		white-space: nowrap;
 	}
 
-	.btn-primary {
+	.btn-outline {
 		background: transparent;
+		color: #333;
 		border: 0.125rem solid #333;
-		color: #333;
+		padding: 0.75rem 2rem;
+		font-size: 1.125rem;
+		font-weight: 700;
+		border-radius: 50rem;
+		cursor: pointer;
+		white-space: nowrap;
+		transition: all 0.2s ease;
 	}
 
-	.btn-primary:hover {
+	.btn-outline:hover {
 		background: #333;
-		color: white;
+		color: var(--bg-color);
 	}
 
-	.btn-secondary {
-		background: transparent;
-		border: 0.125rem solid rgba(0, 0, 0, 0.3);
-		color: #333;
+	.barcode {
+		width: 10rem;
+		height: 2.25rem;
+		background-image: repeating-linear-gradient(90deg, transparent, transparent 0.125rem, #333 0.125rem, #333 0.25rem, transparent 0.25rem, transparent 0.3125rem, #333 0.3125rem, #333 0.5rem);
+		opacity: 0.5;
+		margin: 0.25rem 0;
 	}
 
-	.btn-secondary:hover {
-		border-color: #333;
-	}
-
-	.ticket-divider {
-		width: 0;
-		border-left: 0.125rem dashed rgba(0, 0, 0, 0.2);
-		margin: 2rem 0;
-	}
-
-	.ticket-side {
-		width: 12rem;
+	.ticket-stub {
+		width: var(--stub-width);
+		min-width: var(--stub-width);
 		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem 0;
+		flex-shrink: 0;
+		border-left: 0.125rem dashed rgba(0, 0, 0, 0.15);
+		background-color: rgba(255, 255, 255, 0.05);
 		position: relative;
 		overflow: hidden;
 	}
 
-	.ticket-stub-inner {
-		position: absolute;
-		top: 0;
-		left: 12rem;
-		width: 30rem;
-		height: 12rem;
-		transform: rotate(90deg);
-		transform-origin: 0 0;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: flex-start;
-		padding: 1.5rem 2rem;
-	}
-
-	.ticket-pill {
-		background: rgba(0, 0, 0, 0.05);
-		border: 0.0625rem solid rgba(0, 0, 0, 0.1);
-		padding: 0.2rem 0.8rem;
-		border-radius: 62.4375rem;
-		font-size: 0.875rem;
-		font-family: monospace;
-		color: #333;
-		white-space: nowrap;
-		align-self: flex-end;
-		margin-bottom: 0.5rem;
-		z-index: 2;
-		text-transform: uppercase;
-	}
-
-	.ticket-vertical-text {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		font-size: 3.5rem;
-		font-weight: 900;
-		color: #333;
-		letter-spacing: 0.5rem;
-		white-space: nowrap;
-		z-index: 1;
-	}
-
-	.ticket-info {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		align-items: flex-end;
-		height: 100%;
-		font-size: 0.75rem;
-		color: #333;
-		z-index: 2;
-	}
-
-	.ticket-info-corner {
-		order: 2;
-		text-align: right;
-		display: flex;
-		flex-direction: column;
-		gap: 0.2rem;
-		align-items: flex-end;
-		font-weight: 700;
-	}
-
-	.ticket-sitcon-small {
-		order: 1;
-		font-weight: 700;
-		margin-top: 0.25rem;
-	}
-
-	.danmaku-container {
-		position: absolute;
-		top: 0;
-		left: 0;
+	.ticket-vertical-text-wrapper {
 		width: 100%;
 		height: 100%;
-		pointer-events: none;
-		z-index: 1;
-		user-select: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		overflow: hidden;
 	}
 
-	:global(.danmaku-item) {
-		position: absolute;
-		white-space: nowrap;
+	.ticket-vertical-text {
+		writing-mode: horizontal-tb;
+		transform: rotate(90deg);
+		font-size: 1.75rem;
 		font-weight: 900;
-		color: white;
-		opacity: 0.12;
-		will-change: transform;
+		letter-spacing: 0.15em;
+		color: #333;
+		white-space: nowrap;
+		opacity: 0.85;
+		text-align: center;
+		display: inline-block;
 	}
 
-	@media (max-width: 768px) {
-		section {
-			height: auto;
-			padding-bottom: 4rem;
+	.ticket-mobile-header {
+		display: none;
+	}
+
+	@media (max-width: 80rem) {
+		.ticket-container {
+			max-width: 64rem;
+			height: 28rem;
 		}
 
-		.container {
-			padding: 0 1.5rem;
+		.ticket-main-inner {
+			width: 36rem;
+			padding: 2.5rem;
+		}
+
+		.ticket-title {
+			font-size: 3.25rem;
+		}
+
+		.ticket-main-sitcon {
+			font-size: 1.25rem;
+		}
+
+		.ticket-desc li {
+			font-size: 1rem;
+		}
+
+		.btn-outline {
+			padding: 0.625rem 1.5rem;
+			font-size: 1rem;
+		}
+	}
+
+	@media (max-width: 64rem) {
+		.title {
+			font-size: 2rem;
+			padding-top: 5rem;
+			margin-bottom: 2.5rem;
 		}
 
 		.ticket-container {
+			height: 26rem;
+			gap: 1rem;
+		}
+
+		.ticket-card {
+			--stub-width: 5.5rem;
+			min-width: 5.5rem;
+		}
+
+		.ticket-main-inner {
+			width: 32rem;
+			padding: 2rem;
+		}
+
+		.ticket-top-row {
+			flex-direction: column;
+			gap: 1rem;
+			align-items: flex-start;
+			margin-bottom: 1.5rem;
+		}
+
+		.ticket-header {
+			margin-bottom: 0;
 			width: 100%;
-			height: 50rem;
-			margin-top: 3rem;
+			margin-right: 0;
+		}
+
+		.icon-circle {
+			width: 3rem;
+			height: 3rem;
+		}
+
+		.ticket-title {
+			font-size: 2.75rem;
+		}
+
+		.ticket-desc li {
+			font-size: 0.95rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.ticket-actions {
+			margin-top: 1.5rem;
+			padding-top: 1.5rem;
+			flex-wrap: wrap;
+			gap: 1rem;
+		}
+
+		.action-buttons {
+			gap: 0.75rem;
+		}
+
+		.ticket-bottom-meta {
+			align-items: flex-end;
+		}
+
+		.btn-outline {
+			padding: 0.5rem 1.25rem;
+			font-size: 0.9rem;
+		}
+
+		.barcode {
+			width: 8rem;
+			height: 2rem;
+		}
+
+		.ticket-vertical-text {
+			font-size: 1.5rem;
+		}
+	}
+
+	@media (max-width: 48rem) {
+		section {
+			min-height: auto;
+			padding-bottom: 3rem;
+		}
+
+		.container {
+			padding: 0 1rem;
+		}
+
+		.title {
+			font-size: 1.75rem;
+			padding-top: 4rem;
+			margin-bottom: 2rem;
+		}
+
+		.ticket-container {
+			flex-direction: column;
+			height: auto;
+			gap: 0.75rem;
+		}
+
+		.ticket-card {
+			flex: none !important;
+			width: 100%;
+			height: auto;
+			min-width: 0;
+			border-radius: 1rem;
+			cursor: default;
+			box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+			mask-image: none;
+			-webkit-mask-image: none;
+			overflow: hidden;
+		}
+
+		.ticket-card.active {
+			box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
+		}
+
+		.ticket-card:hover:not(.active) {
+			flex: none !important;
 		}
 
 		.ticket-mobile-header {
 			display: flex;
-		}
-
-		.ticket-card {
-			transform-origin: center top;
-			mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 0.9375rem, black 1rem), radial-gradient(circle at 100% calc(100% - 8rem), transparent 0.9375rem, black 1rem);
-			-webkit-mask-image: radial-gradient(circle at 0 calc(100% - 8rem), transparent 0.9375rem, black 1rem), radial-gradient(circle at 100% calc(100% - 8rem), transparent 0.9375rem, black 1rem);
-			box-shadow: 0 -0.3125rem 0.9375rem rgba(0, 0, 0, 0.1);
-		}
-
-		.ticket-content {
-			flex-direction: column;
-			height: calc(100% - 5rem);
-			overflow: hidden;
-			opacity: 0;
-			transition: opacity 0.3s ease;
-		}
-
-		.ticket-card.active .ticket-content {
-			opacity: 1;
-		}
-
-		.ticket-main {
-			padding: 1.5rem;
-			overflow-y: auto;
-		}
-
-		.ticket-title {
-			font-size: 2.5rem;
-		}
-
-		.ticket-desc {
-			font-size: 1rem;
-		}
-
-		.btn-primary,
-		.btn-secondary {
-			padding: 0.5rem 1.5rem;
-			font-size: 1.1rem;
-		}
-
-		.ticket-divider {
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 1.25rem;
+			height: 4rem;
+			background: rgba(0, 0, 0, 0.05);
 			width: 100%;
-			height: 0;
-			border-left: none;
-			border-top: 0.125rem dashed rgba(0, 0, 0, 0.1);
-			margin: 0;
+			cursor: pointer;
+			border: none;
+			font-family: inherit;
 		}
 
-		.ticket-side {
+		.mobile-title {
+			font-size: 1.25rem;
+			font-weight: 800;
+			color: #333;
+		}
+
+		.mobile-toggle {
+			font-size: 1.75rem;
+			font-weight: 300;
+			color: #333;
+			transition: transform 0.3s ease;
+			width: 2rem;
+			height: 2rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.ticket-card.active .mobile-toggle {
+			transform: rotate(45deg);
+		}
+
+		.ticket-stub {
 			display: none;
 		}
 
-		.ticket-stub-inner {
-			position: static;
-			width: 100%;
-			height: auto;
-			transform: none;
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			align-items: center;
-			padding: 0;
+		.ticket-content-wrapper {
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.4s ease-out;
 		}
 
-		.ticket-pill {
+		.ticket-card.active .ticket-content-wrapper {
+			max-height: 40rem;
+		}
+
+		.ticket-body {
+			flex-direction: column;
+			height: auto;
+			white-space: normal;
+		}
+
+		.ticket-main {
+			padding: 0;
+			opacity: 1;
+			width: 100%;
+			height: auto;
+			overflow: visible;
+			transition: none;
+		}
+
+		.ticket-card.active .ticket-main {
+			transition-delay: 0s;
+		}
+
+		.ticket-main-inner {
+			width: 100%;
+			padding: 1.25rem;
+			padding-top: 0.75rem;
+			height: auto;
+		}
+
+		.ticket-header {
 			margin-bottom: 0;
 		}
 
-		.ticket-info {
-			height: auto;
-			opacity: 1;
-			text-align: right;
+		.ticket-top-row {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 1rem;
 		}
 
-		.ticket-info-corner {
-			display: block;
+		.ticket-main-sitcon {
+			display: none;
+		}
+
+		.icon-circle {
+			width: 2.5rem;
+			height: 2.5rem;
+		}
+
+		.ticket-title {
+			font-size: 1.75rem;
+		}
+
+		.ticket-desc {
+			margin-bottom: 1rem;
+		}
+
+		.ticket-desc li {
+			font-size: 0.9rem;
+			margin-bottom: 0.5rem;
+			line-height: 1.5;
+			padding-left: 0.875rem;
+		}
+
+		.ticket-actions {
+			flex-direction: column-reverse;
+			gap: 1rem;
+			align-items: stretch;
+			margin-top: 1rem;
+			padding-top: 1rem;
+		}
+
+		.action-buttons {
+			flex-direction: column;
+			width: 100%;
+			gap: 0.625rem;
+		}
+
+		.ticket-bottom-meta {
+			flex-direction: column;
+			align-items: center;
+			gap: 0.5rem;
+			width: 100%;
+		}
+
+		.meta-text {
+			font-size: 0.85rem;
+		}
+
+		.btn-outline {
+			width: 100%;
+			justify-content: center;
+			padding: 0.75rem 1.5rem;
+			font-size: 1rem;
+			text-align: center;
+		}
+
+		.barcode {
+			width: 100%;
+			height: 2rem;
+			opacity: 0.25;
+		}
+	}
+
+	@media (max-width: 23.4375rem) {
+		.container {
+			padding: 0 0.75rem;
+		}
+
+		.title {
+			font-size: 1.5rem;
+			padding-top: 3rem;
+			margin-bottom: 1.5rem;
+		}
+
+		.ticket-mobile-header {
+			padding: 0 1rem;
+			height: 3.5rem;
+		}
+
+		.mobile-title {
+			font-size: 1.1rem;
+		}
+
+		.ticket-main-inner {
+			padding: 1rem;
+			padding-top: 0.5rem;
+		}
+
+		.icon-circle {
+			width: 2.25rem;
+			height: 2.25rem;
+		}
+
+		.ticket-title {
+			font-size: 1.5rem;
+		}
+
+		.ticket-desc li {
+			font-size: 0.85rem;
+			margin-bottom: 0.375rem;
+		}
+
+		.btn-outline {
+			padding: 0.625rem 1rem;
+			font-size: 0.9rem;
 		}
 	}
 </style>
 
 <script>
-	import { gsap } from "gsap";
+	function initTicketCards() {
+		const cards = document.querySelectorAll<HTMLElement>(".ticket-card");
+		const MOBILE_BREAKPOINT = 768;
 
-	// ==================== 彈幕 ====================
-	class DanmakuSystem {
-		private container: HTMLElement;
-		private lines: string[];
-		private rows: number = 6;
-		private fontSize: number = 0;
-		private speed: number = 150; // px/s
-		private gap: number = 80; // 彈幕間距 px
-		private rowState: { lastEndTime: number }[] = [];
-		private animationFrameId: number = 0;
-		private startTime: number = 0;
-
-		constructor(container: HTMLElement, lines: string[]) {
-			this.container = container;
-			this.lines = lines;
-			this.init();
+		function isMobile(): boolean {
+			return window.innerWidth <= MOBILE_BREAKPOINT;
 		}
 
-		private init() {
-			this.updateFontSize();
-			this.rowState = Array.from({ length: this.rows }, () => ({ lastEndTime: 0 }));
-			this.start();
-			window.addEventListener("resize", this.handleResize.bind(this));
+		function updateAriaExpanded(card: HTMLElement, expanded: boolean) {
+			const header = card.querySelector(".ticket-mobile-header");
+			if (header) {
+				header.setAttribute("aria-expanded", String(expanded));
+			}
 		}
 
-		private updateFontSize() {
-			const screenWidth = window.innerWidth;
-			this.fontSize = Math.max(48, Math.min(80, screenWidth * 0.06));
+		function handleMobileClick(card: HTMLElement) {
+			if (card.classList.contains("active")) {
+				card.classList.remove("active");
+				updateAriaExpanded(card, false);
+			} else {
+				cards.forEach(c => {
+					c.classList.remove("active");
+					updateAriaExpanded(c, false);
+				});
+				card.classList.add("active");
+				updateAriaExpanded(card, true);
+
+				setTimeout(() => {
+					card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+				}, 150);
+			}
 		}
 
-		private measureText(text: string): number {
-			const canvas = document.createElement("canvas");
-			const ctx = canvas.getContext("2d");
-			if (!ctx) return text.length * this.fontSize;
-			ctx.font = `900 ${this.fontSize}px sans-serif`;
-			return ctx.measureText(text).width;
+		function handleDesktopClick(card: HTMLElement) {
+			if (!card.classList.contains("active")) {
+				cards.forEach(t => t.classList.remove("active"));
+				card.classList.add("active");
+			}
 		}
 
-		private getRandomText(): string {
-			return this.lines[Math.floor(Math.random() * this.lines.length)];
-		}
+		function fitText(el: HTMLElement) {
+			const wrapper = el.parentElement;
+			if (!wrapper) return;
 
-		private createDanmaku(row: number, initialOffset: number = 0) {
-			const text = this.getRandomText();
-			const textWidth = this.measureText(text);
-			const screenWidth = window.innerWidth;
-			const totalDistance = screenWidth + textWidth;
-			const duration = totalDistance / this.speed;
+			const maxSize = parseInt(el.dataset.maxSize || "64");
+			let fontSize = maxSize;
+			el.style.fontSize = `${fontSize}px`;
 
-			const el = document.createElement("p");
-			el.className = "danmaku-item";
-			el.textContent = text;
-			el.style.fontSize = `${this.fontSize}px`;
-			el.style.top = `${(row / this.rows) * 100}%`;
-			el.style.left = `${screenWidth + initialOffset}px`;
+			const isVertical = el.classList.contains("ticket-vertical-text");
 
-			this.container.appendChild(el);
-
-			const timeUntilFullyEntered = (textWidth + this.gap) / this.speed;
-			this.rowState[row].lastEndTime = performance.now() + timeUntilFullyEntered * 1000;
-
-			gsap.to(el, {
-				x: -totalDistance,
-				duration: duration,
-				ease: "none",
-				onComplete: () => {
-					el.remove();
+			if (isVertical) {
+				const containerHeight = wrapper.clientHeight || 400;
+				while (el.scrollWidth > containerHeight && fontSize > 12) {
+					fontSize -= 1;
+					el.style.fontSize = `${fontSize}px`;
 				}
-			});
-		}
+			} else {
+				const containerWidth = wrapper.clientWidth;
+				if (containerWidth === 0) return;
 
-		private tick = (currentTime: number) => {
-			for (let row = 0; row < this.rows; row++) {
-				if (currentTime >= this.rowState[row].lastEndTime) {
-					this.createDanmaku(row);
+				while (el.scrollWidth > containerWidth && fontSize > 14) {
+					fontSize -= 1;
+					el.style.fontSize = `${fontSize}px`;
 				}
 			}
-			this.animationFrameId = requestAnimationFrame(this.tick);
-		};
-
-		private start() {
-			this.container.innerHTML = "";
-			this.startTime = performance.now();
-
-			for (let row = 0; row < this.rows; row++) {
-				const initialDelay = (row * 0.3 + Math.random() * 0.5) * 1000;
-				this.rowState[row].lastEndTime = this.startTime + initialDelay;
-			}
-
-			this.animationFrameId = requestAnimationFrame(this.tick);
 		}
 
-		private handleResize() {
-			cancelAnimationFrame(this.animationFrameId);
-			gsap.killTweensOf(".danmaku-item");
-			this.container.innerHTML = "";
-			this.updateFontSize();
-			this.start();
+		function adjustAllFonts() {
+			const titles = document.querySelectorAll<HTMLElement>(".ticket-title");
+			const verticalTitles = document.querySelectorAll<HTMLElement>(".ticket-vertical-text");
+
+			titles.forEach(fitText);
+			verticalTitles.forEach(fitText);
 		}
 
-		destroy() {
-			cancelAnimationFrame(this.animationFrameId);
-			gsap.killTweensOf(".danmaku-item");
-			window.removeEventListener("resize", this.handleResize.bind(this));
-		}
-	}
-
-	const danmakuContainer = document.getElementById("danmaku-container");
-	if (danmakuContainer) {
-		const linesData = danmakuContainer.dataset.lines;
-		if (linesData) {
-			new DanmakuSystem(danmakuContainer, JSON.parse(linesData));
-		}
-	}
-
-	// ==================== 票卡互動邏輯 ====================
-	const cards = document.querySelectorAll(".ticket-card");
-	const ticketContainer = document.querySelector(".ticket-container");
-	const sideWidth = 12 * 16;
-	const mobileHeaderHeight = 5 * 16;
-	const overlap = 3.125 * 16;
-	let currentActiveIndex = 0;
-
-	function updateCards(activeIndex: number) {
-		if (!ticketContainer) return;
-		currentActiveIndex = activeIndex;
-		const isMobile = window.innerWidth <= 768;
-		const containerWidth = ticketContainer.getBoundingClientRect().width;
-		const containerHeight = ticketContainer.getBoundingClientRect().height;
-
-		if (isMobile) {
-			let inactiveCount = 0;
-			cards.forEach((card, index) => {
-				const htmlCard = card as HTMLElement;
-				if (index === activeIndex) {
-					gsap.set(htmlCard, { zIndex: cards.length + 1 });
-					gsap.to(htmlCard, {
-						x: 0,
-						y: (cards.length - 1) * mobileHeaderHeight,
-						height: containerHeight - (cards.length - 1) * mobileHeaderHeight,
-						duration: 0.7,
-						ease: "expo.out",
-						force3D: true,
-						overwrite: "auto",
-						onComplete: () => {
-							gsap.set(htmlCard, { zIndex: cards.length });
-						}
-					});
-					htmlCard.classList.add("active");
-				} else {
-					const targetY = inactiveCount * mobileHeaderHeight;
-					gsap.to(htmlCard, {
-						x: 0,
-						y: targetY,
-						zIndex: inactiveCount + 1,
-						height: mobileHeaderHeight,
-						duration: 0.7,
-						ease: "expo.out",
-						force3D: true,
-						overwrite: "auto"
-					});
-					htmlCard.classList.remove("active");
-					inactiveCount++;
-				}
-			});
-		} else {
-			cards.forEach((card, index) => {
-				const htmlCard = card as HTMLElement;
-				gsap.set(htmlCard, { height: "100%" });
-				if (index === activeIndex) {
-					gsap.set(htmlCard, { zIndex: cards.length + 1 });
-					gsap.to(htmlCard, {
-						x: 0,
-						y: 0,
-						rotationY: 0,
-						scale: 1,
-						duration: 0.7,
-						ease: "expo.out",
-						force3D: true,
-						overwrite: "auto",
-						onComplete: () => {
-							gsap.set(htmlCard, { zIndex: cards.length });
-						}
-					});
-					htmlCard.classList.add("active");
-				} else if (index > activeIndex) {
-					const offset = (index - activeIndex - 1) * overlap;
-					const targetX = containerWidth - sideWidth + offset;
-					gsap.to(htmlCard, {
-						x: targetX,
-						y: 0,
-						zIndex: cards.length - index,
-						rotationY: -10,
-						scale: 0.95,
-						duration: 0.7,
-						ease: "expo.out",
-						force3D: true,
-						overwrite: "auto"
-					});
-					htmlCard.classList.remove("active");
-				} else {
-					gsap.to(htmlCard, {
-						x: -containerWidth,
-						y: 0,
-						zIndex: index,
-						rotationY: 10,
-						duration: 0.7,
-						ease: "expo.out",
-						force3D: true,
-						overwrite: "auto"
-					});
-					htmlCard.classList.remove("active");
-				}
-			});
-		}
-	}
-
-	cards.forEach((card, index) => {
-		card.addEventListener("click", () => {
-			updateCards(index);
-		});
-
-		card.addEventListener("mouseenter", () => {
-			const isMobile = window.innerWidth <= 768;
-			if (!isMobile && index > currentActiveIndex) {
-				gsap.to(card, {
-					x: "-=30",
-					duration: 0.3,
-					ease: "power2.out"
+		cards.forEach(card => {
+			const mobileHeader = card.querySelector<HTMLElement>(".ticket-mobile-header");
+			if (mobileHeader) {
+				mobileHeader.addEventListener("click", e => {
+					if (isMobile()) {
+						e.preventDefault();
+						e.stopPropagation();
+						handleMobileClick(card);
+					}
 				});
 			}
+
+			card.addEventListener("click", e => {
+				const target = e.target as HTMLElement;
+
+				if (isMobile()) {
+					return;
+				}
+
+				if (target.closest(".action-buttons")) {
+					return;
+				}
+
+				handleDesktopClick(card);
+			});
 		});
 
-		card.addEventListener("mouseleave", () => {
-			const isMobile = window.innerWidth <= 768;
-			if (!isMobile && index > currentActiveIndex) {
-				updateCards(currentActiveIndex);
+		let lastIsMobile = isMobile();
+
+		function handleResize() {
+			const currentIsMobile = isMobile();
+			adjustAllFonts();
+
+			if (lastIsMobile !== currentIsMobile) {
+				cards.forEach((card, index) => {
+					if (index === 0) {
+						card.classList.add("active");
+						updateAriaExpanded(card, true);
+					} else {
+						card.classList.remove("active");
+						updateAriaExpanded(card, false);
+					}
+				});
+				lastIsMobile = currentIsMobile;
 			}
+		}
+
+		window.addEventListener("resize", handleResize);
+
+		const observer = new ResizeObserver(() => {
+			requestAnimationFrame(adjustAllFonts);
 		});
-	});
 
-	window.addEventListener("resize", () => {
-		updateCards(currentActiveIndex);
-	});
+		cards.forEach(card => observer.observe(card));
 
-	updateCards(0);
+		requestAnimationFrame(adjustAllFonts);
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initTicketCards);
+	} else {
+		initTicketCards();
+	}
 </script>

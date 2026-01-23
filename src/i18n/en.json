@@ -48,6 +48,12 @@
 	},
 	"ticket": {
 		"title": "How to Get Tickets",
+		"student": {
+			"title": "Student Ticket",
+			"englishTitle": "STUDENT",
+			"description": ["英文版記得也要"],
+			"verticalTitle": "Student Ticket"
+		},
 		"oscvpass": {
 			"title": "Open Source Contributor Pass",
 			"englishTitle": "OSCVPASS",
@@ -177,8 +183,14 @@
 					"description": "Motorcycles are not allowed inside the campus. Free parking is available at the right side of the main gate, across from the main gate, and near Hu Shih Park (no liability for safekeeping)."
 				},
 				"references": [
-					{ "name": "Academia Sinica Vehicle Parking Regulations", "url": "https://www.sinica.edu.tw/cp_rules/doc/4202" },
-					{ "name": "Academia Sinica Parking Q&A", "url": "https://www.sinica.edu.tw/ch/articles/168" }
+					{
+						"name": "Academia Sinica Vehicle Parking Regulations",
+						"url": "https://www.sinica.edu.tw/cp_rules/doc/4202"
+					},
+					{
+						"name": "Academia Sinica Parking Q&A",
+						"url": "https://www.sinica.edu.tw/ch/articles/168"
+					}
 				]
 			}
 		},
@@ -235,50 +247,134 @@
 		{
 			"title": "Navigation",
 			"links": [
-				{ "name": "Event Info (incl. Transportation)", "url": "#" },
-				{ "name": "Agenda", "url": "#" },
-				{ "name": "Venue Map", "url": "#" },
-				{ "name": "Registration", "url": "#" },
-				{ "name": "SITCON Team", "url": "#" },
-				{ "name": "Partners", "url": "#" },
-				{ "name": "Resources", "url": "#" }
+				{
+					"name": "Event Info (incl. Transportation)",
+					"url": "#"
+				},
+				{
+					"name": "Agenda",
+					"url": "#"
+				},
+				{
+					"name": "Venue Map",
+					"url": "#"
+				},
+				{
+					"name": "Registration",
+					"url": "#"
+				},
+				{
+					"name": "SITCON Team",
+					"url": "#"
+				},
+				{
+					"name": "Partners",
+					"url": "#"
+				},
+				{
+					"name": "Resources",
+					"url": "#"
+				}
 			]
 		},
 		{
 			"title": "SITCON Projects",
 			"links": [
-				{ "name": "Sponsorship Request", "url": "#" },
-				{ "name": "Call for Paper", "url": "#" },
-				{ "name": "Hour of Code", "url": "#" },
-				{ "name": "SITCON Camp", "url": "#" },
-				{ "name": "SITCON Hackathon", "url": "#" },
-				{ "name": "Hall of Frame", "url": "https://sitcon.org/hacker/" }
+				{
+					"name": "Sponsorship Request",
+					"url": "#"
+				},
+				{
+					"name": "Call for Paper",
+					"url": "#"
+				},
+				{
+					"name": "Hour of Code",
+					"url": "#"
+				},
+				{
+					"name": "SITCON Camp",
+					"url": "#"
+				},
+				{
+					"name": "SITCON Hackathon",
+					"url": "#"
+				},
+				{
+					"name": "Hall of Frame",
+					"url": "https://sitcon.org/hacker/"
+				}
 			]
 		},
 		{
 			"title": "Contact",
 			"links": [
-				{ "name": "General Inquiries\ncontact@sitcon.org", "url": "mailto:contact@sitcon.org" },
-				{ "name": "Ticket Information\nticket@sitcon.org", "url": "mailto:ticket@sitcon.org" }
+				{
+					"name": "General Inquiries\ncontact@sitcon.org",
+					"url": "mailto:contact@sitcon.org"
+				},
+				{
+					"name": "Ticket Information\nticket@sitcon.org",
+					"url": "mailto:ticket@sitcon.org"
+				}
 			]
 		},
 		{
 			"title": "Past Events",
 			"gridLayout": true,
 			"links": [
-				{ "name": "2025", "url": "https://sitcon.org/2025" },
-				{ "name": "2024", "url": "https://sitcon.org/2024" },
-				{ "name": "2023", "url": "https://sitcon.org/2023" },
-				{ "name": "2022", "url": "https://sitcon.org/2022" },
-				{ "name": "2021", "url": "https://sitcon.org/2021" },
-				{ "name": "2020", "url": "https://sitcon.org/2020" },
-				{ "name": "2019", "url": "https://sitcon.org/2019" },
-				{ "name": "2018", "url": "https://sitcon.org/2018" },
-				{ "name": "2017", "url": "https://sitcon.org/2017" },
-				{ "name": "2016", "url": "https://sitcon.org/2016" },
-				{ "name": "2015", "url": "https://sitcon.org/2015" },
-				{ "name": "2014", "url": "https://sitcon.org/2014" },
-				{ "name": "2013", "url": "https://sitcon.org/2013" }
+				{
+					"name": "2025",
+					"url": "https://sitcon.org/2025"
+				},
+				{
+					"name": "2024",
+					"url": "https://sitcon.org/2024"
+				},
+				{
+					"name": "2023",
+					"url": "https://sitcon.org/2023"
+				},
+				{
+					"name": "2022",
+					"url": "https://sitcon.org/2022"
+				},
+				{
+					"name": "2021",
+					"url": "https://sitcon.org/2021"
+				},
+				{
+					"name": "2020",
+					"url": "https://sitcon.org/2020"
+				},
+				{
+					"name": "2019",
+					"url": "https://sitcon.org/2019"
+				},
+				{
+					"name": "2018",
+					"url": "https://sitcon.org/2018"
+				},
+				{
+					"name": "2017",
+					"url": "https://sitcon.org/2017"
+				},
+				{
+					"name": "2016",
+					"url": "https://sitcon.org/2016"
+				},
+				{
+					"name": "2015",
+					"url": "https://sitcon.org/2015"
+				},
+				{
+					"name": "2014",
+					"url": "https://sitcon.org/2014"
+				},
+				{
+					"name": "2013",
+					"url": "https://sitcon.org/2013"
+				}
 			]
 		}
 	],

@@ -157,7 +157,6 @@ const supportersList = sponsors.supporters as Sponsor[];
 					<h2 id="dialog-title">{t.sponsorName}</h2>
 					<p id="dialog-desc">{t.sponsorDesc}</p>
 				</div>
-
 				<div class="action-area">
 					<a href="#" target="_blank" class="visit-btn">{t.visitWebsite}</a>
 				</div>
@@ -545,7 +544,7 @@ const supportersList = sponsors.supporters as Sponsor[];
 				const { name, desc, type, img, url } = trigger.dataset;
 
 				if (dialogTitle) dialogTitle.textContent = name ?? null;
-				if (dialogDesc) dialogDesc.textContent = desc ?? null;
+				if (dialogDesc) dialogDesc.innerHTML = desc ?? "";
 				if (dialogType) dialogType.textContent = type ?? null;
 				if (dialogImg && img) dialogImg.src = img;
 				if (visitBtn) {

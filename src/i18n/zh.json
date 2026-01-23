@@ -44,13 +44,19 @@
 	},
 	"ticket": {
 		"title": "索票方式",
+		"student": {
+			"title": "學生票",
+			"englishTitle": "STUDENT",
+			"description": ["麻煩再更新一下資料"],
+			"verticalTitle": "學生票"
+		},
 		"oscvpass": {
 			"title": "開源貢獻票",
 			"englishTitle": "OSCVPASS",
 			"description": [
 				"資格限制：對開源專案有貢獻者。",
 				"在 2026/01/17 23:59 前申請且通過者，有機會可以獲得 SITCON 2026 開源貢獻票邀請碼。申請表單、申請資格及更詳細的申請說明，請參考<a href=https://ocf.tw/p/oscvpass/>開源貢獻者快速通關</a>。",
-				"關於歷年來 OSCVPass 申請通過者的專案列表，請參考 <a href=https://oscvpass.ocf.tw/?fbclid=IwAR0sFst9sZwPoLKRUwzOIpg-M_V7gZSZu3lvStcV3rqpRnZKjT6A1pl2nRU>OSCVPass 專案介紹</a>。"
+				"關於歷年來 OSCVPass 申請通過者的專案列表，請參考 <a href=https://oscvpass.ocf.tw/>OSCVPass 專案介紹</a>。"
 			],
 			"verticalTitle": "開源貢獻票"
 		},
