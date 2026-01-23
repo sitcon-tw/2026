@@ -310,7 +310,7 @@
 			"links": [
 				{
 					"name": "年會活動（含交通方式）",
-					"url": "#"
+					"url": "/2026/info"
 				},
 				{
 					"name": "議程表",
@@ -318,15 +318,15 @@
 				},
 				{
 					"name": "會場地圖",
-					"url": "#"
+					"url": "/2026/venue"
 				},
 				{
 					"name": "活動報名",
-					"url": "#"
+					"url": "https://tickets.sitcon.org/zh-Hant/sitcon2026"
 				},
 				{
 					"name": "SITCON 團隊",
-					"url": "#"
+					"url": "/2026/team"
 				},
 				{
 					"name": "合作夥伴",
@@ -343,23 +343,27 @@
 			"links": [
 				{
 					"name": "贊助徵求書",
-					"url": "#"
+					"url": "https://sitcon.org/2026/cfs/"
 				},
 				{
 					"name": "Call for Paper",
-					"url": "#"
+					"url": "https://sitcon.org/2026/cfp/"
 				},
 				{
 					"name": "Hour of Code",
-					"url": "#"
+					"url": "https://sitcon.org/hoc/"
 				},
 				{
 					"name": "SITCON Camp",
-					"url": "#"
+					"url": "https://sitcon.camp"
 				},
 				{
 					"name": "SITCON Hackathon",
-					"url": "#"
+					"url": "https://hackathon.sitcon.org"
+				},
+				{
+					"name": "SITCON Podcast",
+					"url": "https://sitcon.org/podcast"
 				},
 				{
 					"name": "Hall of Frame",
