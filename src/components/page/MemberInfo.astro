@@ -230,7 +230,7 @@ const { id = "member-info-modal" } = Astro.props;
 		color: black;
 		background-color: white;
 		width: 40rem;
-		max-width: 40vw;
+		width: clamp(30rem, 30vw, 40rem);
 		height: 100vh;
 		position: fixed;
 		top: 0;
@@ -374,14 +374,13 @@ const { id = "member-info-modal" } = Astro.props;
 	}
 
 	p {
-		width: 20rem;
+		max-width: 20rem;
 		padding-top: 3.75rem;
-		font-size: 1rem;
 		font-weight: 700;
 		line-height: 1.5;
 	}
 
-	@media (max-width: 64rem) {
+	@media (max-width: 40rem) {
 		.close-btn {
 			top: 2rem;
 			right: 2rem;
@@ -396,9 +395,8 @@ const { id = "member-info-modal" } = Astro.props;
 		}
 
 		.member-info {
-			min-width: 90vw;
-			min-height: 90vh;
-			max-height: 90vh;
+			width: calc(100vw - 4rem);
+			height: calc(100vh - 4rem);
 			align-self: center;
 			justify-self: center;
 			position: fixed;
