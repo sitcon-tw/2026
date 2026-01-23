@@ -59,7 +59,7 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		<meta property="og:url" content={siteUrl} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content="https://sitcon.org/2026/og-image.webp" />
+		<meta property="og:image" content="https://sitcon.org/2026/img/og.webp" />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
 		<meta property="og:locale" content={meta.ogLocale} />
@@ -69,7 +69,7 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		<meta name="twitter:url" content={siteUrl} />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content="https://sitcon.org/2026/og-image.webp" />
+		<meta name="twitter:image" content="https://sitcon.org/2026/img/og.webp" />
 		<meta name="twitter:site" content="@SITCONtw" />
 		<meta name="twitter:creator" content="@SITCONtw" />
 
@@ -115,14 +115,58 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 					"name": "SITCON 學生計算機年會籌備團隊",
 					"url": "https://sitcon.org"
 				},
-				"offers": {
-					"@type": "Offer",
-					"url": "https://sitcon.org/2026/cfp/",
-					"price": "0",
-					"priceCurrency": "TWD",
-					"availability": "https://schema.org/InStock",
-					"validFrom": "2025-10-01T00:00:00+08:00"
-				},
+				"offers": [
+					{
+						"@type": "Offer",
+						"name": "學生票（第一波）",
+						"url": "https://sitcon.org/2026/cfp/",
+						"price": "0",
+						"priceCurrency": "TWD",
+						"availability": "https://schema.org/PreOrder",
+						"validFrom": "2026-01-25T20:00:00+08:00",
+						"validThrough": "2026-02-07T23:59:00+08:00"
+					},
+					{
+						"@type": "Offer",
+						"name": "一般票（第一波）",
+						"url": "https://sitcon.org/2026/cfp/",
+						"price": "0",
+						"priceCurrency": "TWD",
+						"availability": "https://schema.org/PreOrder",
+						"validFrom": "2026-01-25T20:00:00+08:00",
+						"validThrough": "2026-02-07T23:59:00+08:00"
+					},
+					{
+						"@type": "Offer",
+						"name": "學生票（第二波）",
+						"url": "https://sitcon.org/2026/cfp/",
+						"price": "0",
+						"priceCurrency": "TWD",
+						"availability": "https://schema.org/PreOrder",
+						"validFrom": "2026-02-23T20:00:00+08:00",
+						"validThrough": "2026-03-01T23:59:00+08:00"
+					},
+					{
+						"@type": "Offer",
+						"name": "一般票（第二波）",
+						"url": "https://sitcon.org/2026/cfp/",
+						"price": "0",
+						"priceCurrency": "TWD",
+						"availability": "https://schema.org/PreOrder",
+						"validFrom": "2026-02-23T20:00:00+08:00",
+						"validThrough": "2026-03-01T23:59:00+08:00"
+					},
+					{
+						"@type": "Offer",
+						"name": "邀請票",
+						"url": "https://sitcon.org/2026/cfp/",
+						"price": "0",
+						"priceCurrency": "TWD",
+						"availability": "https://schema.org/InStock",
+						"validFrom": "2025-12-15T00:00:00+08:00",
+						"validThrough": "2026-02-10T23:59:00+08:00"
+					}
+				],
 				"performer": {
 					"@type": "Organization",
 					"name": "SITCON 學生計算機年會"
