@@ -32,7 +32,7 @@ const ROLE_MAP = {
 	出納: "treasurer",
 
 	/* ===== 議程 ===== */
-	議程股股長: "agenda_lead",
+	議程股股長: "agenda",
 
 	/* ===== 場務（股長） ===== */
 	機動股長: "ops_mobility_lead",

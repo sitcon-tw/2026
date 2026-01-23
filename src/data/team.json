@@ -1393,7 +1393,7 @@
 		"teams": [
 			{
 				"name": "production",
-				"role": "member"
+				"role": "agenda"
 			}
 		]
 	},
@@ -1403,7 +1403,7 @@
 		"teams": [
 			{
 				"name": "production",
-				"role": "member"
+				"role": "agenda"
 			}
 		],
 		"link": "https://www.instagram.com/yui_wuu?igsh=MWtyOWZxd3R3ZWJlOA=="
@@ -1414,7 +1414,7 @@
 		"teams": [
 			{
 				"name": "production",
-				"role": "member"
+				"role": "agenda"
 			}
 		]
 	},
@@ -1424,7 +1424,7 @@
 		"teams": [
 			{
 				"name": "production",
-				"role": "member"
+				"role": "agenda"
 			},
 			{
 				"name": "editorial",
@@ -1440,7 +1440,7 @@
 		"teams": [
 			{
 				"name": "production",
-				"role": "member"
+				"role": "agenda"
 			}
 		],
 		"mode": "nobg"
@@ -1451,7 +1451,7 @@
 		"teams": [
 			{
 				"name": "production",
-				"role": "member"
+				"role": "agenda"
 			}
 		]
 	},
@@ -1461,7 +1461,7 @@
 		"teams": [
 			{
 				"name": "production",
-				"role": "member"
+				"role": "agenda"
 			}
 		],
 		"mode": "nobg"
