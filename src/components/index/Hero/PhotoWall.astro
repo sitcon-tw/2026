@@ -122,20 +122,42 @@ const images = [
 	const photoWall = document.querySelector(".photo-wall");
 
 	if (container && photoWall) {
-		const offset = Math.min(window.innerWidth, 1440) * 0.2;
-		gsap.fromTo(
-			container,
-			{ x: () => offset },
-			{
-				x: () => -(container.scrollWidth - photoWall.clientWidth + offset),
-				ease: "none",
-				scrollTrigger: {
-					trigger: photoWall,
-					start: "top bottom",
-					end: "bottom top",
-					scrub: 0.3
-				}
+		let animation: gsap.core.Tween | null = null;
+
+		function createAnimation() {
+			// 清除舊的動畫
+			if (animation) {
+				animation.kill();
 			}
-		);
+
+			const offset = Math.min(window.innerWidth, 1440) * 0.2;
+			animation = gsap.fromTo(
+				container,
+				{ x: offset },
+				{
+					x: -(container.scrollWidth - photoWall.clientWidth + offset),
+					ease: "none",
+					scrollTrigger: {
+						trigger: photoWall,
+						start: "top bottom",
+						end: "bottom top",
+						scrub: 0.3,
+						invalidateOnRefresh: true
+					}
+				}
+			);
+		}
+
+		createAnimation();
+
+		// 監聽視窗大小變化
+		let resizeTimeout: ReturnType<typeof setTimeout>;
+		window.addEventListener("resize", () => {
+			clearTimeout(resizeTimeout);
+			resizeTimeout = setTimeout(() => {
+				ScrollTrigger.refresh();
+				createAnimation();
+			}, 200);
+		});
 	}
 </script>
