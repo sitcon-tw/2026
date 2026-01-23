@@ -121,7 +121,13 @@ const { referral } = i18n;
 					<div class="rules-box">
 						<h4 class="rules-title">{lang === "en" ? "Ranking and Prize Collection:" : "排名與領獎說明："}</h4>
 						<ul class="rules-list">
-							{referral.rewards.topReferrers.rules.map((rule: string) => <li class="text-reveal-paragraph">{rule}</li>)}
+							{
+								referral.rewards.topReferrers.rules.map((rule: string) => (
+									<li>
+										<div class="text-reveal-paragraph">{rule}</div>
+									</li>
+								))
+							}
 						</ul>
 					</div>
 				</div>
@@ -133,7 +139,13 @@ const { referral } = i18n;
 				<p class="fairness-description text-reveal-paragraph">{referral.fairness.description}</p>
 
 				<ul class="fairness-list">
-					{referral.fairness.items.map((item: string) => <li class="text-reveal-paragraph">{item}</li>)}
+					{
+						referral.fairness.items.map((item: string) => (
+							<li>
+								<div class="text-reveal-paragraph">{item}</div>
+							</li>
+						))
+					}
 				</ul>
 
 				<p class="disclaimer text-reveal-paragraph">{referral.fairness.disclaimer}</p>
@@ -259,7 +271,6 @@ const { referral } = i18n;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 0.75rem;
 		flex-wrap: wrap;
 		padding: 1.25rem 2rem;
 		background: rgba(255, 209, 114, 0.15);
@@ -292,9 +303,10 @@ const { referral } = i18n;
 	}
 
 	.section {
-		margin-bottom: 4rem;
+		margin: 0 auto 4rem;
 		padding-bottom: 3rem;
 		border-bottom: 2px solid rgba(180, 148, 76, 0.2);
+		max-width: 800px;
 	}
 
 	.section:last-child {
@@ -425,7 +437,6 @@ const { referral } = i18n;
 	.fairness-list {
 		margin: 0 0 2rem 0;
 		padding-left: 1.5rem;
-		list-style: disc;
 	}
 
 	.fairness-list li {
