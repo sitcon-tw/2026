@@ -78,7 +78,9 @@ const lang = Astro.props.lang ?? "zh";
 	gsap.registerPlugin(ScrollTrigger);
 
 	const canvas = document.getElementById("bg-canvas") as HTMLCanvasElement;
-	if (canvas) {
+	const heroContainer = document.querySelector(".hero-container") as HTMLElement;
+
+	if (canvas && heroContainer) {
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 		camera.position.set(0, 0, 0); // Camera at center
@@ -86,6 +88,9 @@ const lang = Astro.props.lang ?? "zh";
 		const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+		// Reusable vector for lerp operations to avoid GC pressure
+		const tempVec3 = new THREE.Vector3();
 
 		// Lighting
 		const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
@@ -417,12 +422,14 @@ const lang = Astro.props.lang ?? "zh";
 					obj.mesh.rotation.y += obj.rotationSpeed.y * scrollFactor;
 					obj.mesh.rotation.z += obj.rotationSpeed.z * scrollFactor;
 
-					// Lerp scale back to baseScale
-					obj.mesh.scale.lerp(new THREE.Vector3(obj.baseScale, obj.baseScale, obj.baseScale), 0.1);
+					// Lerp scale back to baseScale (reuse tempVec3 to avoid GC)
+					tempVec3.set(obj.baseScale, obj.baseScale, obj.baseScale);
+					obj.mesh.scale.lerp(tempVec3, 0.1);
 				} else {
 					// Shrink effect when dragging
 					const targetScale = obj.baseScale * 0.7; // Shrink to 70%
-					obj.mesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+					tempVec3.set(targetScale, targetScale, targetScale);
+					obj.mesh.scale.lerp(tempVec3, 0.1);
 				}
 
 				// Scale visibility based on Z position for smooth fade
@@ -446,30 +453,22 @@ const lang = Astro.props.lang ?? "zh";
 
 		startAnimation();
 
-		const getTicketSection = document.getElementById("get-ticket");
-		if (getTicketSection) {
-			let pausedByScroll = false;
-			const observer = new IntersectionObserver(
-				entries => {
-					const entry = entries[0];
-					if (!entry) return;
+		// Stop animation when hero-container is out of view
+		const heroObserver = new IntersectionObserver(
+			entries => {
+				const entry = entries[0];
+				if (!entry) return;
 
-					if (entry.isIntersecting) {
-						stopAnimation();
-						pausedByScroll = true;
-						return;
-					}
-
-					if (entry.boundingClientRect.top > 0) {
-						pausedByScroll = false;
-						startAnimation();
-					} else if (!pausedByScroll) {
-						startAnimation();
-					}
-				},
-				{ threshold: 0.1 }
-			);
-			observer.observe(getTicketSection);
-		}
+				if (entry.isIntersecting) {
+					// Hero is visible, start animation
+					startAnimation();
+				} else {
+					// Hero is not visible, stop animation to save resources
+					stopAnimation();
+				}
+			},
+			{ threshold: 0 }
+		);
+		heroObserver.observe(heroContainer);
 	}
 </script>

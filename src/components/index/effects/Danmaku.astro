@@ -60,6 +60,7 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 			let fontSize = 0;
 			let rowState: { lastEndTime: number }[] = [];
 			let animationFrameId = 0;
+			let isRunning = false;
 
 			const updateFontSize = () => {
 				const screenWidth = window.innerWidth;
@@ -127,6 +128,7 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 			};
 
 			const tick = (currentTime: number) => {
+				if (!isRunning) return;
 				for (let row = 0; row < rows; row++) {
 					if (currentTime >= rowState[row].lastEndTime) {
 						createDanmaku(row);
@@ -136,6 +138,8 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 			};
 
 			const start = () => {
+				if (isRunning) return;
+				isRunning = true;
 				container.innerHTML = "";
 				const startTime = performance.now();
 
@@ -149,16 +153,42 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 				animationFrameId = requestAnimationFrame(tick);
 			};
 
+			const stop = () => {
+				if (!isRunning) return;
+				isRunning = false;
+				cancelAnimationFrame(animationFrameId);
+				// 清除現有的彈幕元素
+				container.innerHTML = "";
+			};
+
 			const handleResize = () => {
+				if (!isRunning) return;
 				cancelAnimationFrame(animationFrameId);
 				container.innerHTML = "";
 				updateFontSize();
+				// 重新啟動
+				isRunning = false;
 				start();
 			};
 
-			// 初始化
+			// 初始化字體大小
 			updateFontSize();
-			start();
+
+			// 使用 IntersectionObserver 控制動畫，離開視口時停止
+			const observer = new IntersectionObserver(
+				entries => {
+					const entry = entries[0];
+					if (!entry) return;
+
+					if (entry.isIntersecting) {
+						start();
+					} else {
+						stop();
+					}
+				},
+				{ threshold: 0 }
+			);
+			observer.observe(container);
 
 			// 監聽視窗大小變化
 			let resizeTimeout: number | undefined;
@@ -178,6 +208,7 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 				}
 				window.removeEventListener("resize", onResize);
 				cancelAnimationFrame(animationFrameId);
+				observer.disconnect();
 			});
 		});
 	};

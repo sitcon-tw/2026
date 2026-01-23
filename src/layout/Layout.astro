@@ -32,7 +32,7 @@ const alternateLang = lang === "en" ? "zh" : "en";
 const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 ---
 
-<html lang={meta.htmlLang} transition:name="root" transition:animate="none">
+<html lang={meta.htmlLang}>
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
