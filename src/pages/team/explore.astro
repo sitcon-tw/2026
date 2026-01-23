@@ -54,6 +54,29 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 	});
 	return team;
 });
+
+// 為每個組別生成成員列表（跨組成員會在多個組別出現）
+const all_people: any[] = [];
+
+team_data.forEach((team, teamIndex) => {
+	team.member.forEach((member: any) => {
+		all_people.push({
+			...member,
+			teamIndex: teamIndex,
+			teamName: team.name
+		});
+	});
+});
+
+// 去重：同一個人在同一個組別只出現一次（用 name + teamIndex 作為 key）
+const uniqueKey = (name: string, teamIndex: number) => `${name}-${teamIndex}`;
+const seenKeys = new Set<string>();
+const unique_people = all_people.filter(person => {
+	const key = uniqueKey(person.name, person.teamIndex);
+	if (seenKeys.has(key)) return false;
+	seenKeys.add(key);
+	return true;
+});
 ---
 
 <Layout title={lang === "en" ? "Team - SITCON 2026" : "團隊成員 - SITCON 2026"} lang={lang}>
@@ -61,25 +84,23 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 		<div class="explore-container">
 			<div id="explore-universe">
 				{
-					team_data.map((team, index) => {
-						return team.member.map((member: { name: string; position: string; avatar_url: string; link: string; description: string; mode?: string; color?: string }) => (
-							<GridPerson
-								name={member.name}
-								avatar_url={member.avatar_url}
-								position={member.position}
-								link={member.link}
-								description={member.description}
-								teamIndex={index}
-								team={team.name}
-								mode={member.mode}
-								color={member.color}
-								shape="circle"
-								showText={false}
-								className="explore-item"
-								style=""
-							/>
-						));
-					})
+					unique_people.map((person: any) => (
+						<GridPerson
+							name={person.name}
+							avatar_url={person.avatar_url}
+							position={person.position}
+							link={person.link}
+							description={person.description}
+							teamIndex={person.teamIndex}
+							team={person.teamName}
+							mode={person.mode}
+							color={person.color}
+							shape="circle"
+							showText={false}
+							className="explore-item"
+							style=""
+						/>
+					))
 				}
 			</div>
 		</div>
@@ -100,7 +121,7 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 			{
 				team_data.map((team, index) => {
 					return (
-						<div class={`anchor-btn anchor-box ${index === 0 ? "active" : ""}`} data-index={index} aria-label={team.name}>
+						<div class={`anchor-btn anchor-box`} data-index={index} aria-label={team.name}>
 							<span class="anchor-indicator" />
 							<span class="anchor-text-span">{team.name}</span>
 						</div>
@@ -363,6 +384,10 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 		const container = document.querySelector(".explore-container") as HTMLElement;
 		if (!container) return;
 
+		// 先取消所有 explore-item 上正在進行的動畫，避免快速切換時動畫衝突
+		const allItems = gsap.utils.toArray(".explore-item") as HTMLElement[];
+		gsap.killTweensOf(allItems);
+
 		const width = container.offsetWidth;
 		const height = container.offsetHeight;
 
@@ -410,21 +435,11 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 
 		const placed: { centerX: number; centerY: number }[] = [];
 
-		// Hide filtered out items
-		const allItems = gsap.utils.toArray(".explore-item") as HTMLElement[];
+		// Hide filtered out items - 使用 gsap.set 確保即時生效，避免動畫衝突
 		allItems.forEach(item => {
 			const shouldShow = targetIndex === null || String(item.dataset.teamIndex) === String(targetIndex);
 			if (!shouldShow) {
-				if (animate) {
-					gsap.to(item, {
-						autoAlpha: 0,
-						duration: 0.3,
-						ease: "power2.out",
-						pointerEvents: "none"
-					});
-				} else {
-					gsap.set(item, { autoAlpha: 0, pointerEvents: "none" });
-				}
+				gsap.set(item, { autoAlpha: 0, pointerEvents: "none" });
 			}
 		});
 
@@ -589,6 +604,52 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 	);
 	initPanZoom();
 
+	// Function to center and zoom to filtered items
+	const centerToItems = (items: HTMLElement[]) => {
+		if (items.length === 0) return;
+
+		const container = document.querySelector(".explore-container") as HTMLElement;
+		if (!container) return;
+
+		// Calculate bounding box of all visible items
+		let minX = Infinity,
+			minY = Infinity;
+		let maxX = -Infinity,
+			maxY = -Infinity;
+
+		items.forEach(item => {
+			const x = gsap.getProperty(item, "x") as number;
+			const y = gsap.getProperty(item, "y") as number;
+			const width = item.offsetWidth;
+			const height = item.offsetHeight;
+
+			minX = Math.min(minX, x);
+			minY = Math.min(minY, y);
+			maxX = Math.max(maxX, x + width);
+			maxY = Math.max(maxY, y + height);
+		});
+
+		// Calculate center and size of the bounding box
+		const centerX = (minX + maxX) / 2;
+		const centerY = (minY + maxY) / 2;
+		const width = maxX - minX;
+		const height = maxY - minY;
+
+		// Calculate scale to fit the bounding box with some padding
+		const viewW = container.offsetWidth;
+		const viewH = container.offsetHeight;
+		const padding = 100; // pixels of padding around the group
+
+		const scaleX = (viewW - padding * 2) / width;
+		const scaleY = (viewH - padding * 2) / height;
+		const newScale = Math.min(scaleX, scaleY, 1.5); // Cap at 1.5x zoom
+
+		// Calculate pan position to center the group
+		targetScale = newScale;
+		targetPanX = viewW / 2 - centerX * newScale;
+		targetPanY = viewH / 2 - centerY * newScale;
+	};
+
 	// Anchor Listeners
 	let currentActiveIndex: string | null = null;
 	const anchorBtns = document.querySelectorAll(".anchor-btn");
@@ -605,11 +666,23 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 				anchorBtns.forEach(b => b.classList.remove("active"));
 				currentActiveIndex = null;
 				layoutItems(null, true);
+
+				// Reset view
+				targetScale = 1;
+				targetPanX = 0;
+				targetPanY = 0;
 			} else {
 				anchorBtns.forEach(b => b.classList.remove("active"));
 				btn.classList.add("active");
 				currentActiveIndex = index || null;
 				layoutItems(index || null, true);
+
+				// Center to filtered items after a short delay (let animation start)
+				setTimeout(() => {
+					const allItems = gsap.utils.toArray(".explore-item") as HTMLElement[];
+					const visibleItems = allItems.filter(item => gsap.getProperty(item, "autoAlpha") > 0);
+					centerToItems(visibleItems);
+				}, 100);
 			}
 		});
 	});
