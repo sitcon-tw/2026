@@ -1,0 +1,552 @@
+---
+import Layout from "@/layout/Layout.astro";
+import Footer from "@/components/Footer.astro";
+import { useTranslations } from "@/utils/i18n";
+
+const lang = Astro.props.lang ?? "zh";
+const i18n = useTranslations(lang);
+const { referral } = i18n;
+---
+
+<Layout title={lang === "en" ? "Referral Code Program - SITCON 2026" : "推薦碼計畫 - SITCON 2026"} lang={lang}>
+	<header class="hero">
+		<div class="hero-content">
+			<h1 class="hero-title">{referral.heroTitle}</h1>
+			<p class="hero-subtitle">{referral.heroSubtitle}</p>
+
+			<!-- Steps in Hero -->
+			<div class="hero-steps">
+				{
+					referral.howTo.steps.map((step: { title: string; description: string }, index: number) => {
+						const stepImages = ["/2026/img/referral/step1.webp", "/2026/img/referral/step2.webp", "/2026/img/referral/step3.webp"];
+
+						return (
+							<>
+								<div class="hero-step">
+									<div class="hero-step-image">
+										<img src={stepImages[index]} alt={step.title} />
+									</div>
+									<h3 class="hero-step-title">{step.title}</h3>
+									<p class="hero-step-description">{step.description}</p>
+								</div>
+								{index < 2 && (
+									<div class="step-arrow" aria-hidden="true">
+										<svg width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M 5 20 L 50 20 M 40 10 L 50 20 L 40 30" stroke="#ffd172" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+										</svg>
+									</div>
+								)}
+							</>
+						);
+					})
+				}
+			</div>
+
+			<div class="hero-tips">
+				{
+					referral.howTo.tips.items.map((item: string, index: number) => (
+						<span class="hero-tip">
+							{item}
+							{index < referral.howTo.tips.items.length - 1 && <span class="hero-tip-separator">•</span>}
+						</span>
+					))
+				}
+			</div>
+		</div>
+	</header>
+
+	<main class="content">
+		<div class="container">
+			<!-- Rewards Section -->
+			<section class="section">
+				<h2 class="section-title text-reveal-title">{referral.rewards.title}</h2>
+
+				<!-- Lottery Rewards -->
+				<div class="reward-card">
+					<h3 class="reward-card-title text-reveal-title">{referral.rewards.lottery.title}</h3>
+					<p class="reward-description text-reveal-paragraph">{referral.rewards.lottery.description}</p>
+
+					<div class="table-container">
+						<table>
+							<thead>
+								<tr>
+									{referral.rewards.lottery.table.headers.map((header: string) => <th>{header}</th>)}
+								</tr>
+							</thead>
+							<tbody>
+								{
+									referral.rewards.lottery.table.rows.map((row: string[]) => (
+										<tr>
+											{row.map((cell: string) => (
+												<td>{cell}</td>
+											))}
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<!-- Top Referrers -->
+				<div class="reward-card">
+					<h3 class="reward-card-title text-reveal-title">{referral.rewards.topReferrers.title}</h3>
+					<p class="reward-description text-reveal-paragraph">{referral.rewards.topReferrers.description}</p>
+
+					<div class="table-container">
+						<table>
+							<thead>
+								<tr>
+									{referral.rewards.topReferrers.table.headers.map((header: string) => <th>{header}</th>)}
+								</tr>
+							</thead>
+							<tbody>
+								{
+									referral.rewards.topReferrers.table.rows.map((row: string[]) => (
+										<tr>
+											{row.map((cell: string) => (
+												<td>{cell}</td>
+											))}
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+					</div>
+
+					<div class="deadlines">
+						{referral.rewards.topReferrers.deadlines.map((deadline: string) => <p class="deadline-text text-reveal-paragraph">{deadline}</p>)}
+					</div>
+
+					<div class="rules-box">
+						<h4 class="rules-title">{lang === "en" ? "Ranking and Prize Collection:" : "排名與領獎說明："}</h4>
+						<ul class="rules-list">
+							{referral.rewards.topReferrers.rules.map((rule: string) => <li class="text-reveal-paragraph">{rule}</li>)}
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<!-- Fairness Section -->
+			<section class="section">
+				<h2 class="section-title text-reveal-title">{referral.fairness.title}</h2>
+				<p class="fairness-description text-reveal-paragraph">{referral.fairness.description}</p>
+
+				<ul class="fairness-list">
+					{referral.fairness.items.map((item: string) => <li class="text-reveal-paragraph">{item}</li>)}
+				</ul>
+
+				<p class="disclaimer text-reveal-paragraph">{referral.fairness.disclaimer}</p>
+			</section>
+		</div>
+	</main>
+
+	<Footer />
+</Layout>
+
+<style>
+	.hero {
+		position: relative;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 6rem 2rem;
+		background: linear-gradient(135deg, #1b1000 0%, #2a1a0a 100%);
+		color: var(--silence-white);
+	}
+
+	.hero-content {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+		z-index: 2;
+		align-items: center;
+		text-align: center;
+		max-width: var(--max-width);
+		width: 100%;
+		margin: 2rem 0 auto;
+	}
+
+	.hero-title {
+		font-size: clamp(2.5rem, 5vw, 3.5rem);
+		font-weight: bold;
+		color: #ffd172;
+		line-height: 1.2;
+		margin: 0;
+	}
+
+	.hero-subtitle {
+		font-size: clamp(1.25rem, 3vw, 1.75rem);
+		font-weight: 600;
+		color: #fce6c5;
+		margin: 0;
+	}
+
+	.hero-steps {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1.5rem;
+		width: 100%;
+		margin-top: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.step-arrow {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0.8;
+		transition: opacity 0.3s ease;
+	}
+
+	.step-arrow:hover {
+		opacity: 1;
+	}
+
+	.hero-step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		text-align: center;
+		flex: 0 0 auto;
+		max-width: 320px;
+	}
+
+	.hero-step-image {
+		width: 14rem;
+		height: 180px;
+		border-radius: 10%;
+		overflow: hidden;
+		box-shadow: 0 8px 32px rgba(255, 209, 114, 0.3);
+		background: linear-gradient(135deg, #fce6c5 0%, #ffd172 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: transform 0.3s ease;
+	}
+
+	.hero-step:hover .hero-step-image {
+		transform: scale(1.05);
+	}
+
+	.hero-step-image img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.hero-step-title {
+		font-size: 1.5rem;
+		font-weight: bold;
+		color: #ffd172;
+		margin: 0;
+	}
+
+	.hero-step-description {
+		font-size: 1rem;
+		line-height: 1.5;
+		color: rgba(255, 255, 255, 0.85);
+		margin: 0;
+		max-width: 320px;
+	}
+
+	.hero-tips {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+		padding: 1.25rem 2rem;
+		background: rgba(255, 209, 114, 0.15);
+		border-radius: 10rem;
+		border: 2px solid rgba(255, 209, 114, 0.3);
+		max-width: 50rem;
+	}
+
+	.hero-tip {
+		font-size: 0.9375rem;
+		color: rgba(255, 255, 255, 0.9);
+		font-weight: 500;
+	}
+
+	.hero-tip-separator {
+		margin: 0 0.5rem;
+		opacity: 0.5;
+	}
+
+	.content {
+		background-color: var(--white);
+		color: var(--coffee);
+		font-family: "GenKiGothicTW", sans-serif;
+		padding: 4rem 2rem;
+	}
+
+	.container {
+		max-width: var(--max-width);
+		margin: 0 auto;
+	}
+
+	.section {
+		margin-bottom: 4rem;
+		padding-bottom: 3rem;
+		border-bottom: 2px solid rgba(180, 148, 76, 0.2);
+	}
+
+	.section:last-child {
+		border-bottom: none;
+	}
+
+	.section-title {
+		font-size: clamp(2.5rem, 5vw, 3.5rem);
+		font-weight: bold;
+		margin-bottom: 2.5rem;
+		color: var(--coffee);
+		line-height: 1.3;
+		text-align: center;
+	}
+
+	.reward-card {
+		background: #fafafa;
+		padding: 2.5rem;
+		border-radius: 1rem;
+		margin-bottom: 2rem;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	}
+
+	.reward-card-title {
+		font-size: clamp(1.75rem, 4vw, 2.25rem);
+		font-weight: bold;
+		margin: 0 0 1rem 0;
+		color: var(--coffee);
+	}
+
+	.reward-description {
+		margin: 0 0 1.5rem 0;
+		line-height: 1.6;
+		font-size: 1.125rem;
+	}
+
+	.table-container {
+		overflow-x: auto;
+		margin: 1.5rem 0;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: separate;
+		border-spacing: 0;
+		background: #fff;
+		border-radius: 0.75rem;
+		overflow: hidden;
+		border: 2px solid rgba(180, 148, 76, 0.2);
+	}
+
+	table th,
+	table td {
+		padding: 1rem 1.25rem;
+		text-align: left;
+		border-bottom: 1px solid rgba(180, 148, 76, 0.15);
+	}
+
+	table th {
+		background: rgba(180, 148, 76, 0.15);
+		font-weight: bold;
+		font-size: 0.95rem;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		color: #6b5528;
+		border-bottom: 2px solid rgba(180, 148, 76, 0.3);
+	}
+
+	table tbody tr {
+		transition: all 0.2s ease;
+	}
+
+	table tbody tr:hover {
+		background: rgba(180, 148, 76, 0.06);
+	}
+
+	table tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	table td {
+		font-size: 0.9375rem;
+		color: var(--coffee);
+	}
+
+	.deadlines {
+		margin: 1.5rem 0;
+	}
+
+	.deadline-text {
+		margin: 0.5rem 0;
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: var(--coffee);
+	}
+
+	.rules-box {
+		background: rgba(255, 209, 114, 0.15);
+		padding: 1.5rem;
+		border-radius: 0.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.rules-title {
+		font-size: 1.125rem;
+		font-weight: bold;
+		margin: 0 0 1rem 0;
+		color: var(--coffee);
+	}
+
+	.rules-list {
+		margin: 0;
+		padding-left: 1.5rem;
+		list-style: decimal;
+	}
+
+	.rules-list li {
+		margin-bottom: 0.5rem;
+		line-height: 1.6;
+	}
+
+	.fairness-description {
+		margin: 0 0 1.5rem 0;
+		font-size: 1.125rem;
+		line-height: 1.6;
+	}
+
+	.fairness-list {
+		margin: 0 0 2rem 0;
+		padding-left: 1.5rem;
+		list-style: disc;
+	}
+
+	.fairness-list li {
+		margin-bottom: 0.75rem;
+		line-height: 1.6;
+		font-size: 1.0625rem;
+	}
+
+	.disclaimer {
+		margin: 0;
+		padding: 1.5rem;
+		background: rgba(255, 209, 114, 0.2);
+		border-left: 4px solid #ffd172;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		font-size: 1.0625rem;
+	}
+
+	@media (max-width: 768px) {
+		.hero {
+			padding: 5rem 1.5rem;
+		}
+
+		.hero-content {
+			gap: 2rem;
+		}
+
+		.hero-steps {
+			flex-direction: column;
+			gap: 2rem;
+		}
+
+		.step-arrow {
+			transform: rotate(90deg);
+		}
+
+		.hero-step-image {
+			width: 150px;
+			height: 150px;
+		}
+
+		.hero-tips {
+			padding: 1rem 1.5rem;
+		}
+
+		.content {
+			padding: 3rem 1.5rem;
+		}
+
+		.section {
+			margin-bottom: 3rem;
+			padding-bottom: 2rem;
+		}
+
+		.section-title {
+			font-size: 2rem;
+			margin-bottom: 1.5rem;
+		}
+
+		.reward-card {
+			padding: 1.5rem;
+		}
+
+		.reward-card-title {
+			font-size: 1.5rem;
+		}
+
+		table th,
+		table td {
+			padding: 0.75rem 1rem;
+			font-size: 0.875rem;
+		}
+	}
+
+	@media (max-width: 576px) {
+		.hero {
+			padding: 4rem 1rem;
+		}
+
+		.hero-title {
+			font-size: 2rem;
+		}
+
+		.hero-subtitle {
+			font-size: 1.125rem;
+		}
+
+		.hero-step-image {
+			width: 120px;
+			height: 120px;
+		}
+
+		.hero-step-title {
+			font-size: 1.25rem;
+		}
+
+		.hero-step-description {
+			font-size: 0.9375rem;
+		}
+
+		.hero-tips {
+			flex-direction: column;
+			gap: 0.5rem;
+			padding: 1rem;
+		}
+
+		.hero-tip-separator {
+			display: none;
+		}
+
+		.section-title {
+			font-size: 1.75rem;
+		}
+
+		table {
+			font-size: 0.75rem;
+		}
+
+		table th,
+		table td {
+			padding: 0.5rem 0.75rem;
+		}
+	}
+</style>
