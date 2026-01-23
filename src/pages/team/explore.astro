@@ -341,19 +341,19 @@ const team_data = Array.from(teamsMap.values()).map((team: any) => {
 		);
 	};
 
-	const getOver640 = (w: number) => (w <= 640 ? false : true);
-
-	let lastOver640 = getOver640((document.querySelector(".explore-container") as HTMLElement | null)?.offsetWidth ?? window.innerWidth);
+	let resizeTimeout: number | null = null;
 
 	const handleResize = () => {
 		const container = document.querySelector(".explore-container") as HTMLElement | null;
-		const w = container?.offsetWidth ?? window.innerWidth;
+		if (!container) return;
 
-		const over640 = getOver640(w);
-		if (over640 === lastOver640) return;
+		if (resizeTimeout !== null) {
+			window.clearTimeout(resizeTimeout);
+		}
 
-		lastOver640 = over640;
-		layoutItems(currentActiveIndex, false);
+		resizeTimeout = window.setTimeout(() => {
+			layoutItems(currentActiveIndex, false);
+		}, 100);
 	};
 
 	window.addEventListener("resize", handleResize);
