@@ -135,7 +135,7 @@ const images = [
 				container,
 				{ x: offset },
 				{
-					x: -(container.scrollWidth - photoWall.clientWidth + offset),
+					x: -(container!.scrollWidth - photoWall!.clientWidth + offset),
 					ease: "none",
 					scrollTrigger: {
 						trigger: photoWall,
