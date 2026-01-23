@@ -118,6 +118,15 @@ const alternateHref = `${alternatePrefix}${currentPath || "/"}`;
 	const nav = document.querySelector(".nav-container") as HTMLElement;
 
 	window.addEventListener("scroll", () => {
+		// iPhone elastic scrolling: when scrollY <= 0, keep nav visible
+		if (window.scrollY <= 0) {
+			offset = 0;
+			nav.style.transform = `translateY(0px)`;
+			nav.style.opacity = "1";
+			lastScroll = 0;
+			return;
+		}
+
 		const delta = window.scrollY - lastScroll;
 		const navHeight = nav.offsetHeight + 32;
 
