@@ -680,7 +680,7 @@ const unique_people = all_people.filter(person => {
 				// Center to filtered items after a short delay (let animation start)
 				setTimeout(() => {
 					const allItems = gsap.utils.toArray(".explore-item") as HTMLElement[];
-					const visibleItems = allItems.filter(item => gsap.getProperty(item, "autoAlpha") > 0);
+					const visibleItems = allItems.filter(item => Number(gsap.getProperty(item, "autoAlpha")) > 0);
 					centerToItems(visibleItems);
 				}, 100);
 			}
