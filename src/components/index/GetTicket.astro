@@ -81,7 +81,7 @@ const danmakuLines: string[] = danmakuData.lines;
 													<ticket.icon size={28} />
 												</div>
 												<div class="title-wrapper">
-													<h2 class="ticket-title" data-max-size="64">
+													<h2 class="ticket-title" data-max-size="4">
 														{ticket.englishTitle}
 													</h2>
 												</div>
@@ -115,7 +115,7 @@ const danmakuLines: string[] = danmakuData.lines;
 
 								<div class="ticket-stub">
 									<div class="ticket-vertical-text-wrapper">
-										<div class="ticket-vertical-text" data-max-size="28">
+										<div class="ticket-vertical-text" data-max-size="1.75">
 											{ticket.verticalTitle}
 										</div>
 									</div>
@@ -150,7 +150,6 @@ const danmakuLines: string[] = danmakuData.lines;
 	section {
 		position: relative;
 		width: 100%;
-		min-height: 50rem;
 		overflow: hidden;
 		padding-bottom: 4rem;
 		background-color: #ac782b;
@@ -162,7 +161,6 @@ const danmakuLines: string[] = danmakuData.lines;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		height: 100%;
 		padding: 0 1.5rem;
 	}
 
@@ -217,7 +215,8 @@ const danmakuLines: string[] = danmakuData.lines;
 		flex-direction: row;
 		width: 100%;
 		max-width: 80rem;
-		height: 30rem;
+		aspect-ratio: 2.5 / 1;
+		min-height: 20rem;
 		gap: 1.5rem;
 	}
 
@@ -287,11 +286,13 @@ const danmakuLines: string[] = danmakuData.lines;
 	}
 
 	.ticket-main-inner {
-		width: 50rem;
+		width: 100%;
+		max-width: 50rem;
 		padding: 3rem;
 		display: flex;
 		flex-direction: column;
 		height: 100%;
+		box-sizing: border-box;
 	}
 
 	.ticket-top-row {
@@ -301,6 +302,8 @@ const danmakuLines: string[] = danmakuData.lines;
 		margin-bottom: 2rem;
 		width: 100%;
 		gap: 1.5rem;
+		flex-wrap: wrap;
+		flex-shrink: 0;
 	}
 
 	.ticket-header {
@@ -355,6 +358,8 @@ const danmakuLines: string[] = danmakuData.lines;
 		margin: 0;
 		flex: 1;
 		white-space: normal;
+		overflow-y: auto;
+		min-height: 0;
 	}
 
 	.ticket-desc li {
@@ -395,15 +400,18 @@ const danmakuLines: string[] = danmakuData.lines;
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-end;
-		margin-top: 2rem;
+		margin-top: auto;
 		border-top: 0.125rem dashed rgba(0, 0, 0, 0.1);
-		padding-top: 2rem;
+		padding-top: 1.5rem;
 		gap: 1.5rem;
+		flex-wrap: wrap;
+		flex-shrink: 0;
 	}
 
 	.action-buttons {
 		display: flex;
 		gap: 1rem;
+		flex-wrap: wrap;
 	}
 
 	.ticket-bottom-meta {
@@ -510,14 +518,15 @@ const danmakuLines: string[] = danmakuData.lines;
 		display: none;
 	}
 
+	/* ===== 大螢幕 (80rem 以下) ===== */
 	@media (max-width: 80rem) {
 		.ticket-container {
 			max-width: 64rem;
-			height: 28rem;
+			aspect-ratio: 2.25 / 1;
 		}
 
 		.ticket-main-inner {
-			width: 36rem;
+			max-width: 36rem;
 			padding: 2.5rem;
 		}
 
@@ -539,6 +548,7 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 	}
 
+	/* ===== 中等螢幕 (64rem 以下) ===== */
 	@media (max-width: 64rem) {
 		.referral-container {
 			flex-direction: column;
@@ -554,7 +564,7 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 
 		.ticket-container {
-			height: 26rem;
+			aspect-ratio: 2 / 1;
 			gap: 1rem;
 		}
 
@@ -564,7 +574,7 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 
 		.ticket-main-inner {
-			width: 32rem;
+			max-width: 32rem;
 			padding: 2rem;
 		}
 
@@ -596,9 +606,7 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 
 		.ticket-actions {
-			margin-top: 1.5rem;
-			padding-top: 1.5rem;
-			flex-wrap: wrap;
+			padding-top: 1rem;
 			gap: 1rem;
 		}
 
@@ -617,7 +625,6 @@ const danmakuLines: string[] = danmakuData.lines;
 
 		.barcode {
 			width: 8rem;
-			height: 2rem;
 		}
 
 		.ticket-vertical-text {
@@ -625,9 +632,67 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 	}
 
+	/* ===== 中間斷點 (56rem 以下) ===== */
+	@media (max-width: 56rem) {
+		.ticket-container {
+			aspect-ratio: 1.75 / 1;
+			gap: 0.75rem;
+		}
+
+		.ticket-card {
+			--stub-width: 4.5rem;
+			min-width: 4.5rem;
+		}
+
+		.ticket-main-inner {
+			max-width: 28rem;
+			padding: 1.75rem;
+		}
+
+		.ticket-title {
+			font-size: 2.25rem;
+		}
+
+		.ticket-desc li {
+			font-size: 0.9rem;
+			margin-bottom: 0.4rem;
+			line-height: 1.5;
+		}
+
+		.ticket-actions {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1rem;
+		}
+
+		.action-buttons {
+			width: 100%;
+		}
+
+		.ticket-bottom-meta {
+			width: 100%;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.barcode {
+			width: 6rem;
+		}
+
+		.btn-outline {
+			padding: 0.5rem 1rem;
+			font-size: 0.85rem;
+		}
+
+		.ticket-vertical-text {
+			font-size: 1.25rem;
+		}
+	}
+
+	/* ===== 平板/手機過渡 (48rem 以下) ===== */
 	@media (max-width: 48rem) {
 		section {
-			min-height: auto;
 			padding-bottom: 3rem;
 		}
 
@@ -643,7 +708,9 @@ const danmakuLines: string[] = danmakuData.lines;
 
 		.ticket-container {
 			flex-direction: column;
+			aspect-ratio: unset;
 			height: auto;
+			min-height: unset;
 			gap: 0.75rem;
 		}
 
@@ -672,8 +739,7 @@ const danmakuLines: string[] = danmakuData.lines;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding: 0 1.25rem;
-			height: 4rem;
+			padding: 1rem 1.25rem;
 			background: rgba(0, 0, 0, 0.05);
 			width: 100%;
 			cursor: pointer;
@@ -692,11 +758,7 @@ const danmakuLines: string[] = danmakuData.lines;
 			font-weight: 300;
 			color: #333;
 			transition: transform 0.3s ease;
-			width: 2rem;
-			height: 2rem;
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			line-height: 1;
 		}
 
 		.ticket-card.active .mobile-toggle {
@@ -708,19 +770,20 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 
 		.ticket-content-wrapper {
-			max-height: 0;
-			overflow: hidden;
-			transition: max-height 0.4s ease-out;
+			display: grid;
+			grid-template-rows: 0fr;
+			transition: grid-template-rows 0.4s ease-out;
 		}
 
 		.ticket-card.active .ticket-content-wrapper {
-			max-height: 40rem;
+			grid-template-rows: 1fr;
 		}
 
 		.ticket-body {
 			flex-direction: column;
 			height: auto;
 			white-space: normal;
+			overflow: hidden;
 		}
 
 		.ticket-main {
@@ -738,6 +801,7 @@ const danmakuLines: string[] = danmakuData.lines;
 
 		.ticket-main-inner {
 			width: 100%;
+			max-width: none;
 			padding: 1.25rem;
 			padding-top: 0.75rem;
 			height: auto;
@@ -769,6 +833,7 @@ const danmakuLines: string[] = danmakuData.lines;
 
 		.ticket-desc {
 			margin-bottom: 1rem;
+			overflow-y: visible;
 		}
 
 		.ticket-desc li {
@@ -813,11 +878,12 @@ const danmakuLines: string[] = danmakuData.lines;
 
 		.barcode {
 			width: 100%;
-			height: 2rem;
+			max-width: 12rem;
 			opacity: 0.25;
 		}
 	}
 
+	/* ===== 小螢幕手機 (23.4375rem) ===== */
 	@media (max-width: 23.4375rem) {
 		.container {
 			padding: 0 0.75rem;
@@ -830,8 +896,7 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 
 		.ticket-mobile-header {
-			padding: 0 1rem;
-			height: 3.5rem;
+			padding: 0.875rem 1rem;
 		}
 
 		.mobile-title {
@@ -860,6 +925,52 @@ const danmakuLines: string[] = danmakuData.lines;
 		.btn-outline {
 			padding: 0.625rem 1rem;
 			font-size: 0.9rem;
+		}
+	}
+
+	/* ===== 超小螢幕 (20rem) ===== */
+	@media (max-width: 20rem) {
+		.container {
+			padding: 0 0.5rem;
+		}
+
+		.title {
+			font-size: 1.25rem;
+			padding-top: 2.5rem;
+			margin-bottom: 1rem;
+		}
+
+		.ticket-mobile-header {
+			padding: 0.75rem;
+		}
+
+		.mobile-title {
+			font-size: 1rem;
+		}
+
+		.ticket-main-inner {
+			padding: 0.75rem;
+			padding-top: 0.5rem;
+		}
+
+		.icon-circle {
+			width: 2rem;
+			height: 2rem;
+		}
+
+		.ticket-title {
+			font-size: 1.25rem;
+		}
+
+		.ticket-desc li {
+			font-size: 0.8rem;
+			margin-bottom: 0.3rem;
+			padding-left: 0.75rem;
+		}
+
+		.btn-outline {
+			padding: 0.5rem 0.75rem;
+			font-size: 0.85rem;
 		}
 	}
 </style>
@@ -909,30 +1020,33 @@ const danmakuLines: string[] = danmakuData.lines;
 			const wrapper = el.parentElement;
 			if (!wrapper) return;
 
-			const maxSize = parseInt(el.dataset.maxSize || "64");
-			let fontSize = maxSize;
-			el.style.fontSize = `${fontSize}px`;
+			const maxSizeRem = parseFloat(el.dataset.maxSize || "4");
+			let fontSizeRem = maxSizeRem;
+			el.style.fontSize = `${fontSizeRem}rem`;
 
 			const isVertical = el.classList.contains("ticket-vertical-text");
+			const minSizeRem = isVertical ? 0.75 : 0.875;
 
 			if (isVertical) {
 				const containerHeight = wrapper.clientHeight || 400;
-				while (el.scrollWidth > containerHeight && fontSize > 12) {
-					fontSize -= 1;
-					el.style.fontSize = `${fontSize}px`;
+				while (el.scrollWidth > containerHeight && fontSizeRem > minSizeRem) {
+					fontSizeRem -= 0.0625;
+					el.style.fontSize = `${fontSizeRem}rem`;
 				}
 			} else {
 				const containerWidth = wrapper.clientWidth;
 				if (containerWidth === 0) return;
 
-				while (el.scrollWidth > containerWidth && fontSize > 14) {
-					fontSize -= 1;
-					el.style.fontSize = `${fontSize}px`;
+				while (el.scrollWidth > containerWidth && fontSizeRem > minSizeRem) {
+					fontSizeRem -= 0.0625;
+					el.style.fontSize = `${fontSizeRem}rem`;
 				}
 			}
 		};
 
 		const adjustAllFonts = () => {
+			if (isMobile()) return;
+
 			const titles = document.querySelectorAll<HTMLElement>(".ticket-title");
 			const verticalTitles = document.querySelectorAll<HTMLElement>(".ticket-vertical-text");
 
@@ -971,6 +1085,14 @@ const danmakuLines: string[] = danmakuData.lines;
 
 		const handleResize = () => {
 			const currentIsMobile = isMobile();
+
+			if (!currentIsMobile) {
+				const titles = document.querySelectorAll<HTMLElement>(".ticket-title");
+				const verticalTitles = document.querySelectorAll<HTMLElement>(".ticket-vertical-text");
+				titles.forEach(el => (el.style.fontSize = ""));
+				verticalTitles.forEach(el => (el.style.fontSize = ""));
+			}
+
 			adjustAllFonts();
 
 			if (lastIsMobile !== currentIsMobile) {
@@ -987,7 +1109,11 @@ const danmakuLines: string[] = danmakuData.lines;
 			}
 		};
 
-		window.addEventListener("resize", handleResize);
+		let resizeTimeout: ReturnType<typeof setTimeout>;
+		window.addEventListener("resize", () => {
+			clearTimeout(resizeTimeout);
+			resizeTimeout = setTimeout(handleResize, 100);
+		});
 
 		const observer = new ResizeObserver(() => {
 			requestAnimationFrame(adjustAllFonts);
@@ -995,7 +1121,9 @@ const danmakuLines: string[] = danmakuData.lines;
 
 		cards.forEach(card => observer.observe(card));
 
-		requestAnimationFrame(adjustAllFonts);
+		requestAnimationFrame(() => {
+			setTimeout(adjustAllFonts, 50);
+		});
 	};
 
 	if (document.readyState === "loading") {
