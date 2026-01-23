@@ -279,7 +279,7 @@ const messages = t.messages;
 		const chatStream = chatStreamEl;
 		const messages: string[] = JSON.parse(messagesData);
 		const MAX_BUBBLES = 10;
-		const INTERVAL_MS = 2800;
+		const INTERVAL_MS = 2000;
 
 		let messageIndex = 0;
 		let displayCount = 0;
@@ -344,15 +344,25 @@ const messages = t.messages;
 			intervalId = window.setInterval(() => addMessage(true), INTERVAL_MS);
 		};
 
+		const stopLoop = () => {
+			if (intervalId !== null) {
+				window.clearInterval(intervalId);
+				intervalId = null;
+			}
+		};
+
 		for (let i = 0; i < 4; i++) {
 			addMessage(false);
 		}
 
 		ScrollTrigger.create({
 			trigger: ".chat-section",
-			start: "top 85%",
+			start: "top bottom",
+			end: "bottom top",
 			onEnter: startLoop,
-			once: true
+			onLeave: stopLoop,
+			onEnterBack: startLoop,
+			onLeaveBack: stopLoop
 		});
 	};
 
