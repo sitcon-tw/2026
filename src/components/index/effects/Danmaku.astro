@@ -40,8 +40,10 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 <script>
 	function initDanmaku() {
 		document.querySelectorAll<HTMLElement>(".danmaku-container").forEach(container => {
-			if (container.dataset.initialized === "true") return;
-			container.dataset.initialized = "true";
+			// Clean up any previously created danmaku items before re-initializing.
+			while (container.firstChild) {
+				container.removeChild(container.firstChild);
+			}
 
 			const lines: string[] = JSON.parse(container.dataset.lines || "[]");
 			const rows = parseInt(container.dataset.rows || "6", 10);
@@ -159,10 +161,23 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 			start();
 
 			// 監聽視窗大小變化
-			let resizeTimeout: number;
-			window.addEventListener("resize", () => {
-				clearTimeout(resizeTimeout);
+			let resizeTimeout: number | undefined;
+			const onResize = () => {
+				if (resizeTimeout !== undefined) {
+					clearTimeout(resizeTimeout);
+				}
 				resizeTimeout = window.setTimeout(handleResize, 200);
+			};
+
+			window.addEventListener("resize", onResize);
+
+			// 清理：在頁面卸載前移除監聽並清除計時器與動畫幀
+			window.addEventListener("beforeunload", () => {
+				if (resizeTimeout !== undefined) {
+					clearTimeout(resizeTimeout);
+				}
+				window.removeEventListener("resize", onResize);
+				cancelAnimationFrame(animationFrameId);
 			});
 		});
 	}
