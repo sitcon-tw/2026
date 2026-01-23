@@ -188,7 +188,7 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		</script>
 		<!-- End Google Tag Manager -->
 	</head>
-	<body>
+	<body class={lang === "en" ? "lang-en" : "lang-zh"}>
 		<div id="loading-mask">
 			<div class="loader-content">
 				<div class="spinner"></div>
