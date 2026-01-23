@@ -12,20 +12,20 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 ---
 
 <section class="hero-section">
-	<div class="bg-gallery-custom">
-		<img src="/2026/img/DemoShow/a.jpg" class="clip-shape shape-a active" data-index="0" alt="" />
-		<img src="/2026/img/DemoShow/b.jpg" class="clip-shape shape-b" data-index="1" alt="" />
-		<img src="/2026/img/DemoShow/c.jpg" class="clip-shape shape-c" data-index="2" alt="" />
-		<img src="/2026/img/DemoShow/d.jpg" class="clip-shape shape-d" data-index="3" alt="" />
-	</div>
+	<img src="/2026/img/demo-1.webp" class="shape-a" data-index="0" alt="" />
+	<img src="/2026/img/demo-2.webp" class="shape-b" data-index="1" alt="" />
+	<img src="/2026/img/demo-3.webp" class="shape-c" data-index="2" alt="" />
+	<img src="/2026/img/demo-4.webp" class="shape-d" data-index="3" alt="" />
 
 	<div class="overlay"></div>
 
 	<div class="title-group">
-		<h3 class="text-reveal-title">{t.subtitle}</h3>
-		<h1 class="text-reveal-title">{t.title}</h1>
+		<h2>
+			<div class="text-reveal-title">{t.subtitle}</div>
+			<div class="text-reveal-title large">{t.title}</div>
+		</h2>
 		{
-			isProd && (
+			!isProd && (
 				<div class="cta-btn">
 					<a href={`${prefix}/agenda`} class="btn">
 						{t.cta}
@@ -33,9 +33,6 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 				</div>
 			)
 		}
-	</div>
-
-	<div class="desc-group">
 		<p class="text-reveal-paragraph" set:html={t.description} />
 	</div>
 </section>
@@ -43,106 +40,80 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 <style>
 	.hero-section {
 		position: relative;
-		width: 100%;
-		min-height: 55rem;
 		overflow: hidden;
-		display: flex;
-		align-items: center;
-		isolation: isolate;
+		color: white;
+		font-weight: 500;
 	}
 
-	.bg-gallery-custom {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 1;
-	}
-
-	.clip-shape {
+	img {
 		position: absolute;
 		top: 0;
-		left: 0;
-		width: 100%;
+		width: 30vw;
 		height: 100%;
 		object-fit: cover;
 		filter: brightness(0.4);
 		transition: all 0.6s ease-in-out;
-		cursor: pointer;
-		pointer-events: auto;
 	}
 
-	.clip-shape.active {
-		filter: brightness(1.1);
-		z-index: 10;
-		transform: scale(1.05);
+	img:hover {
+		filter: brightness(0.8);
+		transform: scale(1.1);
 	}
 
 	.shape-a {
-		clip-path: polygon(0 0, 25% 0, 20% 100%, 0% 100%);
-		object-position: -60rem 0;
+		left: 0;
+		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 	}
 	.shape-b {
-		clip-path: polygon(25% 0, 45% 0, 45% 100%, 20% 100%);
-		object-position: -25rem 0;
+		left: 25vw;
+		clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
 	}
 	.shape-c {
-		clip-path: polygon(45% 0, 70% 0, 75% 100%, 45% 100%);
-		object-position: 10rem 0;
+		left: 50vw;
+		clip-path: polygon(7% 0, 100% 0, 100% 100%, 0 100%);
 	}
 	.shape-d {
-		clip-path: polygon(70% 0, 100% 0, 100% 100%, 75% 100%);
-		object-position: 25rem 0;
+		left: 75vw;
+		clip-path: polygon(16.67% 0, 100% 0, 100% 100%, 0 100%);
 	}
 
 	.overlay {
 		position: absolute;
-		inset: 0;
-		background: linear-gradient(to right, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
+		background: linear-gradient(180deg, #00000000, #00000099 100%);
 		z-index: 2;
+		width: 100%;
+		height: 40%;
+		left: 0;
+		bottom: 0;
 		pointer-events: none;
 	}
 
 	.title-group {
-		position: absolute;
-		z-index: 3;
-		top: 20%;
-		right: 10%;
 		text-align: right;
-		color: white;
-		pointer-events: auto;
+		max-width: 1200px;
+		margin: 5rem auto 0;
+		padding: 2rem;
 	}
 
-	.title-group h3 {
+	h2 {
 		font-size: 3rem;
-		margin-bottom: 0.5rem;
-		font-weight: 500;
+		line-height: 1.5;
+		margin-bottom: min(20rem, 30vh);
 	}
 
-	.title-group h1 {
-		font-size: 6rem;
-		margin: 0;
+	.large {
+		font-size: 5rem;
 		font-weight: bold;
-		line-height: 1.1;
-		margin-bottom: 2rem;
 	}
 
-	.desc-group {
-		position: absolute;
-		z-index: 3;
-		bottom: 10%;
-		right: 3%;
+	p {
 		text-align: right;
-		color: white;
-		pointer-events: auto;
-		font-weight: bold;
-	}
-
-	.desc-group p {
-		font-size: 1rem;
-		line-height: 1.6;
-		opacity: 0.9;
-		margin: 0;
+		line-height: 1.5;
+		max-width: 40rem;
+		margin-left: auto;
+		position: relative;
+		z-index: 3;
+		color: #e7e7e7;
 	}
 
 	.btn {
@@ -166,98 +137,18 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 		transform: scale(1.05);
 	}
 
-	@media screen and (max-width: 768px) {
+	@media screen and (max-width: 50rem) {
 		.shape-c,
 		.shape-d {
 			display: none;
 		}
 
-		.shape-a {
-			clip-path: polygon(0 0, 60% 0, 40% 100%, 0% 100%);
-			object-position: 75% center;
+		img {
+			width: 60vw;
 		}
 
 		.shape-b {
-			clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
-			object-position: 40% center;
-		}
-
-		.title-group h1 {
-			font-size: 3.5rem;
-		}
-
-		.title-group h3 {
-			font-size: 1.5rem;
-		}
-
-		.title-group {
-			top: 15%;
-			right: 5%;
-		}
-
-		.desc-group {
-			width: 90%;
-			right: 5%;
-			bottom: 5%;
+			left: 40vw;
 		}
 	}
 </style>
-
-<script is:inline>
-	document.addEventListener("DOMContentLoaded", () => {
-		const allImages = document.querySelectorAll(".clip-shape");
-		if (allImages.length === 0) return;
-
-		let intervalId = null;
-
-		const getVisibleImages = () => {
-			return Array.from(allImages).filter(img => {
-				return getComputedStyle(img).display !== "none";
-			});
-		};
-
-		const activateImage = targetImg => {
-			allImages.forEach(img => img.classList.remove("active"));
-			if (targetImg) {
-				targetImg.classList.add("active");
-			}
-		};
-
-		const startAutoPlay = () => {
-			if (intervalId) clearInterval(intervalId);
-			intervalId = setInterval(() => {
-				const visibleImages = getVisibleImages();
-				const activeNow = document.querySelector(".clip-shape.active");
-				let listIndex = visibleImages.indexOf(activeNow);
-
-				if (listIndex === -1) listIndex = -1;
-
-				let nextListIndex = (listIndex + 1) % visibleImages.length;
-				activateImage(visibleImages[nextListIndex]);
-			}, 3000);
-		};
-
-		const stopAutoPlay = () => {
-			if (intervalId) {
-				clearInterval(intervalId);
-				intervalId = null;
-			}
-		};
-
-		allImages.forEach(img => {
-			img.addEventListener("mouseenter", () => {
-				stopAutoPlay();
-				activateImage(img);
-			});
-			img.addEventListener("mouseleave", () => {
-				startAutoPlay();
-			});
-		});
-
-		window.addEventListener("resize", () => {
-			startAutoPlay();
-		});
-
-		startAutoPlay();
-	});
-</script>
