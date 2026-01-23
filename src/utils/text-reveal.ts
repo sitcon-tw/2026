@@ -183,6 +183,13 @@ const initTitleReveal = (element: HTMLElement): void => {
 	const spans = element.querySelectorAll(".text-reveal-content");
 	if (spans.length === 0) return;
 
+	// 如果已經播放過動畫，直接顯示
+	if (element.dataset.animPlayed === "true") {
+		gsap.set(spans, { y: "0%", opacity: 1, skewY: 0 });
+		element.dataset.animationInitialized = "true";
+		return;
+	}
+
 	gsap.set(spans, { y: "100%", opacity: 0, skewY: 7 });
 
 	gsap.to(spans, {
@@ -197,7 +204,10 @@ const initTitleReveal = (element: HTMLElement): void => {
 		scrollTrigger: {
 			trigger: element,
 			start: "top 95%",
-			once: true
+			once: true,
+			onEnter: () => {
+				element.dataset.animPlayed = "true";
+			}
 		}
 	});
 
@@ -217,6 +227,13 @@ const initParagraphReveal = (element: HTMLElement): void => {
 	const spans = element.querySelectorAll(".text-reveal-content");
 	if (spans.length === 0) return;
 
+	// 如果已經播放過動畫，直接顯示
+	if (element.dataset.animPlayed === "true") {
+		gsap.set(spans, { y: "0%", opacity: 1, skewY: 0 });
+		element.dataset.animationInitialized = "true";
+		return;
+	}
+
 	gsap.set(spans, { y: "100%", opacity: 0, skewY: 5 });
 
 	gsap.to(spans, {
@@ -231,7 +248,10 @@ const initParagraphReveal = (element: HTMLElement): void => {
 		scrollTrigger: {
 			trigger: element,
 			start: "top 95%",
-			once: true
+			once: true,
+			onEnter: () => {
+				element.dataset.animPlayed = "true";
+			}
 		}
 	});
 
@@ -280,7 +300,13 @@ if (typeof window !== "undefined") {
 
 	// 視窗大小改變時重新計算
 	let resizeTimeout: ReturnType<typeof setTimeout>;
+	let previousWidth = window.innerWidth;
+
 	window.addEventListener("resize", () => {
+		// 忽略垂直方向的 resize（如手機瀏覽器網址列伸縮）
+		if (window.innerWidth === previousWidth) return;
+		previousWidth = window.innerWidth;
+
 		clearTimeout(resizeTimeout);
 		resizeTimeout = setTimeout(() => {
 			// 重新拆分文字並刷新動畫
