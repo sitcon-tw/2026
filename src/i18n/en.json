@@ -273,23 +273,23 @@
 			"links": [
 				{
 					"name": "Conference Activities (incl. Transport)",
-					"url": "#"
+					"url": "/2026/info"
 				},
 				{
 					"name": "Agenda",
-					"url": "#"
+					"url": "/2026/agenda"
 				},
 				{
 					"name": "Venue Map",
-					"url": "#"
+					"url": "/2026/venue"
 				},
 				{
 					"name": "Registration",
-					"url": "#"
+					"url": "https://tickets.sitcon.org/en/sitcon2026"
 				},
 				{
 					"name": "SITCON Team",
-					"url": "#"
+					"url": "/2026/team"
 				},
 				{
 					"name": "Partners",
@@ -306,23 +306,23 @@
 			"links": [
 				{
 					"name": "Sponsorship Prospectus",
-					"url": "#"
+					"url": "https://sitcon.org/2026/cfs"
 				},
 				{
 					"name": "Call for Paper",
-					"url": "#"
+					"url": "https://sitcon.org/2026/cfp"
 				},
 				{
 					"name": "Hour of Code",
-					"url": "#"
+					"url": "https://sitcon.org/hoc"
 				},
 				{
 					"name": "SITCON Camp",
-					"url": "#"
+					"url": "https://sitcon.camp"
 				},
 				{
 					"name": "SITCON Hackathon",
-					"url": "#"
+					"url": "https://hackathon.sitcon.org"
 				},
 				{
 					"name": "Hall of Frame",
