@@ -189,6 +189,82 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		<!-- End Google Tag Manager -->
 	</head>
 	<body>
+		<div id="loading-mask">
+			<div class="loader-content">
+				<div class="spinner"></div>
+				<p>SITCON 2026</p>
+			</div>
+		</div>
+
+		<style>
+			#loading-mask {
+				position: fixed;
+				inset: 0;
+				z-index: 99999;
+				background-color: #ac782b;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				transition:
+					opacity 0.6s ease-out,
+					visibility 0.6s ease-out;
+			}
+			#loading-mask.hidden {
+				opacity: 0;
+				visibility: hidden;
+			}
+			.loader-content {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 1.5rem;
+				color: #fff;
+				font-family: "JetBrainsMono", monospace;
+			}
+			.loader-content p {
+				font-size: 1.2rem;
+				letter-spacing: 0.1em;
+				animation: pulse 2s infinite;
+			}
+			.spinner {
+				width: 50px;
+				height: 50px;
+				border: 3px solid rgba(255, 255, 255, 0.2);
+				border-top-color: #fff;
+				border-radius: 50%;
+				animation: spin 1s linear infinite;
+			}
+			@keyframes spin {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+			@keyframes pulse {
+				0%,
+				100% {
+					opacity: 0.6;
+				}
+				50% {
+					opacity: 1;
+				}
+			}
+		</style>
+
+		<script>
+			const hideLoader = () => {
+				const mask = document.getElementById("loading-mask");
+				if (mask) {
+					mask.classList.add("hidden");
+				}
+			};
+
+			if (document.readyState === "complete") {
+				hideLoader();
+			} else {
+				window.addEventListener("load", hideLoader);
+			}
+		</script>
+
 		<a href="#main-content" class="skip-link">{lang === "en" ? "Skip to main content" : "跳至主要內容"}</a>
 		<Nav lang={lang} />
 		<div id="main-content">
