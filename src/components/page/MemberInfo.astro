@@ -62,6 +62,17 @@ const { id = "member-info-modal" } = Astro.props;
 	};
 
 	// Unified Click Event Listener
+	document.addEventListener("keydown", e => {
+		if (e.key === "Enter" || e.key === " ") {
+			const target = e.target as HTMLElement;
+			const trigger = target.closest(".person-trigger") as HTMLElement | null;
+			if (trigger) {
+				e.preventDefault();
+				trigger.click();
+			}
+		}
+	});
+
 	document.addEventListener("click", e => {
 		const target = e.target as HTMLElement;
 

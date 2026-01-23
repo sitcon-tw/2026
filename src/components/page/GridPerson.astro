@@ -23,6 +23,8 @@ import "./GridPerson.css";
 	data-color={color}
 	data-open-modal="member-info-modal"
 	aria-label={name}
+	role="button"
+	tabindex="0"
 	style={style}
 >
 	<div class={`avatar-container ${isCircle ? "avatar-container-circle" : ""}`}>
@@ -30,24 +32,24 @@ import "./GridPerson.css";
 			mode === "nobg" ? (
 				// <!-- 只有後層 -->
 				<div class={`avatar-layer avatar-back ${isCircle ? "avatar-layer-circle" : ""}`}>
-					<img class="avatar-img" src={backImgUrl} alt={`${name} avatar`} width={200} height={200} draggable="false" />
+					<img class="avatar-img" src={backImgUrl} alt="" width={200} height={200} draggable="false" />
 				</div>
 			) : mode === "color" ? (
 				// <!-- 只有前層 + 顏色背景 -->
 				<>
 					<div class={`avatar-layer avatar-bg ${isCircle ? "avatar-layer-circle" : ""}`} style={`background-color: #${color};`} />
 					<div class={`avatar-layer avatar-front ${isCircle ? "avatar-layer-circle" : ""}`}>
-						<img class="avatar-img" src={frontImgUrl} alt={`${name} avatar`} width={200} height={200} draggable="false" />
+						<img class="avatar-img" src={frontImgUrl} alt="" width={200} height={200} draggable="false" />
 					</div>
 				</>
 			) : (
 				// <!-- 默認：雙層 -->
 				<>
 					<div class={`avatar-layer avatar-back ${isCircle ? "avatar-layer-circle" : ""}`}>
-						<img class="avatar-img" src={backImgUrl} alt={`${name} avatar`} width={200} height={200} draggable="false" />
+						<img class="avatar-img" src={backImgUrl} alt="" width={200} height={200} draggable="false" />
 					</div>
 					<div class={`avatar-layer avatar-front ${isCircle ? "avatar-layer-circle" : ""}`}>
-						<img class="avatar-img" src={frontImgUrl} alt={`${name} avatar`} width={200} height={200} draggable="false" />
+						<img class="avatar-img" src={frontImgUrl} alt="" width={200} height={200} draggable="false" />
 					</div>
 				</>
 			)

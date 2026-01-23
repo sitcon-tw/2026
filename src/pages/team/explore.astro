@@ -121,7 +121,7 @@ const unique_people = all_people.filter(person => {
 			{
 				team_data.map((team, index) => {
 					return (
-						<div class={`anchor-btn anchor-box`} data-index={index} aria-label={team.name}>
+						<div class={`anchor-btn anchor-box`} data-index={index} aria-label={team.name} role="button" tabindex="0">
 							<span class="anchor-indicator" />
 							<span class="anchor-text-span">{team.name}</span>
 						</div>
@@ -654,10 +654,19 @@ const unique_people = all_people.filter(person => {
 	let currentActiveIndex: string | null = null;
 	const anchorBtns = document.querySelectorAll(".anchor-btn");
 	anchorBtns.forEach(btn => {
-		btn.addEventListener("click", e => {
-			// prevent default anchor behavior (for anchor to index page)
+		const handleInteraction = (e: Event) => {
+			// Let browser handle native interactions for links
 			if (btn.tagName === "A") return;
-			e.preventDefault();
+
+			if (e.type === "keydown") {
+				const ke = e as KeyboardEvent;
+				if (ke.key !== "Enter" && ke.key !== " ") {
+					return;
+				}
+				e.preventDefault(); // Prevent scrolling for Space
+			} else {
+				e.preventDefault(); // Prevent default click behavior for div
+			}
 
 			const index = (btn as HTMLElement).dataset.index;
 
@@ -684,7 +693,10 @@ const unique_people = all_people.filter(person => {
 					centerToItems(visibleItems);
 				}, 100);
 			}
-		});
+		};
+
+		btn.addEventListener("click", handleInteraction);
+		btn.addEventListener("keydown", handleInteraction);
 	});
 </script>
 
