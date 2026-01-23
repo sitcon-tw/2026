@@ -1,5 +1,8 @@
 ---
+import en from "@/i18n/en.json";
 import zhHant from "@/i18n/zh.json";
+
+const t = Astro.currentLocale === "en" ? en : zhHant;
 
 const socialLinks = [
 	{ name: "Facebook", url: "fb" },
@@ -19,7 +22,7 @@ const socialLinks = [
 	</div>
 	<div class="info">
 		{
-			zhHant.footer.map((info: { title: string; gridLayout?: boolean; links: { url: string; name: string }[] }) => (
+			t.footer.map((info: { title: string; gridLayout?: boolean; links: { url: string; name: string }[] }) => (
 				<div class="info-item">
 					<h3>{info.title}</h3>
 					<div class={`info-item-links ${info.gridLayout ? "grid-layout" : ""}`}>
