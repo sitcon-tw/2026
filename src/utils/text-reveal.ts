@@ -196,9 +196,8 @@ const initTitleReveal = (element: HTMLElement): void => {
 		},
 		scrollTrigger: {
 			trigger: element,
-			start: "top 85%",
-			end: "bottom 20%",
-			toggleActions: "play none none reset"
+			start: "top 95%",
+			once: true
 		}
 	});
 
@@ -231,9 +230,8 @@ const initParagraphReveal = (element: HTMLElement): void => {
 		},
 		scrollTrigger: {
 			trigger: element,
-			start: "top 90%",
-			end: "bottom 20%",
-			toggleActions: "play none none reset"
+			start: "top 95%",
+			once: true
 		}
 	});
 
