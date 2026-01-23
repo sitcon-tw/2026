@@ -23,9 +23,7 @@ const socialLinks = [
 				<div class="info-item">
 					<h3>{info.title}</h3>
 					<div class={`info-item-links ${info.gridLayout ? "grid-layout" : ""}`}>
-						{info.links.map((line: { url: string; name: string }) => (
-							<a href={line.url}>{line.name}</a>
-						))}
+						{info.links.map((line: { url: string; name: string }) => !line.url.startsWith("#") && <a href={line.url}>{line.name}</a>)}
 					</div>
 				</div>
 			))
