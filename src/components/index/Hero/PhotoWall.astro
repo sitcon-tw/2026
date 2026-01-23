@@ -122,11 +122,12 @@ const images = [
 	const photoWall = document.querySelector(".photo-wall");
 
 	if (container && photoWall) {
+		const offset = Math.min(window.innerWidth, 1440) * 0.2;
 		gsap.fromTo(
 			container,
-			{ x: () => 500 },
+			{ x: () => offset },
 			{
-				x: () => -(container.scrollWidth - photoWall.clientWidth + 500),
+				x: () => -(container.scrollWidth - photoWall.clientWidth + offset),
 				ease: "none",
 				scrollTrigger: {
 					trigger: photoWall,

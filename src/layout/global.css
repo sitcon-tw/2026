@@ -1,5 +1,6 @@
 :root {
 	--max-width: 1400px;
+	--content-max-width: 1200px;
 	--white: #ffffff;
 	--black: #000000;
 	--coffee: #3c2d0e;

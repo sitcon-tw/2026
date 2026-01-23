@@ -71,6 +71,7 @@
 	-webkit-user-drag: none;
 	-webkit-user-select: none;
 	pointer-events: none;
+	color: transparent;
 }
 
 .text-group {
