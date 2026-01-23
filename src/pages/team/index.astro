@@ -35,6 +35,7 @@ team_data_raw.forEach(person => {
 		}
 		teamsMap.get(team.name).member.push({
 			name: person.name,
+			role: team.role,
 			position: (ROLE_MAP as Record<string, string>)[team.role] || team.role,
 			avatar_url: `/2026/img/avatar/back/${person.name}.webp`,
 			link: person.link,
@@ -45,12 +46,32 @@ team_data_raw.forEach(person => {
 	});
 });
 
+const ROLE_PRIORITY = [
+	"chief",
+	"deputy_chief",
+	"head",
+	"deputy",
+	"treasurer",
+	"agenda_lead",
+	"ops_mobility_lead",
+	"ops_registration_lead",
+	"ops_catering_lead",
+	"ops_logistics_lead",
+	"member",
+	"ops_mobility",
+	"ops_registration",
+	"ops_catering",
+	"ops_logistics",
+	"marketing_helper"
+];
+
 const team_data = Array.from(teamsMap.values()).map((team: any) => {
-	// ensure head is first
 	team.member.sort((a: any, b: any) => {
-		if (a.position === ROLE_MAP.head && b.position !== ROLE_MAP.head) return -1;
-		if (a.position !== ROLE_MAP.head && b.position === ROLE_MAP.head) return 1;
-		return 0;
+		const getPriority = (role: string) => {
+			const index = ROLE_PRIORITY.indexOf(role);
+			return index === -1 ? 999 : index;
+		};
+		return getPriority(a.role) - getPriority(b.role);
 	});
 	return team;
 });
