@@ -206,6 +206,47 @@
 		},
 		"sections": [
 			{
+				"title": "Conference Program",
+				"activities": [
+					{
+						"title": "AnchorKeynote",
+						"body": "This session takes you straight to the heart of this year’s conference theme! We’ve invited a speaker to break down the key ideas behind the theme in a clear and accessible way. Through the speaker’s perspective, you’ll not only understand what SITCON wants to convey this year, but also follow the rhythm of the talk to brainstorm around interesting ideas and uncover deeper insights together!",
+						"image": {
+							"url": "/2026/img/info/Keynote.webp",
+							"alt": "SITCON AnchorKeynote",
+							"position": "right"
+						}
+					},
+					{
+						"title": "Panel",
+						"body": "This is a deep and engaging discussion featuring one moderator and three panelists! Guided by the moderator’s thoughtful facilitation, guests from diverse backgrounds will explore this year’s theme from different angles. You’ll hear multiple perspectives collide on stage, helping you step outside the box, re-examine the core topics from new viewpoints, and piece together a broader and richer technical vision through shared experiences.",
+						"image": {
+							"url": "/2026/img/info/Forum.webp",
+							"alt": "SITCON Panel",
+							"position": "left"
+						}
+					},
+					{
+						"title": "Sessions",
+						"body": "Here you’ll find a collection of excellent talks submitted by students from all over! Whether you prefer in-depth Presentations that thoroughly unpack technical concepts, or fast-paced Espresso sessions that deliver key takeaways in a short time, there’s plenty to discover. On top of that, there are flexible open-format sessions where ideas from different backgrounds can freely interweave. Come experience the hands-on knowledge and creativity brought by student speakers on-site!",
+						"image": {
+							"url": "/2026/img/info/Agenda.webp",
+							"alt": "SITCON Sessions",
+							"position": "right"
+						}
+					},
+					{
+						"title": "Demo Showcase",
+						"body": "Building on last year’s enthusiastic response, the Demo Showcase returns with an exciting upgrade! This special exhibition area goes beyond the regular program, providing a stage for students to present their projects and research成果 through live demos and conversations. It’s a great opportunity for attendees to explore diverse topics in a relaxed way and spark new inspiration.\n\nThe showcase will take place on March 28, 2026 (conference day), at the booths on the north side of the 4th floor, featuring outstanding student work from across Taiwan. Whether you’re interested in technical innovation, project sharing, interactive design, or cutting-edge research discoveries, you’re sure to find topics that surprise and inspire you.\n\nIn addition, project exhibitors will be present at different time slots to chat and discuss with attendees. This is a perfect chance to ask questions, learn, and meet amazing peers from around the country—if you love exploring new knowledge, don’t miss it!",
+						"image": {
+							"url": "/2026/img/info/Demo.webp",
+							"alt": "SITCON Demo Showcase",
+							"position": "left"
+						}
+					}
+				]
+			},
+			{
 				"title": "First Time Here & Want to Make Friends",
 				"activities": [
 					{
