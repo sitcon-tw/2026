@@ -205,11 +205,11 @@
 				"title": "年會議程",
 				"activities": [
 					{
-						"title": "AnchorKeynote 主題論壇",
+						"title": "Keynote 主題演講",
 						"body": "會帶著大家直擊今年的年會核心！我們特別邀請了講者，將複雜的年會主題拆解得淺顯易懂。透過講者的眼睛，你不只能看懂 SITCON 今年想傳達的重點，更能在這場演講中跟著講者的節奏，一起對各種有趣的想法腦力激盪，挖掘出更深層的思考！",
 						"image": {
 							"url": "/2026/img/info/Keynote.webp",
-							"alt": "SITCON AnchorKeynote 主題論壇",
+							"alt": "SITCON Keynote 主題演講",
 							"position": "right"
 						}
 					},
