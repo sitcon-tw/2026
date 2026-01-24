@@ -12,10 +12,10 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 const isProd = import.meta.env.PROD;
 
 const navItems = [
-	{ label: t.nav.info, href: `${prefix}/info` },
-	...(!isProd ? [{ label: t.nav.agenda, href: `${prefix}/agenda` }] : []),
-	...(!isProd ? [{ label: t.nav.venue, href: `${prefix}/venue` }] : []),
-	{ label: t.nav.team, href: `${prefix}/team` }
+	{ label: t.nav.info, href: `${prefix}/info/` },
+	...(!isProd ? [{ label: t.nav.agenda, href: `${prefix}/agenda/` }] : []),
+	...(!isProd ? [{ label: t.nav.venue, href: `${prefix}/venue/` }] : []),
+	{ label: t.nav.team, href: `${prefix}/team/` }
 ];
 
 const alternatePrefix = lang === "en" ? "/2026" : "/2026/en";
