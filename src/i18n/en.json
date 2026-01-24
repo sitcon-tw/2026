@@ -141,7 +141,7 @@
 	},
 	"info": {
 		"mainHeading": "Information",
-		"mainDetails": ["2026/3/28", "Humanities and Social Sciences Building, Academia Sinica", "No. 128, Sec. 2, Academia Rd., Nankang, Taipei 11529, Taiwan"],
+		"mainDetails": ["2026/03/28", "Humanities and Social Sciences Building, Academia Sinica", "No. 128, Sec. 2, Academia Rd., Nankang, Taipei 11529, Taiwan"],
 		"mainButton": "Transportation",
 		"intoAcademiaSinica": "Enter Academia Sinica",
 		"activitiesHeading": "Conference Activities",
@@ -314,7 +314,7 @@
 			"links": [
 				{
 					"name": "Conference Activities (incl. Transport)",
-					"url": "/2026/en/info"
+					"url": "/2026/en/info/"
 				},
 				{
 					"name": "Agenda",
@@ -330,7 +330,7 @@
 				},
 				{
 					"name": "SITCON Team",
-					"url": "/2026/en/team"
+					"url": "/2026/en/team/"
 				},
 				{
 					"name": "Partners",
@@ -347,7 +347,7 @@
 			"links": [
 				{
 					"name": "Sponsorship Prospectus",
-					"url": "https://sitcon.org/2026/cfs/en"
+					"url": "https://sitcon.org/2026/cfs/en/"
 				},
 				{
 					"name": "Call for Paper",
@@ -367,7 +367,7 @@
 				},
 				{
 					"name": "SITCON Podcast",
-					"url": "https://sitcon.org/podcast"
+					"url": "https://sitcon.org/podcast/"
 				},
 				{
 					"name": "Hackers",
