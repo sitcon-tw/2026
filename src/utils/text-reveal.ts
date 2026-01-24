@@ -11,8 +11,9 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 /**
  * 檢查元素是否包含 br 標籤
@@ -56,119 +57,32 @@ const splitByBrTags = (element: HTMLElement): void => {
 	element.dataset.textRevealed = "true";
 };
 
+const CJK = /[\u4e00-\u9fff\u3400-\u4dbf\u{20000}-\u{2a6df}\u{2a700}-\u{2ebef}\uf900-\ufaff]/gu;
+
+const ZWSP = "\u200B";
+
 /**
- * 將文字元素拆分成每一行，並包裹在 span 中
- * 使用國小數學計算每行的文字寬度
- */
-const splitTextIntoLines = (element: HTMLElement): void => {
-	// 如果已經處理過，跳過
-	if (element.dataset.textRevealed === "true") return;
+* 當我有 GSAP 套件的時候我為什麼還會需要自己學國小數學呢
+*/
+const splitTextIntoLines = (element: HTMLElement) => {
+	// 避免重複 split
+	if (element.dataset.textRevealed === "true") return null;
 
-	// 如果有 br 標籤，使用 br 分割
-	if (hasBrTags(element)) {
-		splitByBrTags(element);
-		return;
-	}
+	const split = SplitText.create(element, {
+		type: "lines",
+		mask: "lines",
+		autoSplit: true,
 
-	const text = element.textContent || "";
+		prepareText: (text: string) => {
+			return text.replace(CJK, m => m + ZWSP);
+		},
+		wordDelimiter: ZWSP,
 
-	// 創建一個隱藏的測量元素
-	const measureEl = document.createElement("span");
-	measureEl.style.cssText = `
-    visibility: hidden;
-    position: absolute;
-    white-space: nowrap;
-    font: inherit;
-    letter-spacing: inherit;
-  `;
-	element.appendChild(measureEl);
-
-	// 獲取元素的可用寬度
-	const containerWidth = element.clientWidth;
-
-	// 若元素尚未完成排版或為隱藏狀態，可能導致寬度為 0，
-	// 此時不進行行拆分，避免使用無效的寬度計算。
-	if (containerWidth <= 0) {
-		if (measureEl.parentNode === element) {
-			element.removeChild(measureEl);
-		}
-		return;
-	}
-	// 將文字拆分成單詞（支援中英文混合）
-	// 中文字元各自成為一個單位，英文單詞為一個單位
-	const segments: string[] = [];
-	let currentWord = "";
-
-	for (const char of text) {
-		// 中文字元範圍（擴充支援 CJK 擴展區與相容表意文字）
-		if (/[\u4e00-\u9fff\u3400-\u4dbf\u{20000}-\u{2a6df}\u{2a700}-\u{2ebef}\uf900-\ufaff]/u.test(char)) {
-			if (currentWord) {
-				segments.push(currentWord);
-				currentWord = "";
-			}
-			segments.push(char);
-		} else if (/\s/.test(char)) {
-			if (currentWord) {
-				segments.push(currentWord);
-				currentWord = "";
-			}
-			segments.push(char);
-		} else {
-			currentWord += char;
-		}
-	}
-	if (currentWord) {
-		segments.push(currentWord);
-	}
-
-	// 計算每一行
-	const lines: string[] = [];
-	let currentLine = "";
-
-	for (const segment of segments) {
-		const testLine = currentLine + segment;
-		measureEl.textContent = testLine;
-
-		if (measureEl.offsetWidth > containerWidth && currentLine !== "") {
-			lines.push(currentLine.trim());
-			currentLine = segment;
-		} else {
-			currentLine = testLine;
-		}
-	}
-
-	if (currentLine.trim()) {
-		lines.push(currentLine.trim());
-	}
-
-	// 移除測量元素
-	element.removeChild(measureEl);
-
-	// 如果沒有行或只有空行，保持原樣
-	if (lines.length === 0 || lines.every(l => l.trim() === "")) {
-		return;
-	}
-
-	// 構建新的 HTML 結構
-	const wrapper = document.createElement("div");
-	wrapper.className = "text-reveal-wrapper";
-
-	lines.forEach(lineText => {
-		const lineDiv = document.createElement("div");
-		lineDiv.className = "text-reveal-line";
-
-		const span = document.createElement("span");
-		span.textContent = lineText;
-		span.className = "text-reveal-content";
-
-		lineDiv.appendChild(span);
-		wrapper.appendChild(lineDiv);
+		linesClass: "text-reveal-content"
 	});
 
-	// 替換原有內容
-	element.innerHTML = "";
-	element.appendChild(wrapper);
 	element.dataset.textRevealed = "true";
+	return split;
 };
 
 /**
