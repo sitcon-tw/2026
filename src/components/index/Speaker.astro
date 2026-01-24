@@ -390,7 +390,10 @@ const speakers = [
 		const desktopimg = document.querySelector<HTMLElement>(".desktop-img");
 		let currentindex = 0;
 
-		if (!speakerlist || items.length === 0) return () => {};
+		if (!speakerlist || items.length === 0) {
+			container.dataset.speakerInit = "false";
+			return () => {};
+		}
 
 		const updateview = (index: number) => {
 			items.forEach(item => {
@@ -489,12 +492,22 @@ const speakers = [
 		cleanup = initSpeaker();
 	};
 
+	const pageLoadHandler = () => {
+		mount();
+	};
+
+	const beforeSwapHandler = () => {
+		cleanup?.();
+		document.removeEventListener("astro:page-load", pageLoadHandler);
+		document.removeEventListener("astro:before-swap", beforeSwapHandler);
+	};
+
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", mount, { once: true });
 	} else {
 		mount();
 	}
 
-	document.addEventListener("astro:page-load", mount);
-	document.addEventListener("astro:before-swap", () => cleanup?.());
+	document.addEventListener("astro:page-load", pageLoadHandler);
+	document.addEventListener("astro:before-swap", beforeSwapHandler);
 </script>

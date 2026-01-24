@@ -369,6 +369,12 @@ const messages = t.messages;
 
 		return () => {
 			stopLoop();
+
+			// Ensure all GSAP tweens related to the chat stream are killed on cleanup
+			if (typeof gsap !== "undefined") {
+				gsap.killTweensOf(chatStreamEl);
+				gsap.killTweensOf(chatStreamEl.children);
+			}
 			scrollTrigger.kill();
 			chatStreamEl.dataset.chatInit = "false";
 		};

@@ -598,13 +598,23 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			cleanup = initSponsorDialog();
 		};
 
+		const pageLoadHandler = () => {
+			mount();
+		};
+
+		const beforeSwapHandler = () => {
+			document.removeEventListener("astro:page-load", pageLoadHandler);
+			document.removeEventListener("astro:before-swap", beforeSwapHandler);
+			cleanup?.();
+		};
+
 		if (document.readyState === "loading") {
 			document.addEventListener("DOMContentLoaded", mount, { once: true });
 		} else {
 			mount();
 		}
 
-		document.addEventListener("astro:page-load", mount);
-		document.addEventListener("astro:before-swap", () => cleanup?.());
+		document.addEventListener("astro:page-load", pageLoadHandler);
+		document.addEventListener("astro:before-swap", beforeSwapHandler);
 	</script>
 </section>
