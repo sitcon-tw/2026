@@ -62,11 +62,17 @@ const CJK = /[\u4e00-\u9fff\u3400-\u4dbf\u{20000}-\u{2a6df}\u{2a700}-\u{2ebef}\u
 const ZWSP = "\u200B";
 
 /**
-* 當我有 GSAP 套件的時候我為什麼還會需要自己學國小數學呢
-*/
+ * 當我有 GSAP 套件的時候我為什麼還會需要自己學國小數學呢
+ */
 const splitTextIntoLines = (element: HTMLElement) => {
 	// 避免重複 split
 	if (element.dataset.textRevealed === "true") return null;
+
+  // 如果有 br 標籤，respect br	
+	if (hasBrTags(element)) {
+		splitByBrTags(element);
+		return null;
+	}
 
 	const split = SplitText.create(element, {
 		type: "lines",
