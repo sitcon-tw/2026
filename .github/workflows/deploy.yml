@@ -21,7 +21,6 @@ jobs:
         with:
           timezoneLinux: "Asia/Taipei"
           timezoneMacos: "Asia/Taipei"
-          fetch-depth: 1
 
       - name: Install Node.js
         uses: actions/setup-node@v4
