@@ -12,6 +12,22 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	word-break: break-word;
+	-webkit-text-size-adjust: 100%;
+	word-break: normal;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+button,
+input,
+textarea,
+select {
+	font: inherit;
 }
 
 html {
@@ -36,7 +52,7 @@ h5,
 h6 {
 	font-family: "GenKiMinTW", serif;
 	font-weight: normal;
-	word-break: break-word;
+	text-wrap: balance;
 }
 
 code,
