@@ -68,7 +68,7 @@ const splitTextIntoLines = (element: HTMLElement) => {
 	// 避免重複 split
 	if (element.dataset.textRevealed === "true") return null;
 
-  // 如果有 br 標籤，respect br	
+	// 如果有 br 標籤，respect br
 	if (hasBrTags(element)) {
 		splitByBrTags(element);
 		return null;
