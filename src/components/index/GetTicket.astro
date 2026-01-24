@@ -1172,6 +1172,13 @@ const danmakuLines: string[] = danmakuData.lines;
 		mount();
 	}
 
-	document.addEventListener("astro:page-load", mount);
-	document.addEventListener("astro:before-swap", () => cleanup?.());
+	const pageLoadHandler = () => mount();
+	const beforeSwapHandler = () => {
+		cleanup?.();
+		document.removeEventListener("astro:page-load", pageLoadHandler);
+		document.removeEventListener("astro:before-swap", beforeSwapHandler);
+	};
+
+	document.addEventListener("astro:page-load", pageLoadHandler);
+	document.addEventListener("astro:before-swap", beforeSwapHandler);
 </script>
