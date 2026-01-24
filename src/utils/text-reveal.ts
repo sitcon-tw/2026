@@ -64,14 +64,14 @@ const ZWSP = "\u200B";
 /**
  * 當我有 GSAP 套件的時候我為什麼還會需要自己學國小數學呢
  */
-const splitTextIntoLines = (element: HTMLElement) => {
+const splitTextIntoLines = (element: HTMLElement): void => {
 	// 避免重複 split
-	if (element.dataset.textRevealed === "true") return null;
+  if (element.dataset.textRevealed === "true") return;
 
 	// 如果有 br 標籤，respect br
 	if (hasBrTags(element)) {
 		splitByBrTags(element);
-		return null;
+		return
 	}
 
 	const split = SplitText.create(element, {
@@ -88,7 +88,6 @@ const splitTextIntoLines = (element: HTMLElement) => {
 	});
 
 	element.dataset.textRevealed = "true";
-	return split;
 };
 
 /**
