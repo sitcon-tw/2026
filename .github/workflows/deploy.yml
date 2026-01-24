@@ -1,0 +1,66 @@
+name: Deploy Official Website
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  actions: write
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set timezone to Asia/Taipei
+        uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: "Asia/Taipei"
+          timezoneMacos: "Asia/Taipei"
+          fetch-depth: 1
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        run: pnpm build
+
+      - name: Deploy into 2026/build branch
+        run: |
+          git fetch origin build || true
+          git worktree add ../deploy build || git checkout --orphan build
+
+          # 清空舊檔案
+          rm -rf ../deploy/_astro ../deploy/img ../deploy/models
+
+          # 複製新的 build 輸出
+          cp -r dist/* ../deploy/
+
+          cd ../deploy
+          git add .
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "Deploy home site" || echo "No changes to commit"
+          git push origin build
+
+      - name: Trigger Deploy Final Website workflow
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy.yml/dispatches \
+            -d '{"ref": "build"}'
