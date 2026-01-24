@@ -324,10 +324,11 @@ const messages = t.messages;
 				});
 			}
 
-			// 清理舊訊息
-			while (chatStream.children.length > MAX_BUBBLES) {
+			// 清理舊訊息 - 每次只處理一個，避免無限循環
+			if (chatStream.children.length > MAX_BUBBLES) {
 				const oldest = chatStream.firstElementChild as HTMLElement;
-				if (oldest) {
+				if (oldest && !oldest.dataset.removing) {
+					oldest.dataset.removing = "true"; // 標記避免重複動畫
 					gsap.to(oldest, {
 						opacity: 0,
 						duration: 0.3,
