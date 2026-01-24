@@ -66,12 +66,12 @@ const ZWSP = "\u200B";
  */
 const splitTextIntoLines = (element: HTMLElement): void => {
 	// 避免重複 split
-  if (element.dataset.textRevealed === "true") return;
+	if (element.dataset.textRevealed === "true") return;
 
 	// 如果有 br 標籤，respect br
 	if (hasBrTags(element)) {
 		splitByBrTags(element);
-		return
+		return;
 	}
 
 	const split = SplitText.create(element, {
