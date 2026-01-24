@@ -11,7 +11,7 @@ export default defineConfig({
 	site: "https://sitcon.org",
 	base: "/2026",
 	output: "static",
-	trailingSlash: "ignore",
+	trailingSlash: "always",
 	build: {
 		format: "directory"
 	},

@@ -130,6 +130,10 @@
 			{
 				"name": "agenda",
 				"role": "member"
+			},
+			{
+				"name": "editorial",
+				"role": "member"
 			}
 		],
 		"link": "https://nat1an.xyz/"

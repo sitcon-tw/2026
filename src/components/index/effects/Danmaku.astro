@@ -39,7 +39,15 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 
 <script>
 	const initDanmaku = () => {
-		document.querySelectorAll<HTMLElement>(".danmaku-container").forEach(container => {
+		const containers = Array.from(document.querySelectorAll<HTMLElement>(".danmaku-container"));
+		if (containers.length === 0) return () => {};
+
+		const cleanups: Array<() => void> = [];
+
+		containers.forEach(container => {
+			if (container.dataset.danmakuInit === "true") return;
+			container.dataset.danmakuInit = "true";
+
 			// Clean up any previously created danmaku items before re-initializing.
 			while (container.firstChild) {
 				container.removeChild(container.firstChild);
@@ -53,7 +61,7 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 
 			// 如果沒有彈幕資料，直接返回
 			if (!lines || lines.length === 0) {
-				console.warn("Danmaku: No lines provided");
+				container.dataset.danmakuInit = "false";
 				return;
 			}
 
@@ -61,6 +69,8 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 			let rowState: { lastEndTime: number }[] = [];
 			let animationFrameId = 0;
 			let isRunning = false;
+			let resizeTimeout: number | null = null;
+			const removalTimeouts = new Set<number>();
 
 			const updateFontSize = () => {
 				const screenWidth = window.innerWidth;
@@ -117,14 +127,16 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 				);
 
 				// 備用：如果 transitionend 沒觸發，用 setTimeout 清理
-				setTimeout(
+				const timeoutId = window.setTimeout(
 					() => {
+						removalTimeouts.delete(timeoutId);
 						if (el.parentNode) {
 							el.remove();
 						}
 					},
 					(duration + 1) * 1000
 				);
+				removalTimeouts.add(timeoutId);
 			};
 
 			const tick = (currentTime: number) => {
@@ -157,6 +169,8 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 				if (!isRunning) return;
 				isRunning = false;
 				cancelAnimationFrame(animationFrameId);
+				removalTimeouts.forEach(id => window.clearTimeout(id));
+				removalTimeouts.clear();
 				// 清除現有的彈幕元素
 				container.innerHTML = "";
 			};
@@ -191,9 +205,8 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 			observer.observe(container);
 
 			// 監聽視窗大小變化
-			let resizeTimeout: number | undefined;
 			const onResize = () => {
-				if (resizeTimeout !== undefined) {
+				if (resizeTimeout !== null) {
 					clearTimeout(resizeTimeout);
 				}
 				resizeTimeout = window.setTimeout(handleResize, 200);
@@ -201,22 +214,41 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 
 			window.addEventListener("resize", onResize);
 
-			// 清理：在頁面卸載前移除監聽並清除計時器與動畫幀
-			window.addEventListener("beforeunload", () => {
-				if (resizeTimeout !== undefined) {
+			cleanups.push(() => {
+				stop();
+				if (resizeTimeout !== null) {
 					clearTimeout(resizeTimeout);
 				}
 				window.removeEventListener("resize", onResize);
-				cancelAnimationFrame(animationFrameId);
 				observer.disconnect();
+				container.dataset.danmakuInit = "false";
 			});
 		});
+
+		return () => {
+			cleanups.forEach(fn => fn());
+		};
 	};
 
-	// DOM ready
+	let cleanup: (() => void) | null = null;
+	const mount = () => {
+		cleanup?.();
+		cleanup = initDanmaku();
+	};
+
 	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initDanmaku);
+		document.addEventListener("DOMContentLoaded", mount, { once: true });
 	} else {
-		initDanmaku();
+		mount();
 	}
+
+	const pageLoadHandler = () => mount();
+	const beforeSwapHandler = () => {
+		cleanup?.();
+		document.removeEventListener("astro:page-load", pageLoadHandler);
+		document.removeEventListener("astro:before-swap", beforeSwapHandler);
+	};
+
+	document.addEventListener("astro:page-load", pageLoadHandler);
+	document.addEventListener("astro:before-swap", beforeSwapHandler);
 </script>

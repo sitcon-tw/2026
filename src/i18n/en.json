@@ -88,7 +88,7 @@
 			"getTicket": "Get Tickets",
 			"addCalendar": "Add to Calendar"
 		},
-		"location": "Humanities and Social Sciences Building, Academia Sinica",
+		"location": "Academia Sinica",
 		"referral": {
 			"title": "Invite Friends & Win Rewards",
 			"description1": "Join SITCON 2026 in spreading the open-source spirit to more people.",
@@ -98,7 +98,7 @@
 	},
 	"joinUs": {
 		"title1": "Join Us",
-		"title2": "Shaping the Future",
+		"title2": "Shape the Future",
 		"description": "Since 2013, SITCON has upheld its founding principle of free admission,<br />dedicated to promoting student IT education. We encourage participants to break free from conventional thinking, explore hidden possibilities,<br />and provide students with valuable opportunities to learn and connect. Over the years, we have accompanied countless students into the world of information technology.<br />If you share SITCON’s vision, we welcome your support in spreading the seeds of IT education across Taiwan.",
 		"stats": ["> Over 14,000 total participants", "> More than 500 student speakers", "> Over 500 meetups and talks, plus 10 summer camps", "> Nearly 1,400 passionate volunteers supported"],
 		"buttons": {
@@ -145,7 +145,7 @@
 	},
 	"info": {
 		"mainHeading": "Information",
-		"mainDetails": ["2026/3/28", "Humanities and Social Sciences Building, Academia Sinica", "No. 128, Sec. 2, Academia Rd., Nankang, Taipei 11529, Taiwan"],
+		"mainDetails": ["2026/03/28", "Humanities and Social Sciences Building, Academia Sinica", "No. 128, Sec. 2, Academia Rd., Nankang, Taipei 11529, Taiwan"],
 		"mainButton": "Transportation",
 		"intoAcademiaSinica": "Enter Academia Sinica",
 		"activitiesHeading": "Conference Activities",
@@ -196,6 +196,7 @@
 					"title": "Motorcycle",
 					"description": "Motorcycles are prohibited from entering the campus. Free parking (no custody provided) is available at <a href=https://maps.app.goo.gl/ZqKjZFgAS8SYPSF39>the right side of the main gate</a>, <a href=https://maps.app.goo.gl/TnCduCULx6VRcX9v9>across from the main gate</a>, and near <a href=https://maps.app.goo.gl/z6Ygy3A7hgfC7D9K7>Hu-Shih Park</a>."
 				},
+				"referencesTitle": "References",
 				"references": [
 					{
 						"name": "Academia Sinica Car Parking Regulations",
@@ -213,11 +214,11 @@
 				"title": "Conference Program",
 				"activities": [
 					{
-						"title": "AnchorKeynote",
+						"title": "Keynote",
 						"body": "This session takes you straight to the heart of this year’s conference theme! We’ve invited a speaker to break down the key ideas behind the theme in a clear and accessible way. Through the speaker’s perspective, you’ll not only understand what SITCON wants to convey this year, but also follow the rhythm of the talk to brainstorm around interesting ideas and uncover deeper insights together!",
 						"image": {
 							"url": "/2026/img/info/Keynote.webp",
-							"alt": "SITCON AnchorKeynote",
+							"alt": "SITCON Keynote",
 							"position": "right"
 						}
 					},
@@ -318,7 +319,7 @@
 			"links": [
 				{
 					"name": "Conference Activities (incl. Transport)",
-					"url": "/2026/en/info"
+					"url": "/2026/en/info/"
 				},
 				{
 					"name": "Agenda",
@@ -326,15 +327,15 @@
 				},
 				{
 					"name": "Venue Map",
-					"url": "/2026/en/venue"
+					"url": "#"
 				},
 				{
 					"name": "Registration",
-					"url": "https://tickets.sitcon.org/en/sitcon2026"
+					"url": "https://tickets.sitcon.org/sitcon2026"
 				},
 				{
 					"name": "SITCON Team",
-					"url": "/2026/en/team"
+					"url": "/2026/en/team/"
 				},
 				{
 					"name": "Partners",
@@ -351,7 +352,7 @@
 			"links": [
 				{
 					"name": "Sponsorship Prospectus",
-					"url": "https://sitcon.org/2026/cfs/en"
+					"url": "https://sitcon.org/2026/cfs/en/"
 				},
 				{
 					"name": "Call for Paper",
@@ -371,10 +372,10 @@
 				},
 				{
 					"name": "SITCON Podcast",
-					"url": "https://sitcon.org/podcast"
+					"url": "https://sitcon.org/podcast/"
 				},
 				{
-					"name": "Hall of Frame",
+					"name": "Hackers",
 					"url": "https://sitcon.org/hacker/"
 				}
 			]

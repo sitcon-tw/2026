@@ -26,7 +26,7 @@ const t = useTranslations(lang).joinUs;
 			<a href="https://sitcon.org/2026/cfs/">
 				<div class="hover-bg"></div>
 				<span>
-					{t.buttons.sponsorRequest}
+					<div>{t.buttons.sponsorRequest}</div>
 					<ExternalLink class="arrow-icon" />
 				</span>
 			</a>
@@ -75,7 +75,7 @@ const t = useTranslations(lang).joinUs;
 	.content-text {
 		text-align: center;
 		color: black;
-		font-size: 1.5rem;
+		font-size: 1.2rem;
 		font-weight: 500;
 		margin: 5rem 10rem auto;
 	}
@@ -92,9 +92,8 @@ const t = useTranslations(lang).joinUs;
 		margin-bottom: 5rem;
 	}
 	.content-btn a {
-		width: 15rem;
-		height: 4.5rem;
 		border-radius: 62.5rem;
+		padding: 1rem 2rem;
 		font-size: 1.5rem;
 		display: flex;
 		justify-content: center;

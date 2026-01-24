@@ -271,10 +271,12 @@ const messages = t.messages;
 
 	const initChatAnimation = () => {
 		const chatStreamEl = document.getElementById("chatStream");
-		if (!chatStreamEl) return;
+		if (!chatStreamEl) return () => {};
+		if (chatStreamEl.dataset.chatInit === "true") return () => {};
+		chatStreamEl.dataset.chatInit = "true";
 
 		const messagesData = chatStreamEl.dataset.messages;
-		if (!messagesData) return;
+		if (!messagesData) return () => {};
 
 		const chatStream = chatStreamEl;
 		const messages: string[] = JSON.parse(messagesData);
@@ -355,7 +357,7 @@ const messages = t.messages;
 			addMessage(false);
 		}
 
-		ScrollTrigger.create({
+		const scrollTrigger = ScrollTrigger.create({
 			trigger: ".chat-section",
 			start: "top bottom",
 			end: "bottom top",
@@ -364,11 +366,32 @@ const messages = t.messages;
 			onEnterBack: startLoop,
 			onLeaveBack: stopLoop
 		});
+
+		return () => {
+			stopLoop();
+
+			// Ensure all GSAP tweens related to the chat stream are killed on cleanup
+			if (typeof gsap !== "undefined") {
+				gsap.killTweensOf(chatStreamEl);
+				gsap.killTweensOf(chatStreamEl.children);
+			}
+			scrollTrigger.kill();
+			chatStreamEl.dataset.chatInit = "false";
+		};
+	};
+
+	let cleanup: (() => void) | null = null;
+	const mount = () => {
+		cleanup?.();
+		cleanup = initChatAnimation();
 	};
 
 	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initChatAnimation);
+		document.addEventListener("DOMContentLoaded", mount, { once: true });
 	} else {
-		initChatAnimation();
+		mount();
 	}
+
+	document.addEventListener("astro:page-load", mount);
+	document.addEventListener("astro:before-swap", () => cleanup?.());
 </script>

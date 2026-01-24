@@ -118,13 +118,17 @@ const images = [
 
 	gsap.registerPlugin(ScrollTrigger);
 
-	const container = document.querySelector(".photo-container");
-	const photoWall = document.querySelector(".photo-wall");
+	const initPhotoWall = () => {
+		const container = document.querySelector(".photo-container") as HTMLElement | null;
+		const photoWall = document.querySelector(".photo-wall") as HTMLElement | null;
+		if (!container || !photoWall) return () => {};
+		if (photoWall.dataset.photoInit === "true") return () => {};
+		photoWall.dataset.photoInit = "true";
 
-	if (container && photoWall) {
 		let animation: gsap.core.Tween | null = null;
+		let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
 
-		function createAnimation() {
+		const createAnimation = () => {
 			// 清除舊的動畫
 			if (animation) {
 				animation.kill();
@@ -135,7 +139,7 @@ const images = [
 				container,
 				{ x: offset },
 				{
-					x: -(container!.scrollWidth - photoWall!.clientWidth + offset),
+					x: -(container.scrollWidth - photoWall.clientWidth + offset),
 					ease: "none",
 					scrollTrigger: {
 						trigger: photoWall,
@@ -146,18 +150,50 @@ const images = [
 					}
 				}
 			);
-		}
+		};
 
 		createAnimation();
 
-		// 監聽視窗大小變化
-		let resizeTimeout: ReturnType<typeof setTimeout>;
-		window.addEventListener("resize", () => {
-			clearTimeout(resizeTimeout);
+		const onResize = () => {
+			if (resizeTimeout) clearTimeout(resizeTimeout);
 			resizeTimeout = setTimeout(() => {
 				ScrollTrigger.refresh();
 				createAnimation();
 			}, 200);
-		});
+		};
+
+		window.addEventListener("resize", onResize);
+
+		return () => {
+			if (resizeTimeout) clearTimeout(resizeTimeout);
+			window.removeEventListener("resize", onResize);
+			if (animation) {
+				animation.scrollTrigger?.kill();
+				animation.kill();
+			}
+			photoWall.dataset.photoInit = "false";
+		};
+	};
+
+	let cleanup: (() => void) | null = null;
+	const mount = () => {
+		cleanup?.();
+		cleanup = initPhotoWall();
+	};
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", mount, { once: true });
+	} else {
+		mount();
 	}
+
+	const pageLoadHandler = () => mount();
+	const beforeSwapHandler = () => {
+		cleanup?.();
+		document.removeEventListener("astro:page-load", pageLoadHandler);
+		document.removeEventListener("astro:before-swap", beforeSwapHandler);
+	};
+
+	document.addEventListener("astro:page-load", pageLoadHandler);
+	document.addEventListener("astro:before-swap", beforeSwapHandler);
 </script>
