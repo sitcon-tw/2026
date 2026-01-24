@@ -20,7 +20,8 @@ const tickets = [
 		color: "#D8C08A",
 		icon: CodeXml,
 		description: t.student.description,
-		verticalTitle: t.student.verticalTitle
+		verticalTitle: t.student.verticalTitle,
+		url: t.student.url
 	},
 	{
 		id: "general",
@@ -29,7 +30,8 @@ const tickets = [
 		color: "#e0e0e0",
 		icon: Users,
 		description: t.general.description,
-		verticalTitle: t.general.verticalTitle
+		verticalTitle: t.general.verticalTitle,
+		url: t.general.url
 	},
 	{
 		id: "oscvpass",
@@ -38,7 +40,8 @@ const tickets = [
 		color: "#e6d3a3",
 		icon: CodeXml,
 		description: t.oscvpass.description,
-		verticalTitle: t.oscvpass.verticalTitle
+		verticalTitle: t.oscvpass.verticalTitle,
+		url: t.oscvpass.url
 	},
 	{
 		id: "long-distance",
@@ -47,7 +50,8 @@ const tickets = [
 		color: "#c5a880",
 		icon: Plane,
 		description: t.longDistance.description,
-		verticalTitle: t.longDistance.verticalTitle
+		verticalTitle: t.longDistance.verticalTitle,
+		url: t.longDistance.url
 	}
 ];
 
@@ -100,7 +104,7 @@ const danmakuLines: string[] = danmakuData.lines;
 
 										<div class="ticket-actions">
 											<div class="action-buttons">
-												<a class="btn-outline" href="https://tickets.sitcon.org/" target="_blank" rel="noopener noreferrer">
+												<a class="btn-outline" href={ticket.url} target="_blank" rel="noopener noreferrer">
 													{t.buttons.getTicket}
 												</a>
 												<a class="btn-outline" href="/2026/SITCON_2026_重要時程.ics" download>
