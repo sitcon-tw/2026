@@ -84,7 +84,7 @@
 			"getTicket": "Get Tickets",
 			"addCalendar": "Add to Calendar"
 		},
-		"location": "Humanities and Social Sciences Building, Academia Sinica",
+		"location": "Academia Sinica",
 		"referral": {
 			"title": "Invite Friends & Win Rewards",
 			"description1": "Join SITCON 2026 in spreading the open-source spirit to more people.",
@@ -94,7 +94,7 @@
 	},
 	"joinUs": {
 		"title1": "Join Us",
-		"title2": "Shaping the Future",
+		"title2": "Shape the Future",
 		"description": "Since 2013, SITCON has upheld its founding principle of free admission,<br />dedicated to promoting student IT education. We encourage participants to break free from conventional thinking, explore hidden possibilities,<br />and provide students with valuable opportunities to learn and connect. Over the years, we have accompanied countless students into the world of information technology.<br />If you share SITCON’s vision, we welcome your support in spreading the seeds of IT education across Taiwan.",
 		"stats": ["> Over 14,000 total participants", "> More than 500 student speakers", "> Over 500 meetups and talks, plus 10 summer camps", "> Nearly 1,400 passionate volunteers supported"],
 		"buttons": {
