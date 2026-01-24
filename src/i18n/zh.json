@@ -49,6 +49,7 @@
 			"englishTitle": "STUDENT",
 			"description": ["第一波索票：2026/01/25 20:00～2026/02/07 23:59", "第二波索票：2026/02/23 20:00～2026/03/01 23:59", "學生保留名額，僅限符合資格學生，資格不符將會取消。"],
 			"verticalTitle": "學生票"
+      "url": "https://tickets.sitcon.org/sitcon2026"
 		},
 		"oscvpass": {
 			"title": "開源貢獻票",
@@ -58,13 +59,15 @@
 				"在 2026/01/17 23:59 前申請且通過者，有機會可以獲得 SITCON 2026 開源貢獻票邀請碼。申請表單、申請資格及更詳細的申請說明，請參考<a href=https://ocf.tw/p/oscvpass/>開源貢獻者快速通關</a>。",
 				"關於歷年來 OSCVPass 申請通過者的專案列表，請參考 <a href=https://oscvpass.ocf.tw/>OSCVPass 專案介紹</a>。"
 			],
-			"verticalTitle": "開源貢獻票"
+			"verticalTitle": "開源貢獻票",
+			"url": "https://ocf.tw/p/oscvpass/"
 		},
 		"general": {
 			"title": "一般票",
 			"englishTitle": "GENERAL",
 			"description": ["第一波索票：2026/01/25 20:00～2026/02/07 23:59", "第二波索票：2026/02/23 20:00～2026/03/01 23:59"],
-			"verticalTitle": "一般票"
+			"verticalTitle": "一般票",
+			"url": "https://tickets.sitcon.org/sitcon2026"
 		},
 		"longDistance": {
 			"title": "遠道而來票",
@@ -74,7 +77,8 @@
 				"先到先審制，報名者需在 2026/01/17 23:59 前填寫<a href=https://forms.gle/2rr5WYuuLQ6WgVkP7>申請表單</a>。",
 				"申請資格及更詳細的申請說明，請參考 <a href=https://hackmd.io/lYvvY7y_RaCr4ilKdq-XTQ>SITCON 2026 遠道而來票</a>。"
 			],
-			"verticalTitle": "遠道而來票"
+			"verticalTitle": "遠道而來票",
+			"url": "https://forms.gle/2rr5WYuuLQ6WgVkP7"
 		},
 		"buttons": {
 			"getTicket": "立即索票",

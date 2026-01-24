@@ -52,7 +52,8 @@
 			"title": "Student Ticket",
 			"englishTitle": "STUDENT",
 			"description": ["First round: 2026/01/25 20:00 – 2026/02/07 23:59", "Second round: 2026/02/23 20:00 – 2026/03/01 23:59", "For students only. Invalid eligibility will result in cancellation."],
-			"verticalTitle": "Student Ticket"
+			"verticalTitle": "Student Ticket",
+			"url": "https://tickets.sitcon.org/sitcon2026"
 		},
 		"oscvpass": {
 			"title": "Open Source Contributor Ticket",
@@ -62,13 +63,15 @@
 				"Applicants who apply and pass before 2026/01/17 23:59 may receive an invitation code for the SITCON 2026 Open Source Contributor Ticket. Please refer to <a href=https://ocf.tw/p/oscvpass/>Open Source Contributor Fast Track</a> for details.",
 				"For a list of projects from past OSCVPass recipients, see <a href=https://oscvpass.ocf.tw/>OSCVPass Project Overview</a>."
 			],
-			"verticalTitle": "Open Source Contributor Ticket"
+			"verticalTitle": "Open Source Contributor Ticket",
+			"url": "https://ocf.tw/p/oscvpass/"
 		},
 		"general": {
 			"title": "General Ticket",
 			"englishTitle": "GENERAL",
 			"description": ["First round: 2026/01/25 20:00 – 2026/02/07 23:59", "Second round: 2026/02/23 20:00 – 2026/03/01 23:59"],
-			"verticalTitle": "General Ticket"
+			"verticalTitle": "General Ticket",
+			"url": "https://tickets.sitcon.org/sitcon2026"
 		},
 		"longDistance": {
 			"title": "Long Distance Ticket",
@@ -78,7 +81,8 @@
 				"Applications are reviewed on a rolling basis. Please submit the <a href=https://forms.gle/2rr5WYuuLQ6WgVkP7>application form</a> by 2026/01/17 23:59.",
 				"For eligibility and detailed instructions, see <a href=https://hackmd.io/lYvvY7y_RaCr4ilKdq-XTQ>SITCON 2026 Long Distance Ticket</a>."
 			],
-			"verticalTitle": "Long Distance Ticket"
+			"verticalTitle": "Long Distance Ticket",
+			"url": "https://forms.gle/2rr5WYuuLQ6WgVkP7"
 		},
 		"buttons": {
 			"getTicket": "Get Tickets",
