@@ -209,11 +209,11 @@
 				"title": "Conference Program",
 				"activities": [
 					{
-						"title": "AnchorKeynote",
+						"title": "Keynote",
 						"body": "This session takes you straight to the heart of this year’s conference theme! We’ve invited a speaker to break down the key ideas behind the theme in a clear and accessible way. Through the speaker’s perspective, you’ll not only understand what SITCON wants to convey this year, but also follow the rhythm of the talk to brainstorm around interesting ideas and uncover deeper insights together!",
 						"image": {
 							"url": "/2026/img/info/Keynote.webp",
-							"alt": "SITCON AnchorKeynote",
+							"alt": "SITCON Keynote",
 							"position": "right"
 						}
 					},
