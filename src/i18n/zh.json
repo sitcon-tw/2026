@@ -318,7 +318,7 @@
 				},
 				{
 					"name": "會場地圖",
-					"url": "/2026/venue"
+					"url": "#"
 				},
 				{
 					"name": "活動報名",
@@ -366,7 +366,7 @@
 					"url": "https://sitcon.org/podcast"
 				},
 				{
-					"name": "Hall of Frame",
+					"name": "好駭客",
 					"url": "https://sitcon.org/hacker/"
 				}
 			]

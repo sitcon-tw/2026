@@ -322,7 +322,7 @@
 				},
 				{
 					"name": "Venue Map",
-					"url": "/2026/en/venue"
+					"url": "#"
 				},
 				{
 					"name": "Registration",
@@ -370,7 +370,7 @@
 					"url": "https://sitcon.org/podcast"
 				},
 				{
-					"name": "Hall of Frame",
+					"name": "Hackers",
 					"url": "https://sitcon.org/hacker/"
 				}
 			]
