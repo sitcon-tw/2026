@@ -2,21 +2,89 @@
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
 import { useTranslations } from "@/utils/i18n";
+import AgendaTimeline from "@/components/agenda/AgendaTimeline.astro";
+import agendaData from "@/data/agenda.json";
 
 const lang = Astro.props.lang ?? "zh";
 const t = useTranslations(lang).agenda;
+
+// Parse agenda data - agenda.json should contain an array of agenda items
+const agendaItems = Array.isArray(agendaData) ? agendaData : [];
 ---
 
 <Layout title={lang === "en" ? "Agenda - SITCON 2026" : "議程表 - SITCON 2026"} lang={lang}>
 	<main>
-		<h1>{t.title}</h1>
+		<div class="agenda-header">
+			<h1 class="agenda-title">{lang === "en" ? "Agenda" : "議程表"}</h1>
+			<div class="agenda-legend">
+				<div class="legend-item">
+					<div class="legend-color keynote"></div>
+					<span>Keynote</span>
+				</div>
+				<div class="legend-item">
+					<div class="legend-color presentation"></div>
+					<span>Presentation</span>
+				</div>
+				<div class="legend-item">
+					<div class="legend-color espresso"></div>
+					<span>Espresso</span>
+				</div>
+			</div>
+		</div>
+		<AgendaTimeline items={agendaItems} lang={lang} />
 	</main>
 	<Footer />
 </Layout>
 
 <style>
 	main {
-		min-height: 100vh;
-		padding: 5rem 2rem 2rem;
+		padding: 0;
+	}
+
+	.agenda-header {
+		text-align: center;
+		margin-top: 7rem;
+	}
+
+	.agenda-title {
+		font-size: 4rem;
+		color: white;
+		font-weight: bold;
+		margin-bottom: 1.5rem;
+	}
+
+	.agenda-legend {
+		display: flex;
+		justify-content: center;
+		gap: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.legend-item {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.legend-color {
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 0.25rem;
+	}
+
+	.legend-color.keynote {
+		background-color: #8d5e00;
+	}
+
+	.legend-color.presentation {
+		background-color: #484848;
+	}
+
+	.legend-color.espresso {
+		background-color: #bababa;
+	}
+
+	.legend-color.generic {
+		background-color: #1d1d1d;
 	}
 </style>

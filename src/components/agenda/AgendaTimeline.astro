@@ -1,0 +1,633 @@
+---
+import SessionBlock from "./SessionBlock.astro";
+import { Guitar } from "@lucide/astro";
+
+interface AgendaItem {
+	type: string;
+	venue: string;
+	name: string;
+	description: string;
+	speakers: string[];
+	tags: string[];
+	startTime: string; // ISO 8601 format with GMT+8 timezone (e.g., "2024-03-28T09:00:00+08:00")
+	extended?: boolean; // For keynote
+	endTime?: string; // ISO 8601 format with GMT+8 timezone, for generic type (e.g., "2024-03-28T09:15:00+08:00")
+}
+
+interface Props {
+	items: AgendaItem[];
+	lang?: "zh" | "en";
+}
+
+const { items, lang = "zh" } = Astro.props;
+
+// Parse ISO 8601 string to timestamp (milliseconds)
+function parseTime(isoString: string): number {
+	const date = new Date(isoString);
+	if (isNaN(date.getTime())) {
+		throw new Error(`Invalid ISO 8601 date string: ${isoString}`);
+	}
+	return date.getTime();
+}
+
+// Calculate duration based on type
+function getDuration(item: AgendaItem): number {
+	// For generic type, use endTime if provided, otherwise default to 40 minutes
+	if (item.type === "generic" && item.endTime) {
+		const startTimestamp = parseTime(item.startTime);
+		const endTimestamp = parseTime(item.endTime);
+		const durationMs = endTimestamp - startTimestamp;
+		return Math.max(0, durationMs / (60 * 1000)); // Convert to minutes
+	}
+	if (item.type === "espresso") return 10; // 10 minutes
+	if (item.type === "keynote") {
+		return item.extended ? 90 : 40; // 90 or 40 minutes
+	}
+	if (item.type === "generic") return 40; // generic: default 40 minutes if no endTime
+	return 40; // presentation: 40 minutes
+}
+
+// Define all possible venues (always show all, even if empty)
+const venues = ["R0", "R1", "R2", "R3", "S"];
+
+// Get all unique time slots
+const allTimes = new Set<number>();
+items.forEach(item => {
+	const startTimestamp = parseTime(item.startTime);
+	allTimes.add(startTimestamp);
+	// For generic type with endTime, use endTime directly; otherwise calculate from duration
+	const endTime = item.type === "generic" && item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
+	allTimes.add(endTime);
+});
+const sortedTimes = Array.from(allTimes).sort((a, b) => a - b);
+
+// Find min and max times (with fallback for empty data)
+let minTime: number;
+let maxTime: number;
+let timeLabels: number[] = [];
+
+if (sortedTimes.length > 0) {
+	minTime = Math.min(...sortedTimes);
+	maxTime = Math.max(...sortedTimes);
+
+	// Generate time labels (every 15 minutes)
+	const startOfDay = new Date(minTime);
+	startOfDay.setHours(8, 30, 0, 0); // Start from 8:30 AM
+	const endOfDay = new Date(maxTime);
+	endOfDay.setHours(18, 0, 0, 0); // End at 6:00 PM
+
+	let currentTime = new Date(startOfDay);
+	while (currentTime <= endOfDay) {
+		timeLabels.push(currentTime.getTime());
+		currentTime = new Date(currentTime.getTime() + 15 * 60 * 1000);
+	}
+} else {
+	// Fallback for empty data
+	minTime = new Date().setHours(8, 30, 0, 0);
+	maxTime = new Date().setHours(18, 0, 0, 0);
+}
+
+// Format time for display
+function formatTime(timestamp: number): string {
+	const date = new Date(timestamp);
+	const hours = date.getHours().toString().padStart(2, "0");
+	const minutes = date.getMinutes().toString().padStart(2, "0");
+	return `${hours}:${minutes}`;
+}
+
+// Get current time
+const now = Date.now();
+---
+
+<div class="agenda-timeline-container" id="agenda-timeline">
+	<div class="agenda-content-wrapper">
+		<div class="agenda-scroll-container" id="agenda-scroll">
+			<div class="agenda-timeline" id="agenda-timeline-inner" data-min-time={minTime} data-max-time={maxTime} style="--time-scale: 1;">
+				<div class="time-axis">
+					{
+						timeLabels.map(time => (
+							<div class="time-marker" style={`left: ${((time - minTime) / (maxTime - minTime)) * 100}%`}>
+								<span class="time-label">{formatTime(time)}</span>
+							</div>
+						))
+					}
+					<div class="current-time-indicator" style={`left: ${((now - minTime) / (maxTime - minTime)) * 100}%`} id="current-time-indicator">
+						<div class="indicator-triangle"></div>
+						<div class="indicator-line"></div>
+					</div>
+				</div>
+
+				<div class="venue-tracks">
+					<div class="time-lines-overlay">
+						{timeLabels.map(time => <div class="time-line" style={`left: ${((time - minTime) / (maxTime - minTime)) * 100}%`} />)}
+						<div class="current-time-line" style={`left: ${((now - minTime) / (maxTime - minTime)) * 100}%`} id="current-time-line">
+							<div class="indicator-line-extended"></div>
+							<div class="indicator-triangle-extended"></div>
+						</div>
+					</div>
+					{
+						items.filter(item => item.type === "generic").length > 0 && (
+							<div class="generic-sessions-overlay">
+								{items
+									.filter(item => item.type === "generic")
+									.map(item => {
+										const startTimestamp = parseTime(item.startTime);
+										// For generic type with endTime, use endTime directly; otherwise calculate from duration
+										const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
+										const startPercent = ((startTimestamp - minTime) / (maxTime - minTime)) * 100;
+										const widthPercent = ((endTimestamp - startTimestamp) / (maxTime - minTime)) * 100;
+										return <SessionBlock type={item.type} name={item.name} speakers={item.speakers} tags={item.tags} leftPercent={startPercent} widthPercent={widthPercent} />;
+									})}
+							</div>
+						)
+					}
+					{
+						venues.map(venue => (
+							<div class="venue-track" data-venue={venue}>
+								<div class="venue-label">
+									<span>{venue}</span>
+									<Guitar class="venue-icon" />
+								</div>
+								<div class="venue-sessions">
+									{items
+										.filter(item => item.venue === venue && item.type !== "generic")
+										.map(item => {
+											const duration = getDuration(item);
+											const startTimestamp = parseTime(item.startTime);
+											const startPercent = ((startTimestamp - minTime) / (maxTime - minTime)) * 100;
+											const widthPercent = ((duration * 60 * 1000) / (maxTime - minTime)) * 100;
+											return <SessionBlock type={item.type} name={item.name} speakers={item.speakers} tags={item.tags} leftPercent={startPercent} widthPercent={widthPercent} />;
+										})}
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="scroll-controls">
+		<button class="scroll-btn scroll-left" id="scroll-left" aria-label="向左滾動">
+			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="m15 18-6-6 6-6"></path>
+			</svg>
+		</button>
+		<button class="scroll-btn scroll-right" id="scroll-right" aria-label="向右滾動">
+			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="m9 18 6-6-6-6"></path>
+			</svg>
+		</button>
+		<div class="zoom-controls">
+			<button class="zoom-btn zoom-in" id="zoom-in" aria-label="放大">
+				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="11" cy="11" r="8"></circle>
+					<path d="m21 21-4.35-4.35"></path>
+					<path d="M11 8v6"></path>
+					<path d="M8 11h6"></path>
+				</svg>
+			</button>
+			<button class="zoom-btn zoom-out" id="zoom-out" aria-label="縮小">
+				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="11" cy="11" r="8"></circle>
+					<path d="m21 21-4.35-4.35"></path>
+					<path d="M8 11h6"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	const scrollContainer = document.getElementById("agenda-scroll");
+	const scrollLeftBtn = document.getElementById("scroll-left");
+	const scrollRightBtn = document.getElementById("scroll-right");
+	const zoomInBtn = document.getElementById("zoom-in");
+	const zoomOutBtn = document.getElementById("zoom-out");
+	const currentTimeIndicator = document.getElementById("current-time-indicator");
+	const currentTimeLine = document.getElementById("current-time-line");
+	const timelineElement = document.getElementById("agenda-timeline-inner");
+
+	if (!scrollContainer || !scrollLeftBtn || !scrollRightBtn) {
+		// Elements not found, likely no agenda items
+		console.warn("Agenda timeline elements not found");
+	}
+
+	// Zoom functionality - scales the time axis spacing and stretches session blocks
+	if (timelineElement && zoomInBtn && zoomOutBtn) {
+		let timeScale = 1;
+		const minZoom = 0.5;
+		const maxZoom = 3;
+		const zoomStep = 0.1;
+
+		const updateZoom = () => {
+			timelineElement.style.setProperty("--time-scale", timeScale.toString());
+		};
+
+		zoomInBtn.addEventListener("click", () => {
+			timeScale = Math.min(maxZoom, timeScale + zoomStep);
+			updateZoom();
+		});
+
+		zoomOutBtn.addEventListener("click", () => {
+			timeScale = Math.max(minZoom, timeScale - zoomStep);
+			updateZoom();
+		});
+	}
+
+	if (scrollContainer && scrollLeftBtn && scrollRightBtn) {
+		const scrollAmount = 300; // pixels per scroll
+
+		// Button scroll handlers
+		scrollLeftBtn.addEventListener("click", () => {
+			scrollContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+		});
+
+		scrollRightBtn.addEventListener("click", () => {
+			scrollContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
+		});
+
+		// Mouse wheel and touchpad scroll (horizontal)
+		scrollContainer.addEventListener(
+			"wheel",
+			e => {
+				// Check if horizontal scroll is intended (deltaX) or use vertical scroll as horizontal
+				const deltaX = e.deltaX || 0;
+				const deltaY = e.deltaY || 0;
+
+				// If there's horizontal delta, use it; otherwise convert vertical to horizontal
+				if (Math.abs(deltaX) > Math.abs(deltaY)) {
+					// Horizontal scroll
+					if (deltaX !== 0) {
+						e.preventDefault();
+						scrollContainer.scrollBy({
+							left: deltaX,
+							behavior: "auto"
+						});
+					}
+				} else if (deltaY !== 0 && e.shiftKey) {
+					// Shift + vertical scroll = horizontal scroll
+					e.preventDefault();
+					scrollContainer.scrollBy({
+						left: deltaY,
+						behavior: "auto"
+					});
+				}
+			},
+			{ passive: false }
+		);
+
+		// Auto-scroll to current time on initial load only
+		let hasScrolledToCurrentTime = false;
+		const timeIndicator = currentTimeLine || currentTimeIndicator;
+		if (timeIndicator && !hasScrolledToCurrentTime) {
+			const indicatorLeft = timeIndicator.offsetLeft;
+			const containerWidth = scrollContainer.clientWidth;
+			const scrollPosition = indicatorLeft - containerWidth / 2;
+			scrollContainer.scrollTo({
+				left: Math.max(0, scrollPosition),
+				behavior: "smooth"
+			});
+			hasScrolledToCurrentTime = true;
+		}
+
+		// Update current time indicator position in background
+		const timelineElement = document.getElementById("agenda-timeline-inner");
+		if (timelineElement && currentTimeIndicator && currentTimeLine) {
+			const minTimeStr = timelineElement.dataset.minTime;
+			const maxTimeStr = timelineElement.dataset.maxTime;
+
+			if (minTimeStr && maxTimeStr) {
+				const minTime = parseInt(minTimeStr);
+				const maxTime = parseInt(maxTimeStr);
+
+				if (minTime && maxTime) {
+					const updateTimeIndicator = () => {
+						const now = Date.now();
+						const timeRange = maxTime - minTime;
+						if (timeRange > 0) {
+							const leftPercent = ((now - minTime) / timeRange) * 100;
+							const leftPercentStr = `${leftPercent}%`;
+
+							// Update both indicators without triggering scroll
+							currentTimeIndicator.style.left = leftPercentStr;
+							currentTimeLine.style.left = leftPercentStr;
+						}
+					};
+
+					// Update immediately and then every second
+					updateTimeIndicator();
+					setInterval(updateTimeIndicator, 1000);
+				}
+			}
+		}
+	}
+</script>
+
+<style>
+	.agenda-timeline-container {
+		width: 100%;
+		min-height: 100vh;
+		background-color: #a97c21;
+		color: #fff;
+		padding: 0 0;
+	}
+
+	.agenda-content-wrapper {
+		position: relative;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.agenda-scroll-container {
+		overflow-x: auto;
+		overflow-y: hidden;
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+		cursor: grab;
+	}
+
+	.agenda-scroll-container:active {
+		cursor: grabbing;
+	}
+
+	.agenda-scroll-container::-webkit-scrollbar {
+		height: 8px;
+	}
+
+	.agenda-scroll-container::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.agenda-scroll-container::-webkit-scrollbar-thumb {
+		background-color: rgba(255, 255, 255, 0.3);
+		border-radius: 4px;
+	}
+
+	.agenda-timeline {
+		position: relative;
+		min-width: calc(100% * var(--time-scale, 1));
+		padding-top: 2rem;
+		transition: min-width 0.3s ease-in-out;
+	}
+
+	.time-axis {
+		position: relative;
+		height: 3rem;
+		margin-left: 12rem;
+	}
+
+	.time-marker {
+		position: absolute;
+		top: 0;
+		height: 100%;
+	}
+
+	.time-label {
+		position: absolute;
+		top: 0.5rem;
+		left: 0;
+		transform: translateX(-50%);
+		font-size: 0.875rem;
+		color: #fff;
+		white-space: nowrap;
+	}
+
+	.current-time-indicator {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		z-index: 10;
+		pointer-events: none;
+		transform: translateX(-50%);
+	}
+
+	.indicator-line {
+		width: 2px;
+		height: 100%;
+		background-color: #fff;
+		margin: 0 auto;
+	}
+
+	.indicator-triangle {
+		width: 0;
+		height: 0;
+		border-left: 12px solid transparent;
+		border-right: 12px solid transparent;
+		border-top: 22px solid #fff;
+		margin: 0 auto;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: 2.8rem;
+	}
+
+	.venue-tracks {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		position: relative;
+	}
+
+	.time-lines-overlay {
+		position: absolute;
+		top: 0;
+		left: 12rem;
+		right: 0;
+		bottom: 0;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.time-line {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 1px;
+		background-color: rgba(255, 255, 255, 0.3);
+		pointer-events: none;
+		transform: translateX(-50%);
+	}
+
+	.current-time-line {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 2px;
+		z-index: 10;
+		pointer-events: none;
+		transform: translateX(-50%);
+	}
+
+	.indicator-line-extended {
+		width: 2px;
+		height: 100%;
+		background-color: #fff;
+		margin: 0 auto;
+	}
+
+	.indicator-triangle-extended {
+		width: 0;
+		height: 0;
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		border-top: 12px solid #fff;
+		margin: 0 auto;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: -12px;
+	}
+
+	.venue-track {
+		display: flex;
+		position: relative;
+		min-height: 8rem;
+	}
+
+	.venue-label {
+		width: 12rem;
+		display: flex;
+		align-items: center;
+		justify-content: end;
+		gap: 0.5rem;
+		font-size: 2.2rem;
+		font-weight: bold;
+		position: sticky;
+		left: 0;
+		background-color: #242627;
+		z-index: 5;
+		padding: 0.5rem;
+		border-right: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.venue-icon {
+		width: 2rem;
+		height: 2rem;
+		flex-shrink: 0;
+		margin-left: 1rem;
+		margin-right: 2rem;
+	}
+
+	.venue-sessions {
+		flex: 1;
+		position: relative;
+		min-height: 8rem;
+	}
+
+	.generic-sessions-overlay {
+		position: absolute;
+		top: 0;
+		left: 12rem;
+		right: 0;
+		bottom: 0;
+		pointer-events: none;
+		z-index: 2;
+	}
+
+	.generic-sessions-overlay :global(.session-block) {
+		pointer-events: auto;
+		top: 0.5rem;
+		bottom: 0.5rem;
+		height: auto;
+	}
+
+	.scroll-controls {
+		position: absolute;
+		bottom: 1rem;
+		right: 2rem;
+		display: flex;
+		gap: 0.5rem;
+		z-index: 20;
+		align-items: center;
+	}
+
+	.zoom-controls {
+		display: flex;
+		gap: 0.5rem;
+		margin-left: 0.5rem;
+		padding-left: 0.5rem;
+		border-left: 1px solid rgba(255, 255, 255, 0.3);
+	}
+
+	.scroll-btn {
+		width: 2.3rem;
+		height: 2.3rem;
+		border-radius: 0%;
+		background-color: black;
+		border: 1px solid black;
+		color: #fff;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition:
+			background-color 0.2s,
+			transform 0.2s;
+	}
+
+	.scroll-btn:hover {
+		background-color: black;
+		transform: scale(1.05);
+	}
+
+	.scroll-btn:active {
+		transform: scale(0.95);
+	}
+
+	.zoom-btn {
+		width: 2.3rem;
+		height: 2.3rem;
+		border-radius: 0%;
+		background-color: black;
+		border: 1px solid black;
+		color: #fff;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition:
+			background-color 0.2s,
+			transform 0.2s;
+	}
+
+	.zoom-btn:hover {
+		background-color: black;
+		transform: scale(1.05);
+	}
+
+	.zoom-btn:active {
+		transform: scale(0.95);
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 5rem 2rem;
+		color: rgba(255, 255, 255, 0.7);
+		font-size: 1.25rem;
+	}
+
+	@media (max-width: 768px) {
+		.agenda-title {
+			font-size: 2.5rem;
+		}
+
+		.agenda-legend {
+			gap: 1rem;
+		}
+
+		.venue-label {
+			width: 3rem;
+			font-size: 1rem;
+		}
+
+		.scroll-controls {
+			bottom: 1rem;
+			right: 1rem;
+		}
+
+		.scroll-btn {
+			width: 2.5rem;
+			height: 2.5rem;
+		}
+	}
+</style>
