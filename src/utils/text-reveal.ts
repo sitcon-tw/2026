@@ -77,7 +77,6 @@ const splitTextIntoLines = (element: HTMLElement): void => {
 	const split = SplitText.create(element, {
 		type: "lines",
 		mask: "lines",
-		autoSplit: true,
 
 		prepareText: (text: string) => {
 			return text.replace(CJK, m => m + ZWSP);
