@@ -92,8 +92,25 @@ const { id = "member-info-modal" } = Astro.props;
 				if (posEl) posEl.textContent = `${team} ● ${position}` || "";
 				if (descEl) {
 					// 將 \n 轉換成 <br> 以支援換行
-					const descText = (description || "").replace(/\\n/g, "\n").replace(/\n/g, "<br>");
-					descEl.innerHTML = descText;
+					const rawDesc = (description || "").replace(/\\n/g, "\n");
+
+					function sanitizeDesc(input: string) {
+						const withBr = input.replace(/\n/g, "<br>");
+						const scripts: string[] = [];
+						let textWithScriptTokens = withBr.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, m => {
+							scripts.push(m);
+							return `@@SCRIPT_TOKEN_${scripts.length - 1}@@`;
+						});
+						const escaped = textWithScriptTokens.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+						const restoredBr = escaped.replace(/&lt;br&gt;/g, "<br>");
+						const restoredScript = restoredBr.replace(/@@SCRIPT_TOKEN_(\d+)@@/g, (_, idx) => {
+							const scriptContent = scripts[Number(idx)];
+							return `${scriptContent.replace(/</g, "&lt;").replace(/>/g, "&gt;")}`;
+						});
+						return restoredScript;
+					}
+
+					descEl.innerHTML = sanitizeDesc(rawDesc);
 				}
 
 				// Update Avatar - 根據 mode 生成不同結構
@@ -404,7 +421,7 @@ const { id = "member-info-modal" } = Astro.props;
 	}
 
 	p {
-		max-width: 20rem;
+		max-width: 22rem;
 		padding-top: 3.75rem;
 		font-weight: 700;
 		line-height: 1.5;
