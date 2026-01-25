@@ -1,1 +1,68 @@
-{}
+[
+	{
+		"type": "generic",
+		"venue": "",
+		"name": "入場",
+		"description": "入場時間",
+		"speakers": [],
+		"tags": [],
+		"startTime": "2026-01-25T08:30:00+08:00",
+		"endTime": "2026-01-25T09:00:00+08:00"
+	},
+	{
+		"type": "generic",
+		"venue": "",
+		"name": "開幕",
+		"description": "開幕式",
+		"speakers": [],
+		"tags": [],
+		"startTime": "2026-01-25T09:00:00+08:00",
+		"endTime": "2026-01-25T09:10:00+08:00"
+	},
+	{
+		"type": "keynote",
+		"venue": "R0",
+		"name": "AI 時代人才新思維",
+		"description": "主題演講",
+		"speakers": ["葉天成 Benson"],
+		"tags": [],
+		"startTime": "2026-01-25T09:15:00+08:00",
+		"extended": false
+	},
+	{
+		"type": "presentation",
+		"venue": "R0",
+		"name": "創業開始的人生進階副本",
+		"description": "演講內容",
+		"speakers": ["胡凱莉 (Birdman)"],
+		"tags": [],
+		"startTime": "2026-01-25T10:00:00+08:00"
+	},
+	{
+		"type": "presentation",
+		"venue": "R0",
+		"name": "在系上建置 HPC(7) 服務的那檔事",
+		"description": "演講內容",
+		"speakers": ["工程師 Shawn"],
+		"tags": ["軟體開發", "新手適合"],
+		"startTime": "2026-01-25T10:55:00+08:00"
+	},
+	{
+		"type": "presentation",
+		"venue": "R1",
+		"name": "我怎麼開發出 3 天破萬人用的 Threads 分析?",
+		"description": "演講內容",
+		"speakers": ["工程師 Shawn"],
+		"tags": ["軟體開發", "新手適合"],
+		"startTime": "2026-01-25T10:55:00+08:00"
+	},
+	{
+		"type": "espresso",
+		"venue": "R2",
+		"name": "快速演講範例",
+		"description": "Espresso 演講",
+		"speakers": ["講者A"],
+		"tags": ["技術分享"],
+		"startTime": "2026-01-25T10:55:00+08:00"
+	}
+]
