@@ -1,0 +1,135 @@
+---
+interface SessionBlockProps {
+	type: string;
+	name: string;
+	speakers: string[];
+	tags: string[];
+	leftPercent: number;
+	widthPercent: number;
+}
+
+const { type, name, speakers, tags, leftPercent, widthPercent } = Astro.props;
+---
+
+<div class={`session-block ${type}`} style={`left: calc(${leftPercent}% + 0.25rem); width: calc(${widthPercent}% - 0.1rem)`}>
+	<div class="session-bookmark"></div>
+	<div class="session-content">
+		<div class="session-name">{name}</div>
+		<div class="session-info-wrapper">
+			{speakers.length > 0 && <div class="session-speaker">{speakers.join(", ")}</div>}
+			{
+				tags.length > 0 && (
+					<div class="session-tags">
+						{tags.map((tag: string) => (
+							<span class="session-tag">#{tag}</span>
+						))}
+					</div>
+				)
+			}
+		</div>
+	</div>
+</div>
+
+<style>
+	.session-block {
+		position: absolute;
+		top: 0.5rem;
+		height: calc(100% - 1rem);
+		border-radius: 0.5rem;
+		padding: 1rem;
+		overflow: hidden;
+		cursor: pointer;
+		transition:
+			transform 0.2s,
+			box-shadow 0.2s;
+		z-index: 1;
+		box-sizing: border-box;
+	}
+
+	.session-block:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+	}
+
+	.session-block.keynote {
+		background-color: #8d5e00;
+	}
+
+	.session-block.presentation {
+		background-color: #484848;
+	}
+
+	.session-block.espresso {
+		background-color: #bababa;
+		color: #3c2d0e;
+	}
+
+	.session-block.espresso .session-bookmark {
+		opacity: 0.5;
+	}
+
+	.session-block.generic {
+		background-color: #1d1d1d;
+		z-index: 3;
+	}
+
+	.session-bookmark {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.5rem;
+		width: 1.5rem;
+		height: 1.5rem;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z'/%3E%3C/svg%3E");
+		background-size: contain;
+		background-repeat: no-repeat;
+		opacity: 0.7;
+	}
+
+	.session-content {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.session-name {
+		font-size: 1rem;
+		font-weight: bold;
+		line-height: 1.3;
+	}
+
+	.session-speaker {
+		font-size: 0.875rem;
+		opacity: 0.9;
+	}
+
+	.session-info-wrapper {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	.session-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem;
+		margin-top: auto;
+	}
+
+	.session-tag {
+		font-size: 0.75rem;
+		color: #36ff62;
+	}
+
+	@media (max-width: 768px) {
+		.session-block {
+			padding: 0.75rem;
+		}
+
+		.session-name {
+			font-size: 0.875rem;
+		}
+	}
+</style>
