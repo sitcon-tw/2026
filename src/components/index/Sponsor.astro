@@ -29,10 +29,10 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 	<div class="content-wrapper">
 		<div class="top-tier-grid">
 			<div class="tier-item">
-				<h3 class="tier-title">{t.main}</h3>
+				<h3 class="tier-title" id="main">{t.main}</h3>
 				{
-					sponsors.main.map(s => (
-						<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.main} data-img={getLogo(s)} data-url={s.url}>
+					sponsors.main.map((s, idx) => (
+						<button class="logo-box center-box sponsor-trigger" data-id={`main-${idx}`} data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.main} data-img={getLogo(s)} data-url={s.url}>
 							<img src={getLogo(s)} alt={getTitle(s)} />
 						</button>
 					))
@@ -40,11 +40,11 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			</div>
 
 			<div class="tier-item">
-				<h3 class="tier-title">{t.cohost}</h3>
+				<h3 class="tier-title" id="cohost">{t.cohost}</h3>
 				<div class="logo-row-2">
 					{
-						sponsors.cohost.map(s => (
-							<button class="logo-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.cohost} data-img={getLogo(s)} data-url={s.url}>
+						sponsors.cohost.map((s, idx) => (
+							<button class="logo-box sponsor-trigger" data-id={`cohost-${idx}`} data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.cohost} data-img={getLogo(s)} data-url={s.url}>
 								<img src={getLogo(s)} alt={getTitle(s)} />
 							</button>
 						))
@@ -53,10 +53,10 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			</div>
 
 			<div class="tier-item">
-				<h3 class="tier-title">{t.organizer}</h3>
+				<h3 class="tier-title" id="organizer">{t.organizer}</h3>
 				{
-					sponsors.organizer.map(s => (
-						<button class="logo-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.organizer} data-img={getLogo(s)} data-url={s.url}>
+					sponsors.organizer.map((s, idx) => (
+						<button class="logo-box sponsor-trigger" data-id={`organizer-${idx}`} data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.organizer} data-img={getLogo(s)} data-url={s.url}>
 							<img src={getLogo(s)} alt={getTitle(s)} />
 						</button>
 					))
@@ -86,11 +86,19 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			}
 		</div> -->
 
-		<h3 class="tier-title text-reveal-title">{t.sponsorVisionary}</h3>
+		<h3 class="tier-title text-reveal-title" id="sponsorVisionary">{t.sponsorVisionary}</h3>
 		<div class="main-grid">
 			{
-				sponsors.sponsorVisionary.map(s => (
-					<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.sponsorVisionary} data-img={getLogo(s)} data-url={s.url}>
+				sponsors.sponsorVisionary.map((s, idx) => (
+					<button
+						class="logo-box center-box sponsor-trigger"
+						data-id={`sponsorVisionary-${idx}`}
+						data-name={getTitle(s)}
+						data-desc={getDesc(s)}
+						data-type={t.sponsorVisionary}
+						data-img={getLogo(s)}
+						data-url={s.url}
+					>
 						<img src={getLogo(s)} alt={getTitle(s)} />
 					</button>
 				))
@@ -185,6 +193,7 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			font-weight: bold;
 			margin-bottom: 2rem;
 			color: #222;
+			scroll-margin-top: 5rem;
 		}
 
 		.logo-box {
@@ -533,6 +542,11 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				if (!dialog) return;
 				dialog.classList.add("closing");
 
+				// Clear URL hash
+				if (window.location.hash) {
+					history.pushState(null, "", window.location.pathname + window.location.search);
+				}
+
 				dialog.addEventListener(
 					"animationend",
 					() => {
@@ -543,22 +557,31 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				);
 			};
 
+			const openSponsorDialog = (trigger: HTMLElement) => {
+				if (!dialog) return;
+				const { name, desc, type, img, url, id } = trigger.dataset;
+
+				if (dialogTitle) dialogTitle.textContent = name ?? null;
+				if (dialogDesc) dialogDesc.innerHTML = desc ?? "";
+				if (dialogType) dialogType.textContent = type ?? null;
+				if (dialogImg && img) dialogImg.src = img;
+				if (visitBtn) {
+					visitBtn.href = url || "#";
+					visitBtn.style.display = url ? "inline-block" : "none";
+				}
+
+				// Update URL hash
+				if (id) {
+					history.pushState(null, "", `#${id}`);
+				}
+
+				dialog.showModal();
+			};
+
 			const documentClickHandler = (e: Event) => {
 				const trigger = (e.target as Element)?.closest(".sponsor-trigger") as HTMLElement | null;
-
-				if (trigger && dialog) {
-					const { name, desc, type, img, url } = trigger.dataset;
-
-					if (dialogTitle) dialogTitle.textContent = name ?? null;
-					if (dialogDesc) dialogDesc.innerHTML = desc ?? "";
-					if (dialogType) dialogType.textContent = type ?? null;
-					if (dialogImg && img) dialogImg.src = img;
-					if (visitBtn) {
-						visitBtn.href = url || "#";
-						visitBtn.style.display = url ? "inline-block" : "none";
-					}
-
-					dialog.showModal();
+				if (trigger) {
+					openSponsorDialog(trigger);
 				}
 			};
 
@@ -584,10 +607,37 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				dialog.addEventListener("click", dialogClickHandler);
 			}
 
+			// Handle hash change (browser back/forward)
+			const hashChangeHandler = () => {
+				const hash = window.location.hash.slice(1);
+				if (hash && dialog && !dialog.open) {
+					const trigger = container.querySelector(`[data-id="${hash}"]`) as HTMLElement | null;
+					if (trigger) {
+						openSponsorDialog(trigger);
+					}
+				} else if (!hash && dialog?.open) {
+					closeDialogAnim();
+				}
+			};
+
+			window.addEventListener("hashchange", hashChangeHandler);
+
+			// Check initial hash on load
+			const initialHash = window.location.hash.slice(1);
+			if (initialHash) {
+				const trigger = container.querySelector(`[data-id="${initialHash}"]`) as HTMLElement | null;
+				if (trigger) {
+					// scroll to #sponsors
+					window.onload = () => document.getElementById("sponsors")?.scrollIntoView();
+					openSponsorDialog(trigger);
+				}
+			}
+
 			return () => {
 				document.removeEventListener("click", documentClickHandler);
 				if (closeBtn) closeBtn.removeEventListener("click", closeHandler);
 				if (dialog) dialog.removeEventListener("click", dialogClickHandler);
+				window.removeEventListener("hashchange", hashChangeHandler);
 				container.dataset.sponsorInit = "false";
 			};
 		};
