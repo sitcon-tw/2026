@@ -91,28 +91,20 @@
 	],
 	"sponsorVisionary": [
 		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
+			"logo": "zuso.png",
+			"title_zh": "ZUSO Generation 如梭世代",
 			"title_en": "",
-			"description_zh": "",
+			"description_zh": "ZUSO 如梭世代成立於 2019 年，是深耕臺灣的專業資安服務業者，團隊累積超過十年攻防實戰與威脅分析經驗，長期為多家企業提供高品質資安服務。我們專注於紅隊演練、滲透測試與資安顧問服務，協助企業驗證資安防護能力，並打造專屬的資安解決方案。同時，ZUSO 持續深耕臺灣資安人才培育，透過實習與實戰導向的學習計畫，帶領學生從理論走進真實攻防場域，為臺灣資安產業注入新世代能量，並共同守護臺灣的資訊安全。",
 			"description_en": "",
-			"url": ""
+			"url": "https://zuso.ai"
 		},
 		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
+			"logo": "t5.png",
+			"title_zh": "TeamT5 杜浦數位安全",
 			"title_en": "",
-			"description_zh": "",
+			"description_zh": "TeamT5 專注威脅情資與 EDR 研究，具 20 年 APT 與惡意程式分析經驗。並投入人才培育，每年辦理資安培訓營，且提供實習與學生社群支持。",
 			"description_en": "",
-			"url": ""
-		},
-		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
-			"title_en": "",
-			"description_zh": "",
-			"description_en": "",
-			"url": ""
+			"url": "https://teamt5.org/"
 		}
 	],
 	"sponsorNewSprout": [
