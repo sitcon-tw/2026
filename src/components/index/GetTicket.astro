@@ -1,7 +1,7 @@
 ---
 import { Plane, Users, CodeXml } from "@lucide/astro";
 import Danmaku from "./effects/Danmaku.astro";
-import danmakuData from "../../data/danmakuLines.json";
+import danmakuLines from "../../data/danmakuLines.json";
 import { useTranslations, type Lang } from "@/utils/i18n";
 
 interface Props {
@@ -54,8 +54,6 @@ const tickets = [
 		url: t.longDistance.url
 	}
 ];
-
-const danmakuLines: string[] = danmakuData.lines;
 ---
 
 <section id="get-ticket">
