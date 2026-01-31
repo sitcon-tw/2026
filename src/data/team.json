@@ -444,13 +444,14 @@
 	},
 	{
 		"name": "Abby",
-		"description": "",
+		"description": "SITCON 的籌備仰賴許多人的投入，能成為其中一份子感到很榮幸。希望大家在忙碌之餘，也能保有對社群的熱情。",
 		"teams": [
 			{
 				"name": "operations",
 				"role": "ops_registration"
 			}
-		]
+		],
+		"link": "https://www.instagram.com/tzuweiii_/"
 	},
 	{
 		"name": "yimang",
