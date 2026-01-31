@@ -444,13 +444,14 @@
 	},
 	{
 		"name": "Abby",
-		"description": "",
+		"description": "SITCON 的籌備仰賴許多人的投入，能成為其中一份子感到很榮幸。希望大家在忙碌之餘，也能保有對社群的熱情。",
 		"teams": [
 			{
 				"name": "operations",
 				"role": "ops_registration"
 			}
-		]
+		],
+		"link": "https://www.instagram.com/tzuweiii_/"
 	},
 	{
 		"name": "yimang",
@@ -690,7 +691,7 @@
 				"role": "ops_mobility"
 			}
 		],
-		"link": "blog.kuan.quest (之後會有東西😇）"
+		"link": "blog.kuan.quest"
 	},
 	{
 		"name": "小黑",
@@ -824,8 +825,7 @@
 				"name": "design",
 				"role": "member"
 			}
-		],
-		"link": "None"
+		]
 	},
 	{
 		"name": "花椰",
@@ -973,7 +973,7 @@
 	},
 	{
 		"name": "竺原",
-		"description": "一位高中聲，喜歡按下快門｜紀錄定格瞬間",
+		"description": "一位高中生，喜歡按下快門｜紀錄定格瞬間",
 		"teams": [
 			{
 				"name": "recording",
@@ -1061,14 +1061,15 @@
 	},
 	{
 		"name": "Wei",
-		"description": "SITCON 的籌備仰賴許多人的投入，能成為其中一份子感到很榮幸。希望大家在忙碌之餘，也能保有對社群的熱情。",
+		"description": "捕捉日常中不經意的美好",
 		"teams": [
 			{
 				"name": "recording",
 				"role": "member"
 			}
 		],
-		"link": "https://www.instagram.com/tzuweiii_/"
+		"link": "https://www.instagram.com/wei.pictures?igsh=M25idHlndnlueDVo&utm_source=qr",
+		"mode": "nobg"
 	},
 	{
 		"name": "阿智",
@@ -1399,7 +1400,8 @@
 				"name": "production",
 				"role": "agenda"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "小婕",
@@ -1487,7 +1489,7 @@
 	},
 	{
 		"name": "OsGa",
-		"description": "家有一隻狗叫 cookie，請不要偷我的 cookie\n",
+		"description": "家有一隻狗叫 cookie，請不要偷我的 cookie\n\n（左右张望）（没有人）给大家跳段街舞ጿጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿጿጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿኈቼዽጿ",
 		"teams": [
 			{
 				"name": "development",
@@ -1689,7 +1691,7 @@
 	},
 	{
 		"name": "阿公",
-		"description": "https://agong.tech/",
+		"description": "早安",
 		"teams": [
 			{
 				"name": "marketing",
