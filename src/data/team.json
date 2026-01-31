@@ -1068,7 +1068,8 @@
 				"role": "member"
 			}
 		],
-		"link": "https://www.instagram.com/wei.pictures?igsh=M25idHlndnlueDVo&utm_source=qr"
+		"link": "https://www.instagram.com/wei.pictures?igsh=M25idHlndnlueDVo&utm_source=qr",
+		"mode": "nobg"
 	},
 	{
 		"name": "阿智",
@@ -1399,7 +1400,8 @@
 				"name": "production",
 				"role": "agenda"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "小婕",
