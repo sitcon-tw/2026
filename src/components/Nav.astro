@@ -41,13 +41,9 @@ const alternateHref = `${alternatePrefix}${currentPath || "/"}`;
 				))
 			}
 
-			{
-				!isProd && (
-					<a href={alternateHref} class="nav-item lang-switch" aria-label={lang === "en" ? "切換至中文" : "Switch to English"}>
-						{lang === "en" ? "中文" : "EN"}
-					</a>
-				)
-			}
+			<!-- <a href={alternateHref} class="nav-item lang-switch" aria-label={lang === "en" ? "切換至中文" : "Switch to English"}>
+				{lang === "en" ? "中文" : "EN"}
+			</a> -->
 		</div>
 	</div>
 </nav>

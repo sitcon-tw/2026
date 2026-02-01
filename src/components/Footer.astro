@@ -32,13 +32,13 @@ const socialLinks = [
 			))
 		}
 	</div>
-	<img src="/2026/img/SITCON-hero.svg" alt="SITCON 2026" id="hero" />
+	<img src="/2026/img/SITCON-hero.svg" alt="SITCON 2026" class="largeLogo" />
 </footer>
 
 <style>
 	footer {
 		background-color: #ffd172;
-		color: #000;
+		color: #2b2e3a;
 		overflow-y: hidden;
 		position: relative;
 		z-index: 100;
@@ -70,15 +70,10 @@ const socialLinks = [
 		transform: scale(1.05);
 	}
 
-	a {
-		color: inherit;
-		text-decoration: none;
-	}
-
 	.info {
 		max-width: var(--max-width);
 		margin: 0 auto;
-		padding: 1rem 1rem 0;
+		padding: 2.5rem 2rem 0;
 		display: grid;
 		grid-template-columns: repeat(4, auto);
 		gap: 1.5rem;
@@ -90,11 +85,6 @@ const socialLinks = [
 		gap: 1.5rem;
 		white-space: pre-line;
 		line-height: 1.5;
-	}
-
-	.info-item h3 {
-		font-weight: bold;
-		color: #2b2e3a;
 	}
 
 	.info-item-links {
@@ -118,7 +108,7 @@ const socialLinks = [
 		gap: 1.5rem;
 	}
 
-	#hero {
+	.largeLogo {
 		display: flex;
 		max-width: var(--max-width);
 		width: 100%;

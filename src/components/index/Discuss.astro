@@ -10,7 +10,7 @@ const t = useTranslations(lang).discuss;
 const messages = t.messages;
 ---
 
-<section class="chat-section">
+<section id="discuss">
 	<div class="container">
 		<div class="chat-wrapper">
 			<div class="chat-mask">
@@ -35,7 +35,7 @@ const messages = t.messages;
 	section {
 		background-color: #ac782b;
 	}
-	.chat-section {
+	#discuss {
 		position: relative;
 		overflow: hidden;
 		padding: 0;
@@ -78,7 +78,7 @@ const messages = t.messages;
 		overflow: hidden;
 	}
 
-	.chat-section :global(.message-bubble) {
+	#discuss :global(.message-bubble) {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -88,11 +88,11 @@ const messages = t.messages;
 		will-change: transform, opacity;
 	}
 
-	.chat-section :global(.message-bubble.is-offset) {
+	#discuss :global(.message-bubble.is-offset) {
 		margin-left: 4rem;
 	}
 
-	.chat-section :global(.bubble-content) {
+	#discuss :global(.bubble-content) {
 		border-radius: 1.5rem;
 		padding: 1.1rem 1.6rem;
 		background: #c2a05a;
@@ -104,13 +104,13 @@ const messages = t.messages;
 		max-width: 22rem;
 	}
 
-	.chat-section :global(.bubble-tail) {
+	#discuss :global(.bubble-tail) {
 		margin-top: -2px;
 		margin-left: 1.5rem;
 		line-height: 0;
 	}
 
-	.chat-section :global(.bubble-tail svg) {
+	#discuss :global(.bubble-tail svg) {
 		width: 20px;
 		height: 18px;
 		display: block;
@@ -190,13 +190,13 @@ const messages = t.messages;
 			padding-left: 2rem;
 			min-width: auto;
 		}
-		.chat-section :global(.message-bubble.is-offset) {
+		#discuss :global(.message-bubble.is-offset) {
 			margin-left: 2.5rem;
 		}
 		.chat-mask {
 			height: 280px;
 		}
-		.chat-section :global(.bubble-content) {
+		#discuss :global(.bubble-content) {
 			max-width: 18rem;
 			font-size: 1.35rem;
 		}
@@ -230,21 +230,21 @@ const messages = t.messages;
 		.chat-stream {
 			align-items: center;
 		}
-		.chat-section :global(.message-bubble) {
+		#discuss :global(.message-bubble) {
 			max-width: 90%;
 		}
-		.chat-section :global(.message-bubble.is-offset) {
+		#discuss :global(.message-bubble.is-offset) {
 			margin-left: 0;
 		}
-		.chat-section :global(.bubble-content) {
+		#discuss :global(.bubble-content) {
 			font-size: 1.2rem;
 			padding: 0.85rem 1.3rem;
 			max-width: 80vw;
 		}
-		.chat-section :global(.bubble-tail) {
+		#discuss :global(.bubble-tail) {
 			margin-left: 1rem;
 		}
-		.chat-section :global(.bubble-tail svg) {
+		#discuss :global(.bubble-tail svg) {
 			width: 16px;
 			height: 14px;
 		}
@@ -359,7 +359,7 @@ const messages = t.messages;
 		}
 
 		const scrollTrigger = ScrollTrigger.create({
-			trigger: ".chat-section",
+			trigger: "#discuss",
 			start: "top bottom",
 			end: "bottom top",
 			onEnter: startLoop,
