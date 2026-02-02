@@ -1,7 +1,6 @@
 :root {
 	--max-width: 1400px;
 	--content-max-width: 1200px;
-	--white: #ffffff;
 	--black: #000000;
 	--coffee: #3c2d0e;
 	--silence-white: #f2f2f2;
@@ -36,7 +35,7 @@ html {
 
 body {
 	background-color: #a97c21;
-	color: var(--white);
+	color: var(--silence-white);
 	font-family: "GenKiGothicTW", sans-serif;
 	font-optical-sizing: auto;
 	font-size: 17px;
@@ -51,6 +50,7 @@ h5,
 h6 {
 	font-family: "GenKiMinTW", serif;
 	text-wrap: balance;
+	line-height: 1.2;
 }
 
 code,
@@ -58,8 +58,12 @@ pre {
 	font-family: "JetBrainsMono", monospace;
 }
 
+h1 {
+	font-size: 3rem;
+}
+
 h2 {
-	font-size: 4rem;
+	font-size: 5rem;
 }
 
 p {
@@ -77,6 +81,10 @@ a {
 	body {
 		font-size: 16px;
 	}
+
+	h2 {
+		font-size: 2.5rem;
+	}
 }
 
 /* i11y */
@@ -85,7 +93,7 @@ a {
 	top: -40px;
 	left: 0;
 	background: #000;
-	color: var(--white);
+	color: var(--silence-white);
 	padding: 8px 16px;
 	text-decoration: none;
 	z-index: 10000;
@@ -125,15 +133,9 @@ a {
 
 /* 保持原有的文字樣式 */
 .text-reveal-title .text-reveal-content {
-	font: inherit;
 	line-height: inherit;
 }
 
 .text-reveal-paragraph .text-reveal-content {
-	font: inherit;
 	line-height: inherit;
-}
-
-img {
-	/* background-color: red; */
 }

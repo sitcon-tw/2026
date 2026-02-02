@@ -106,7 +106,7 @@ const forum_url = "https://groups.google.com/g/sitcon-general/";
 	<main>
 		<div class="top">
 			<div class="top-left">
-				<h1 class="top-title text-reveal-title">{t.title}</h1>
+				<h1 class="text-reveal-title">{t.title}</h1>
 				<p class="top-text text-reveal-paragraph" set:html={t.description} />
 			</div>
 			<div class="top-right">
@@ -182,12 +182,6 @@ const forum_url = "https://groups.google.com/g/sitcon-general/";
 		padding: 5.5rem 0;
 		display: flex;
 		justify-content: space-between;
-	}
-
-	.top-title {
-		font-size: 4rem;
-		font-weight: 700;
-		margin-bottom: 3rem;
 	}
 
 	.top-text {

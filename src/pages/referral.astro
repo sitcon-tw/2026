@@ -59,7 +59,7 @@ const { referral } = i18n;
 		<div class="container">
 			<!-- Rewards Section -->
 			<section class="section">
-				<h2 class="section-title text-reveal-title">{referral.rewards.title}</h2>
+				<h2 class="text-reveal-title">{referral.rewards.title}</h2>
 
 				<!-- Lottery Rewards -->
 				<div class="reward-card">
@@ -135,7 +135,7 @@ const { referral } = i18n;
 
 			<!-- Fairness Section -->
 			<section class="section">
-				<h2 class="section-title text-reveal-title">{referral.fairness.title}</h2>
+				<h2 class="text-reveal-title">{referral.fairness.title}</h2>
 				<p class="fairness-description text-reveal-paragraph">{referral.fairness.description}</p>
 
 				<ul class="fairness-list">
@@ -291,7 +291,7 @@ const { referral } = i18n;
 	}
 
 	.content {
-		background-color: var(--white);
+		background-color: var(--silence-white);
 		color: var(--coffee);
 		font-family: "GenKiGothicTW", sans-serif;
 		padding: 4rem 2rem;
@@ -313,7 +313,7 @@ const { referral } = i18n;
 		border-bottom: none;
 	}
 
-	.section-title {
+	h2 {
 		font-size: clamp(2.5rem, 5vw, 3.5rem);
 		font-weight: bold;
 		margin-bottom: 2.5rem;
@@ -491,7 +491,7 @@ const { referral } = i18n;
 			padding-bottom: 2rem;
 		}
 
-		.section-title {
+		h2 {
 			font-size: 2rem;
 			margin-bottom: 1.5rem;
 		}
@@ -547,7 +547,7 @@ const { referral } = i18n;
 			display: none;
 		}
 
-		.section-title {
+		h2 {
 			font-size: 1.75rem;
 		}
 
