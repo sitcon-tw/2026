@@ -418,11 +418,17 @@ const { sections } = info;
 		max-width: none;
 		height: 100%;
 		max-height: none;
+		position: fixed;
 	}
 
 	.modal[open] {
 		display: grid;
 		place-items: center;
+	}
+	:root:has(dialog[open]),
+	body:has(dialog[open]) {
+		height: 100vh;
+		overflow: hidden;
 	}
 
 	.modal::backdrop {
@@ -435,7 +441,7 @@ const { sections } = info;
 		padding: 4rem;
 		border-radius: 1rem;
 		background: rgba(0, 0, 0, 0.44);
-		overflow: hidden;
+		margin: 1rem 0;
 	}
 
 	.modal-header {
