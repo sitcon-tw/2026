@@ -207,6 +207,29 @@ const showLeftPanel = hasAdImage;
 	const closeBtnMobile = document.getElementById("modal-close-mobile");
 	const shareBtn = document.getElementById("share-btn");
 
+	function unlockScroll() {
+		document.body.style.overflow = "";
+		document.documentElement.style.overflow = "";
+		document.body.style.position = "";
+		document.body.style.width = "";
+		document.body.style.top = "";
+		const scrollY = document.body.dataset.scrollY;
+		if (scrollY) {
+			window.scrollTo(0, parseInt(scrollY, 10));
+			delete document.body.dataset.scrollY;
+		}
+	}
+
+	function lockScroll() {
+		const scrollY = window.scrollY;
+		document.body.dataset.scrollY = String(scrollY);
+		document.body.style.position = "fixed";
+		document.body.style.top = `-${scrollY}px`;
+		document.body.style.width = "100%";
+		document.body.style.overflow = "hidden";
+		document.documentElement.style.overflow = "hidden";
+	}
+
 	function closeModal() {
 		if (!modal) return;
 		modal.classList.add("closing");
@@ -214,7 +237,7 @@ const showLeftPanel = hasAdImage;
 		const duration = isPhone ? 300 : 220;
 		setTimeout(() => {
 			modal.classList.remove("active", "closing", "bookmark-area-hovered");
-			document.body.style.overflow = "";
+			unlockScroll();
 			document.dispatchEvent(new CustomEvent("closeSessionModal"));
 		}, duration);
 	}
@@ -273,7 +296,7 @@ const showLeftPanel = hasAdImage;
 			ribbonEl.setAttribute("aria-hidden", ribbonEl.classList.contains("is-bookmarked") ? "false" : "true");
 		}
 		// Disable background scrolling when modal opens
-		document.body.style.overflow = "hidden";
+		lockScroll();
 	}) as EventListener);
 
 	function writeBookmarks(bookmarks: Set<string>) {
@@ -373,7 +396,7 @@ const showLeftPanel = hasAdImage;
 					onComplete: () => {
 						gsapLib?.set(container, { clearProps: "y" });
 						mod.classList.remove("active", "closing");
-						document.body.style.overflow = "";
+						unlockScroll();
 						document.dispatchEvent(new CustomEvent("closeSessionModal"));
 					}
 				});
@@ -418,7 +441,7 @@ const showLeftPanel = hasAdImage;
 	window.openSessionModal = () => {
 		if (modal) {
 			modal.classList.add("active");
-			document.body.style.overflow = "hidden";
+			lockScroll();
 		}
 	};
 </script>
@@ -564,8 +587,11 @@ const showLeftPanel = hasAdImage;
 	.modal-right-panel {
 		position: relative;
 		flex: 1;
+		display: flex;
+		flex-direction: column;
 		padding: 8rem 10rem 2rem 5rem;
-		overflow-y: auto;
+		max-height: 90%;
+		overflow: hidden;
 		background: #faf9f6;
 		border-radius: 2rem;
 	}
@@ -736,10 +762,13 @@ const showLeftPanel = hasAdImage;
 	}
 
 	.session-description {
+		flex: 1;
+		min-height: 0;
 		font-size: 1.1rem;
 		line-height: 1.8;
 		color: #333;
 		margin-bottom: 2rem;
+		overflow-y: auto;
 	}
 
 	.session-description :global(p) {
@@ -881,6 +910,7 @@ const showLeftPanel = hasAdImage;
 		.modal-right-panel {
 			padding: 2rem 1.5rem 5rem 1.5rem;
 			border-radius: 1rem 1rem 0 0;
+			overflow: hidden;
 		}
 
 		.session-title {
