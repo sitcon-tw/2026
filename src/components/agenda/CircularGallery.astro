@@ -211,7 +211,11 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 		transform: translateY(-50%) translateX(100%) scale(1.15);
 	}
 
-	.gallery-nav:active {
+	.gallery-nav--left:active {
+		transform: translateY(-50%) translateX(-100%) scale(0.95);
+	}
+
+	.gallery-nav--right:active {
 		transform: translateY(-50%) translateX(100%) scale(0.95);
 	}
 
