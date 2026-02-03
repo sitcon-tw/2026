@@ -195,6 +195,21 @@ const t = useTranslations(lang).landing;
 		height: 100%;
 		max-width: 100%;
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		header {
+			animation: none;
+			opacity: 1;
+		}
+
+		.cta-container {
+			transition: none;
+		}
+
+		.cta-text-layer {
+			transition: none;
+		}
+	}
 </style>
 
 <script>

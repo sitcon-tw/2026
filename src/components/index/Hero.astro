@@ -38,6 +38,13 @@ const lang = Astro.props.lang ?? "zh";
 		animation: fadeIn 2s ease-out forwards;
 	}
 
+	@media (prefers-reduced-motion: reduce) {
+		.bg-fixed {
+			animation: none;
+			opacity: 1;
+		}
+	}
+
 	@keyframes fadeIn {
 		from {
 			opacity: 0;
@@ -76,12 +83,21 @@ const lang = Astro.props.lang ?? "zh";
 
 	gsap.registerPlugin(ScrollTrigger);
 
+	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 	const initHeroBackground = () => {
 		const canvas = document.getElementById("bg-canvas") as HTMLCanvasElement | null;
 		const heroContainer = document.querySelector(".hero-container") as HTMLElement | null;
 		if (!canvas || !heroContainer) return () => {};
 		if (heroContainer.dataset.heroInit === "true") return () => {};
 		heroContainer.dataset.heroInit = "true";
+
+		// Skip complex 3D animation if user prefers reduced motion
+		if (prefersReducedMotion()) {
+			return () => {
+				heroContainer.dataset.heroInit = "false";
+			};
+		}
 
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);

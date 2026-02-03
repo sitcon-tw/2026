@@ -88,3 +88,13 @@ main {
 	min-height: 100vh;
 	position: relative;
 }
+
+@media (prefers-reduced-motion: reduce) {
+	.anchor-btn {
+		transition: none;
+	}
+
+	.anchor-btn:hover {
+		transform: none;
+	}
+}

@@ -129,4 +129,14 @@ const socialLinks = [
 			grid-template-columns: repeat(1, auto);
 		}
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.social a {
+			transition: none;
+		}
+
+		.info-item-links a {
+			transition: none;
+		}
+	}
 </style>

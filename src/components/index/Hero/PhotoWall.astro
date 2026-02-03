@@ -14,7 +14,7 @@ const images = [
 			images.map((img, index) => (
 				<div class={`photo-item item-${index}`}>
 					<div class="img-wrapper">
-						<img src={img.src} alt={img.alt} />
+						<img src={img.src} alt={img.alt} />{" "}
 					</div>
 				</div>
 			))
@@ -118,12 +118,20 @@ const images = [
 
 	gsap.registerPlugin(ScrollTrigger);
 
+	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 	const initPhotoWall = () => {
 		const container = document.querySelector(".photo-container") as HTMLElement | null;
 		const photoWall = document.querySelector(".photo-wall") as HTMLElement | null;
 		if (!container || !photoWall) return () => {};
 		if (photoWall.dataset.photoInit === "true") return () => {};
 		photoWall.dataset.photoInit = "true";
+
+		if (prefersReducedMotion()) {
+			return () => {
+				photoWall.dataset.photoInit = "false";
+			};
+		}
 
 		let animation: gsap.core.Tween | null = null;
 		let resizeTimeout: ReturnType<typeof setTimeout> | null = null;

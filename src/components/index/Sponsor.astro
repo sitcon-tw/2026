@@ -500,6 +500,44 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				padding: 3rem;
 			}
 		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.logo-box img {
+				transition: none;
+			}
+
+			.person-sponsor {
+				transition: none;
+				animation: none;
+			}
+
+			dialog[open] {
+				animation: none;
+				opacity: 1;
+				transform: scale(1);
+			}
+
+			dialog.closing {
+				animation: none;
+			}
+
+			dialog::backdrop {
+				animation: none;
+				background: rgba(0, 0, 0, 0.6);
+			}
+
+			dialog.closing::backdrop {
+				animation: none;
+			}
+
+			.visit-btn {
+				transition: none;
+			}
+
+			#close-dialog {
+				transition: none;
+			}
+		}
 	</style>
 
 	<script>

@@ -38,7 +38,11 @@ const uniqueId = `danmaku-${Math.random().toString(36).substring(2, 9)}`;
 </style>
 
 <script>
+	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 	const initDanmaku = () => {
+		if (prefersReducedMotion()) return () => {};
+
 		const containers = Array.from(document.querySelectorAll<HTMLElement>(".danmaku-container"));
 		if (containers.length === 0) return () => {};
 
