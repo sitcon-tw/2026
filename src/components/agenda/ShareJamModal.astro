@@ -32,7 +32,10 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 				<!-- Circular avatar bodies rendered by script -->
 			</div>
 		</div>
-		<div class="share-jam-footer">
+		<div class="share-jam-empty" id="share-jam-empty">
+			{lang === "en" ? "You haven't added any featured sessions yet!" : "你還沒有新增任何精選議程喔！"}
+		</div>
+		<div class="share-jam-footer" id="share-jam-footer">
 			<div class="share-jam-input-container">
 				<input type="text" class="share-jam-input" id="share-jam-input" placeholder={shareJamPlaceholder} autocomplete="off" />
 				<button type="button" class="share-jam-copy" id="share-jam-copy">
@@ -64,6 +67,8 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 	const cautionEl = document.getElementById("no-name-caution");
 	const copyBtn = document.getElementById("share-jam-copy");
 	const titleEl = document.getElementById("share-jam-title");
+	const emptyEl = document.getElementById("share-jam-empty");
+	const footerEl = document.getElementById("share-jam-footer");
 
 	function readBookmarks() {
 		try {
@@ -116,10 +121,21 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 		return urls;
 	}
 
-	function openShareJamModal() {
+	function updateShareJamContent() {
 		const sessions = getBookmarkedSessions();
-		if (sessions.length === 0) return;
-		if (!listEl || !modal || !physicsContainer) return;
+		const isEmpty = sessions.length === 0;
+
+		// Toggle visibility based on empty state
+		if (titleEl) titleEl.classList.toggle("hidden", isEmpty);
+		if (listEl) listEl.classList.toggle("hidden", isEmpty);
+		if (physicsWrap) physicsWrap.classList.toggle("hidden", isEmpty);
+		if (footerEl) footerEl.classList.toggle("hidden", isEmpty);
+		if (emptyEl) emptyEl.classList.toggle("hidden", !isEmpty);
+
+		if (isEmpty) {
+			stopPhysics?.();
+			return;
+		}
 
 		// Title
 		if (titleEl) {
@@ -127,16 +143,18 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 		}
 
 		// List: "{speaker} - {session-title}"
-		listEl.innerHTML = "";
-		sessions.forEach(s => {
-			const li = document.createElement("li");
-			li.textContent = `${s.speakerLabel} - ${s.name}`;
-			listEl.appendChild(li);
-		});
+		if (listEl) {
+			listEl.innerHTML = "";
+			sessions.forEach(s => {
+				const li = document.createElement("li");
+				li.textContent = `${s.speakerLabel} - ${s.name}`;
+				listEl.appendChild(li);
+			});
+		}
 
 		// Circular avatars with Cannon.js physics (delay so modal is laid out)
 		const avatars = getBookmarkedAvatars();
-		if (avatars.length > 0) {
+		if (avatars.length > 0 && physicsContainer) {
 			physicsWrap?.classList.remove("hidden");
 			requestAnimationFrame(() => {
 				initPhysicsCircles(physicsContainer, avatars);
@@ -144,6 +162,12 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 		} else {
 			physicsWrap?.classList.add("hidden");
 		}
+	}
+
+	function openShareJamModal() {
+		if (!modal) return;
+
+		updateShareJamContent();
 
 		modal.classList.add("active");
 		modal.setAttribute("aria-hidden", "false");
@@ -259,7 +283,7 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 				for (let i = 0; i < numCircles; i++) {
 					const sphereShape = new Sphere(radius);
 					// Start above the modal, staggered
-					const startX = radius + Math.random() * (worldWidth - radius * 2);
+					const startX = worldWidth - radius - Math.random() * (worldWidth / 2 - radius);
 					const startY = worldHeight + 2 + i * 2;
 					const body = new Body({
 						mass: 1,
@@ -371,6 +395,13 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 	});
 
 	document.addEventListener("openShareJamModal", () => openShareJamModal());
+
+	// Update content when bookmarks change while modal is open
+	document.addEventListener("bookmarksChanged", () => {
+		if (modal?.classList.contains("active")) {
+			updateShareJamContent();
+		}
+	});
 
 	// Phone: GSAP drag-to-dismiss on the handle
 	const PHONE_MQ = window.matchMedia("(max-width: 968px)");
@@ -490,6 +521,8 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 
 	.share-jam-container {
 		position: relative;
+		display: flex;
+		flex-direction: column;
 		background: #e8e4df;
 		border-radius: 1rem;
 		padding: 3.5rem;
@@ -498,6 +531,7 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 		overflow: hidden;
 		min-width: 60rem;
 		min-height: 30rem;
+		max-width: 70%;
 	}
 
 	.share-jam-close {
@@ -595,10 +629,30 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 		overflow-y: auto;
 		position: relative;
 		z-index: 5;
+		flex-grow: 1;
 	}
 
 	.share-jam-list li {
 		margin-bottom: 0.35rem;
+	}
+
+	.share-jam-empty {
+		display: none;
+		flex-grow: 1;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		color: #666;
+		font-size: 1.25rem;
+		padding: 2rem;
+	}
+
+	.share-jam-empty:not(.hidden) {
+		display: flex;
+	}
+
+	.hidden {
+		display: none !important;
 	}
 
 	/* :global() so styles apply to dynamically created physics circles */
@@ -652,8 +706,6 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-		align-items: left;
-		margin-top: 1rem;
 		flex-wrap: wrap;
 		position: relative;
 		z-index: 5;
@@ -788,6 +840,8 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			position: absolute;
+			bottom: 0;
 		}
 
 		.share-jam-drag-handle::before {

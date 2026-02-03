@@ -1,6 +1,6 @@
 ---
 import { marked } from "marked";
-import { Share2, X } from "@lucide/astro";
+import { Share2, X, Clock, MapPin } from "@lucide/astro";
 import adsData from "@/data/ads.json";
 
 interface Speaker {
@@ -118,11 +118,6 @@ const showLeftPanel = hasAdImage;
 			<button class="modal-close" id="modal-close" aria-label="Close">
 				<X size={24} />
 			</button>
-			<button class="modal-close-mobile" id="modal-close-mobile" aria-label="Close">
-				<X size={24} />
-				<span>{lang === "en" ? "Close" : "關閉"}</span>
-			</button>
-
 			<div class="session-header">
 				{
 					speakers.length > 0 && (
@@ -149,19 +144,22 @@ const showLeftPanel = hasAdImage;
 
 			<div class="session-meta">
 				<div class="meta-item">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<circle cx="12" cy="12" r="10"></circle>
-						<polyline points="12 6 12 12 16 14"></polyline>
-					</svg>
+					<Clock />
 					<span>{formatTime(startTime)} {endTime && `- ${formatTime(endTime)}`}</span>
 				</div>
 				<div class="meta-item">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-						<circle cx="12" cy="10" r="3"></circle>
-					</svg>
+					<MapPin />
 					<span>{venue}</span>
 				</div>
+				{
+					tags.length > 0 && (
+						<div class="session-tags">
+							{tags.map((tag: string) => (
+								<span class="session-tag">#{tag}</span>
+							))}
+						</div>
+					)
+				}
 			</div>
 
 			<div class="session-actions">
@@ -194,17 +192,11 @@ const showLeftPanel = hasAdImage;
 			</div>
 
 			<div class="session-description" set:html={description ? marked.parse(description) : ""} />
-
-			{
-				tags.length > 0 && (
-					<div class="session-tags">
-						{tags.map((tag: string) => (
-							<span class="session-tag">#{tag}</span>
-						))}
-					</div>
-				)
-			}
 		</div>
+		<button class="modal-close-mobile" id="modal-close-mobile" aria-label="Close">
+			<X size={24} />
+			<span>{lang === "en" ? "Close" : "關閉"}</span>
+		</button>
 	</div>
 </div>
 
@@ -280,6 +272,8 @@ const showLeftPanel = hasAdImage;
 			ribbonEl.classList.toggle("is-bookmarked", sessionId ? readBookmarks().has(sessionId) : false);
 			ribbonEl.setAttribute("aria-hidden", ribbonEl.classList.contains("is-bookmarked") ? "false" : "true");
 		}
+		// Disable background scrolling when modal opens
+		document.body.style.overflow = "hidden";
 	}) as EventListener);
 
 	function writeBookmarks(bookmarks: Set<string>) {
@@ -606,16 +600,20 @@ const showLeftPanel = hasAdImage;
 		display: none;
 		align-items: center;
 		justify-content: center;
+		gap: 0.5rem;
 		position: absolute;
-		margin: 0 2rem;
-		bottom: 3.5rem;
-		left: 0;
-		right: 0;
-		padding: 0.5rem;
+		bottom: 1.5rem;
+		left: 2rem;
+		right: 2rem;
+		padding: 0.75rem 1rem;
 		border: 0;
+		border-radius: 0.75rem;
 		background: #242627;
 		color: #fff;
-		transform: translateY(100%);
+		font-size: 1rem;
+		font-weight: 500;
+		z-index: 100;
+		cursor: pointer;
 	}
 
 	.session-header {
@@ -881,7 +879,7 @@ const showLeftPanel = hasAdImage;
 		}
 
 		.modal-right-panel {
-			padding: 2rem 1.5rem;
+			padding: 2rem 1.5rem 5rem 1.5rem;
 			border-radius: 1rem 1rem 0 0;
 		}
 
