@@ -1,0 +1,893 @@
+---
+import { marked } from "marked";
+import { Share2, X } from "@lucide/astro";
+import adsData from "@/data/ads.json";
+
+interface Speaker {
+	name: string;
+	avatar?: string;
+	description?: string;
+}
+
+interface Advertisement {
+	title?: string;
+	company?: string;
+	positions?: Array<{
+		title: string;
+		link?: string;
+	}>;
+	description?: string;
+	logo?: string;
+}
+
+interface SessionModalProps {
+	type: string;
+	name: string;
+	description?: string;
+	speakers: (string | Speaker)[];
+	tags: string[];
+	venue: string;
+	startTime: string;
+	endTime?: string;
+	slidoLink?: string;
+	slidesLink?: string;
+	notesLink?: string;
+	advertisement?: Advertisement;
+	lang?: "zh" | "en";
+}
+
+const { type, name, description = "", speakers, tags, venue, startTime, endTime, slidoLink, slidesLink, notesLink, lang = "zh" } = Astro.props;
+
+// Helper function to get speaker name
+function getSpeakerName(speaker: string | Speaker): string {
+	return typeof speaker === "string" ? speaker : speaker.name;
+}
+
+// Helper function to get speaker avatar
+function getSpeakerAvatar(speaker: string | Speaker): string | undefined {
+	return typeof speaker === "string" ? undefined : speaker.avatar;
+}
+
+// Format time for display
+function formatTime(isoString: string): string {
+	const date = new Date(isoString);
+	const hours = date.getHours().toString().padStart(2, "0");
+	const minutes = date.getMinutes().toString().padStart(2, "0");
+	return `${hours}:${minutes}`;
+}
+
+// Weighted random ad from ads.json: { name: possibility }. Desktop: name.webp, mobile: name-mobile.webp.
+const adsSchema = adsData as Record<string, number>;
+const adsEntries = Object.entries(adsSchema).filter(([, p]) => typeof p === "number" && p > 0);
+const accumulatedPossibility = adsEntries.reduce((sum, [, p]) => sum + p, 0);
+let selectedAdName: string | null = null;
+if (accumulatedPossibility > 0) {
+	let r = Math.random() * accumulatedPossibility;
+	for (const [name, possibility] of adsEntries) {
+		r -= possibility;
+		if (r <= 0) {
+			selectedAdName = name;
+			break;
+		}
+	}
+	if (selectedAdName === null && adsEntries.length > 0) {
+		selectedAdName = adsEntries[adsEntries.length - 1][0];
+	}
+}
+const hasAdImage = !!selectedAdName;
+const adImageDesktopSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}.webp` : null;
+const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobile.webp` : null;
+const showLeftPanel = hasAdImage;
+---
+
+<div class="session-modal" id="session-modal">
+	<div class="modal-overlay" id="modal-overlay"></div>
+	<div class="modal-container" id="modal-container">
+		{
+			hasAdImage && (
+				<div class="ad-image-content">
+					<img src={adImageMobileSrc} alt={`${selectedAdName} 橫式廣告`} class="ad-image" />
+					<img src={adImageDesktopSrc} alt={`${selectedAdName} 直式廣告`} class="ad-image-desktop" />
+				</div>
+			)
+		}
+		<div class="modal-right-panel full-width">
+			<div class="modal-drag-handle" id="modal-drag-handle" aria-hidden="true"></div>
+			<div class="modal-bookmark-area" id="modal-bookmark-area" aria-label="Bookmark session" role="button" tabindex="0"></div>
+			<div class="modal-bookmark-ribbon" id="modal-bookmark-ribbon" aria-hidden="true">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+					<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+				</svg>
+			</div>
+			<!-- <div class="session-video-section" id="session-video-section">
+                <div class="video-container" id="video-container">
+                    <div class="video-wrapper" id="video-wrapper">
+                        <iframe
+                            id="session-video"
+                            width="100%"
+                            height="100%"
+                            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                            class="session-video-iframe"
+                        ></iframe>
+                    </div>
+                </div>
+            </div> -->
+			<button class="modal-close" id="modal-close" aria-label="Close">
+				<X size={24} />
+			</button>
+			<button class="modal-close-mobile" id="modal-close-mobile" aria-label="Close">
+				<X size={24} />
+				<span>{lang === "en" ? "Close" : "關閉"}</span>
+			</button>
+
+			<div class="session-header">
+				{
+					speakers.length > 0 && (
+						<div class="speaker-info">
+							{speakers.map((speaker: string | Speaker, index: number) => {
+								const avatar = getSpeakerAvatar(speaker);
+								return (
+									<div class="speaker-item">
+										{avatar && <img src={avatar} alt={getSpeakerName(speaker)} class="speaker-avatar" />}
+										<span class="speaker-name">{getSpeakerName(speaker)}</span>
+									</div>
+								);
+							})}
+						</div>
+					)
+				}
+			</div>
+
+			<div class="session-type-badge">
+				{type === "keynote" ? "Keynote" : type === "presentation" ? "Presentation" : type === "undefined" ? (lang === "en" ? "Undefined" : "開放式") : type === "espresso" ? "Espresso" : ""}
+			</div>
+
+			<h1 class="session-title">{name}</h1>
+
+			<div class="session-meta">
+				<div class="meta-item">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<circle cx="12" cy="12" r="10"></circle>
+						<polyline points="12 6 12 12 16 14"></polyline>
+					</svg>
+					<span>{formatTime(startTime)} {endTime && `- ${formatTime(endTime)}`}</span>
+				</div>
+				<div class="meta-item">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+						<circle cx="12" cy="10" r="3"></circle>
+					</svg>
+					<span>{venue}</span>
+				</div>
+			</div>
+
+			<div class="session-actions">
+				{
+					slidoLink && (
+						<a href={slidoLink} target="_blank" rel="noopener noreferrer" class="action-btn">
+							<span>{lang === "en" ? "Ask Question" : "提問"}</span>
+						</a>
+					)
+				}
+				{
+					notesLink && (
+						<a href={notesLink} target="_blank" rel="noopener noreferrer" class="action-btn">
+							<span>{lang === "en" ? "Collaborative Notes" : "共筆"}</span>
+						</a>
+					)
+				}
+				{
+					slidesLink && (
+						<a href={slidesLink} target="_blank" rel="noopener noreferrer" class="action-btn">
+							<span>{lang === "en" ? "Presentation" : "簡報"}</span>
+						</a>
+					)
+				}
+				<button type="button" class="action-btn" id="share-btn">
+					<span>
+						<Share2 size={24} />
+					</span>
+				</button>
+			</div>
+
+			<div class="session-description" set:html={description ? marked.parse(description) : ""} />
+
+			{
+				tags.length > 0 && (
+					<div class="session-tags">
+						{tags.map((tag: string) => (
+							<span class="session-tag">#{tag}</span>
+						))}
+					</div>
+				)
+			}
+		</div>
+	</div>
+</div>
+
+<script>
+	const modal = document.getElementById("session-modal");
+	const overlay = document.getElementById("modal-overlay");
+	const closeBtn = document.getElementById("modal-close");
+	const closeBtnMobile = document.getElementById("modal-close-mobile");
+	const shareBtn = document.getElementById("share-btn");
+
+	function closeModal() {
+		if (!modal) return;
+		modal.classList.add("closing");
+		const isPhone = window.matchMedia("(max-width: 968px)").matches;
+		const duration = isPhone ? 300 : 220;
+		setTimeout(() => {
+			modal.classList.remove("active", "closing", "bookmark-area-hovered");
+			document.body.style.overflow = "";
+			document.dispatchEvent(new CustomEvent("closeSessionModal"));
+		}, duration);
+	}
+
+	if (closeBtn) {
+		closeBtn.addEventListener("click", closeModal);
+	}
+
+	if (closeBtnMobile) {
+		closeBtnMobile.addEventListener("click", closeModal);
+	}
+
+	if (overlay) {
+		overlay.addEventListener("click", closeModal);
+	}
+
+	if (shareBtn) {
+		shareBtn.addEventListener("click", async () => {
+			if (navigator.share) {
+				try {
+					await navigator.share({
+						title: document.querySelector(".session-title")?.textContent || "",
+						text: document.querySelector(".session-description")?.textContent || "",
+						url: window.location.href
+					});
+				} catch (err) {
+					console.log("Error sharing:", err);
+				}
+			} else {
+				// Fallback: copy to clipboard
+				navigator.clipboard.writeText(window.location.href);
+				alert("Link copied to clipboard!");
+			}
+		});
+	}
+
+	const BOOKMARKS_STORAGE_KEY = "sitcon2026:agendaBookmarks";
+	const ribbonEl = document.getElementById("modal-bookmark-ribbon");
+
+	function readBookmarks(): Set<string> {
+		try {
+			const raw = localStorage.getItem(BOOKMARKS_STORAGE_KEY);
+			if (!raw) return new Set();
+			const arr = JSON.parse(raw);
+			if (!Array.isArray(arr)) return new Set();
+			return new Set(arr.filter(x => typeof x === "string"));
+		} catch {
+			return new Set();
+		}
+	}
+
+	document.addEventListener("openSessionModal", ((e: CustomEvent) => {
+		const sessionId = e.detail?.id ?? "";
+		if (modal) modal.setAttribute("data-session-id", sessionId);
+		if (ribbonEl) {
+			ribbonEl.classList.toggle("is-bookmarked", sessionId ? readBookmarks().has(sessionId) : false);
+			ribbonEl.setAttribute("aria-hidden", ribbonEl.classList.contains("is-bookmarked") ? "false" : "true");
+		}
+	}) as EventListener);
+
+	function writeBookmarks(bookmarks: Set<string>) {
+		try {
+			localStorage.setItem(BOOKMARKS_STORAGE_KEY, JSON.stringify(Array.from(bookmarks)));
+		} catch {
+			// ignore
+		}
+	}
+
+	const bookmarkAreaEl = document.getElementById("modal-bookmark-area");
+	if (bookmarkAreaEl && ribbonEl && modal) {
+		bookmarkAreaEl.addEventListener("mouseenter", () => {
+			modal.classList.add("bookmark-area-hovered");
+		});
+		bookmarkAreaEl.addEventListener("mouseleave", () => {
+			modal.classList.remove("bookmark-area-hovered");
+		});
+		bookmarkAreaEl.addEventListener("click", ev => {
+			ev.preventDefault();
+			ev.stopPropagation();
+			const sessionId = modal.getAttribute("data-session-id") ?? "";
+			if (!sessionId) return;
+			const bookmarks = readBookmarks();
+			if (bookmarks.has(sessionId)) {
+				bookmarks.delete(sessionId);
+				writeBookmarks(bookmarks);
+				ribbonEl.classList.remove("is-bookmarked");
+				ribbonEl.setAttribute("aria-hidden", "true");
+			} else {
+				bookmarks.add(sessionId);
+				writeBookmarks(bookmarks);
+				ribbonEl.classList.add("is-bookmarked");
+				ribbonEl.setAttribute("aria-hidden", "false");
+			}
+			document.dispatchEvent(new CustomEvent("bookmarksChanged", { detail: { sessionId } }));
+		});
+	}
+
+	// Close on Escape key
+	document.addEventListener("keydown", e => {
+		if (e.key === "Escape" && modal?.classList.contains("active")) {
+			closeModal();
+		}
+	});
+
+	// Phone: GSAP drag-to-dismiss on the handle — preload GSAP so it's ready on first touch
+	const containerEl = document.getElementById("modal-container");
+	const handleEl = document.getElementById("modal-drag-handle");
+	const PHONE_MQ = window.matchMedia("(max-width: 968px)");
+	const DRAG_CLOSE_THRESHOLD = 80;
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	let gsapLib: any = null;
+	import("gsap").then(({ gsap }) => {
+		gsapLib = gsap;
+	});
+
+	function setupPhoneDrag() {
+		if (!containerEl || !handleEl || !modal) return;
+		const container = containerEl;
+		const handle = handleEl;
+		const mod = modal;
+		let startY = 0;
+		let currentY = 0;
+		let capturePointerId: number | null = null;
+		let isDragging = false;
+
+		function onPointerMove(e: PointerEvent) {
+			if (!isDragging || e.pointerId !== capturePointerId) return;
+			e.preventDefault();
+			const y = e.clientY;
+			currentY = Math.max(0, y - startY);
+			if (gsapLib) gsapLib.set(container, { y: currentY });
+		}
+
+		function onPointerUp(e: PointerEvent) {
+			if (e.pointerId !== capturePointerId) return;
+			isDragging = false;
+			document.removeEventListener("pointermove", onPointerMove);
+			document.removeEventListener("pointerup", onPointerUp);
+			document.removeEventListener("pointercancel", onPointerUp);
+			if (capturePointerId != null) handle.releasePointerCapture?.(capturePointerId);
+			container.classList.remove("dragging");
+
+			if (!gsapLib) {
+				// GSAP not loaded yet: snap back with CSS
+				container.style.transform = "";
+				return;
+			}
+			if (currentY >= DRAG_CLOSE_THRESHOLD) {
+				const height = container.getBoundingClientRect().height;
+				gsapLib.to(container, {
+					y: height,
+					duration: 0.25,
+					ease: "power2.in",
+					onComplete: () => {
+						gsapLib?.set(container, { clearProps: "y" });
+						mod.classList.remove("active", "closing");
+						document.body.style.overflow = "";
+						document.dispatchEvent(new CustomEvent("closeSessionModal"));
+					}
+				});
+			} else {
+				gsapLib.to(container, {
+					y: 0,
+					duration: 0.3,
+					ease: "power2.out",
+					onComplete: () => gsapLib?.set(container, { clearProps: "y" })
+				});
+			}
+		}
+
+		function onPointerDown(e: PointerEvent) {
+			if (!PHONE_MQ.matches || !mod.classList.contains("active")) return;
+			e.preventDefault();
+			e.stopPropagation();
+			startY = e.clientY;
+			currentY = 0;
+			capturePointerId = e.pointerId;
+			isDragging = true;
+			container.classList.add("dragging");
+			if (gsapLib) gsapLib.killTweensOf(container);
+			handle.setPointerCapture?.(e.pointerId);
+			document.addEventListener("pointermove", onPointerMove, { passive: false });
+			document.addEventListener("pointerup", onPointerUp, { once: true });
+			document.addEventListener("pointercancel", onPointerUp, { once: true });
+		}
+
+		handle.addEventListener("pointerdown", onPointerDown, { passive: false });
+	}
+
+	if (handleEl && containerEl) setupPhoneDrag();
+
+	// Expose function to open modal (for external use if needed)
+	declare global {
+		interface Window {
+			openSessionModal?: () => void;
+		}
+	}
+
+	window.openSessionModal = () => {
+		if (modal) {
+			modal.classList.add("active");
+			document.body.style.overflow = "hidden";
+		}
+	};
+</script>
+
+<style>
+	.session-modal {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1000;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		visibility: hidden;
+		opacity: 0;
+		transition:
+			visibility 0s linear 0.22s,
+			opacity 0.22s ease;
+		pointer-events: none;
+	}
+
+	.session-modal.active {
+		visibility: visible;
+		opacity: 1;
+		transition:
+			visibility 0s,
+			opacity 0.25s ease;
+		pointer-events: auto;
+	}
+
+	.session-modal.active.closing {
+		opacity: 0;
+		transition: opacity 0.22s ease;
+		pointer-events: none;
+	}
+
+	.modal-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.7);
+		backdrop-filter: blur(4px);
+		opacity: 0;
+		transition: opacity 0.25s ease;
+	}
+
+	.session-modal.active .modal-overlay {
+		opacity: 1;
+	}
+
+	.session-modal.active.closing .modal-overlay {
+		opacity: 0;
+		transition: opacity 0.22s ease;
+	}
+
+	.modal-container {
+		position: relative;
+		display: flex;
+		width: 90%;
+		max-width: 1200px;
+		max-height: 90vh;
+		border-radius: 1rem;
+		overflow: visible;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		z-index: 1001;
+		transform: scale(0.94) translateY(12px);
+		opacity: 0;
+		transition:
+			transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+			opacity 0.25s ease;
+		gap: 1rem;
+	}
+
+	.session-modal.active .modal-container {
+		transform: scale(1) translateY(0);
+		opacity: 1;
+	}
+
+	.session-modal.active.closing .modal-container {
+		transform: scale(0.96) translateY(8px);
+		opacity: 0;
+		transition:
+			transform 0.22s ease,
+			opacity 0.22s ease;
+	}
+
+	.modal-bookmark-area {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 10rem;
+		height: 9rem;
+		z-index: 2;
+		cursor: pointer;
+		border-radius: 0 0 0.5rem 0;
+	}
+
+	.modal-bookmark-ribbon {
+		position: absolute;
+		top: -1rem;
+		left: 0;
+		width: 10rem;
+		height: 10rem;
+		color: #b8a99a;
+		pointer-events: none;
+		z-index: 1;
+		opacity: 0;
+		transform: translateY(0%);
+		transition:
+			transform 0.3s ease,
+			opacity 0.25s ease;
+	}
+
+	/* Hover on bookmark area: small peak of ribbon */
+	.modal-container.bookmark-area-hovered .modal-bookmark-ribbon:not(.is-bookmarked) {
+		opacity: 0.35;
+	}
+
+	/* Bookmarked: ribbon scrolled down (fully visible) */
+	.modal-bookmark-ribbon.is-bookmarked {
+		opacity: 0.35;
+		transform: translateY(0);
+	}
+
+	.modal-bookmark-ribbon svg {
+		width: 100%;
+		height: 100%;
+		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
+	}
+
+	.ad-image {
+		display: none;
+	}
+
+	.ad-image-desktop {
+		border-radius: 2rem;
+	}
+
+	.modal-right-panel {
+		position: relative;
+		flex: 1;
+		padding: 8rem 10rem 2rem 5rem;
+		overflow-y: auto;
+		background: #faf9f6;
+		border-radius: 2rem;
+	}
+
+	.modal-right-panel.full-width {
+		width: 100%;
+	}
+
+	.modal-close {
+		position: absolute;
+		top: 3rem;
+		right: 3rem;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 50%;
+		background: rgba(0, 0, 0, 0.1);
+		border: none;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #333;
+		transition: background 0.2s;
+		z-index: 10;
+	}
+
+	.modal-close:hover {
+		background: rgba(0, 0, 0, 0.2);
+	}
+
+	.modal-close-mobile {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		margin: 0 2rem;
+		bottom: 3.5rem;
+		left: 0;
+		right: 0;
+		padding: 0.5rem;
+		border: 0;
+		background: #242627;
+		color: #fff;
+		transform: translateY(100%);
+	}
+
+	.session-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.speaker-info {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	.speaker-item {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.speaker-avatar {
+		width: 2rem;
+		height: 2rem;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	.speaker-name {
+		font-size: 1rem;
+		font-weight: 500;
+		color: #333;
+	}
+
+	.session-type-badge {
+		display: inline-block;
+		position: relative;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: #666;
+		margin-bottom: 0.5rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		z-index: 10;
+	}
+
+	.session-title {
+		position: relative;
+		font-family: "GenKiGothic2", sans-serif;
+		font-size: 3rem;
+		font-weight: bolder;
+		color: #1a1a1a;
+		margin-bottom: 1.5rem;
+		line-height: 1.2;
+		z-index: 10;
+	}
+
+	.session-meta {
+		display: flex;
+		gap: 2rem;
+		margin-bottom: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.meta-item {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 1rem;
+		color: #666;
+	}
+
+	.meta-item svg {
+		width: 1rem;
+		height: 1rem;
+	}
+
+	.session-actions {
+		display: flex;
+		gap: 1rem;
+		margin-bottom: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.session-actions :global(.action-btn) {
+		font-family: inherit;
+		border-radius: 1.5rem;
+		padding: 1rem 2rem;
+		font-size: 2rem;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		text-decoration: none;
+		font-weight: bold;
+		color: #635642;
+		background: linear-gradient(130deg, #e3d5b9 0%, #d2b37a 100%);
+		border: 1.5px solid #4f3723;
+		box-shadow: none;
+		transition:
+			transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+			box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		overflow: hidden;
+		position: relative;
+		z-index: 1;
+	}
+
+	.session-actions :global(.action-btn span) {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 1.25rem;
+	}
+
+	.session-actions :global(.action-btn:hover) {
+		transform: translateY(-0.1875rem);
+		box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.1);
+		border-color: #333333;
+	}
+
+	.session-description {
+		font-size: 1.1rem;
+		line-height: 1.8;
+		color: #333;
+		margin-bottom: 2rem;
+	}
+
+	.session-description :global(p) {
+		margin-bottom: 1rem;
+		font-weight: 500;
+	}
+
+	.session-description :global(h2) {
+		font-family: "GenKiGothic2", sans-serif;
+		font-weight: bolder;
+		font-size: 1.5rem;
+		margin-top: 1.5rem;
+		color: #1a1a1a;
+	}
+
+	.session-description :global(h3) {
+		font-size: 1.25rem;
+		margin-top: 1.25rem;
+		margin-bottom: 0.75rem;
+		color: #1a1a1a;
+	}
+
+	.session-tags {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.session-tag {
+		padding: 0.5rem 1rem;
+		background: rgba(54, 255, 98, 0.1);
+		color: #36ff62;
+		border-radius: 1rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+	}
+
+	/* Drag handle: hidden on desktop, shown on phone — base must come BEFORE media query */
+	.modal-drag-handle {
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 2.75rem;
+		min-height: 44px;
+		z-index: 20;
+		cursor: grab;
+		touch-action: none;
+		flex-shrink: 0;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.modal-drag-handle::before {
+		content: "";
+		position: absolute;
+		left: 50%;
+		top: 0.75rem;
+		transform: translateX(-50%);
+		width: 2.5rem;
+		height: 0.25rem;
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 999px;
+	}
+
+	.modal-drag-handle:active {
+		cursor: grabbing;
+	}
+
+	/* Phone: bottom sheet — full width, stick to bottom, slide up/down */
+	@media (max-width: 968px) {
+		.ad-image {
+			display: block;
+			width: 100%;
+			border-radius: 2rem;
+		}
+
+		.ad-image-desktop {
+			display: none;
+		}
+
+		.modal-close {
+			display: none;
+		}
+
+		.modal-close-mobile {
+			display: flex;
+		}
+
+		.session-modal {
+			align-items: flex-end;
+		}
+
+		.session-modal.active .modal-overlay {
+			transition: opacity 0.3s ease;
+		}
+
+		.session-modal.active.closing .modal-overlay {
+			transition: opacity 0.25s ease;
+		}
+
+		.modal-container {
+			flex-direction: column;
+			width: 100%;
+			max-width: none;
+			max-height: 92vh;
+			border-radius: 1rem 1rem 0 0;
+			box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
+			transform: translateY(100%);
+			opacity: 1;
+			transition:
+				transform 0.35s cubic-bezier(0.32, 0.72, 0, 1),
+				opacity 0.2s ease;
+		}
+
+		.session-modal.active .modal-container {
+			transform: translateY(0);
+		}
+
+		.session-modal.active.closing .modal-container {
+			transform: translateY(100%);
+			transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+		}
+
+		.modal-container.dragging {
+			transition: none;
+		}
+
+		.modal-drag-handle {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.modal-drag-handle::before {
+			background: rgba(0, 0, 0, 0.35);
+		}
+
+		.modal-right-panel {
+			padding: 2rem 1.5rem;
+			border-radius: 1rem 1rem 0 0;
+		}
+
+		.session-title {
+			font-size: 1.75rem;
+		}
+	}
+</style>
