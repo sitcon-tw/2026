@@ -22,4 +22,5 @@ declare module "@lucide/astro" {
 	export const Guitar: any;
 	export const Share2: any;
 	export const X: any;
+	export const TriangleAlert: any;
 }

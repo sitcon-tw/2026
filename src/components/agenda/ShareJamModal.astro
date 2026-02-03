@@ -1,0 +1,825 @@
+---
+interface Props {
+	lang?: "zh" | "en";
+	shareJamTitle?: string;
+	shareJamPlaceholder?: string;
+	shareJamCopy?: string;
+	shareJamCopied?: string;
+}
+
+import { TriangleAlert, X } from "@lucide/astro";
+
+const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "輸入匿名", shareJamCopy = "複製連結", shareJamCopied = "已複製！" } = Astro.props;
+---
+
+<div class="share-jam-modal" id="share-jam-modal" aria-hidden="true">
+	<div class="share-jam-overlay" id="share-jam-overlay"></div>
+	<div class="share-jam-container" id="share-jam-container">
+		<div class="share-jam-drag-handle" id="share-jam-drag-handle" aria-hidden="true"></div>
+		<button type="button" class="share-jam-close" id="share-jam-close" aria-label="Close">
+			<X size={24} />
+		</button>
+		<button type="button" class="share-jam-close-mobile" id="share-jam-close-mobile" aria-label="Close">
+			<X size={24} />
+			<span>{lang === "en" ? "Close" : "關閉"}</span>
+		</button>
+		<h2 class="share-jam-title" id="share-jam-title">{shareJamTitle}</h2>
+		<ul class="share-jam-list" id="share-jam-list" aria-label="Bookmarked sessions">
+			<!-- Populated by script from bookmarked sessions -->
+		</ul>
+		<div class="share-jam-physics-wrap" id="share-jam-physics-wrap" aria-hidden="true">
+			<div class="share-jam-physics-container" id="share-jam-physics-container">
+				<!-- Circular avatar bodies rendered by script -->
+			</div>
+		</div>
+		<div class="share-jam-footer">
+			<div class="share-jam-input-container">
+				<input type="text" class="share-jam-input" id="share-jam-input" placeholder={shareJamPlaceholder} autocomplete="off" />
+				<button type="button" class="share-jam-copy" id="share-jam-copy">
+					{shareJamCopy}
+				</button>
+			</div>
+			<div class="no-name-caution hidden" id="no-name-caution">
+				<TriangleAlert size={24} />
+				<span>
+					{lang === "en" ? "Please enter your name so others know who shared it with them~" : "請輸入你的名字，別人才知道是誰分享的呦～"}
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script define:vars={{ lang, shareJamTitle, shareJamPlaceholder, shareJamCopy, shareJamCopied }}>
+	const BOOKMARKS_STORAGE_KEY = "sitcon2026:agendaBookmarks";
+	const modal = document.getElementById("share-jam-modal");
+	const overlay = document.getElementById("share-jam-overlay");
+	const container = document.getElementById("share-jam-container");
+	const closeBtn = document.getElementById("share-jam-close");
+	const closeBtnMobile = document.getElementById("share-jam-close-mobile");
+	const dragHandle = document.getElementById("share-jam-drag-handle");
+	const listEl = document.getElementById("share-jam-list");
+	const physicsWrap = document.getElementById("share-jam-physics-wrap");
+	const physicsContainer = document.getElementById("share-jam-physics-container");
+	const inputEl = document.getElementById("share-jam-input");
+	const cautionEl = document.getElementById("no-name-caution");
+	const copyBtn = document.getElementById("share-jam-copy");
+	const titleEl = document.getElementById("share-jam-title");
+
+	function readBookmarks() {
+		try {
+			const raw = localStorage.getItem(BOOKMARKS_STORAGE_KEY);
+			if (!raw) return new Set();
+			const arr = JSON.parse(raw);
+			if (!Array.isArray(arr)) return new Set();
+			return new Set(arr.filter(x => typeof x === "string"));
+		} catch {
+			return new Set();
+		}
+	}
+
+	function getBookmarkedSessions() {
+		const bookmarks = readBookmarks();
+		if (bookmarks.size === 0) return [];
+		const blocks = document.querySelectorAll(".session-block");
+		const seenIds = new Set();
+		const result = [];
+		blocks.forEach(block => {
+			const bookmarkEl = block.querySelector(".session-bookmark.is-bookmarked");
+			if (!bookmarkEl) return;
+			const id = block.getAttribute("data-session-id");
+			const name = block.getAttribute("data-session-name");
+			if (!id || !name || seenIds.has(id)) return;
+			seenIds.add(id);
+			let speakers = [];
+			try {
+				const raw = block.getAttribute("data-session-speakers");
+				if (raw) speakers = JSON.parse(raw);
+			} catch {}
+			const speakerLabel = speakers.map(s => s.name).join(", ");
+			result.push({ id, name, speakerLabel, speakers });
+		});
+		return result;
+	}
+
+	function getBookmarkedAvatars() {
+		const sessions = getBookmarkedSessions();
+		const seenUrls = new Set();
+		const urls = [];
+		sessions.forEach(s => {
+			s.speakers.forEach(sp => {
+				if (sp.avatar && !seenUrls.has(sp.avatar)) {
+					seenUrls.add(sp.avatar);
+					urls.push(sp.avatar);
+				}
+			});
+		});
+		return urls;
+	}
+
+	function openShareJamModal() {
+		const sessions = getBookmarkedSessions();
+		if (sessions.length === 0) return;
+		if (!listEl || !modal || !physicsContainer) return;
+
+		// Title
+		if (titleEl) {
+			titleEl.textContent = shareJamTitle;
+		}
+
+		// List: "{speaker} - {session-title}"
+		listEl.innerHTML = "";
+		sessions.forEach(s => {
+			const li = document.createElement("li");
+			li.textContent = `${s.speakerLabel} - ${s.name}`;
+			listEl.appendChild(li);
+		});
+
+		// Circular avatars with Cannon.js physics (delay so modal is laid out)
+		const avatars = getBookmarkedAvatars();
+		if (avatars.length > 0) {
+			physicsWrap?.classList.remove("hidden");
+			requestAnimationFrame(() => {
+				initPhysicsCircles(physicsContainer, avatars);
+			});
+		} else {
+			physicsWrap?.classList.add("hidden");
+		}
+
+		modal.classList.add("active");
+		modal.setAttribute("aria-hidden", "false");
+		document.body.style.overflow = "hidden";
+	}
+
+	function closeShareJamModal() {
+		modal?.classList.remove("active");
+		modal?.setAttribute("aria-hidden", "true");
+		document.body.style.overflow = "";
+		stopPhysics?.();
+	}
+
+	let physicsWorld = null;
+	let circleBodies = [];
+	let circleEls = [];
+	let rafId = 0;
+	let stopPhysics = null;
+
+	function initPhysicsCircles(containerEl, avatarUrls) {
+		if (typeof stopPhysics === "function") stopPhysics();
+		containerEl.innerHTML = "";
+		circleBodies = [];
+		circleEls = [];
+		physicsWorld = null;
+		stopPhysics = null;
+
+		function showStaticFallback() {
+			const circleSizePx = 48;
+			avatarUrls.slice(0, 12).forEach((src, i) => {
+				const el = document.createElement("div");
+				el.className = "share-jam-circle share-jam-circle-static";
+				el.style.width = circleSizePx + "px";
+				el.style.height = circleSizePx + "px";
+				// Scatter circles at bottom area of modal
+				el.style.left = `${10 + (i % 5) * 18 + Math.random() * 5}%`;
+				el.style.top = `${55 + Math.floor(i / 5) * 18 + Math.random() * 5}%`;
+				el.style.transform = "translate(-50%, -50%)";
+				const img = document.createElement("img");
+				img.className = "share-jam-circle-img";
+				img.src = src;
+				img.alt = "";
+				el.appendChild(img);
+				containerEl.appendChild(el);
+			});
+		}
+
+		import("https://esm.sh/cannon-es@0.20.0")
+			.then(mod => {
+				const CANNON = mod.default || mod;
+				if (!CANNON || !CANNON.World) {
+					showStaticFallback();
+					return;
+				}
+				const World = CANNON.World;
+				const Body = CANNON.Body;
+				const Sphere = CANNON.Sphere;
+				const Plane = CANNON.Plane;
+				const Vec3 = CANNON.Vec3;
+				const Material = CANNON.Material;
+				const ContactMaterial = CANNON.ContactMaterial;
+
+				// Get physics container dimensions for physics world bounds
+				const physicsRect = containerEl.getBoundingClientRect();
+				const physicsWidth = physicsRect.width;
+				const physicsHeight = physicsRect.height;
+
+				// Physics world scale: 1 unit = physicsWidth/10 pixels
+				const worldWidth = 10;
+				const worldHeight = (physicsHeight / physicsWidth) * worldWidth;
+				const pxPerUnit = physicsWidth / worldWidth;
+
+				const world = new World({ gravity: new Vec3(0, -3, 0) });
+				physicsWorld = world;
+
+				// Materials for bouncy stacking
+				const sphereMat = new Material("sphere");
+				const wallMat = new Material("wall");
+				const sphereContact = new ContactMaterial(sphereMat, sphereMat, {
+					friction: 0.6,
+					restitution: 0.7 // Bouncy between spheres
+				});
+				const wallContact = new ContactMaterial(sphereMat, wallMat, {
+					friction: 1,
+					restitution: 0.5 // Bouncy off walls
+				});
+				world.addContactMaterial(sphereContact);
+				world.addContactMaterial(wallContact);
+
+				// Ground - on mobile, raised above footer
+				const groundBody = new Body({ mass: 0, shape: new Plane(), material: wallMat });
+				groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+				groundBody.position.set(0, 0, 0);
+				world.addBody(groundBody);
+
+				// Left wall at x=0
+				const leftWall = new Body({ mass: 0, shape: new Plane(), material: wallMat });
+				leftWall.quaternion.setFromEuler(0, Math.PI / 2, 0);
+				leftWall.position.set(0, 0, 0);
+				world.addBody(leftWall);
+
+				// Right wall at x=worldWidth
+				const rightWall = new Body({ mass: 0, shape: new Plane(), material: wallMat });
+				rightWall.quaternion.setFromEuler(0, -Math.PI / 2, 0);
+				rightWall.position.set(worldWidth, 0, 0);
+				world.addBody(rightWall);
+
+				const radius = 0.8;
+				const circleSizePx = Math.round(radius * 2 * pxPerUnit);
+				const numCircles = Math.min(avatarUrls.length, 12);
+				const dt = 1 / 60;
+
+				for (let i = 0; i < numCircles; i++) {
+					const sphereShape = new Sphere(radius);
+					// Start above the modal, staggered
+					const startX = radius + Math.random() * (worldWidth - radius * 2);
+					const startY = worldHeight + 2 + i * 2;
+					const body = new Body({
+						mass: 1,
+						shape: sphereShape,
+						position: new Vec3(startX, startY, 0),
+						material: sphereMat,
+						linearDamping: 0.1,
+						angularDamping: 0.1
+					});
+					// Constrain to 2D plane
+					body.linearFactor = new Vec3(1, 1, 0);
+					body.angularFactor = new Vec3(0, 0, 1);
+					world.addBody(body);
+					circleBodies.push(body);
+
+					const el = document.createElement("div");
+					el.className = "share-jam-circle share-jam-circle-physics";
+					el.style.width = circleSizePx + "px";
+					el.style.height = circleSizePx + "px";
+					el.style.left = `${(body.position.x / worldWidth) * 100}%`;
+					el.style.top = `${(1 - body.position.y / worldHeight) * 100}%`;
+					el.style.transform = "translate(-50%, -50%)";
+					const img = document.createElement("img");
+					img.src = avatarUrls[i];
+					img.alt = "";
+					img.loading = "lazy";
+					el.appendChild(img);
+					containerEl.appendChild(el);
+					circleEls.push(el);
+				}
+
+				let running = true;
+				const localWorldWidth = worldWidth;
+				const localWorldHeight = worldHeight;
+				function step() {
+					if (!running || !physicsWorld) return;
+					physicsWorld.step(dt);
+					physicsWorld.step(dt);
+					for (let i = 0; i < circleBodies.length; i++) {
+						const body = circleBodies[i];
+						const el = circleEls[i];
+						if (!body || !el) continue;
+						const x = body.position.x;
+						const y = body.position.y;
+						el.style.left = `${(x / localWorldWidth) * 100}%`;
+						el.style.top = `${(1 - y / localWorldHeight) * 100}%`;
+					}
+					rafId = requestAnimationFrame(step);
+				}
+				rafId = requestAnimationFrame(step);
+				stopPhysics = () => {
+					running = false;
+					if (rafId) {
+						cancelAnimationFrame(rafId);
+						rafId = 0;
+					}
+					physicsWorld = null;
+					circleBodies = [];
+					circleEls = [];
+					stopPhysics = null;
+				};
+			})
+			.catch(err => {
+				console.error(err);
+				showStaticFallback();
+			});
+	}
+
+	function buildShareUrl() {
+		const sessions = getBookmarkedSessions();
+		const ids = sessions.map(s => s.id).join(",");
+		const name = (inputEl && inputEl.value ? inputEl.value : "").trim();
+		const path = (window.location.pathname || "/").replace(/\/$/, "") || "/";
+		const base = window.location.origin + path + "/";
+		const params = new URLSearchParams();
+		if (ids) params.set("q", ids);
+		if (name) params.set("n", name);
+		const qs = params.toString();
+		return qs ? `${base}?${qs}` : base;
+	}
+
+	function copyShareLink() {
+		if (!inputEl || !inputEl.value) {
+			cautionEl?.classList.remove("hidden");
+			return;
+		}
+		cautionEl?.classList.add("hidden");
+		const url = buildShareUrl();
+		navigator.clipboard.writeText(url).then(() => {
+			if (copyBtn) {
+				const orig = copyBtn.textContent;
+				copyBtn.textContent = shareJamCopied;
+				setTimeout(() => {
+					copyBtn.textContent = orig;
+				}, 1500);
+			}
+		});
+	}
+
+	closeBtn?.addEventListener("click", closeShareJamModal);
+	closeBtnMobile?.addEventListener("click", closeShareJamModal);
+	overlay?.addEventListener("click", closeShareJamModal);
+	copyBtn?.addEventListener("click", copyShareLink);
+
+	document.addEventListener("keydown", e => {
+		if (e.key === "Escape" && modal?.classList.contains("active")) {
+			closeShareJamModal();
+		}
+	});
+
+	document.addEventListener("openShareJamModal", () => openShareJamModal());
+
+	// Phone: GSAP drag-to-dismiss on the handle
+	const PHONE_MQ = window.matchMedia("(max-width: 968px)");
+	const DRAG_CLOSE_THRESHOLD = 80;
+
+	let gsapLib = null;
+	import("https://esm.sh/gsap@3.12.5")
+		.then(mod => {
+			gsapLib = mod.gsap || mod.default || mod;
+		})
+		.catch(() => {});
+
+	function setupPhoneDrag() {
+		if (!container || !dragHandle || !modal) return;
+		let startY = 0;
+		let currentY = 0;
+		let capturePointerId = null;
+		let isDragging = false;
+
+		function onPointerMove(e) {
+			if (!isDragging || e.pointerId !== capturePointerId) return;
+			e.preventDefault();
+			const y = e.clientY;
+			currentY = Math.max(0, y - startY);
+			if (gsapLib) gsapLib.set(container, { y: currentY });
+		}
+
+		function onPointerUp(e) {
+			if (e.pointerId !== capturePointerId) return;
+			isDragging = false;
+			document.removeEventListener("pointermove", onPointerMove);
+			document.removeEventListener("pointerup", onPointerUp);
+			document.removeEventListener("pointercancel", onPointerUp);
+			if (capturePointerId != null) dragHandle.releasePointerCapture?.(capturePointerId);
+			container.classList.remove("dragging");
+
+			if (!gsapLib) {
+				container.style.transform = "";
+				return;
+			}
+			if (currentY >= DRAG_CLOSE_THRESHOLD) {
+				const height = container.getBoundingClientRect().height;
+				gsapLib.to(container, {
+					y: height,
+					duration: 0.25,
+					ease: "power2.in",
+					onComplete: () => {
+						gsapLib?.set(container, { clearProps: "y" });
+						closeShareJamModal();
+					}
+				});
+			} else {
+				gsapLib.to(container, {
+					y: 0,
+					duration: 0.3,
+					ease: "power2.out",
+					onComplete: () => gsapLib?.set(container, { clearProps: "y" })
+				});
+			}
+		}
+
+		function onPointerDown(e) {
+			if (!PHONE_MQ.matches || !modal.classList.contains("active")) return;
+			e.preventDefault();
+			e.stopPropagation();
+			startY = e.clientY;
+			currentY = 0;
+			capturePointerId = e.pointerId;
+			isDragging = true;
+			container.classList.add("dragging");
+			if (gsapLib) gsapLib.killTweensOf(container);
+			dragHandle.setPointerCapture?.(e.pointerId);
+			document.addEventListener("pointermove", onPointerMove, { passive: false });
+			document.addEventListener("pointerup", onPointerUp, { once: true });
+			document.addEventListener("pointercancel", onPointerUp, { once: true });
+		}
+
+		dragHandle.addEventListener("pointerdown", onPointerDown, { passive: false });
+	}
+
+	if (dragHandle && container) setupPhoneDrag();
+
+	window.openShareJamModal = openShareJamModal;
+</script>
+
+<style>
+	.share-jam-modal {
+		position: fixed;
+		inset: 0;
+		z-index: 1002;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		visibility: hidden;
+		opacity: 0;
+		transition:
+			visibility 0s linear 0.2s,
+			opacity 0.2s ease;
+		pointer-events: none;
+	}
+
+	.share-jam-modal.active {
+		visibility: visible;
+		opacity: 1;
+		transition:
+			visibility 0s,
+			opacity 0.2s ease;
+		pointer-events: auto;
+	}
+
+	.share-jam-overlay {
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.6);
+		backdrop-filter: blur(4px);
+	}
+
+	.share-jam-container {
+		position: relative;
+		background: #e8e4df;
+		border-radius: 1rem;
+		padding: 3.5rem;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+		z-index: 1;
+		overflow: hidden;
+		min-width: 60rem;
+		min-height: 30rem;
+	}
+
+	.share-jam-close {
+		position: absolute;
+		top: 2rem;
+		right: 2rem;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 50%;
+		background: rgba(0, 0, 0, 0.1);
+		border: none;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #333;
+		transition: background 0.2s;
+		z-index: 10;
+	}
+
+	.share-jam-close:hover {
+		background: rgba(0, 0, 0, 0.2);
+	}
+
+	.share-jam-close-mobile {
+		display: none;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		position: absolute;
+		margin: 0 2rem;
+		bottom: 2rem;
+		left: 0;
+		right: 0;
+		padding: 0.75rem;
+		border: 0;
+		border-radius: 0.5rem;
+		background: #242627;
+		color: #fff;
+		font-size: 1rem;
+		cursor: pointer;
+		z-index: 10;
+	}
+
+	/* Drag handle: hidden on desktop, shown on phone */
+	.share-jam-drag-handle {
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 2.75rem;
+		min-height: 44px;
+		z-index: 20;
+		cursor: grab;
+		touch-action: none;
+		flex-shrink: 0;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.share-jam-drag-handle::before {
+		content: "";
+		position: absolute;
+		left: 50%;
+		top: 0.75rem;
+		transform: translateX(-50%);
+		width: 2.5rem;
+		height: 0.25rem;
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 999px;
+	}
+
+	.share-jam-drag-handle:active {
+		cursor: grabbing;
+	}
+
+	.share-jam-title {
+		font-size: 2rem;
+		font-family: "GenKiMinTW", sans-serif;
+		font-weight: bold;
+		color: #2c2a28;
+		margin: 0 0 1rem;
+		padding-right: 3rem;
+		position: relative;
+		z-index: 5;
+	}
+
+	.share-jam-list {
+		list-style: disc;
+		margin: 0 0 1rem;
+		padding-left: 1.25rem;
+		color: #2c2a28;
+		font-size: 1rem;
+		line-height: 1.5;
+		overflow-y: auto;
+		position: relative;
+		z-index: 5;
+	}
+
+	.share-jam-list li {
+		margin-bottom: 0.35rem;
+	}
+
+	/* :global() so styles apply to dynamically created physics circles */
+	:global(.share-jam-physics-wrap) {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		overflow: hidden;
+		z-index: 0;
+	}
+
+	:global(.share-jam-physics-wrap.hidden) {
+		display: none;
+	}
+
+	:global(.share-jam-physics-container) {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+	}
+
+	:global(.share-jam-circle) {
+		position: absolute;
+		border-radius: 50%;
+		overflow: hidden;
+		box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+		pointer-events: none;
+		will-change: left, top;
+		aspect-ratio: 1;
+		z-index: 1;
+		opacity: 0.3;
+	}
+
+	:global(.share-jam-circle img),
+	:global(.share-jam-circle-img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		border-radius: 50%;
+	}
+
+	:global(.share-jam-circle-physics),
+	:global(.share-jam-circle-static) {
+		transform: translate(-50%, -50%);
+	}
+
+	.share-jam-footer {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		align-items: left;
+		margin-top: 1rem;
+		flex-wrap: wrap;
+		position: relative;
+		z-index: 5;
+	}
+
+	.share-jam-input {
+		flex: 1;
+		max-width: 30%;
+		padding: 1em;
+		font-size: 1.25rem;
+		font-weight: bold;
+		border: 1px solid #b8a99a;
+		border-radius: 0.5rem;
+		background: #fff;
+		color: #2c2a28;
+		text-align: center;
+	}
+
+	.share-jam-input::placeholder {
+		color: #8a8580;
+		text-align: center;
+		font-size: 1.25rem;
+		font-weight: bold;
+	}
+
+	.share-jam-input-container {
+		display: flex;
+		gap: 0.5rem;
+		align-items: left;
+	}
+
+	.no-name-caution {
+		display: flex;
+		align-items: center;
+		color: rgb(209, 22, 22);
+		gap: 0.5rem;
+		align-items: left;
+	}
+
+	.no-name-caution.hidden {
+		display: none;
+	}
+
+	.share-jam-copy {
+		font-family: inherit;
+		border-radius: 1.5rem;
+		padding: 0.75rem 1.5rem;
+		font-size: 1.25rem;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		text-decoration: none;
+		font-weight: bold;
+		color: #635642;
+		background: linear-gradient(130deg, #e3d5b9 0%, #d2b37a 100%);
+		border: 1.5px solid #4f3723;
+		box-shadow: none;
+		transition:
+			transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+			box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		overflow: hidden;
+		position: relative;
+		z-index: 1;
+	}
+
+	.share-jam-copy:hover {
+		transform: translateY(-0.1875rem);
+		box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.1);
+		border-color: #333333;
+	}
+
+	/* Phone: bottom sheet — full width, stick to bottom, slide up/down */
+	@media (max-width: 968px) {
+		.share-jam-close {
+			display: none;
+		}
+
+		.share-jam-close-mobile {
+			display: flex;
+		}
+
+		.share-jam-modal {
+			align-items: flex-end;
+		}
+
+		.share-jam-modal.active .share-jam-overlay {
+			transition: opacity 0.3s ease;
+		}
+
+		.share-jam-modal.active.closing .share-jam-overlay {
+			transition: opacity 0.25s ease;
+		}
+
+		.share-jam-input-container {
+			flex-direction: column;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.share-jam-container {
+			width: 100%;
+			max-width: none;
+			min-width: unset;
+			max-height: 85vh;
+			border-radius: 1rem 1rem 0 0;
+			box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
+			transform: translateY(100%);
+			opacity: 1;
+			transition:
+				transform 0.35s cubic-bezier(0.32, 0.72, 0, 1),
+				opacity 0.2s ease;
+			padding-bottom: 5rem;
+			padding-left: 2rem;
+			padding-right: 2rem;
+		}
+
+		.share-jam-modal.active .share-jam-container {
+			transform: translateY(0);
+		}
+
+		.share-jam-modal.active.closing .share-jam-container {
+			transform: translateY(100%);
+			transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+		}
+
+		.share-jam-container.dragging {
+			transition: none;
+		}
+
+		.share-jam-drag-handle {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.share-jam-drag-handle::before {
+			background: rgba(0, 0, 0, 0.35);
+		}
+
+		.share-jam-title {
+			font-size: 1.5rem;
+			padding-top: 1rem;
+		}
+
+		.share-jam-footer {
+			flex-direction: column;
+			margin-bottom: 1rem;
+		}
+
+		.share-jam-input {
+			max-width: 100%;
+			width: 100%;
+		}
+
+		.share-jam-copy {
+			width: 100%;
+		}
+
+		/* Physics container stops above footer on mobile */
+		:global(.share-jam-physics-wrap) {
+			bottom: 15.5rem;
+		}
+
+		:global(.share-jam-physics-container) {
+			bottom: 0;
+		}
+	}
+</style>
