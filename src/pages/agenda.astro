@@ -45,9 +45,10 @@ const posters = Array.isArray(postersData) ? postersData : [];
 		</div>
 
 		<AgendaTimeline items={agendaItems} lang={lang} />
-		<!-- <section class="gallery-section">
+		<section class="gallery-section">
+			<h1 class="gallery-title" id="gallery-title">{lang === "en" ? "Demo Gallery" : "Demo 展"}</h1>
 			<CircularGallery items={posters} lang={lang} />
-		</section> -->
+		</section>
 	</main>
 	<SessionModal type="" name="" description="" speakers={[]} tags={[]} venue="" startTime="" lang={lang} />
 	<ShareJamModal
@@ -586,6 +587,15 @@ const posters = Array.isArray(postersData) ? postersData : [];
 	}
 
 	.agenda-title {
+		font-size: 4rem;
+		color: white;
+		font-weight: bold;
+		margin-bottom: 1.5rem;
+	}
+
+	.gallery-title {
+		margin-top: 5rem;
+		text-align: center;
 		font-size: 4rem;
 		color: white;
 		font-weight: bold;

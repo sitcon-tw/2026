@@ -25,4 +25,6 @@ declare module "@lucide/astro" {
 	export const TriangleAlert: any;
 	export const MapPin: any;
 	export const Clock: any;
+	export const Play: any;
+	export const Triangle: any;
 }

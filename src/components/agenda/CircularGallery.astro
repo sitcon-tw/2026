@@ -1,0 +1,497 @@
+---
+import { Triangle } from "@lucide/astro";
+
+interface PosterItem {
+	id: string;
+	title: string;
+	image: string;
+	description?: string;
+	youtubeId?: string;
+}
+
+interface Props {
+	items?: PosterItem[];
+	lang?: "zh" | "en";
+}
+
+const { items = [], lang = "zh" } = Astro.props as Props;
+const isEn = lang === "en";
+const originalCount = items.length;
+
+// Repeat items until we have at least 12
+const minItems = 12;
+const expandedItems: PosterItem[] = [];
+if (originalCount > 0) {
+	while (expandedItems.length < minItems) {
+		// Create proper copies of items to ensure all properties are preserved
+		items.forEach(item => {
+			expandedItems.push({
+				id: item.id,
+				title: item.title,
+				image: item.image,
+				description: item.description,
+				youtubeId: item.youtubeId
+			});
+		});
+	}
+	// Trim to exact minimum if needed
+	if (expandedItems.length > minItems) {
+		expandedItems.splice(minItems);
+	}
+} else {
+	expandedItems.push(...items);
+}
+
+const itemCount = expandedItems.length;
+const angleStep = itemCount > 0 ? 360 / itemCount : 0;
+---
+
+<div class="circular-gallery" aria-label={isEn ? "Poster gallery" : "海報展示牆"} data-count={itemCount} data-original-count={originalCount}>
+	{
+		expandedItems.map((item, index) => {
+			const angle = index * angleStep;
+			const originalIndex = index % originalCount;
+			return (
+				<div
+					class="gallery-item"
+					id={`${item.id}-${index}`}
+					style={`--angle: ${angle}deg;`}
+					data-poster-title={item.title}
+					data-poster-description={item.description || ""}
+					data-original-index={originalIndex}
+				>
+					{item.image && <img src={`/2026/img/poster/${item.image}`} alt={item.title || `Poster ${index + 1}`} class="gallery-image" loading="lazy" draggable="false" />}
+				</div>
+			);
+		})
+	}
+	<div class="gallery-info">
+		<h3 class="gallery-info__title"></h3>
+		<div class="gallery-info__description"></div>
+	</div>
+
+	<button class="gallery-nav gallery-nav--left" aria-label={isEn ? "Previous poster" : "上一張海報"}>
+		<Triangle size={56} fill="white" stroke="white" class="gallery-nav__icon gallery-nav__icon--left" />
+	</button>
+	<button class="gallery-nav gallery-nav--right" aria-label={isEn ? "Next poster" : "下一張海報"}>
+		<Triangle size={56} fill="white" stroke="white" class="gallery-nav__icon gallery-nav__icon--right" />
+	</button>
+</div>
+
+<style>
+	.circular-gallery {
+		--rotation: 0deg;
+		position: relative;
+		width: 100%;
+		max-width: 100vw;
+		height: 80rem;
+		margin: 0 auto;
+		cursor: grab;
+		touch-action: pan-y;
+		overflow: hidden;
+	}
+
+	.circular-gallery.is-dragging {
+		cursor: grabbing;
+	}
+
+	.gallery-item {
+		position: absolute;
+		top: 75%;
+		left: 50%;
+		transform-origin: bottom center;
+		transform: translate(-50%, -50%) rotate(calc(var(--angle) + var(--rotation)));
+		padding-bottom: 70rem;
+	}
+
+	.gallery-image {
+		display: block;
+		width: 30rem;
+		height: auto;
+		border-radius: 0.75rem;
+		object-fit: cover;
+		object-position: center;
+		box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+		user-select: none;
+		-webkit-user-drag: none;
+		pointer-events: none;
+	}
+
+	.gallery-info {
+		position: absolute;
+		top: 60%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		max-width: 40rem;
+		text-align: center;
+		padding: 2rem 1rem 0;
+	}
+
+	.gallery-info__title {
+		font-size: 1.5rem;
+		font-weight: bold;
+		color: white;
+		margin: 0 0 1rem;
+		min-height: 2rem;
+	}
+
+	.gallery-info__description {
+		font-size: 1rem;
+		line-height: 1.6;
+		color: rgba(255, 255, 255, 0.85);
+		min-height: 3rem;
+	}
+
+	.gallery-info__description :global(h1),
+	.gallery-info__description :global(h2),
+	.gallery-info__description :global(h3) {
+		color: white;
+	}
+
+	.gallery-info__description :global(h1:first-child),
+	.gallery-info__description :global(h2:first-child),
+	.gallery-info__description :global(h3:first-child) {
+		margin-top: 0;
+	}
+
+	.gallery-info__description :global(p) {
+		margin: 0.5rem 0;
+	}
+
+	.gallery-info__description :global(p:first-child) {
+		margin-top: 0;
+	}
+
+	.gallery-info__description :global(p:last-child) {
+		margin-bottom: 0;
+	}
+
+	.gallery-info__description :global(strong) {
+		font-weight: bold;
+		color: white;
+	}
+
+	.gallery-nav {
+		position: absolute;
+		top: 32%;
+		transform: translateY(-50%);
+		width: 4rem;
+		height: 6rem;
+		border: none;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: none;
+		opacity: 0.5;
+		transition:
+			background 0.2s ease,
+			transform 0.2s ease;
+		z-index: 10;
+	}
+
+	.gallery-nav--left {
+		left: calc(50% - 20rem); /* Position left nav 20rem to the left of center */
+		border-radius: 0 1rem 1rem 0;
+		transform: translateY(-50%) translateX(-100%); /* Anchor to right edge */
+	}
+
+	.gallery-nav--right {
+		right: calc(50% - 20rem); /* Position right nav 20rem to the right of center */
+		border-radius: 0.5rem 0 0 0.5rem;
+		transform: translateY(-50%) translateX(100%); /* Anchor to left edge */
+	}
+
+	.gallery-nav:hover {
+		transform: translateY(-50%) translateX(100%) scale(1.15);
+	}
+
+	.gallery-nav:active {
+		transform: translateY(-50%) translateX(100%) scale(0.95);
+	}
+
+	.gallery-nav :global(.gallery-nav__icon) {
+		display: block;
+	}
+
+	.gallery-nav :global(.gallery-nav__icon--left) {
+		transform: rotate(-90deg);
+	}
+
+	.gallery-nav :global(.gallery-nav__icon--right) {
+		transform: rotate(90deg);
+	}
+
+	@media (max-width: 768px) {
+		.circular-gallery {
+			height: 60rem;
+		}
+
+		.gallery-item {
+			top: 60%;
+			padding-bottom: 40rem;
+		}
+
+		.gallery-image {
+			width: 17rem;
+			border-radius: 0.5rem;
+		}
+
+		.gallery-info {
+			top: 52%;
+			padding: 1rem 0.75rem 0;
+			max-width: 90%;
+		}
+
+		.gallery-info__title {
+			font-size: 1.1rem;
+			margin-bottom: 0.5rem;
+			min-height: 1.5rem;
+		}
+
+		.gallery-info__description {
+			font-size: 0.875rem;
+			line-height: 1.5;
+			min-height: 2rem;
+		}
+
+		.gallery-nav {
+			top: 28%;
+			width: 2.5rem;
+			height: 3.5rem;
+		}
+
+		.gallery-nav--left {
+			left: 0.5rem;
+			transform: translateY(-50%);
+		}
+
+		.gallery-nav--right {
+			right: 0.5rem;
+			transform: translateY(-50%);
+		}
+
+		.gallery-nav:hover {
+			transform: translateY(-50%) scale(1.1);
+		}
+
+		.gallery-nav:active {
+			transform: translateY(-50%) scale(0.9);
+		}
+
+		.gallery-nav :global(.gallery-nav__icon) {
+			width: 32px;
+			height: 32px;
+		}
+
+		.gallery-info__description :global(h1),
+		.gallery-info__description :global(h2) {
+			font-size: 3rem;
+			color: white;
+		}
+
+		.gallery-info__description :global(h3) {
+			font-size: 2rem;
+		}
+	}
+</style>
+
+<script>
+	if (typeof window !== "undefined") {
+		window.addEventListener("DOMContentLoaded", () => {
+			const gallery = document.querySelector<HTMLDivElement>(".circular-gallery");
+			if (!gallery) return;
+
+			const count = Number(gallery.dataset.count ?? "0");
+			const angleStep = count > 0 ? 360 / count : 0;
+
+			let isDragging = false;
+			let startX = 0;
+			let startRotation = 0;
+			let currentRotation = 0;
+
+			const titleEl = gallery.querySelector<HTMLElement>(".gallery-info__title");
+			const descEl = gallery.querySelector<HTMLElement>(".gallery-info__description");
+
+			const getSelectedIndex = (rotation: number): number => {
+				if (count === 0 || angleStep === 0) return 0;
+
+				// Normalize rotation to 0-360 range
+				const normalizedRotation = ((rotation % 360) + 360) % 360;
+
+				// Find which poster is closest to the bottom position (0 degrees)
+				// The selected poster is the one whose (baseAngle - rotation) mod 360 is closest to 0
+				let minDiff = Infinity;
+				let selectedIndex = 0;
+
+				for (let i = 0; i < count; i++) {
+					const baseAngle = i * angleStep;
+					// Calculate where this poster ends up after rotation
+					const finalAngle = (baseAngle - normalizedRotation + 360) % 360;
+					// Find distance to 0 (bottom position)
+					const diff = Math.min(finalAngle, 360 - finalAngle);
+
+					if (diff < minDiff) {
+						minDiff = diff;
+						selectedIndex = i;
+					}
+				}
+
+				return selectedIndex;
+			};
+
+			const updateSelectedPoster = async () => {
+				if (!titleEl || !descEl || count === 0) return;
+
+				const selectedIndex = getSelectedIndex(currentRotation);
+				const items = gallery.querySelectorAll<HTMLElement>(".gallery-item");
+				const selectedItem = items[selectedIndex];
+
+				if (selectedItem) {
+					const title = selectedItem.dataset.posterTitle || "";
+					const description = selectedItem.dataset.posterDescription || "";
+
+					titleEl.textContent = title;
+
+					// Parse markdown description
+					try {
+						const { marked: markedModule } = await import("marked");
+						const parsed = markedModule.parse(description);
+						descEl.innerHTML = typeof parsed === "string" ? parsed : "";
+					} catch (err) {
+						// Fallback: display as plain text
+						descEl.textContent = description;
+					}
+				}
+			};
+
+			const setRotation = (deg: number) => {
+				currentRotation = deg;
+				gallery.style.setProperty("--rotation", `${deg}deg`);
+				updateSelectedPoster();
+			};
+
+			const getClientX = (e: PointerEvent | MouseEvent | TouchEvent) => {
+				// @ts-ignore
+				if ("touches" in e && e.touches.length) return e.touches[0].clientX;
+				// @ts-ignore
+				return (e as PointerEvent | MouseEvent).clientX ?? 0;
+			};
+
+			const onPointerDown = (event: PointerEvent | MouseEvent | TouchEvent) => {
+				// Ignore if clicking on navigation buttons
+				const target = event.target as HTMLElement;
+				if (target.closest(".gallery-nav")) return;
+
+				isDragging = true;
+				startX = getClientX(event);
+				startRotation = currentRotation;
+				gallery.classList.add("is-dragging");
+			};
+
+			const onPointerMove = (event: PointerEvent | MouseEvent | TouchEvent) => {
+				if (!isDragging) return;
+				const x = getClientX(event);
+				const deltaX = x - startX;
+				const width = gallery.offsetWidth || 1;
+				// Drag across full width ~= 180deg (right = clockwise)
+				const deltaDeg = (deltaX / width) * 180;
+				setRotation(startRotation + deltaDeg);
+			};
+
+			const onPointerUp = () => {
+				if (!isDragging) return;
+				isDragging = false;
+				gallery.classList.remove("is-dragging");
+
+				import("gsap")
+					.then(({ gsap }) => {
+						const snapTo = angleStep ? gsap.utils.snap(angleStep) : (v: number) => v;
+						const target = { value: currentRotation };
+						const snapped = snapTo(currentRotation);
+						gsap.to(target, {
+							value: snapped,
+							duration: 0.4,
+							ease: "power3.out",
+							onUpdate() {
+								setRotation(target.value);
+							},
+							onComplete() {
+								updateSelectedPoster();
+							}
+						});
+					})
+					.catch(() => {
+						// Fallback: simple snap without animation
+						if (angleStep) {
+							const snapped = Math.round(currentRotation / angleStep) * angleStep;
+							setRotation(snapped);
+						}
+					});
+			};
+
+			// Prevent image drag
+			const images = gallery.querySelectorAll<HTMLImageElement>(".gallery-image");
+			images.forEach(img => {
+				img.addEventListener("dragstart", e => e.preventDefault());
+			});
+
+			// Navigation button handlers
+			const animateToRotation = (targetRotation: number) => {
+				import("gsap")
+					.then(({ gsap }) => {
+						const target = { value: currentRotation };
+						gsap.to(target, {
+							value: targetRotation,
+							duration: 0.4,
+							ease: "power3.out",
+							onUpdate() {
+								currentRotation = target.value;
+								gallery.style.setProperty("--rotation", `${target.value}deg`);
+							},
+							onComplete() {
+								currentRotation = targetRotation;
+								updateSelectedPoster();
+							}
+						});
+					})
+					.catch(() => {
+						// Fallback without animation
+						currentRotation = targetRotation;
+						gallery.style.setProperty("--rotation", `${targetRotation}deg`);
+						updateSelectedPoster();
+					});
+			};
+
+			const navLeft = gallery.querySelector<HTMLButtonElement>(".gallery-nav--left");
+			const navRight = gallery.querySelector<HTMLButtonElement>(".gallery-nav--right");
+
+			if (navLeft) {
+				navLeft.addEventListener("click", e => {
+					e.stopPropagation();
+					// Rotate counter-clockwise (previous poster)
+					const targetRotation = currentRotation + angleStep;
+					animateToRotation(targetRotation);
+				});
+			}
+
+			if (navRight) {
+				navRight.addEventListener("click", e => {
+					e.stopPropagation();
+					// Rotate clockwise (next poster)
+					const targetRotation = currentRotation - angleStep;
+					animateToRotation(targetRotation);
+				});
+			}
+
+			// Initialize with first poster
+			updateSelectedPoster();
+
+			gallery.addEventListener("pointerdown", onPointerDown as any);
+			window.addEventListener("pointermove", onPointerMove as any);
+			window.addEventListener("pointerup", onPointerUp);
+			window.addEventListener("pointercancel", onPointerUp);
+		});
+	}
+</script>
