@@ -111,12 +111,16 @@ function getLeftPercent(timestamp: number): number {
 // Fixed width for all session blocks (one slot width)
 const slotWidthPercent = totalSlots > 0 ? (1 / totalSlots) * 100 : 100;
 
-// Format time for display
+// Format time for display (forced to GMT+8 / Asia/Taipei)
 function formatTime(timestamp: number): string {
 	const date = new Date(timestamp);
-	const hours = date.getHours().toString().padStart(2, "0");
-	const minutes = date.getMinutes().toString().padStart(2, "0");
-	return `${hours}:${minutes}`;
+	const options: Intl.DateTimeFormatOptions = {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+		timeZone: "Asia/Taipei"
+	};
+	return date.toLocaleString("en-US", options);
 }
 
 // Get current time
@@ -1102,7 +1106,7 @@ activeVenues.forEach(venueId => {
 		position: sticky;
 		left: 0;
 		background-color: #242627;
-		z-index: 10;
+		z-index: 20;
 		padding: 0.5rem;
 		border-right: 1px solid rgba(255, 255, 255, 0.1);
 		min-height: 8rem;
