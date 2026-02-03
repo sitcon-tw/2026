@@ -57,14 +57,14 @@ function formatTime(isoString: string): string {
 }
 
 // Weighted random ad from ads.json: { name: possibility }. Desktop: name.webp, mobile: name-mobile.webp.
-const adsSchema = adsData as Record<string, number>;
-const adsEntries = Object.entries(adsSchema).filter(([, p]) => typeof p === "number" && p > 0);
-const accumulatedPossibility = adsEntries.reduce((sum, [, p]) => sum + p, 0);
+const adsSchema = adsData as Record<string, { weight: number; link: string }>;
+const adsEntries = Object.entries(adsSchema).filter(([, p]) => typeof p.weight === "number" && p.weight > 0);
+const accumulatedPossibility = adsEntries.reduce((sum, [, p]) => sum + p.weight, 0);
 let selectedAdName: string | null = null;
 if (accumulatedPossibility > 0) {
 	let r = Math.random() * accumulatedPossibility;
-	for (const [name, possibility] of adsEntries) {
-		r -= possibility;
+	for (const [name, p] of adsEntries) {
+		r -= p.weight;
 		if (r <= 0) {
 			selectedAdName = name;
 			break;
@@ -77,7 +77,6 @@ if (accumulatedPossibility > 0) {
 const hasAdImage = !!selectedAdName;
 const adImageDesktopSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}.webp` : null;
 const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobile.webp` : null;
-const showLeftPanel = hasAdImage;
 ---
 
 <div class="session-modal" id="session-modal">
@@ -85,10 +84,12 @@ const showLeftPanel = hasAdImage;
 	<div class="modal-container" id="modal-container">
 		{
 			hasAdImage && (
-				<div class="ad-image-content">
-					<img src={adImageMobileSrc} alt={`${selectedAdName} 橫式廣告`} class="ad-image" />
-					<img src={adImageDesktopSrc} alt={`${selectedAdName} 直式廣告`} class="ad-image-desktop" />
-				</div>
+				<a href={adsSchema[selectedAdName as keyof typeof adsSchema]?.link ?? ""} target="_blank" rel="noopener noreferrer">
+					<div class="ad-image-content">
+						<img src={adImageMobileSrc} alt={`${selectedAdName} 橫式廣告`} class="ad-image" />
+						<img src={adImageDesktopSrc} alt={`${selectedAdName} 直式廣告`} class="ad-image-desktop" />
+					</div>
+				</a>
 			)
 		}
 		<div class="modal-right-panel full-width">

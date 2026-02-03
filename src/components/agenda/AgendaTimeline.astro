@@ -63,54 +63,53 @@ function getDuration(item: AgendaItem): number {
 // Define all possible venues (always show all, even if empty)
 const venues = ["R0", "R1", "R2", "R3", "S"];
 
-// Get all unique time slots
+// Get all unique time points from session start and end times only
 const allTimes = new Set<number>();
 items.forEach(item => {
 	const startTimestamp = parseTime(item.startTime);
 	allTimes.add(startTimestamp);
-	// For generic type with endTime, use endTime directly; otherwise calculate from duration
-	const endTime = item.type === "generic" && item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
+	// Always use actual endTime if it exists; otherwise calculate from duration
+	const endTime = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
 	allTimes.add(endTime);
 });
 const sortedTimes = Array.from(allTimes).sort((a, b) => a - b);
 
-// Find min and max times (with fallback for empty data)
+// Use session times directly - minTime is first session start, maxTime is last session end
 let minTime: number;
 let maxTime: number;
 let timeLabels: number[] = [];
 
 if (sortedTimes.length > 0) {
-	minTime = Math.min(...sortedTimes);
-	maxTime = Math.max(...sortedTimes);
-
-	// Generate time labels (every 15 minutes)
-	const startOfDay = new Date(minTime);
-	startOfDay.setHours(8, 30, 0, 0); // Start from 8:30 AM
-	const endOfDay = new Date(maxTime);
-	endOfDay.setHours(18, 0, 0, 0); // End at 6:00 PM
-
-	let currentTime = new Date(startOfDay);
-	while (currentTime <= endOfDay) {
-		timeLabels.push(currentTime.getTime());
-		currentTime = new Date(currentTime.getTime() + 15 * 60 * 1000);
-	}
+	minTime = sortedTimes[0]; // First session start time
+	maxTime = sortedTimes[sortedTimes.length - 1]; // Last session end time
+	timeLabels = sortedTimes; // Use all unique time points as labels
 } else {
-	// Fallback for empty data - ensure time labels are generated
+	// Fallback for empty data
 	const today = new Date();
 	today.setHours(8, 30, 0, 0);
 	minTime = today.getTime();
 	today.setHours(18, 0, 0, 0);
 	maxTime = today.getTime();
-
-	// Generate time labels for empty data
-	const startOfDay = new Date(minTime);
-	const endOfDay = new Date(maxTime);
-	let currentTime = new Date(startOfDay);
-	while (currentTime <= endOfDay) {
-		timeLabels.push(currentTime.getTime());
-		currentTime = new Date(currentTime.getTime() + 15 * 60 * 1000);
-	}
+	timeLabels = [minTime, maxTime];
 }
+
+// Total number of time slots (for equal-width positioning)
+const totalSlots = timeLabels.length - 1;
+
+// Helper: get slot index for a given timestamp
+function getSlotIndex(timestamp: number): number {
+	const idx = timeLabels.indexOf(timestamp);
+	return idx >= 0 ? idx : 0;
+}
+
+// Helper: calculate left percent based on slot index (equal width per slot)
+function getLeftPercent(timestamp: number): number {
+	if (totalSlots <= 0) return 0;
+	return (getSlotIndex(timestamp) / totalSlots) * 100;
+}
+
+// Fixed width for all session blocks (one slot width)
+const slotWidthPercent = totalSlots > 0 ? (1 / totalSlots) * 100 : 100;
 
 // Format time for display
 function formatTime(timestamp: number): string {
@@ -199,11 +198,11 @@ activeVenues.forEach(venueId => {
 	<!-- Desktop: horizontal timeline -->
 	<div class="agenda-desktop-view agenda-content-wrapper">
 		<div class="agenda-scroll-container" id="agenda-scroll">
-			<div class="agenda-timeline" id="agenda-timeline-inner" data-min-time={minTime} data-max-time={maxTime} style="--time-scale: 1;">
+			<div class="agenda-timeline" id="agenda-timeline-inner" data-min-time={minTime} data-max-time={maxTime} data-total-slots={totalSlots} style="--time-scale: 1;">
 				<div class="time-axis">
 					{
-						timeLabels.map(time => (
-							<div class="time-marker" style={`left: ${((time - minTime) / (maxTime - minTime)) * 100}%`}>
+						timeLabels.map((time, idx) => (
+							<div class="time-marker" style={`left: ${(idx / totalSlots) * 100}%`}>
 								<span class="time-label">{formatTime(time)}</span>
 							</div>
 						))
@@ -216,7 +215,7 @@ activeVenues.forEach(venueId => {
 
 				<div class="venue-tracks">
 					<div class="time-lines-overlay">
-						{timeLabels.map(time => <div class="time-line" style={`left: ${((time - minTime) / (maxTime - minTime)) * 100}%`} />)}
+						{timeLabels.map((time, idx) => <div class="time-line" style={`left: ${(idx / totalSlots) * 100}%`} />)}
 						<div class="current-time-line" style={`left: ${((now - minTime) / (maxTime - minTime)) * 100}%`} id="current-time-line">
 							<div class="indicator-line-extended"></div>
 							<div class="indicator-triangle-extended"></div>
@@ -228,13 +227,12 @@ activeVenues.forEach(venueId => {
 								{overlayBlocks.map(({ item, range }) => {
 									const startTimestamp = parseTime(item.startTime);
 									const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
-									const startPercent = ((startTimestamp - minTime) / (maxTime - minTime)) * 100;
-									const widthPercent = ((endTimestamp - startTimestamp) / (maxTime - minTime)) * 100;
+									const startPercent = getLeftPercent(startTimestamp);
 									const venueStart = venues.indexOf(range[0]);
 									const topPercent = (venueStart / venues.length) * 100;
 									const heightPercent = (range.length / venues.length) * 100;
 									return (
-										<div class="overlay-block-cell" style={`left: ${startPercent}%; width: ${widthPercent}%; top: ${topPercent}%; height: ${heightPercent}%;`}>
+										<div class="overlay-block-cell" style={`left: ${startPercent}%; width: ${slotWidthPercent}%; top: ${topPercent}%; height: ${heightPercent}%;`}>
 											<SessionBlock
 												id={item.id}
 												type={item.type}
@@ -269,11 +267,9 @@ activeVenues.forEach(venueId => {
 									{items
 										.filter(item => !item.broadcast?.length && item.venue === venue)
 										.map(item => {
-											const duration = getDuration(item);
 											const startTimestamp = parseTime(item.startTime);
-											const startPercent = ((startTimestamp - minTime) / (maxTime - minTime)) * 100;
-											const widthPercent = ((duration * 60 * 1000) / (maxTime - minTime)) * 100;
-											const endTimestamp = startTimestamp + getDuration(item) * 60 * 1000;
+											const startPercent = getLeftPercent(startTimestamp);
+											const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
 											return (
 												<SessionBlock
 													id={item.id}
@@ -286,7 +282,7 @@ activeVenues.forEach(venueId => {
 													startTime={item.startTime}
 													endTime={new Date(endTimestamp).toISOString()}
 													leftPercent={startPercent}
-													widthPercent={widthPercent}
+													widthPercent={slotWidthPercent}
 													slidoLink={item.slidoLink}
 													slidesLink={item.slidesLink}
 													notesLink={item.notesLink}
@@ -335,7 +331,7 @@ activeVenues.forEach(venueId => {
 											<div class="session-list">
 												{sessionItems.map((item, idx) => {
 													const startTimestamp = parseTime(item.startTime);
-													const endTimestamp = item.type === "generic" && item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
+													const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
 													const venueLabel = item.venue || undefined;
 													return (
 														<div class="phone-session-row" data-venue-label={venueLabel}>
