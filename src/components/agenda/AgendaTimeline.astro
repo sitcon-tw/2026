@@ -777,7 +777,7 @@ activeVenues.forEach(venueId => {
 	}
 	if (shareJamTrigger) {
 		shareJamTrigger.addEventListener("click", () => {
-			window.openShareJamModal?.();
+			(window as any).openShareJamModal?.();
 		});
 		updateShareJamTriggerVisibility();
 		document.addEventListener("agendaBookmarksChanged", updateShareJamTriggerVisibility);
@@ -1152,9 +1152,11 @@ activeVenues.forEach(venueId => {
 	}
 
 	.scroll-controls {
-		position: absolute;
+		position: sticky;
 		bottom: 1rem;
-		right: 2rem;
+		margin-left: auto;
+		margin-right: 2rem;
+		width: fit-content;
 		display: flex;
 		gap: 0.5rem;
 		z-index: 20;
