@@ -203,7 +203,11 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 		transform: translateY(-50%) translateX(100%); /* Anchor to left edge */
 	}
 
-	.gallery-nav:hover {
+	.gallery-nav--left:hover {
+		transform: translateY(-50%) translateX(-100%) scale(1.15);
+	}
+
+	.gallery-nav--right:hover {
 		transform: translateY(-50%) translateX(100%) scale(1.15);
 	}
 
@@ -310,6 +314,14 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 			let startX = 0;
 			let startRotation = 0;
 			let currentRotation = 0;
+			let navTargetRotation = 0; // Track the intended target for nav buttons (always snapped)
+			let navTween: gsap.core.Tween | null = null;
+
+			// Inertia tracking
+			let lastX = 0;
+			let lastTime = 0;
+			let velocity = 0; // degrees per millisecond
+			let inertiaTween: gsap.core.Tween | null = null;
 
 			const titleEl = gallery.querySelector<HTMLElement>(".gallery-info__title");
 			const descEl = gallery.querySelector<HTMLElement>(".gallery-info__description");
@@ -384,19 +396,41 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				const target = event.target as HTMLElement;
 				if (target.closest(".gallery-nav")) return;
 
+				// Stop any ongoing inertia animation
+				if (inertiaTween) {
+					inertiaTween.kill();
+					inertiaTween = null;
+				}
+
 				isDragging = true;
-				startX = getClientX(event);
+				const clientX = getClientX(event);
+				startX = clientX;
 				startRotation = currentRotation;
+				lastX = clientX;
+				lastTime = Date.now();
+				velocity = 0;
 				gallery.classList.add("is-dragging");
 			};
 
 			const onPointerMove = (event: PointerEvent | MouseEvent | TouchEvent) => {
 				if (!isDragging) return;
 				const x = getClientX(event);
+				const currentTime = Date.now();
 				const deltaX = x - startX;
 				const width = gallery.offsetWidth || 1;
 				// Drag across full width ~= 180deg (right = clockwise)
 				const deltaDeg = (deltaX / width) * 180;
+
+				// Calculate velocity for inertia (degrees per millisecond)
+				const timeDelta = currentTime - lastTime;
+				if (timeDelta > 0) {
+					const moveDeltaX = x - lastX;
+					const moveDeltaDeg = (moveDeltaX / width) * 180;
+					velocity = moveDeltaDeg / timeDelta;
+				}
+
+				lastX = x;
+				lastTime = currentTime;
 				setRotation(startRotation + deltaDeg);
 			};
 
@@ -408,25 +442,60 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				import("gsap")
 					.then(({ gsap }) => {
 						const snapTo = angleStep ? gsap.utils.snap(angleStep) : (v: number) => v;
-						const target = { value: currentRotation };
-						const snapped = snapTo(currentRotation);
-						gsap.to(target, {
-							value: snapped,
-							duration: 0.4,
-							ease: "power3.out",
-							onUpdate() {
-								setRotation(target.value);
-							},
-							onComplete() {
-								updateSelectedPoster();
-							}
-						});
+
+						// Apply inertia if there's significant velocity
+						if (Math.abs(velocity) > 0.02) {
+							// Calculate target with momentum (velocity * time factor)
+							const momentumDeg = velocity * 300; // Adjust multiplier for feel
+							const targetWithMomentum = currentRotation + momentumDeg;
+							const snapped = snapTo(targetWithMomentum);
+
+							// Duration based on travel distance
+							const distance = Math.abs(snapped - currentRotation);
+							const duration = Math.min(1.2, Math.max(0.4, distance / 100));
+
+							const target = { value: currentRotation };
+							inertiaTween = gsap.to(target, {
+								value: snapped,
+								duration: duration,
+								ease: "power3.out",
+								onUpdate() {
+									currentRotation = target.value;
+									gallery.style.setProperty("--rotation", `${target.value}deg`);
+									updateSelectedPoster();
+								},
+								onComplete() {
+									currentRotation = snapped;
+									navTargetRotation = snapped;
+									gallery.style.setProperty("--rotation", `${snapped}deg`);
+									updateSelectedPoster();
+									inertiaTween = null;
+								}
+							});
+						} else {
+							// No significant velocity, just snap to nearest
+							const target = { value: currentRotation };
+							const snapped = snapTo(currentRotation);
+							gsap.to(target, {
+								value: snapped,
+								duration: 0.4,
+								ease: "power3.out",
+								onUpdate() {
+									setRotation(target.value);
+								},
+								onComplete() {
+									navTargetRotation = snapped;
+									updateSelectedPoster();
+								}
+							});
+						}
 					})
 					.catch(() => {
 						// Fallback: simple snap without animation
 						if (angleStep) {
 							const snapped = Math.round(currentRotation / angleStep) * angleStep;
 							setRotation(snapped);
+							navTargetRotation = snapped;
 						}
 					});
 			};
@@ -438,12 +507,19 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 			});
 
 			// Navigation button handlers
-			const animateToRotation = (targetRotation: number) => {
+			const animateToRotation = (newTarget: number) => {
+				navTargetRotation = newTarget;
+
 				import("gsap")
 					.then(({ gsap }) => {
+						// Kill any existing animation to prevent overlap
+						if (navTween) {
+							navTween.kill();
+						}
+
 						const target = { value: currentRotation };
-						gsap.to(target, {
-							value: targetRotation,
+						navTween = gsap.to(target, {
+							value: navTargetRotation,
 							duration: 0.4,
 							ease: "power3.out",
 							onUpdate() {
@@ -451,15 +527,18 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 								gallery.style.setProperty("--rotation", `${target.value}deg`);
 							},
 							onComplete() {
-								currentRotation = targetRotation;
+								// Ensure we end at the exact target value
+								currentRotation = navTargetRotation;
+								gallery.style.setProperty("--rotation", `${navTargetRotation}deg`);
 								updateSelectedPoster();
+								navTween = null;
 							}
 						});
 					})
 					.catch(() => {
 						// Fallback without animation
-						currentRotation = targetRotation;
-						gallery.style.setProperty("--rotation", `${targetRotation}deg`);
+						currentRotation = navTargetRotation;
+						gallery.style.setProperty("--rotation", `${navTargetRotation}deg`);
 						updateSelectedPoster();
 					});
 			};
@@ -471,8 +550,9 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				navLeft.addEventListener("click", e => {
 					e.stopPropagation();
 					// Rotate counter-clockwise (previous poster)
-					const targetRotation = currentRotation + angleStep;
-					animateToRotation(targetRotation);
+					// Use navTargetRotation to avoid floating point drift from intermediate values
+					const newTarget = navTargetRotation + angleStep;
+					animateToRotation(newTarget);
 				});
 			}
 
@@ -480,8 +560,9 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				navRight.addEventListener("click", e => {
 					e.stopPropagation();
 					// Rotate clockwise (next poster)
-					const targetRotation = currentRotation - angleStep;
-					animateToRotation(targetRotation);
+					// Use navTargetRotation to avoid floating point drift from intermediate values
+					const newTarget = navTargetRotation - angleStep;
+					animateToRotation(newTarget);
 				});
 			}
 
