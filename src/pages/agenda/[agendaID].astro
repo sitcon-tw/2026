@@ -1,0 +1,17 @@
+---
+import Page from "@/pages/agenda.astro";
+import agendaData from "@/data/agenda.json";
+
+export function getStaticPaths() {
+	const sessions = agendaData.sessions ?? [];
+	return sessions.map(session => ({
+		params: {
+			agendaID: session.id
+		}
+	}));
+}
+
+const { agendaID } = Astro.params;
+---
+
+<Page agendaID={agendaID} />
