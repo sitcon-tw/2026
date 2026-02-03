@@ -192,7 +192,7 @@ activeVenues.forEach(venueId => {
 			</div>
 		</div>
 		<button type="button" class="share-jam-trigger" id="share-jam-trigger" aria-label={lang === "en" ? "Share your Jam" : "分享你的專屬 Jam"} title={lang === "en" ? "Share your Jam" : "你的專屬 Jam"}>
-			{lang === "en" ? "Share Jam" : "你的專屬 Jam"}
+			{lang === "en" ? "Share Jam" : "分享我的精選"}
 		</button>
 	</div>
 
@@ -421,9 +421,9 @@ activeVenues.forEach(venueId => {
 
 	// Zoom functionality - scales the time axis spacing and stretches session blocks
 	if (timelineElement && zoomInBtn && zoomOutBtn) {
-		let timeScale = 1;
+		let timeScale = 2;
 		const minZoom = 0;
-		const maxZoom = 3;
+		const maxZoom = 5;
 		const zoomStep = 0.25;
 
 		const updateZoom = () => {
@@ -852,16 +852,11 @@ activeVenues.forEach(venueId => {
 		padding: 0 0;
 	}
 
-	/* Filter: All / Favorites sliding tab (same style as venue tabs) */
-	.agenda-filter-wrap {
-		padding: 2rem 0.75rem 0;
-	}
-
 	.agenda-filter-wrap {
 		display: flex;
+		padding: 2rem 0.75rem 0;
 		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
+		justify-content: flex-end;
 		gap: 0.75rem;
 	}
 
@@ -925,19 +920,15 @@ activeVenues.forEach(venueId => {
 		padding: 0.5rem 0.75rem;
 		font-size: 0.9375rem;
 		font-weight: bold;
-		background: rgba(255, 255, 255, 0.2);
-		border: 1px solid rgba(255, 255, 255, 0.4);
+		background: #2d2d2d;
+		border: none;
+		padding: 1rem;
 		border-radius: 9999px;
 		color: #fff;
 		cursor: pointer;
 		transition:
 			background 0.2s,
 			border-color 0.2s;
-	}
-
-	.share-jam-trigger:hover {
-		background: rgba(255, 255, 255, 0.3);
-		border-color: rgba(255, 255, 255, 0.6);
 	}
 
 	/* When Favorites selected: hide non-bookmarked session blocks (not when URL-curated) */
@@ -1420,6 +1411,10 @@ activeVenues.forEach(venueId => {
 
 		.agenda-legend {
 			gap: 1rem;
+		}
+
+		.agenda-filter-wrap {
+			align-items: center;
 		}
 
 		.venue-label {
