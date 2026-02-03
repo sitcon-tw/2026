@@ -20,4 +20,6 @@ declare module "@lucide/astro" {
 	export const List: any;
 	export const Globe: any;
 	export const Guitar: any;
+	export const Share2: any;
+	export const X: any;
 }
