@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+	<head>
+		<title>SITCON 2026 Game API Reference</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<style>
+			@import url("https://font.emtech.cc/css/FiraCode/400");
+			@import url("https://font.emtech.cc/css/FiraCode/600");
+
+			body {
+				background-color: #000e23;
+			}
+
+			:root {
+				--scalar-font-code: "FiraCode", monospace;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app"></div>
+		<script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+		<script>
+			Scalar.createApiReference("#app", {
+				url: "./swagger.yaml",
+				theme: "bluePlanet",
+				showSidebar: true,
+				showDeveloperTools: "localhost",
+				showToolbar: "localhost",
+				operationTitleSource: "summary",
+				persistAuth: false,
+				telemetry: true,
+				layout: "modern",
+				isEditable: false,
+				isLoading: false,
+				hideModels: false,
+				documentDownloadType: "both",
+				hideTestRequestButton: false,
+				hideSearch: false,
+				showOperationId: false,
+				hideDarkModeToggle: false,
+				withDefaultFonts: true,
+				defaultOpenAllTags: false,
+				expandAllModelSections: false,
+				expandAllResponses: false,
+				orderSchemaPropertiesBy: "alpha",
+				orderRequiredPropertiesFirst: true,
+				default: false,
+				withDefaultFonts: false,
+				showDeveloperTools: "always",
+				showOperationId: true
+				// Avoid CORS issues
+				// proxyUrl: 'https://proxy.scalar.com',
+			});
+		</script>
+	</body>
+</html>
