@@ -92,7 +92,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 				</a>
 			)
 		}
-		<div class="modal-right-panel full-width">
+		<div class="modal-right-panel full-width" data-lenis-prevent>
 			<div class="modal-drag-handle" id="modal-drag-handle" aria-hidden="true"></div>
 			<div class="modal-bookmark-area" id="modal-bookmark-area" aria-label="Bookmark session" role="button" tabindex="0"></div>
 			<div class="modal-bookmark-ribbon" id="modal-bookmark-ribbon" aria-hidden="true">
@@ -119,80 +119,84 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 			<button class="modal-close" id="modal-close" aria-label="Close">
 				<X size={24} />
 			</button>
-			<div class="session-header">
-				{
-					speakers.length > 0 && (
-						<div class="speaker-info">
-							{speakers.map((speaker: string | Speaker, index: number) => {
-								const avatar = getSpeakerAvatar(speaker);
-								return (
-									<div class="speaker-item">
-										{avatar && <img src={avatar} alt={getSpeakerName(speaker)} class="speaker-avatar" />}
-										<span class="speaker-name">{getSpeakerName(speaker)}</span>
-									</div>
-								);
-							})}
-						</div>
-					)
-				}
-			</div>
-
-			<div class="session-type-badge">
-				{type === "keynote" ? "Keynote" : type === "presentation" ? "Presentation" : type === "undefined" ? (lang === "en" ? "Undefined" : "開放式") : type === "espresso" ? "Espresso" : ""}
-			</div>
-
-			<h1 class="session-title">{name}</h1>
-
-			<div class="session-meta">
-				<div class="meta-item">
-					<Clock />
-					<span>{formatTime(startTime)} {endTime && `- ${formatTime(endTime)}`}</span>
+			<div class="session-content">
+				<div class="session-header">
+					{
+						speakers.length > 0 && (
+							<div class="speaker-info">
+								{speakers.map((speaker: string | Speaker, index: number) => {
+									const avatar = getSpeakerAvatar(speaker);
+									return (
+										<div class="speaker-item">
+											{avatar && <img src={avatar} alt={getSpeakerName(speaker)} class="speaker-avatar" />}
+											<span class="speaker-name">{getSpeakerName(speaker)}</span>
+										</div>
+									);
+								})}
+							</div>
+						)
+					}
 				</div>
-				<div class="meta-item">
-					<MapPin />
-					<span>{venue}</span>
+
+				<div class="session-type-badge">
+					{type === "keynote" ? "Keynote" : type === "presentation" ? "Presentation" : type === "undefined" ? (lang === "en" ? "Undefined" : "開放式") : type === "espresso" ? "Espresso" : ""}
 				</div>
-				{
-					tags.length > 0 && (
-						<div class="session-tags">
-							{tags.map((tag: string) => (
-								<span class="session-tag">#{tag}</span>
-							))}
-						</div>
-					)
-				}
-			</div>
 
-			<div class="session-actions">
-				{
-					slidoLink && (
-						<a href={slidoLink} target="_blank" rel="noopener noreferrer" class="action-btn">
-							<span>{lang === "en" ? "Ask Question" : "提問"}</span>
-						</a>
-					)
-				}
-				{
-					notesLink && (
-						<a href={notesLink} target="_blank" rel="noopener noreferrer" class="action-btn">
-							<span>{lang === "en" ? "Collaborative Notes" : "共筆"}</span>
-						</a>
-					)
-				}
-				{
-					slidesLink && (
-						<a href={slidesLink} target="_blank" rel="noopener noreferrer" class="action-btn">
-							<span>{lang === "en" ? "Presentation" : "簡報"}</span>
-						</a>
-					)
-				}
-				<button type="button" class="action-btn" id="share-btn">
-					<span>
-						<Share2 size={24} />
-					</span>
-				</button>
-			</div>
+				<h1 class="session-title">{name}</h1>
 
-			<div class="session-description" set:html={description ? marked.parse(description) : ""} />
+				<div class="session-meta">
+					<div class="meta-item">
+						<Clock />
+						<span>{formatTime(startTime)} {endTime && `- ${formatTime(endTime)}`}</span>
+					</div>
+					<div class="meta-item">
+						<MapPin />
+						<span>{venue}</span>
+					</div>
+					{
+						Array.isArray(tags) && tags.length > 0 ? (
+							<div class="session-tags">
+								{tags.map((tag: string, idx: number) => (
+									<span class="session-tag" id={`tag-${idx}`}>
+										#{tag}
+									</span>
+								))}
+							</div>
+						) : null
+					}
+				</div>
+
+				<div class="session-actions">
+					{
+						slidoLink && (
+							<a href={slidoLink} target="_blank" rel="noopener noreferrer" class="action-btn">
+								<span>{lang === "en" ? "Ask Question" : "提問"}</span>
+							</a>
+						)
+					}
+					{
+						notesLink && (
+							<a href={notesLink} target="_blank" rel="noopener noreferrer" class="action-btn">
+								<span>{lang === "en" ? "Collaborative Notes" : "共筆"}</span>
+							</a>
+						)
+					}
+					{
+						slidesLink && (
+							<a href={slidesLink} target="_blank" rel="noopener noreferrer" class="action-btn">
+								<span>{lang === "en" ? "Presentation" : "簡報"}</span>
+							</a>
+						)
+					}
+					<button type="button" class="action-btn" id="share-btn">
+						<span>
+							<Share2 size={24} />
+						</span>
+					</button>
+				</div>
+
+				<div class="session-description" set:html={description ? marked.parse(description) : ""} />
+			</div>
 		</div>
 		<button class="modal-close-mobile" id="modal-close-mobile" aria-label="Close">
 			<X size={24} />
@@ -208,29 +212,6 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 	const closeBtnMobile = document.getElementById("modal-close-mobile");
 	const shareBtn = document.getElementById("share-btn");
 
-	function unlockScroll() {
-		document.body.style.overflow = "";
-		document.documentElement.style.overflow = "";
-		document.body.style.position = "";
-		document.body.style.width = "";
-		document.body.style.top = "";
-		const scrollY = document.body.dataset.scrollY;
-		if (scrollY) {
-			window.scrollTo(0, parseInt(scrollY, 10));
-			delete document.body.dataset.scrollY;
-		}
-	}
-
-	function lockScroll() {
-		const scrollY = window.scrollY;
-		document.body.dataset.scrollY = String(scrollY);
-		document.body.style.position = "fixed";
-		document.body.style.top = `-${scrollY}px`;
-		document.body.style.width = "100%";
-		document.body.style.overflow = "hidden";
-		document.documentElement.style.overflow = "hidden";
-	}
-
 	function closeModal() {
 		if (!modal) return;
 		modal.classList.add("closing");
@@ -238,7 +219,13 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		const duration = isPhone ? 300 : 220;
 		setTimeout(() => {
 			modal.classList.remove("active", "closing", "bookmark-area-hovered");
-			unlockScroll();
+			// Re-enable body scrolling
+			document.body.style.overflow = "";
+			// Re-enable Lenis scrolling
+			const lenis = (window as any).lenis;
+			if (lenis && typeof lenis.start === "function") {
+				lenis.start();
+			}
 			document.dispatchEvent(new CustomEvent("closeSessionModal"));
 		}, duration);
 	}
@@ -290,14 +277,143 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 	}
 
 	document.addEventListener("openSessionModal", ((e: CustomEvent) => {
-		const sessionId = e.detail?.id ?? "";
+		const detail = e.detail || {};
+		const sessionId = detail.id ?? "";
+		const sessionType = detail.type ?? "";
+		const sessionName = detail.name ?? "";
+		const sessionDescription = detail.description ?? "";
+		const sessionVenue = detail.venue ?? "";
+		const sessionStartTime = detail.startTime ?? "";
+		const sessionEndTime = detail.endTime ?? "";
+		const sessionSpeakers = detail.speakers ?? [];
+		const sessionTags = detail.tags ?? [];
+		const sessionSlidoLink = detail.slidoLink ?? "";
+		const sessionSlidesLink = detail.slidesLink ?? "";
+		const sessionNotesLink = detail.notesLink ?? "";
+		const sessionLang = detail.lang ?? "zh";
+
 		if (modal) modal.setAttribute("data-session-id", sessionId);
 		if (ribbonEl) {
 			ribbonEl.classList.toggle("is-bookmarked", sessionId ? readBookmarks().has(sessionId) : false);
 			ribbonEl.setAttribute("aria-hidden", ribbonEl.classList.contains("is-bookmarked") ? "false" : "true");
 		}
-		// Disable background scrolling when modal opens
-		lockScroll();
+
+		// Update modal content dynamically
+		const titleEl = modal?.querySelector(".session-title");
+		if (titleEl) titleEl.textContent = sessionName;
+
+		const descEl = modal?.querySelector(".session-description");
+		if (descEl) {
+			import("marked")
+				.then(({ marked }) => {
+					descEl.innerHTML = sessionDescription ? (marked.parse(sessionDescription) as string) : "";
+				})
+				.catch(() => {
+					descEl.textContent = sessionDescription;
+				});
+		}
+
+		// Update type badge
+		const typeBadgeEl = modal?.querySelector(".session-type-badge");
+		if (typeBadgeEl) {
+			const typeLabels: Record<string, string> = {
+				keynote: "Keynote",
+				presentation: "Presentation",
+				undefined: sessionLang === "en" ? "Undefined" : "開放式",
+				espresso: "Espresso"
+			};
+			typeBadgeEl.textContent = typeLabels[sessionType] || "";
+		}
+
+		// Update time
+		const timeMetaEl = modal?.querySelector(".meta-item:first-child span");
+		if (timeMetaEl) {
+			const formatTimeStr = (iso: string) => {
+				if (!iso) return "";
+				const d = new Date(iso);
+				return d.toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit", hour12: false });
+			};
+			timeMetaEl.textContent = `${formatTimeStr(sessionStartTime)}${sessionEndTime ? ` - ${formatTimeStr(sessionEndTime)}` : ""}`;
+		}
+
+		// Update venue
+		const venueMetaEl = modal?.querySelector(".meta-item:nth-child(2) span");
+		if (venueMetaEl) venueMetaEl.textContent = sessionVenue;
+
+		// Update tags
+		const metaContainer = modal?.querySelector(".session-meta");
+		let tagsContainer = modal?.querySelector(".session-tags");
+		if (metaContainer) {
+			if (sessionTags.length > 0) {
+				if (!tagsContainer) {
+					tagsContainer = document.createElement("div");
+					tagsContainer.className = "session-tags";
+					metaContainer.appendChild(tagsContainer);
+				}
+				tagsContainer.innerHTML = sessionTags.map((tag: string, idx: number) => `<span class="session-tag" id="tag-${idx}">#${tag}</span>`).join("");
+			} else if (tagsContainer) {
+				tagsContainer.innerHTML = "";
+			}
+		}
+
+		// Update speakers
+		const speakerInfoEl = modal?.querySelector(".speaker-info");
+		if (speakerInfoEl) {
+			if (sessionSpeakers.length > 0) {
+				speakerInfoEl.innerHTML = sessionSpeakers
+					.map((speaker: any) => {
+						const name = typeof speaker === "string" ? speaker : speaker.name;
+						const avatar = typeof speaker === "object" ? speaker.avatar : null;
+						return `<div class="speaker-item">
+						${avatar ? `<img src="${avatar}" alt="${name}" class="speaker-avatar" />` : ""}
+						<span class="speaker-name">${name}</span>
+					</div>`;
+					})
+					.join("");
+				(speakerInfoEl as HTMLElement).style.display = "";
+			} else {
+				speakerInfoEl.innerHTML = "";
+				(speakerInfoEl as HTMLElement).style.display = "none";
+			}
+		}
+
+		// Update action buttons visibility
+		const actionsContainer = modal?.querySelector(".session-actions");
+		if (actionsContainer) {
+			const slidoBtn = actionsContainer.querySelector("a[href*='slido'], a:first-of-type");
+			const notesBtn = actionsContainer.querySelectorAll("a")[1];
+			const slidesBtn = actionsContainer.querySelectorAll("a")[2];
+
+			// Update or hide slido link
+			actionsContainer.querySelectorAll("a").forEach((a, idx) => {
+				if (idx === 0 && sessionSlidoLink) {
+					(a as HTMLAnchorElement).href = sessionSlidoLink;
+					(a as HTMLElement).style.display = "";
+				} else if (idx === 0) {
+					(a as HTMLElement).style.display = "none";
+				}
+				if (idx === 1 && sessionNotesLink) {
+					(a as HTMLAnchorElement).href = sessionNotesLink;
+					(a as HTMLElement).style.display = "";
+				} else if (idx === 1) {
+					(a as HTMLElement).style.display = "none";
+				}
+				if (idx === 2 && sessionSlidesLink) {
+					(a as HTMLAnchorElement).href = sessionSlidesLink;
+					(a as HTMLElement).style.display = "";
+				} else if (idx === 2) {
+					(a as HTMLElement).style.display = "none";
+				}
+			});
+		}
+
+		// Show modal
+		modal?.classList.add("active");
+		// Stop Lenis scrolling when modal opens (prevents body scroll interference)
+		const lenis = (window as any).lenis;
+		if (lenis && typeof lenis.stop === "function") {
+			lenis.stop();
+		}
 	}) as EventListener);
 
 	function writeBookmarks(bookmarks: Set<string>) {
@@ -396,8 +512,14 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 					ease: "power2.in",
 					onComplete: () => {
 						gsapLib?.set(container, { clearProps: "y" });
-						mod.classList.remove("active", "closing");
-						unlockScroll();
+						mod.classList.remove("active", "closing", "bookmark-area-hovered");
+						// Re-enable body scrolling
+						document.body.style.overflow = "";
+						// Re-enable Lenis scrolling when modal closes via drag-to-dismiss
+						const lenis = (window as any).lenis;
+						if (lenis && typeof lenis.start === "function") {
+							lenis.start();
+						}
 						document.dispatchEvent(new CustomEvent("closeSessionModal"));
 					}
 				});
@@ -442,7 +564,6 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 	window.openSessionModal = () => {
 		if (modal) {
 			modal.classList.add("active");
-			lockScroll();
 		}
 	};
 </script>
@@ -507,9 +628,10 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		display: flex;
 		width: 90%;
 		max-width: 1200px;
+		height: 90vh;
 		max-height: 90vh;
 		border-radius: 1rem;
-		overflow: visible;
+		overflow: hidden;
 		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 		z-index: 1001;
 		transform: scale(0.94) translateY(12px);
@@ -518,6 +640,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 			transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
 			opacity 0.25s ease;
 		gap: 1rem;
+		align-items: stretch;
 	}
 
 	.session-modal.active .modal-container {
@@ -581,20 +704,32 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		display: none;
 	}
 
+	.ad-image-content {
+		display: flex;
+		align-items: stretch;
+		height: 100%;
+	}
+
 	.ad-image-desktop {
 		border-radius: 2rem;
+		height: 100%;
+		width: auto;
+		object-fit: cover;
 	}
 
 	.modal-right-panel {
 		position: relative;
-		flex: 1;
+		flex: 1 1 auto;
 		display: flex;
 		flex-direction: column;
-		padding: 8rem 10rem 2rem 5rem;
-		max-height: 90%;
-		overflow: hidden;
+		padding: 8rem 4rem 0 5rem;
+		min-height: 0;
+		max-height: 100%;
 		background: #faf9f6;
 		border-radius: 2rem;
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior: contain;
+		scroll-behavior: smooth;
 	}
 
 	.modal-right-panel.full-width {
@@ -629,7 +764,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		justify-content: center;
 		gap: 0.5rem;
 		position: absolute;
-		bottom: 1.5rem;
+		bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
 		left: 2rem;
 		right: 2rem;
 		padding: 0.75rem 1rem;
@@ -726,6 +861,12 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		flex-wrap: wrap;
 	}
 
+	.session-content {
+		overflow-y: auto;
+		overflow-x: hidden;
+		width: 100%;
+	}
+
 	.session-actions :global(.action-btn) {
 		font-family: inherit;
 		border-radius: 1.5rem;
@@ -763,13 +904,10 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 	}
 
 	.session-description {
-		flex: 1;
-		min-height: 0;
 		font-size: 1.1rem;
 		line-height: 1.8;
 		color: #333;
 		margin-bottom: 2rem;
-		overflow-y: auto;
 	}
 
 	.session-description :global(p) {
@@ -792,17 +930,14 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		color: #1a1a1a;
 	}
 
-	.session-tags {
+	.session-meta :global(.session-tags) {
 		display: flex;
 		gap: 0.5rem;
 		flex-wrap: wrap;
 	}
 
-	.session-tag {
-		padding: 0.5rem 1rem;
-		background: rgba(54, 255, 98, 0.1);
-		color: #36ff62;
-		border-radius: 1rem;
+	.session-meta :global(.session-tag) {
+		color: #666;
 		font-size: 0.875rem;
 		font-weight: 500;
 	}
@@ -875,7 +1010,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 			flex-direction: column;
 			width: 100%;
 			max-width: none;
-			max-height: 92vh;
+			max-height: 100%;
 			border-radius: 1rem 1rem 0 0;
 			box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
 			transform: translateY(100%);
@@ -900,6 +1035,8 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 
 		.modal-drag-handle {
 			display: flex;
+			position: absolute;
+			top: 0;
 			align-items: center;
 			justify-content: center;
 		}
@@ -909,13 +1046,23 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		}
 
 		.modal-right-panel {
-			padding: 2rem 1.5rem 5rem 1.5rem;
+			padding: 2rem 1.5rem calc(6rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
 			border-radius: 1rem 1rem 0 0;
-			overflow: hidden;
+			overflow-x: hidden;
+			-webkit-overflow-scrolling: touch;
 		}
 
 		.session-title {
 			font-size: 1.75rem;
+		}
+
+		.session-actions :global(.action-btn) {
+			font-size: 1rem;
+			padding: 0.75rem 1.5rem;
+		}
+
+		.session-actions {
+			gap: 0.5rem;
 		}
 	}
 </style>
