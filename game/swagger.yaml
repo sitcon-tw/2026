@@ -2,12 +2,24 @@ basePath: /api
 definitions:
   activities.activityWithStatus:
     properties:
+      id:
+        type: string
       name:
         type: string
       type:
         type: string
       visited:
         type: boolean
+    type: object
+  activities.checkinResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  activities.countResponse:
+    properties:
+      count:
+        type: integer
     type: object
   discount.discountUsedResponse:
     properties:
@@ -162,9 +174,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/activities.checkinResponse'
         "400":
           description: bad request
           schema:
@@ -196,9 +206,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/activities.checkinResponse'
         "400":
           description: bad request
           schema:
@@ -223,9 +231,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: integer
-            type: object
+            $ref: '#/definitions/activities.countResponse'
         "401":
           description: unauthorized booth
           schema:
