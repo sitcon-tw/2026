@@ -139,7 +139,23 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 				</div>
 
 				<div class="session-type-badge">
-					{type === "keynote" ? "Keynote" : type === "presentation" ? "Presentation" : type === "undefined" ? (lang === "en" ? "Undefined" : "開放式") : type === "espresso" ? "Espresso" : ""}
+					{
+						type === "keynote"
+							? "Keynote"
+							: type === "presentation"
+								? "Presentation"
+								: type === "undefined"
+									? lang === "en"
+										? "Undefined"
+										: "開放式"
+									: type === "espresso"
+										? "Espresso"
+										: type === "sponsored"
+											? lang === "en"
+												? "Sponsored"
+												: "合作議程"
+											: ""
+					}
 				</div>
 
 				<h1 class="session-title">{name}</h1>
@@ -320,7 +336,8 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 				keynote: "Keynote",
 				presentation: "Presentation",
 				undefined: sessionLang === "en" ? "Undefined" : "開放式",
-				espresso: "Espresso"
+				espresso: "Espresso",
+				sponsored: sessionLang === "en" ? "Sponsored" : "合作議程"
 			};
 			typeBadgeEl.textContent = typeLabels[sessionType] || "";
 		}

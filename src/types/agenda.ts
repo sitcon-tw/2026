@@ -1,18 +1,19 @@
 /**
  * Agenda schema from agenda_now.json.
- * Type codes: Ev = Generic, K = Keynote, P = Presentation, U = Undefined (開放式), E = Espresso
+ * Type codes: Ev = Generic, K = Keynote, P = Presentation, U = Undefined (開放式), E = Espresso, S = Sponsored (合作議程)
  */
-export type SessionTypeCode = "Ev" | "K" | "P" | "U" | "E";
+export type SessionTypeCode = "Ev" | "K" | "P" | "U" | "E" | "S";
 
 export const SESSION_TYPE_CODES = {
 	Ev: "generic",
 	K: "keynote",
 	P: "presentation",
 	U: "undefined",
-	E: "espresso"
+	E: "espresso",
+	S: "sponsored"
 } as const satisfies Record<SessionTypeCode, string>;
 
-export type SessionTypeInternal = "generic" | "keynote" | "presentation" | "undefined" | "espresso";
+export type SessionTypeInternal = "generic" | "keynote" | "presentation" | "undefined" | "espresso" | "sponsored";
 
 export function sessionTypeCodeToInternal(code: string): SessionTypeInternal {
 	const mapped = (SESSION_TYPE_CODES as Record<string, string>)[code];

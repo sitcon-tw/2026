@@ -46,7 +46,7 @@ function parseTime(isoString: string): number {
 	return date.getTime();
 }
 
-// Calculate duration based on type (Ev=generic, K=keynote, P=presentation, U=undefined, E=espresso)
+// Calculate duration based on type (Ev=generic, K=keynote, P=presentation, U=undefined, E=espresso, S=sponsored)
 function getDuration(item: AgendaItem): number {
 	if (item.type === "generic" && item.endTime) {
 		const startTimestamp = parseTime(item.startTime);
@@ -57,7 +57,7 @@ function getDuration(item: AgendaItem): number {
 	if (item.type === "espresso") return 10;
 	if (item.type === "keynote") return item.extended ? 90 : 40;
 	if (item.type === "generic") return 40;
-	return 40; // presentation, undefined
+	return 40; // presentation, undefined, sponsored
 }
 
 // Define all possible venues (always show all, even if empty)

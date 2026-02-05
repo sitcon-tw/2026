@@ -6,7 +6,7 @@ import AgendaTimeline from "@/components/agenda/AgendaTimeline.astro";
 import CircularGallery from "@/components/agenda/CircularGallery.astro";
 import SessionModal from "@/components/agenda/SessionModal.astro";
 import ShareJamModal from "@/components/agenda/ShareJamModal.astro";
-import agendaData from "@/data/agenda.json";
+import agendaData from "@/../public/agenda.json";
 import postersData from "@/data/posters.json";
 import { normalizeAgendaSessionsFromFile } from "@/utils/agenda";
 import type { Lang } from "@/utils/agenda";
@@ -40,6 +40,10 @@ const posters = Array.isArray(postersData) ? postersData : [];
 				<div class="legend-item">
 					<div class="legend-color espresso"></div>
 					<span>Espresso</span>
+				</div>
+				<div class="legend-item">
+					<div class="legend-color sponsored"></div>
+					<span>{lang === "en" ? "Sponsored" : "合作議程"}</span>
 				</div>
 			</div>
 		</div>
@@ -203,7 +207,11 @@ const posters = Array.isArray(postersData) ? postersData : [];
 									: "開放式"
 								: data.type === "espresso"
 									? "Espresso"
-									: "";
+									: data.type === "sponsored"
+										? data.lang === "en"
+											? "Sponsored"
+											: "合作議程"
+										: "";
 			}
 
 			if (nameEl) {
@@ -635,6 +643,10 @@ const posters = Array.isArray(postersData) ? postersData : [];
 
 	.legend-color.espresso {
 		background-color: #bababa;
+	}
+
+	.legend-color.sponsored {
+		background-color: #c45c5c;
 	}
 
 	.legend-color.generic {
