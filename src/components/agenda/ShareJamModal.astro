@@ -190,22 +190,25 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 	let baseGravityY = -3;
 	let cannonVec3Constructor = null;
 	let lastDragY = 0;
-	let dragVelocity = 0;
+	let lastDragTime = 0;
+	let dragVelocityY = 0; // pixels per second
 
 	// Apply downward impulse to balls when modal is dragged down
-	function applyDragImpulse(deltaY, velocity) {
+	// velocityY is in pixels per second (positive = downward)
+	function applyDragImpulse(velocityY) {
 		if (!physicsWorld || !cannonVec3Constructor || circleBodies.length === 0) return;
-		if (deltaY <= 0 || velocity <= 0) return; // Only when dragging down
+		if (velocityY <= 0) return; // Only when moving down
 
-		// Scale impulse based on drag velocity
-		const impulseStrength = Math.min(velocity * 0.015, 8);
+		// Scale impulse based on y-axis velocity (pixels/second -> physics units)
+		// Typical fast swipe is ~1000-2000 px/s, gentle drag is ~100-300 px/s
+		const impulseStrength = Math.min(velocityY * 0.008, 10);
 
 		circleBodies.forEach(body => {
 			if (!body) return;
-			// Apply downward impulse
+			// Apply downward impulse proportional to velocity
 			const impulse = new cannonVec3Constructor(
-				(Math.random() - 0.5) * impulseStrength * 0.3, // Small random horizontal
-				-impulseStrength, // Downward
+				(Math.random() - 0.5) * impulseStrength * 0.4, // Small random horizontal
+				-impulseStrength, // Downward (negative Y in physics world)
 				0
 			);
 			body.applyImpulse(impulse);
@@ -504,15 +507,26 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 			if (!isDragging || e.pointerId !== capturePointerId) return;
 			e.preventDefault();
 			const y = e.clientY;
+			const now = performance.now();
 			const prevY = currentY;
 			currentY = Math.max(0, y - startY);
 			if (gsapLib) gsapLib.set(container, { y: currentY });
 
-			// Calculate drag velocity and apply impulse to physics balls
+			// Calculate y-axis velocity (pixels per second)
 			const deltaY = currentY - prevY;
-			dragVelocity = dragVelocity * 0.7 + deltaY * 0.3; // Smooth velocity
-			if (deltaY > 0) {
-				applyDragImpulse(deltaY, Math.abs(dragVelocity));
+			const deltaTime = (now - lastDragTime) / 1000; // Convert to seconds
+			if (deltaTime > 0) {
+				const instantVelocity = deltaY / deltaTime;
+				// Smooth velocity with exponential moving average
+				dragVelocityY = dragVelocityY * 0.6 + instantVelocity * 0.4;
+			}
+			lastDragY = currentY;
+			lastDragTime = now;
+
+			// Apply impulse when dragging down (positive velocity)
+			if (dragVelocityY > 50) {
+				// Threshold to avoid micro-movements
+				applyDragImpulse(dragVelocityY);
 			}
 		}
 
@@ -530,8 +544,9 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 				return;
 			}
 			if (currentY >= DRAG_CLOSE_THRESHOLD) {
-				// Apply strong downward impulse when closing
-				applyDragImpulse(100, 15);
+				// Apply strong downward impulse when closing based on final velocity
+				// Use at least 1500 px/s for a satisfying effect
+				applyDragImpulse(Math.max(dragVelocityY, 1500));
 				const height = container.getBoundingClientRect().height;
 				gsapLib.to(container, {
 					y: height,
@@ -558,8 +573,9 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 			e.stopPropagation();
 			startY = e.clientY;
 			currentY = 0;
-			dragVelocity = 0; // Reset velocity
+			dragVelocityY = 0; // Reset velocity
 			lastDragY = 0;
+			lastDragTime = performance.now();
 			capturePointerId = e.pointerId;
 			isDragging = true;
 			container.classList.add("dragging");
