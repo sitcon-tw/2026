@@ -75,10 +75,6 @@ function getSpeakerName(speaker: string | Speaker): string {
 		box-sizing: border-box;
 	}
 
-	.session-block.no-description {
-		cursor: default;
-	}
-
 	.session-block:hover {
 		transform: scale(1.025);
 		filter: brightness(1.2);
@@ -117,6 +113,12 @@ function getSpeakerName(speaker: string | Speaker): string {
 	.session-block.generic {
 		background-color: #1d1d1d;
 		z-index: 3;
+	}
+
+	.session-block.no-description {
+		cursor: default;
+		background-color: #1d1d1d84;
+		border: 3px solid #1d1d1d73;
 	}
 
 	.session-bookmark {
