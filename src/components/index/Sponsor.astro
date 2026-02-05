@@ -500,9 +500,17 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				padding: 3rem;
 			}
 		}
+
+		#dialog-desc :global(a) {
+			text-decoration: underline;
+			text-underline-offset: 4px;
+			text-decoration-thickness: 2px;
+		}
 	</style>
 
 	<script>
+		import { marked } from "marked";
+
 		const initSponsorDialog = () => {
 			const container = document.querySelector(".sponsor-container") as HTMLElement | null;
 			if (!container) return () => {};
@@ -536,12 +544,12 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				);
 			};
 
-			const openSponsorDialog = (trigger: HTMLElement) => {
+			const openSponsorDialog = async (trigger: HTMLElement) => {
 				if (!dialog) return;
 				const { name, desc, type, img, url, id } = trigger.dataset;
 
 				if (dialogTitle) dialogTitle.textContent = name ?? null;
-				if (dialogDesc) dialogDesc.innerHTML = desc ?? "";
+				if (dialogDesc) dialogDesc.innerHTML = desc ? await marked.parse(String(desc)) : "";
 				if (dialogType) dialogType.textContent = type ?? null;
 				if (dialogImg && img) dialogImg.src = img;
 				if (visitBtn) {
@@ -647,3 +655,4 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 		document.addEventListener("astro:before-swap", beforeSwapHandler);
 	</script>
 </section>
+Oh ****
