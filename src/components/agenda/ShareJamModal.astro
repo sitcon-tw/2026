@@ -193,6 +193,32 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 	let lastDragTime = 0;
 	let dragVelocityY = 0; // pixels per second
 
+	// Adjust gravity based on drag velocity
+	// velocityY: positive = dragging down, negative = dragging up
+	function adjustGravityFromDrag(velocityY) {
+		if (!physicsWorld || !cannonVec3Constructor) return;
+
+		// Base gravity is -3
+		// Dragging down (positive velocity): increase gravity (more negative, faster fall)
+		// Dragging up (negative velocity): decrease gravity (less negative, slower fall / float)
+		const velocityFactor = Math.max(-800, Math.min(800, velocityY)); // Clamp to reasonable range
+
+		// Scale: at 800 px/s down, gravity becomes -12 (4x stronger)
+		// Scale: at 800 px/s up, gravity becomes +3 (slight upward float)
+		const gravityY = baseGravityY - (velocityFactor / 800) * 9;
+
+		// Keep current X gravity (from gyroscope if active)
+		const currentGravityX = physicsWorld.gravity.x;
+		physicsWorld.gravity.set(currentGravityX, gravityY, 0);
+	}
+
+	// Reset gravity to base value
+	function resetGravity() {
+		if (!physicsWorld) return;
+		const currentGravityX = physicsWorld.gravity.x;
+		physicsWorld.gravity.set(currentGravityX, baseGravityY, 0);
+	}
+
 	// Apply downward impulse to balls when modal is dragged down
 	// velocityY is in pixels per second (positive = downward)
 	function applyDragImpulse(velocityY) {
@@ -523,6 +549,9 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 			lastDragY = currentY;
 			lastDragTime = now;
 
+			// Adjust gravity based on drag direction and speed
+			adjustGravityFromDrag(dragVelocityY);
+
 			// Apply impulse when dragging down (positive velocity)
 			if (dragVelocityY > 15) {
 				// Low threshold for high sensitivity
@@ -541,12 +570,15 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 
 			if (!gsapLib) {
 				container.style.transform = "";
+				resetGravity(); // Reset gravity when drag ends
 				return;
 			}
 			if (currentY >= DRAG_CLOSE_THRESHOLD) {
 				// Apply strong downward impulse when closing based on final velocity
 				// Use at least 1500 px/s for a satisfying effect
 				applyDragImpulse(Math.max(dragVelocityY, 1500));
+				// Keep high gravity during close animation for dramatic effect
+				adjustGravityFromDrag(1500);
 				const height = container.getBoundingClientRect().height;
 				gsapLib.to(container, {
 					y: height,
@@ -558,6 +590,8 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 					}
 				});
 			} else {
+				// Reset gravity when snapping back
+				resetGravity();
 				gsapLib.to(container, {
 					y: 0,
 					duration: 0.3,
@@ -759,7 +793,7 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 	}
 
 	.hidden {
-		display: none !important;
+		display: none;
 	}
 
 	/* :global() so styles apply to dynamically created physics circles */
