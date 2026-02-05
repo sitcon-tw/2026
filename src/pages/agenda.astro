@@ -248,13 +248,16 @@ const posters = Array.isArray(postersData) ? postersData : [];
 				descEl.innerHTML = html;
 			}
 
-			// Update time
+			// Update time (forced to GMT+8 / Asia/Taipei)
 			if (timeEl && data.startTime) {
 				const formatTime = isoString => {
 					const date = new Date(isoString);
-					const hours = date.getHours().toString().padStart(2, "0");
-					const minutes = date.getMinutes().toString().padStart(2, "0");
-					return `${hours}:${minutes}`;
+					return date.toLocaleTimeString("en-US", {
+						hour: "2-digit",
+						minute: "2-digit",
+						hour12: false,
+						timeZone: "Asia/Taipei"
+					});
 				};
 				const timeText = formatTime(data.startTime) + (data.endTime ? ` - ${formatTime(data.endTime)}` : "");
 				const span = timeEl.querySelector("span");
@@ -474,10 +477,15 @@ const posters = Array.isArray(postersData) ? postersData : [];
 	});
 
 	// URL sync: closing reverts to /2026/agenda/ or /2026/en/agenda/
+	// Use replaceState to avoid adding extra history entries and prevent scroll jump
 	document.addEventListener("closeSessionModal", () => {
 		const basePathWithSlash = `${basePath}/`;
 		if (window.location.pathname !== basePathWithSlash) {
-			history.pushState({}, "", basePathWithSlash);
+			const scrollX = window.scrollX;
+			const scrollY = window.scrollY;
+			history.replaceState({}, "", basePathWithSlash);
+			// Restore scroll position in case browser tries to reset it
+			window.scrollTo(scrollX, scrollY);
 		}
 	});
 
