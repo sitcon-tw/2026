@@ -407,6 +407,28 @@ const { id = "member-info-modal" } = Astro.props;
 		line-height: 1.5;
 	}
 
+	@media (prefers-reduced-motion: reduce) {
+		.member-info {
+			transition: none;
+		}
+
+		.member-info.show {
+			transition: none;
+		}
+
+		.close-btn {
+			transition: none;
+		}
+
+		#member-social-btn {
+			transition: none;
+		}
+
+		.avatar-layer {
+			transition: none;
+		}
+	}
+
 	@media (max-width: 40rem) {
 		.close-btn {
 			top: 2rem;

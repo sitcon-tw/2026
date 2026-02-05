@@ -353,6 +353,28 @@ const speakers = [
 			height: 70%;
 		}
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.parallax > use {
+			animation: none;
+		}
+
+		.marquee-track {
+			animation: none;
+		}
+
+		.speaker-item {
+			transition: none;
+		}
+
+		.desktop-img {
+			transition: none;
+		}
+
+		.cta-btn {
+			transition: none;
+		}
+	}
 </style>
 
 <script>

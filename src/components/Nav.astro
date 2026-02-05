@@ -294,4 +294,14 @@ const alternateHref = `${alternatePrefix}${currentPath || "/"}`;
 			padding: 0 1rem;
 		}
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.nav-item {
+			transition: none;
+		}
+
+		#logo {
+			transition: none;
+		}
+	}
 </style>

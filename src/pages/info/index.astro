@@ -759,4 +759,29 @@ const { sections } = info;
 		transition: transform 700ms ease;
 		will-change: transform;
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero {
+			transition: none;
+		}
+
+		.fade-out {
+			transition: none;
+		}
+
+		.hero-content,
+		.activities,
+		footer,
+		.hero-into-button {
+			transition: none;
+		}
+
+		.hero-bg :global(img.hero-bg-img) {
+			transition: none;
+		}
+
+		:global(table tbody tr) {
+			transition: none;
+		}
+	}
 </style>

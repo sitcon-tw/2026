@@ -209,6 +209,20 @@ const t = useTranslations(lang).joinUs;
 			height: 1.25rem;
 		}
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.content-btn a {
+			transition: none;
+		}
+
+		.content-btn a svg path {
+			transition: none;
+		}
+
+		.hover-bg {
+			transform: none;
+		}
+	}
 </style>
 
 <script>

@@ -87,3 +87,17 @@
 		height: 8rem;
 	}
 }
+
+@media (prefers-reduced-motion: reduce) {
+	.person {
+		transition: none;
+	}
+
+	.person:hover {
+		transform: none;
+	}
+
+	.avatar-layer {
+		transition: none;
+	}
+}
