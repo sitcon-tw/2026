@@ -186,6 +186,33 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 	let circleEls = [];
 	let rafId = 0;
 	let stopPhysics = null;
+	let gyroEnabled = false;
+	let baseGravityY = -3;
+	let cannonVec3Constructor = null;
+	let lastDragY = 0;
+	let dragVelocity = 0;
+
+	// Apply downward impulse to balls when modal is dragged down
+	function applyDragImpulse(deltaY, velocity) {
+		if (!physicsWorld || !cannonVec3Constructor || circleBodies.length === 0) return;
+		if (deltaY <= 0 || velocity <= 0) return; // Only when dragging down
+
+		// Scale impulse based on drag velocity
+		const impulseStrength = Math.min(velocity * 0.015, 8);
+
+		circleBodies.forEach(body => {
+			if (!body) return;
+			// Apply downward impulse
+			const impulse = new cannonVec3Constructor(
+				(Math.random() - 0.5) * impulseStrength * 0.3, // Small random horizontal
+				-impulseStrength, // Downward
+				0
+			);
+			body.applyImpulse(impulse);
+			// Wake up sleeping bodies
+			body.wakeUp();
+		});
+	}
 
 	function initPhysicsCircles(containerEl, avatarUrls) {
 		if (typeof stopPhysics === "function") stopPhysics();
@@ -229,6 +256,7 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 				const Vec3 = CANNON.Vec3;
 				const Material = CANNON.Material;
 				const ContactMaterial = CANNON.ContactMaterial;
+				cannonVec3Constructor = Vec3;
 
 				// Get physics container dimensions for physics world bounds
 				const physicsRect = containerEl.getBoundingClientRect();
@@ -334,15 +362,66 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 					rafId = requestAnimationFrame(step);
 				}
 				rafId = requestAnimationFrame(step);
+				// Gyroscope handler for phone tilt control
+				let gyroHandler = null;
+				function setupGyroscope() {
+					if (gyroEnabled) return;
+
+					gyroHandler = e => {
+						if (!physicsWorld || !running) return;
+						// beta: front-back tilt (-180 to 180), gamma: left-right tilt (-90 to 90)
+						const beta = e.beta ?? 0; // forward/backward tilt
+						const gamma = e.gamma ?? 0; // left/right tilt
+
+						// Convert tilt to gravity adjustment
+						// When phone tilts right (positive gamma), balls should roll right (positive X gravity)
+						// When phone tilts forward (positive beta), balls should fall faster (more negative Y gravity)
+						const tiltX = Math.max(-1, Math.min(1, gamma / 45)) * 5; // Scale gamma to gravity
+						const tiltY = baseGravityY - Math.max(-2, Math.min(2, (beta - 45) / 45)) * 2; // Adjust base gravity
+
+						physicsWorld.gravity.set(tiltX, tiltY, 0);
+					};
+
+					// Check if we need to request permission (iOS 13+)
+					if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+						// iOS requires permission request from user gesture
+						// We'll enable it automatically when modal opens since user tapped to open
+						DeviceOrientationEvent.requestPermission()
+							.then(permission => {
+								if (permission === "granted") {
+									window.addEventListener("deviceorientation", gyroHandler);
+									gyroEnabled = true;
+								}
+							})
+							.catch(() => {});
+					} else if ("DeviceOrientationEvent" in window) {
+						// Android and other devices
+						window.addEventListener("deviceorientation", gyroHandler);
+						gyroEnabled = true;
+					}
+				}
+
+				// Initialize gyroscope on mobile
+				if (PHONE_MQ.matches) {
+					setupGyroscope();
+				}
+
 				stopPhysics = () => {
 					running = false;
 					if (rafId) {
 						cancelAnimationFrame(rafId);
 						rafId = 0;
 					}
+					// Remove gyroscope listener
+					if (gyroHandler) {
+						window.removeEventListener("deviceorientation", gyroHandler);
+						gyroEnabled = false;
+						gyroHandler = null;
+					}
 					physicsWorld = null;
 					circleBodies = [];
 					circleEls = [];
+					cannonVec3Constructor = null;
 					stopPhysics = null;
 				};
 			})
@@ -425,8 +504,16 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 			if (!isDragging || e.pointerId !== capturePointerId) return;
 			e.preventDefault();
 			const y = e.clientY;
+			const prevY = currentY;
 			currentY = Math.max(0, y - startY);
 			if (gsapLib) gsapLib.set(container, { y: currentY });
+
+			// Calculate drag velocity and apply impulse to physics balls
+			const deltaY = currentY - prevY;
+			dragVelocity = dragVelocity * 0.7 + deltaY * 0.3; // Smooth velocity
+			if (deltaY > 0) {
+				applyDragImpulse(deltaY, Math.abs(dragVelocity));
+			}
 		}
 
 		function onPointerUp(e) {
@@ -443,6 +530,8 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 				return;
 			}
 			if (currentY >= DRAG_CLOSE_THRESHOLD) {
+				// Apply strong downward impulse when closing
+				applyDragImpulse(100, 15);
 				const height = container.getBoundingClientRect().height;
 				gsapLib.to(container, {
 					y: height,
@@ -469,6 +558,8 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 			e.stopPropagation();
 			startY = e.clientY;
 			currentY = 0;
+			dragVelocity = 0; // Reset velocity
+			lastDragY = 0;
 			capturePointerId = e.pointerId;
 			isDragging = true;
 			container.classList.add("dragging");
