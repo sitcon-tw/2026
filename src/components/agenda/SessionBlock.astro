@@ -11,6 +11,17 @@ const { id: sessionId, type, name, description, speakers, tags, leftPercent, wid
 function getSpeakerName(speaker: string | Speaker): string {
 	return typeof speaker === "string" ? speaker : speaker.name;
 }
+
+// Calculate duration in minutes
+function getDurationMinutes(): number | null {
+	if (!startTime || !endTime) return null;
+	const start = new Date(startTime).getTime();
+	const end = new Date(endTime).getTime();
+	if (isNaN(start) || isNaN(end)) return null;
+	return Math.round((end - start) / (1000 * 60));
+}
+
+const durationMinutes = getDurationMinutes();
 ---
 
 <div
@@ -52,6 +63,15 @@ function getSpeakerName(speaker: string | Speaker): string {
 						{tags.map((tag: string) => (
 							<span class="session-tag">#{tag}</span>
 						))}
+					</div>
+				)
+			}
+			{
+				(venue || durationMinutes) && (
+					<div class="session-venue-duration">
+						{venue && <span class="venue-label">{venue}</span>}
+						{venue && durationMinutes && <span class="separator">/</span>}
+						{durationMinutes && <span class="duration-label">{durationMinutes} min</span>}
 					</div>
 				)
 			}
@@ -118,7 +138,6 @@ function getSpeakerName(speaker: string | Speaker): string {
 	.session-block.no-description {
 		cursor: default;
 		background-color: #1d1d1d84;
-		border: 3px solid #1d1d1d73;
 	}
 
 	.session-bookmark {
@@ -234,13 +253,76 @@ function getSpeakerName(speaker: string | Speaker): string {
 		height: 1rem;
 	}
 
+	.session-venue-duration {
+		display: none;
+		position: absolute;
+		bottom: 0.5rem;
+		right: 0.5rem;
+		font-size: 0.75rem;
+		opacity: 0.7;
+		white-space: nowrap;
+	}
+
+	.session-venue-duration .separator {
+		margin: 0 0.25rem;
+	}
+
+	.session-venue-duration .venue-label {
+		font-weight: 600;
+	}
+
 	@media (max-width: 768px) {
 		.session-block {
-			padding: 0.75rem;
+			padding: 1rem;
+			padding-bottom: 2rem;
+		}
+
+		.session-block:hover {
+			transform: none;
+			filter: none;
+			box-shadow: none;
+			z-index: 1;
+		}
+
+		.session-block:active {
+			transform: scale(0.95);
+		}
+
+		.session-content {
+			min-width: 0;
+			width: 100%;
 		}
 
 		.session-name {
-			font-size: 0.875rem;
+			font-size: 1rem;
+			min-width: 0;
+			white-space: normal;
+		}
+
+		.session-info-wrapper {
+			min-width: 0;
+			flex-wrap: wrap;
+			overflow-x: visible;
+			width: 100%;
+		}
+
+		.session-speaker {
+			white-space: normal;
+			word-wrap: break-word;
+			max-width: 100%;
+		}
+
+		.session-tags {
+			flex-wrap: wrap;
+			max-width: 100%;
+		}
+
+		.session-tag {
+			white-space: normal;
+		}
+
+		.session-venue-duration {
+			display: block;
 		}
 	}
 </style>
