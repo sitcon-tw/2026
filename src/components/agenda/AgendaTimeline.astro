@@ -548,6 +548,12 @@ activeVenues.forEach(venueId => {
 			const target = e.target as HTMLElement;
 			if (!target) return;
 
+			// Don't enable drag if modal is open
+			const modal = document.getElementById("session-modal");
+			if (modal?.classList.contains("active")) {
+				return;
+			}
+
 			// Don't enable drag if clicking on venue-label, button, or link
 			const venueLabel = target.closest(".venue-label");
 			if (venueLabel) return;
@@ -577,6 +583,13 @@ activeVenues.forEach(venueId => {
 
 		const drag = (e: MouseEvent | TouchEvent) => {
 			if (!isDragging) return;
+
+			// Stop dragging if modal is open
+			const modal = document.getElementById("session-modal");
+			if (modal?.classList.contains("active")) {
+				endDrag();
+				return;
+			}
 
 			const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
 			const currentTime = Date.now();
@@ -653,6 +666,13 @@ activeVenues.forEach(venueId => {
 		scrollContainer.addEventListener(
 			"wheel",
 			e => {
+				// Don't interfere with modal scrolling - check if modal is open
+				const modal = document.getElementById("session-modal");
+				if (modal?.classList.contains("active")) {
+					// Modal is open, don't prevent default to allow modal scrolling
+					return;
+				}
+
 				// Check if horizontal scroll is intended (deltaX) or use vertical scroll as horizontal
 				const deltaX = e.deltaX || 0;
 				const deltaY = e.deltaY || 0;
@@ -856,19 +876,23 @@ activeVenues.forEach(venueId => {
 				if (hasBookmarks && !previousHasBookmarks) {
 					// Slide up animation when bookmarks become > 0
 					shareJamTriggerMobile.classList.remove("hidden");
-					shareJamTriggerMobile.classList.add("slide-in");
+					shareJamTriggerMobile.classList.add("slide-in", "glowing");
+					// Fade out glow after 2 seconds
+					setTimeout(() => {
+						shareJamTriggerMobile.classList.remove("glowing");
+					}, 2000);
 				} else if (!hasBookmarks && previousHasBookmarks) {
 					// Slide down animation when bookmarks become 0
-					shareJamTriggerMobile.classList.remove("slide-in");
+					shareJamTriggerMobile.classList.remove("slide-in", "glowing");
 					shareJamTriggerMobile.classList.add("hidden");
 				} else if (hasBookmarks) {
-					// Already visible
+					// Already visible (no glow on page load if already had bookmarks)
 					shareJamTriggerMobile.classList.remove("hidden");
 					shareJamTriggerMobile.classList.add("slide-in");
 				} else {
 					// No bookmarks
 					shareJamTriggerMobile.classList.add("hidden");
-					shareJamTriggerMobile.classList.remove("slide-in");
+					shareJamTriggerMobile.classList.remove("slide-in", "glowing");
 				}
 			}
 
@@ -1488,11 +1512,18 @@ activeVenues.forEach(venueId => {
 			z-index: 100;
 			transition:
 				transform 0.3s ease-out,
-				opacity 0.3s ease-out;
+				opacity 0.3s ease-out,
+				box-shadow 1s ease-out,
+				border-color 1s ease-out;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+			border: 2px solid transparent;
+		}
+
+		.share-jam-trigger-mobile.glowing {
 			box-shadow:
 				0 0 12px 3px rgba(255, 232, 120, 0.7),
 				0 0 32px 8px rgba(255, 223, 50, 0.3);
-			border: 2px solid rgba(255, 232, 120, 0.8);
+			border-color: rgba(255, 232, 120, 0.8);
 		}
 
 		.share-jam-trigger-mobile.hidden {
