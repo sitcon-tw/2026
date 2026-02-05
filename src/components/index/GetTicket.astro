@@ -1,5 +1,5 @@
 ---
-import { Plane, Users, CodeXml } from "@lucide/astro";
+import { Plane, Users, CodeXml, ArrowRight } from "@lucide/astro";
 import Danmaku from "./effects/Danmaku.astro";
 import danmakuLines from "../../data/danmakuLines.json";
 import { useTranslations, type Lang } from "@/utils/i18n";
@@ -141,9 +141,7 @@ const tickets = [
 			</div>
 			<div class="referral-content">
 				<a class="btn-filled" href="referral">
-					<svg xmlns="http://www.w3.org/2000/svg" width="49" height="49" viewBox="0 0 49 49" fill="none" aria-hidden="true">
-						<path d="M3.5 24.5H45.5M45.5 24.5L24.5 3.5M45.5 24.5L24.5 45.5" stroke="#634A15" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
-					</svg>
+					<ArrowRight size="55" stroke-width="3" color="#634A15" aria-hidden="true" />
 				</a>
 			</div>
 		</div>

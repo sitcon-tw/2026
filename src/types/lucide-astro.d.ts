@@ -19,4 +19,8 @@ declare module "@lucide/astro" {
 	export const Grip: any;
 	export const List: any;
 	export const Globe: any;
+	export const ArrowUp: any;
+	export const ArrowRight: any;
+	export const ArrowUpRight: any;
+	export const MessageCircle: any;
 }
