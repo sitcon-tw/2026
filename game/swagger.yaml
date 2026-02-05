@@ -13,6 +13,8 @@ definitions:
     type: object
   discount.discountUsedResponse:
     properties:
+      discount_id:
+        type: string
       id:
         type: string
       price:
@@ -28,6 +30,15 @@ definitions:
         type: integer
       max:
         type: integer
+    type: object
+  game.CouponResponse:
+    properties:
+      discount_id:
+        type: string
+      price:
+        type: integer
+      token:
+        type: string
     type: object
   game.RankEntry:
     properties:
@@ -55,10 +66,31 @@ definitions:
     type: object
   game.SubmitResponse:
     properties:
+      coupons:
+        items:
+          $ref: '#/definitions/game.CouponResponse'
+        type: array
       current_level:
         type: integer
       unlock_level:
         type: integer
+    type: object
+  models.DiscountCoupon:
+    properties:
+      created_at:
+        type: string
+      discount_id:
+        type: string
+      id:
+        type: string
+      price:
+        type: integer
+      token:
+        type: string
+      used_at:
+        type: string
+      user_id:
+        type: string
     type: object
   models.User:
     properties:
@@ -239,6 +271,29 @@ paths:
       summary: 攤位登入
       tags:
       - activities
+  /discount:
+    get:
+      description: 需要登入 cookie，回傳自己名下的折扣券清單與使用狀態
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.DiscountCoupon'
+            type: array
+        "401":
+          description: unauthorized
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 取得自己的折扣券
+      tags:
+      - discount
   /discount/{couponToken}:
     post:
       description: 用 QR Code 掃描器掃會眾的折價券，然後折價券就會被標記為已使用，同時返回這個折價券的詳細資訊。你要傳送 staff 的
