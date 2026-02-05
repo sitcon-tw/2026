@@ -34,7 +34,7 @@ definitions:
       user_id:
         type: string
     type: object
-  friend.CountResponse:
+  friend.countResponse:
     properties:
       count:
         type: integer
@@ -368,7 +368,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/friend.CountResponse'
+            $ref: '#/definitions/friend.countResponse'
         "401":
           description: Unauthorized
           schema:
