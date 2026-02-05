@@ -1,12 +1,12 @@
 {
 	"sessions": [
 		{
-			"id": "2d8a5e",
+			"id": "e0f7da",
 			"type": "Ev",
 			"room": "R0",
 			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T08:30:00+08:00",
-			"end": "2025-03-08T09:00:00+08:00",
+			"start": "2025-03-28T08:30:00+08:00",
+			"end": "2026-03-28T09:00:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -14,71 +14,19 @@
 			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/2d8a5e/",
+			"uri": "https://sitcon.org/2025/agenda/e0f7da/",
 			"zh": { "title": "入場時間", "description": "" },
 			"en": { "title": "Admission", "description": "" },
 			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "f24ddf",
+			"id": "be3c85",
 			"type": "Ev",
 			"room": "R0",
 			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T09:00:00+08:00",
-			"end": "2025-03-08T09:10:00+08:00",
-			"": null,
-			"qa": null,
-			"slide": null,
-			"co_write": null,
-			"record": "https://youtu.be/lpooPJAZgLI",
-			"live": null,
-			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/f24ddf/",
-			"zh": {
-				"title": "開幕",
-				"description": "歡迎來到 SITCON 2025！\n請領取你的逃逸路線指南，在開幕式你將得到各種方位指引，以及今年絕對不能錯過的各式活動資訊。\n當然還有更多的彩蛋正在等待揭曉，現在就來去創造出屬於自己的一條逃逸路線吧！"
-			},
-			"en": {
-				"title": "Opening",
-				"description": "歡迎來到 SITCON 2025！\n請領取你的逃逸路線指南，在開幕式你將得到各種方位指引，以及今年絕對不能錯過的各式活動資訊。\n當然還有更多的彩蛋正在等待揭曉，現在就來去創造出屬於自己的一條逃逸路線吧！"
-			},
-			"speakers": ["d9c7a9"],
-			"tags": []
-		},
-		{
-			"id": "06fcac",
-			"type": "K",
-			"room": "R0",
-			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T09:10:00+08:00",
-			"end": "2025-03-08T10:00:00+08:00",
-			"": null,
-			"qa": "https://app.sli.do/event/8coVCkf69dHfLzTdy6hVjG ",
-			"slide": "https://www.dropbox.com/scl/fi/2mntqdi4umktzxodsqz0z/20250308-SITCON-AI.pptx?rlkey=wb1mpmueg7te3vjtpeuqkzlni&e=1&dl=0",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FryIU517ske",
-			"record": "https://youtu.be/DW0ZGbrZ3wI",
-			"live": null,
-			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/06fcac/",
-			"zh": {
-				"title": "AI 時代人才新思維",
-				"description": "面對快速變化的 AI 時代，未來的關鍵人才圖像是什麼？哪些是 AI 時代最關鍵的能力跟特質？我們的人才培育思維該如何改變？葉丙成教授將在這場演講跟大家分享他從學界、業界經驗中所體悟的人才培育新思維。"
-			},
-			"en": {
-				"title": "AI 時代人才新思維",
-				"description": "面對快速變化的 AI 時代，未來的關鍵人才圖像是什麼？哪些是 AI 時代最關鍵的能力跟特質？我們的人才培育思維該如何改變？葉丙成教授將在這場演講跟大家分享他從學界、業界經驗中所體悟的人才培育新思維。"
-			},
-			"speakers": ["aa6028"],
-			"tags": []
-		},
-		{
-			"id": "12775d",
-			"type": "Ev",
-			"room": "R0",
-			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T10:00:00+08:00",
-			"end": "2025-03-08T10:05:00+08:00",
+			"start": "2026-03-28T09:00:00+08:00",
+			"end": "2026-03-28T09:10:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -86,45 +34,59 @@
 			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/12775d/",
+			"uri": "https://sitcon.org/2025/agenda/be3c85/",
+			"zh": { "title": "開幕", "description": "" },
+			"en": { "title": "Opening", "description": "" },
+			"speakers": [],
+			"tags": []
+		},
+		{
+			"id": "7d336b",
+			"type": "K",
+			"room": "R0",
+			"broadcast": ["R0", "R1", "R2", "R3", "S"],
+			"start": "2026-03-28T09:10:00+08:00",
+			"end": "2026-03-28T10:00:00+08:00",
+			"": null,
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
+			"live": null,
+			"language": null,
+			"uri": "https://sitcon.org/2025/agenda/7d336b/",
+			"zh": { "title": "", "description": "" },
+			"en": { "title": "", "description": "" },
+			"speakers": [],
+			"tags": []
+		},
+		{
+			"id": "d09828",
+			"type": "Ev",
+			"room": "R0",
+			"broadcast": ["R0", "R1", "R2", "R3", "S"],
+			"start": "2026-03-28T10:00:00+08:00",
+			"end": "2026-03-28T10:05:00+08:00",
+			"": null,
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
+			"live": null,
+			"language": null,
+			"uri": "https://sitcon.org/2025/agenda/d09828/",
 			"zh": { "title": "休息", "description": "" },
 			"en": { "title": "Break", "description": "" },
 			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "fa3b50",
+			"id": "e00a05",
 			"type": "K",
 			"room": "R0",
 			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T10:05:00+08:00",
-			"end": "2025-03-08T10:55:00+08:00",
-			"": null,
-			"qa": "https://app.sli.do/event/iUye1fUyNSDnzGmr2DdbBf ",
-			"slide": null,
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FSJk5c17okl",
-			"record": "https://youtu.be/JC7126Be23E",
-			"live": null,
-			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/fa3b50/",
-			"zh": {
-				"title": "創業開啟的人生遊戲副本",
-				"description": "創業對很多同學來說，是一個充滿吸引力的目標，但同時也充滿挑戰。在這場演講中，我將分享我過去 20 年的職場和創業歷程，從機械工程系的畢業生到資工所的深造，再到後來投身資安領域的創業故事。透過這些經歷，我希望能帶給同學們一些關於人生選擇和創業過程中，如何面對決策的啟發與思考。"
-			},
-			"en": {
-				"title": "創業開啟的人生遊戲副本",
-				"description": "創業對很多同學來說，是一個充滿吸引力的目標，但同時也充滿挑戰。在這場演講中，我將分享我過去 20 年的職場和創業歷程，從機械工程系的畢業生到資工所的深造，再到後來投身資安領域的創業故事。透過這些經歷，我希望能帶給同學們一些關於人生選擇和創業過程中，如何面對決策的啟發與思考。"
-			},
-			"speakers": ["b71d74"],
-			"tags": []
-		},
-		{
-			"id": "1e9ea4",
-			"type": "Ev",
-			"room": "R0",
-			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T10:55:00+08:00",
-			"end": "2025-03-08T11:05:00+08:00",
+			"start": "2026-03-28T10:05:00+08:00",
+			"end": "2026-03-28T10:55:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -132,149 +94,169 @@
 			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/1e9ea4/",
-			"zh": { "title": "休息", "description": "" },
-			"en": { "title": "Break", "description": "" },
-			"speakers": ["d9c7a9"],
+			"uri": "https://sitcon.org/2025/agenda/e00a05/",
+			"zh": { "title": "", "description": "" },
+			"en": { "title": "", "description": "" },
+			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "552acd",
+			"id": "18a1cd",
+			"type": "Ev",
+			"room": "R0",
+			"broadcast": ["R0", "R1", "R2", "R3", "S"],
+			"start": "2026-03-28T10:55:00+08:00",
+			"end": "2026-03-28T11:05:00+08:00",
+			"": null,
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
+			"live": null,
+			"language": null,
+			"uri": "https://sitcon.org/2025/agenda/18a1cd/",
+			"zh": { "title": "休息", "description": "" },
+			"en": { "title": "Break", "description": "" },
+			"speakers": [],
+			"tags": []
+		},
+		{
+			"id": "e0203c",
 			"type": "P",
 			"room": "R0",
 			"broadcast": null,
-			"start": "2025-03-08T11:05:00+08:00",
-			"end": "2025-03-08T11:45:00+08:00",
+			"start": "2026-03-28T11:05:00+08:00",
+			"end": "2026-03-28T11:45:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/7UczZeSseDuCbJrAVy9Xqo ",
-			"slide": "https://drive.google.com/open?id=15N7fYBEvLcF4dHVl6dzVBM0a0UAEIWpX",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FSy565J7okx",
-			"record": "https://youtu.be/oZevkPkrQpY",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/552acd/",
+			"uri": "https://sitcon.org/2025/agenda/e0203c/",
 			"zh": {
-				"title": "我怎麼開發出 3 天破萬人用的 Threads 分析工具？",
-				"description": "想要做 side project 但苦無靈感？做完 side project 卻乏人問津？面對高流量後端當掉怎麼辦？本次議程將會與你分享我如何一人開發出全台第一個 threads 社群分析工具 Threadseeker，並在上線三天內累積破萬使用者。\n\n參與完本次議程後，你可以知道怎麼開發出能真正幫助、累積使用者的 side project，與增加 side projects 的曝光與宣傳。技術方面，你可以知道由流量造成的技術瓶頸有哪些可行的解決方案。幫助你更好的應用開發技能幫助他人。\n\n## 先備知識\n具有基礎網前端、後端開發觀念或經驗者佳（ 非必須 ）"
+				"title": "透視 AI 抓內鬼：以注意力防範提示注入",
+				"description": "你精心設計的 AI 助理，可能因為使用者一句「忽略上述指令」，瞬間洩漏機密或開始胡言亂語。\n\n面對層出不窮的提示注入（Prompt Injection）攻擊，傳統的防禦手段往往只能在外部「打補丁」，卻難以跟上攻擊的變種速度。本議程將帶你換個視角，直接深入模型內部的「注意力機制（Attention Mechanism）」。\n\n我們將探討攻擊指令如何讓模型產生「分心效應」，並透過 Attention Tracker 這篇論文，從模型當下的專注點來識破惡意企圖。議程的重點將是我對此方法進行的一系列系統性壓力測試，探討在複雜上下文、跨語言攻擊等多種刁鑽條件下，該技術的穩健性與實際應用的極限，並透過淺顯易懂的圖表分析，提供數據驅動的洞見。\n\n## 先備知識\n基本了解語言模型的原理（知道什麼是 Prompt 即可）。對於 Transformer 或 Attention 機制，議程中將會有直觀的科普圖解，無需具備深厚數學或論文閱讀背景。"
 			},
 			"en": {
-				"title": "我怎麼開發出 3 天破萬人用的 Threads 分析工具？",
-				"description": "想要做 side project 但苦無靈感？做完 side project 卻乏人問津？面對高流量後端當掉怎麼辦？本次議程將會與你分享我如何一人開發出全台第一個 threads 社群分析工具 Threadseeker，並在上線三天內累積破萬使用者。\n\n參與完本次議程後，你可以知道怎麼開發出能真正幫助、累積使用者的 side project，與增加 side projects 的曝光與宣傳。技術方面，你可以知道由流量造成的技術瓶頸有哪些可行的解決方案。幫助你更好的應用開發技能幫助他人。\n\n## 先備知識\n具有基礎網前端、後端開發觀念或經驗者佳（ 非必須 ）"
+				"title": "透視 AI 抓內鬼：以注意力防範提示注入",
+				"description": "你精心設計的 AI 助理，可能因為使用者一句「忽略上述指令」，瞬間洩漏機密或開始胡言亂語。\n\n面對層出不窮的提示注入（Prompt Injection）攻擊，傳統的防禦手段往往只能在外部「打補丁」，卻難以跟上攻擊的變種速度。本議程將帶你換個視角，直接深入模型內部的「注意力機制（Attention Mechanism）」。\n\n我們將探討攻擊指令如何讓模型產生「分心效應」，並透過 Attention Tracker 這篇論文，從模型當下的專注點來識破惡意企圖。議程的重點將是我對此方法進行的一系列系統性壓力測試，探討在複雜上下文、跨語言攻擊等多種刁鑽條件下，該技術的穩健性與實際應用的極限，並透過淺顯易懂的圖表分析，提供數據驅動的洞見。\n\n## 先備知識\n基本了解語言模型的原理（知道什麼是 Prompt 即可）。對於 Transformer 或 Attention 機制，議程中將會有直觀的科普圖解，無需具備深厚數學或論文閱讀背景。"
 			},
-			"speakers": ["ff3341"],
-			"tags": ["software", "beginners"]
+			"speakers": ["d7aa95"],
+			"tags": ["#Internet #ASN #BGP #日常網路"]
 		},
 		{
-			"id": "62f54e",
+			"id": "3fe29e",
 			"type": "P",
 			"room": "R1",
 			"broadcast": null,
-			"start": "2025-03-08T11:05:00+08:00",
-			"end": "2025-03-08T11:45:00+08:00",
+			"start": "2026-03-28T11:05:00+08:00",
+			"end": "2026-03-28T11:45:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/tCd4q8BZYKs4EMDjjHX4X7",
-			"slide": "https://www.canva.com/design/DAGYB3jswK0/-iCBxWiCTHsXRtW6PouyTg/edit?utm_content=DAGYB3jswK0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FByqbhy7oJe",
-			"record": "https://youtu.be/qAoZVrnRVis",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/62f54e/",
+			"uri": "https://sitcon.org/2025/agenda/3fe29e/",
 			"zh": {
-				"title": "從「經營」到「領導」：社群領導經驗分享",
-				"description": "想擔任社群領導嗎？想發揮影響力改變他人，改變群體嗎？認為自己只是一味地下「命令」，而不是「領導」社群嗎？\n\n一個社群的成功不僅取決於活動設計，更需要有效的領導與經營策略。本議程將結合自身親身經歷和真實案例，分享如何建立有凝聚力的社群文化、透過高效的溝通，並提供數項心法提升自身影響力與社群凝聚力，並帶領觀眾探討從「經營者」到「領導者」的轉變。\n\n2025年我們不見不散！\n\n## 先備知識\n無"
+				"title": "How to Jam your Data",
+				"description": "這是一場從「個人資訊學」與「個人數位福祉（Digital Well-being）」出發的人機互動科普議程，討論我們每天不知不覺留下的數位足跡，如何被重新拿回來為自己服務。\n\n我會分享我自己以及身邊朋友是怎麼透過各種服務與工具，蒐集遊戲、影劇、閱讀、音樂、位置、裝置使用等個人資料，並示範如何把這些原始紀錄整理成看得懂、用得上的生活儀表板與週報。最後也會談到隱私與自託管的基本概念，給出幾個可以入坑的方法，讓大家開始能有意識地照顧自己的注意力與數位福祉。\n\n## 先備知識\n完全不需要程式能力即可理解核心概念。\n若具備基礎 CLI、Python 等概念，甚至有自架服務經驗者會更好。"
 			},
 			"en": {
-				"title": "從「經營」到「領導」：社群領導經驗分享",
-				"description": "想擔任社群領導嗎？想發揮影響力改變他人，改變群體嗎？認為自己只是一味地下「命令」，而不是「領導」社群嗎？\n\n一個社群的成功不僅取決於活動設計，更需要有效的領導與經營策略。本議程將結合自身親身經歷和真實案例，分享如何建立有凝聚力的社群文化、透過高效的溝通，並提供數項心法提升自身影響力與社群凝聚力，並帶領觀眾探討從「經營者」到「領導者」的轉變。\n\n2025年我們不見不散！\n\n## 先備知識\n無"
+				"title": "How to Jam your Data",
+				"description": "這是一場從「個人資訊學」與「個人數位福祉（Digital Well-being）」出發的人機互動科普議程，討論我們每天不知不覺留下的數位足跡，如何被重新拿回來為自己服務。\n\n我會分享我自己以及身邊朋友是怎麼透過各種服務與工具，蒐集遊戲、影劇、閱讀、音樂、位置、裝置使用等個人資料，並示範如何把這些原始紀錄整理成看得懂、用得上的生活儀表板與週報。最後也會談到隱私與自託管的基本概念，給出幾個可以入坑的方法，讓大家開始能有意識地照顧自己的注意力與數位福祉。\n\n## 先備知識\n完全不需要程式能力即可理解核心概念。\n若具備基礎 CLI、Python 等概念，甚至有自架服務經驗者會更好。"
 			},
-			"speakers": ["70ae31"],
-			"tags": ["community", "beginners"]
+			"speakers": ["365f0b"],
+			"tags": ["Human-Computer Interaction\nDigital Well-being\nPersonal Informatics\nQuantified Self"]
 		},
 		{
-			"id": "99b797",
+			"id": "851e0e",
 			"type": "P",
 			"room": "R2",
 			"broadcast": null,
-			"start": "2025-03-08T11:05:00+08:00",
-			"end": "2025-03-08T11:45:00+08:00",
+			"start": "2026-03-28T11:05:00+08:00",
+			"end": "2026-03-28T11:45:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/kEVAn9mGHtR1uAw3bQEQEf ",
-			"slide": "https://docs.google.com/presentation/d/1_W3aoDKgsm7c9kpcBVNwYNuYF4gpR_jV/edit?usp=sharing&ouid=113024667958149462979&rtpof=true&sd=true",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FBycS6J7iyg",
-			"record": "https://youtu.be/gCx5qTnlLCc",
+			"qa": null,
+			"slide": "#REF!",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/99b797/",
+			"uri": "https://sitcon.org/2025/agenda/851e0e/",
 			"zh": {
-				"title": "在系上建置 HPC(?) 服務的那檔事",
-				"description": "隨著高效能運算（HPC）應用的需求快速增長，建置與管理 HPC Cluster 服務也變得重要。\n\n本議程將介紹講者在交大資工建置 HPC 相關服務遇到的問題，透過解決各個問題的經驗來帶聽眾認識 Slurm 的基本概念，並讓參與者發現建置 HPC cluster 並沒有那麼困難。  \n透過案例說明，也會了解到提供多用戶並行計算需求服務時需要注意的問題及解決方案，像是軟體環境、服務可靠度、Quality of Service 等等。\n希望透過推廣教育的方式，讓更多人認識及接觸這一塊領域，並且感受到建置 infra 的美好。\n\n無論您是剛接觸 HPC，或有興趣瞭解 Slurm 的功能，本議程都將帶您探索 HPC Cluster 的可能性~\n\n## 先備知識\n網路基本概念\nLinux 基本操作\nLinux daemon, service 基本概念"
+				"title": "網際網路從頭建？ 把大家連接起來的秘密！",
+				"description": "你有沒有想過，當你在家打開一個網頁時，你是怎麼透過你家的網路連接上這個網頁的？\n網路該怎麼自己控制，才能夠讓使用者能夠順暢連線？\n\n此議程將會從最基本的網際網路結構開始，帶你認識路由、電信業者，以及不同網路之間是如何彼此連接的\n接著會介紹讓新手也能簡單了解，讓你知道什麼是網路、網路又是怎麼運作的\n\n同時也會帶到實際例子，分享像是自己控制路由走向、靠著隧道讓家裡用自己的網路，甚至 BGP hijack 這類型的案例，最後再聊聊最近非常紅的海纜！\n\n## 先備知識\n有基礎的網路知識，了解基本的網路名詞"
 			},
 			"en": {
-				"title": "在系上建置 HPC(?) 服務的那檔事",
-				"description": "隨著高效能運算（HPC）應用的需求快速增長，建置與管理 HPC Cluster 服務也變得重要。\n\n本議程將介紹講者在交大資工建置 HPC 相關服務遇到的問題，透過解決各個問題的經驗來帶聽眾認識 Slurm 的基本概念，並讓參與者發現建置 HPC cluster 並沒有那麼困難。  \n透過案例說明，也會了解到提供多用戶並行計算需求服務時需要注意的問題及解決方案，像是軟體環境、服務可靠度、Quality of Service 等等。\n希望透過推廣教育的方式，讓更多人認識及接觸這一塊領域，並且感受到建置 infra 的美好。\n\n無論您是剛接觸 HPC，或有興趣瞭解 Slurm 的功能，本議程都將帶您探索 HPC Cluster 的可能性~\n\n## 先備知識\n網路基本概念\nLinux 基本操作\nLinux daemon, service 基本概念"
+				"title": "網際網路從頭建？ 把大家連接起來的秘密！",
+				"description": "你有沒有想過，當你在家打開一個網頁時，你是怎麼透過你家的網路連接上這個網頁的？\n網路該怎麼自己控制，才能夠讓使用者能夠順暢連線？\n\n此議程將會從最基本的網際網路結構開始，帶你認識路由、電信業者，以及不同網路之間是如何彼此連接的\n接著會介紹讓新手也能簡單了解，讓你知道什麼是網路、網路又是怎麼運作的\n\n同時也會帶到實際例子，分享像是自己控制路由走向、靠著隧道讓家裡用自己的網路，甚至 BGP hijack 這類型的案例，最後再聊聊最近非常紅的海纜！\n\n## 先備知識\n有基礎的網路知識，了解基本的網路名詞"
 			},
-			"speakers": ["890e5c"],
-			"tags": ["system"]
+			"speakers": ["5deedc"],
+			"tags": ["#REF!"]
 		},
 		{
-			"id": "3ce961",
+			"id": "9addfd",
 			"type": "P",
 			"room": "R3",
 			"broadcast": null,
-			"start": "2025-03-08T11:05:00+08:00",
-			"end": "2025-03-08T11:45:00+08:00",
+			"start": "2026-03-28T11:05:00+08:00",
+			"end": "2026-03-28T11:45:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/gDTUWFN6XJLNsaPdtrANbm",
-			"slide": "https://1drv.ms/p/c/2ea1859f5f4f2429/Eb3YCIueXzJAuyzoN6be1ngBaJaNXB67GGVwvau7huGYuA?e=U2x9XX",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FByCtRJ7sJl",
-			"record": "https://youtu.be/vrjIv4AqImQ",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/3ce961/",
+			"uri": "https://sitcon.org/2025/agenda/9addfd/",
 			"zh": {
-				"title": "AI X 考古 : 解密千年文字",
-				"description": "在人工智慧廣泛應用的時代，GPT 和 AI 圖像生成等技術已經遍佈於我們的日常生活中，但 AI 的潛力不止於此。本次講座將介紹於 AI 在文化遺產復原中的貢獻，聚焦在目前多人關注的 Vesuvius Challenge。除此之外還會現場演示獲獎模型的實際操作以及背後原理，親眼見證 AI 解密文字。通過參與這場講座，了解AI技術在文化保留中的創新應用。適合對人工智慧、科技發展和文化保存有興趣的人。\n\n## 先備知識\n了解人工智慧基本概念"
+				"title": "地圖與權力：公眾地理資訊系統應用",
+				"description": "從政府或商業決策、空汙與地質調查、社會科學研究、個人飲食選擇……，地圖都在其中扮演著極關鍵的角色。\n\n然而，哪些資訊該被呈現、如何呈現？\n\n地圖是一種「觀點」，蘊含著特定權力及文化脈絡，過度仰賴官方或商業地圖不僅造成隱私疑慮，也使主流敘事下被忽略的聲音繼續被掩蓋，公民開放科技能夠如何運用 GIS 訴說不同故事，實踐開放科學、文化資產保存、原住民土地權等，又該如何應用在現實生活中？\n\n## 先備知識\n無。對地理資訊系統(GIS)、社會議題有興趣者為佳。"
 			},
 			"en": {
-				"title": "AI X 考古 : 解密千年文字",
-				"description": "在人工智慧廣泛應用的時代，GPT 和 AI 圖像生成等技術已經遍佈於我們的日常生活中，但 AI 的潛力不止於此。本次講座將介紹於 AI 在文化遺產復原中的貢獻，聚焦在目前多人關注的 Vesuvius Challenge。除此之外還會現場演示獲獎模型的實際操作以及背後原理，親眼見證 AI 解密文字。通過參與這場講座，了解AI技術在文化保留中的創新應用。適合對人工智慧、科技發展和文化保存有興趣的人。\n\n## 先備知識\n了解人工智慧基本概念"
+				"title": "地圖與權力：公眾地理資訊系統應用",
+				"description": "從政府或商業決策、空汙與地質調查、社會科學研究、個人飲食選擇……，地圖都在其中扮演著極關鍵的角色。\n\n然而，哪些資訊該被呈現、如何呈現？\n\n地圖是一種「觀點」，蘊含著特定權力及文化脈絡，過度仰賴官方或商業地圖不僅造成隱私疑慮，也使主流敘事下被忽略的聲音繼續被掩蓋，公民開放科技能夠如何運用 GIS 訴說不同故事，實踐開放科學、文化資產保存、原住民土地權等，又該如何應用在現實生活中？\n\n## 先備知識\n無。對地理資訊系統(GIS)、社會議題有興趣者為佳。"
 			},
-			"speakers": ["95a69d"],
-			"tags": ["ai"]
+			"speakers": ["06c005", "c26748"],
+			"tags": ["PPGIS （Public Participation GIS", "公眾參與式地理資訊系統）、數位人權、開源技術、地圖科技"]
 		},
 		{
-			"id": "c47604",
+			"id": "5ff864",
 			"type": "U",
 			"room": "S",
 			"broadcast": null,
-			"start": "2025-03-08T11:05:00+08:00",
-			"end": "2025-03-08T11:45:00+08:00",
+			"start": "2026-03-28T11:05:00+08:00",
+			"end": "2026-03-28T11:45:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2Fr1lCkeQiyg",
-			"record": "https://youtu.be/hmYSShb0CSQ",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/c47604/",
+			"uri": "https://sitcon.org/2025/agenda/5ff864/",
 			"zh": {
-				"title": "RE:從零開始帶你入門 CTF 競賽 ",
-				"description": "在這個資訊飛速發展的時代，資訊安全已成為不可或缺的核心技術。  \n你是否對資訊安全充滿好奇？  \n你是否也想像那些資安高手一樣，深入了解 CTF 競賽到底比的什麼？  \n透過 THJCC CTF 的經歷，帶你認識如何從 0 創立起一個入門競賽、台灣資安社群目前的現況以及現今該如何入門 CTF 競賽  \n無論你是已有一定經驗的 CTF 玩家，還是對 CTF 完全陌生、想要了解並入門的初學者，都歡迎來與我們分享討論！\n\n我們特別準備了豐富多樣的題目：\n- 體驗題：為完全沒有經驗的夥伴設計，讓你親身感受 CTF 競賽中的技術挑戰與解題樂趣。\n- 進階題：專為有經驗的玩家打造，助你突破自我、挑戰極限！\n\n無論你是誰，只要你對 CTF 和資安世界懷抱熱情，希望這場議程可以成為你的起點！\n\n## 先備知識\n無，帶台筆電來就可以了"
+				"title": "從文組轉生成年會總召 ft. 社群新手跳坑指北",
+				"description": "這是一場關於跨域轉生的生存紀實。\n身為前中文系學生，如何從最初的一腔熱血，逐步累積行銷、贊助與專案管理經驗，最終成為帶領百人團隊、完成千人規模年會的 SITCON 2025 總召 ？本議程套用中文系「起、承、轉、合」結構，從「尋找」新手定位出發，經歷「遺忘」世俗標準的取捨掙扎，最終在技術大神環伺下，透過「定義」找到屬於自己的超能力， 再次「啟航」去到自己夢想的地方。\n這不只是一場從文學背景跨足資訊圈的跳坑指南 ，更是一封邀請函。我想將證明科系並非限制，而是資源；只要願意承認自己就是那個萬能的「沒有人」 ，就能在合適的圈子裡找到舞台，找回再愛一次自己興趣的機會 。\n\n\n## 先備知識\n無"
 			},
 			"en": {
-				"title": "RE:從零開始帶你入門 CTF 競賽 ",
-				"description": "在這個資訊飛速發展的時代，資訊安全已成為不可或缺的核心技術。  \n你是否對資訊安全充滿好奇？  \n你是否也想像那些資安高手一樣，深入了解 CTF 競賽到底比的什麼？  \n透過 THJCC CTF 的經歷，帶你認識如何從 0 創立起一個入門競賽、台灣資安社群目前的現況以及現今該如何入門 CTF 競賽  \n無論你是已有一定經驗的 CTF 玩家，還是對 CTF 完全陌生、想要了解並入門的初學者，都歡迎來與我們分享討論！\n\n我們特別準備了豐富多樣的題目：\n- 體驗題：為完全沒有經驗的夥伴設計，讓你親身感受 CTF 競賽中的技術挑戰與解題樂趣。\n- 進階題：專為有經驗的玩家打造，助你突破自我、挑戰極限！\n\n無論你是誰，只要你對 CTF 和資安世界懷抱熱情，希望這場議程可以成為你的起點！\n\n## 先備知識\n無，帶台筆電來就可以了"
+				"title": "從文組轉生成年會總召 ft. 社群新手跳坑指北",
+				"description": "這是一場關於跨域轉生的生存紀實。\n身為前中文系學生，如何從最初的一腔熱血，逐步累積行銷、贊助與專案管理經驗，最終成為帶領百人團隊、完成千人規模年會的 SITCON 2025 總召 ？本議程套用中文系「起、承、轉、合」結構，從「尋找」新手定位出發，經歷「遺忘」世俗標準的取捨掙扎，最終在技術大神環伺下，透過「定義」找到屬於自己的超能力， 再次「啟航」去到自己夢想的地方。\n這不只是一場從文學背景跨足資訊圈的跳坑指南 ，更是一封邀請函。我想將證明科系並非限制，而是資源；只要願意承認自己就是那個萬能的「沒有人」 ，就能在合適的圈子裡找到舞台，找回再愛一次自己興趣的機會 。\n\n\n## 先備知識\n無"
 			},
-			"speakers": ["27bfba", "932782"],
-			"tags": ["security", "beginners"]
+			"speakers": ["d24164", "ead2c9"],
+			"tags": ["＃社群　＃新手友善　＃跨領域"]
 		},
 		{
-			"id": "6c6d55",
+			"id": "b914f4",
 			"type": "Ev",
 			"room": "R0",
 			"broadcast": ["R0", "R1", "R2"],
-			"start": "2025-03-08T11:45:00+08:00",
-			"end": "2025-03-08T12:00:00+08:00",
+			"start": "2026-03-28T11:45:00+08:00",
+			"end": "2026-03-28T12:00:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -289,12 +271,12 @@
 			"tags": []
 		},
 		{
-			"id": "103d26",
-			"type": "Ev",
+			"id": "9a016b",
+			"type": "S",
 			"room": "R0",
 			"broadcast": null,
-			"start": "2025-03-08T12:00:00+08:00",
-			"end": "2025-03-08T12:30:00+08:00",
+			"start": "2026-03-28T11:55:00+08:00",
+			"end": "2026-03-28T12:35:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -303,18 +285,24 @@
 			"live": null,
 			"language": null,
 			"uri": null,
-			"zh": { "title": "午餐", "description": "" },
-			"en": { "title": "Lunch Break", "description": "" },
-			"speakers": [],
+			"zh": {
+				"title": "AI 世代，畢業即失業？",
+				"description": "AI 讓工作更有效率，也讓「哪些能力還值得投資」變得更難判斷。面對「畢業即失業」的焦慮，與其擔心被取代，不如一起看懂趨勢、掌握方向。本對談邀請 陳伶志（台灣人工智慧學校 執行長）、呂承諭（台達電 資訊經理）、Sky Hong（陽明交大 碩士生），從決策、職場到學生第一線視角，拆解 AI 造成的工作轉變與能力需求。你將帶走更清楚的學習策略、技能地圖與下一步行動方向。\n\n## 先備知識\n無"
+			},
+			"en": {
+				"title": "AI 世代，畢業即失業？",
+				"description": "AI 讓工作更有效率，也讓「哪些能力還值得投資」變得更難判斷。面對「畢業即失業」的焦慮，與其擔心被取代，不如一起看懂趨勢、掌握方向。本對談邀請 陳伶志（台灣人工智慧學校 執行長）、呂承諭（台達電 資訊經理）、Sky Hong（陽明交大 碩士生），從決策、職場到學生第一線視角，拆解 AI 造成的工作轉變與能力需求。你將帶走更清楚的學習策略、技能地圖與下一步行動方向。\n\n## 先備知識\n無"
+			},
+			"speakers": ["7c4507", "47db6c", "365f0b"],
 			"tags": []
 		},
 		{
-			"id": "88e2fe",
+			"id": "684374",
 			"type": "Ev",
 			"room": "R0",
 			"broadcast": ["R0", "R1", "R2"],
-			"start": "2025-03-08T12:30:00+08:00",
-			"end": "2025-03-08T12:45:00+08:00",
+			"start": "2026-03-28T12:30:00+08:00",
+			"end": "2026-03-28T12:45:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -329,12 +317,12 @@
 			"tags": []
 		},
 		{
-			"id": "36d0b3",
+			"id": "977696",
 			"type": "Ev",
 			"room": "R3",
 			"broadcast": ["R3", "S"],
-			"start": "2025-03-08T11:45:00+08:00",
-			"end": "2025-03-08T12:45:00+08:00",
+			"start": "2026-03-28T11:45:00+08:00",
+			"end": "2026-03-28T12:45:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -349,194 +337,164 @@
 			"tags": []
 		},
 		{
-			"id": "1e74e3",
+			"id": "7f5b15",
 			"type": "S",
 			"room": "R1",
 			"broadcast": null,
-			"start": "2025-03-08T12:00:00+08:00",
-			"end": "2025-03-08T12:30:00+08:00",
+			"start": "2026-03-28T11:55:00+08:00",
+			"end": "2026-03-28T12:35:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/88D9hfvE8Vdzh91C1EXFzy ",
+			"qa": null,
 			"slide": "https://youtu.be/HrEM_8HqnnQ",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FrJhnRk7syl",
-			"record": "https://youtu.be/-wl2uAPHKw0",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/1e74e3/",
-			"zh": {
-				"title": "設計與資安：淺談遊戲上的攻防戰",
-				"description": "程式的運行需要各種功能，而功能的增加往往伴隨著風險，進而帶來漏洞與攻擊點，這是軟體設計中亙古不變的難題。\n\n本場議程將從遊戲設計的角度出發，探討當前市場上數款遊戲因設計缺陷或框架漏洞所引發的資安攻防實例，並深入解析攻防雙方所採用的攻擊與防禦技術。最後，將以現實世界中非遊戲領域的紅藍隊攻防案例進行對比，作為議程總結。"
-			},
-			"en": {
-				"title": "設計與資安：淺談遊戲上的攻防戰",
-				"description": "程式的運行需要各種功能，而功能的增加往往伴隨著風險，進而帶來漏洞與攻擊點，這是軟體設計中亙古不變的難題。\n\n本場議程將從遊戲設計的角度出發，探討當前市場上數款遊戲因設計缺陷或框架漏洞所引發的資安攻防實例，並深入解析攻防雙方所採用的攻擊與防禦技術。最後，將以現實世界中非遊戲領域的紅藍隊攻防案例進行對比，作為議程總結。"
-			},
-			"speakers": ["ca2ff3"],
+			"uri": "https://sitcon.org/2025/agenda/7f5b15/",
+			"zh": { "title": "", "description": "" },
+			"en": { "title": "", "description": "" },
+			"speakers": [],
 			"tags": ["security"]
 		},
 		{
-			"id": "9749b8",
+			"id": "2d81da",
 			"type": "S",
 			"room": "R2",
 			"broadcast": null,
-			"start": "2025-03-08T12:00:00+08:00",
-			"end": "2025-03-08T12:30:00+08:00",
+			"start": "2026-03-28T11:55:00+08:00",
+			"end": "2026-03-28T12:35:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/9sn5yNbHzGyF36pBqsQdfu",
+			"qa": null,
 			"slide": "https://docs.google.com/presentation/d/1ZVKkGF6zhBmglMK2dKHO9-3XQon0H64jShGN09kB-Ug/edit?usp=sharing",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FHJYdTymske",
-			"record": "https://youtu.be/5QooXIhpA6U",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
 			"uri": null,
-			"zh": {
-				"title": "用魔法打敗魔法！讓程式再也不是鬼東西",
-				"description": "想學程式但不知道從哪下手？或是覺得程式語言超抽象，想直接躺平？本次，我們邀請到 Sandy Su 一位把「這什麼鬼？」變成「print」的資訊老師，帶你用最直觀的魔法，打敗學程式時遇到的大魔王！  \n透過 CODE JUDGER 這款自動批改與學習平台，可以即時獲得回饋，像打怪一樣升級你的程式能力！無論是初學者還是有基礎的玩家，都能找到適合自己的挑戰！解鎖學程式的全新視野，讓你成為擁有主導權的冒險者，攻略名為資訊知識的地下城!\n\n## 先備知識\n✅ 對程式設計有興趣，無需基礎  \n✅ 基本的電腦操作能力  \n✅ 喜歡挑戰與學習新技能"
-			},
-			"en": {
-				"title": "用魔法打敗魔法！讓程式再也不是鬼東西",
-				"description": "想學程式但不知道從哪下手？或是覺得程式語言超抽象，想直接躺平？本次，我們邀請到 Sandy Su 一位把「這什麼鬼？」變成「print」的資訊老師，帶你用最直觀的魔法，打敗學程式時遇到的大魔王！  \n透過 CODE JUDGER 這款自動批改與學習平台，可以即時獲得回饋，像打怪一樣升級你的程式能力！無論是初學者還是有基礎的玩家，都能找到適合自己的挑戰！解鎖學程式的全新視野，讓你成為擁有主導權的冒險者，攻略名為資訊知識的地下城!\n\n## 先備知識\n✅ 對程式設計有興趣，無需基礎  \n✅ 基本的電腦操作能力  \n✅ 喜歡挑戰與學習新技能"
-			},
-			"speakers": ["bae523"],
+			"zh": { "title": "", "description": "" },
+			"en": { "title": "", "description": "" },
+			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "1d8007",
+			"id": "1ac048",
 			"type": "PD",
 			"room": "R0",
 			"broadcast": null,
-			"start": "2025-03-08T12:45:00+08:00",
-			"end": "2025-03-08T14:15:00+08:00",
+			"start": "2026-03-28T12:45:00+08:00",
+			"end": "2026-03-28T14:15:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/odSJwPZ7aRwtHTLvo1tK29 ",
+			"qa": null,
 			"slide": null,
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2F",
-			"record": "https://youtu.be/52L4GxAY6xA",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/1d8007/",
-			"zh": {
-				"title": "論壇 - Lines of Flight：資訊科技不斷重構，是跨域融合的契機還是枷鎖？",
-				"description": "**資訊流動的不斷加速，對跨域融合究竟是可能性的航線，還是思想的束縛？**\n\n資訊科技不只是演算法、架構與程式碼——它形塑了人們如何接收資訊、詮釋世界，甚至影響文化的發展與未來。當生成式 AI 與無所不在的推薦系統重塑內容生產，降低創作門檻，原創與再製的界線日漸模糊，而我們的選擇與靈感，是否也悄然受限？\n\n資訊背景出生的我們，習慣於最佳化、計算，不斷突破技術極限，但當科技滲透藝術、文化與價值觀，它究竟只是中立的工具，還是早已悄悄地改變了我們的思考方式？在資訊流動加速、跨領域創新成為趨勢的時代，技術與文化的關係愈發緊密。或許，理解這種影響，能讓我們在推動科技發展的同時，看見更多可能性。\n\n本次論壇將探討資訊科技如何影響文化、創意與原創性，並探究當科技為我們帶來新的詮釋方式時，我們如何確保它不成為新的枷鎖。與談人將分享他們如何在科技與文化的交會點上探索，在擁抱新技術的同時，保留創作的深度與自主思考。\n\n當技術改變創作方式，我們該如何看待這場變革？\n\n科技變革是擁抱突破的契機，還是警惕隱形的枷鎖？\n\n誠摯邀請你加入討論，探索科技與文化交織下的無限可能！"
-			},
-			"en": {
-				"title": "論壇 - Lines of Flight：資訊科技不斷重構，是跨域融合的契機還是枷鎖？",
-				"description": "**資訊流動的不斷加速，對跨域融合究竟是可能性的航線，還是思想的束縛？**\n\n資訊科技不只是演算法、架構與程式碼——它形塑了人們如何接收資訊、詮釋世界，甚至影響文化的發展與未來。當生成式 AI 與無所不在的推薦系統重塑內容生產，降低創作門檻，原創與再製的界線日漸模糊，而我們的選擇與靈感，是否也悄然受限？\n\n資訊背景出生的我們，習慣於最佳化、計算，不斷突破技術極限，但當科技滲透藝術、文化與價值觀，它究竟只是中立的工具，還是早已悄悄地改變了我們的思考方式？在資訊流動加速、跨領域創新成為趨勢的時代，技術與文化的關係愈發緊密。或許，理解這種影響，能讓我們在推動科技發展的同時，看見更多可能性。\n\n本次論壇將探討資訊科技如何影響文化、創意與原創性，並探究當科技為我們帶來新的詮釋方式時，我們如何確保它不成為新的枷鎖。與談人將分享他們如何在科技與文化的交會點上探索，在擁抱新技術的同時，保留創作的深度與自主思考。\n\n當技術改變創作方式，我們該如何看待這場變革？\n\n科技變革是擁抱突破的契機，還是警惕隱形的枷鎖？\n\n誠摯邀請你加入討論，探索科技與文化交織下的無限可能！"
-			},
-			"speakers": ["a70879", "83249b", "98b581", "e3d337"],
+			"uri": "https://sitcon.org/2025/agenda/1ac048/",
+			"zh": { "title": "論壇 - ", "description": "" },
+			"en": { "title": "論壇 - ", "description": "" },
+			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "ec804b",
+			"id": "d77071",
 			"type": "P",
 			"room": "R1",
 			"broadcast": null,
-			"start": "2025-03-08T12:45:00+08:00",
-			"end": "2025-03-08T13:25:00+08:00",
+			"start": "2026-03-28T12:45:00+08:00",
+			"end": "2026-03-28T13:25:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/4kMjjygi4R827fy1YxF7k6",
-			"slide": "https://drive.google.com/file/d/1R-s5ZpPQA1iq_g-WjuLKiaKPnBiKbsnt/view?usp=sharing",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FBydDn1Xiyx",
-			"record": "https://youtu.be/iYFnxUs1ZVA",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/ec804b/",
+			"uri": "https://sitcon.org/2025/agenda/d77071/",
 			"zh": {
-				"title": "再也不用切換輸入法了!? PolyKey 多語言輸入法",
-				"description": "1p3h4u4t/6，噢，忘了切換輸入法。\n\n「PolyKey 多語言輸入法」正是為此而來。本議程將分享開發多語言輸入法的經歷，從了解人類輸入的特性出發，定義問題，並利用演算法和 AI/ML 技術，實現支援 3 種以上輸入法，自動切換的輸入法框架。本議程也將給予在開發過程中的實務建議，如何以問題為核心驅動開發，逐步概念驗證到實踐。\n\n## 先備知識\n能理解 Python 基礎語法、對 AI/ML 有概念上理解"
+				"title": "我是說，誰會想用別人的遊戲引擎做遊戲啊?",
+				"description": "大家都很喜歡用遊戲引擎做遊戲，但你有沒有想過，要自己做一個遊戲引擎出來?\n此議程會分享自幹 3D 遊戲引擎的經驗，並介紹遊戲引擎的設計架構、先備知識及實作細節等，旨在希望有人一起來參與(痛苦)喜悅，體驗磨練技術的(折磨)快樂\n\n## 先備知識\n熟悉基本程式語法、了解 OOP、曾有過開發遊戲的經驗"
 			},
 			"en": {
-				"title": "再也不用切換輸入法了!? PolyKey 多語言輸入法",
-				"description": "1p3h4u4t/6，噢，忘了切換輸入法。\n\n「PolyKey 多語言輸入法」正是為此而來。本議程將分享開發多語言輸入法的經歷，從了解人類輸入的特性出發，定義問題，並利用演算法和 AI/ML 技術，實現支援 3 種以上輸入法，自動切換的輸入法框架。本議程也將給予在開發過程中的實務建議，如何以問題為核心驅動開發，逐步概念驗證到實踐。\n\n## 先備知識\n能理解 Python 基礎語法、對 AI/ML 有概念上理解"
+				"title": "我是說，誰會想用別人的遊戲引擎做遊戲啊?",
+				"description": "大家都很喜歡用遊戲引擎做遊戲，但你有沒有想過，要自己做一個遊戲引擎出來?\n此議程會分享自幹 3D 遊戲引擎的經驗，並介紹遊戲引擎的設計架構、先備知識及實作細節等，旨在希望有人一起來參與(痛苦)喜悅，體驗磨練技術的(折磨)快樂\n\n## 先備知識\n熟悉基本程式語法、了解 OOP、曾有過開發遊戲的經驗"
 			},
-			"speakers": ["3de490"],
-			"tags": ["software", "ai"]
+			"speakers": ["34e272"],
+			"tags": ["Game Engine、Computer Graphic"]
 		},
 		{
-			"id": "16f9e9",
+			"id": "d06ebf",
 			"type": "P",
 			"room": "R2",
 			"broadcast": null,
-			"start": "2025-03-08T12:45:00+08:00",
-			"end": "2025-03-08T13:25:00+08:00",
+			"start": "2026-03-28T12:45:00+08:00",
+			"end": "2026-03-28T13:25:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/puZHNE9jDAsP6H82QnAdVz",
-			"slide": "https://docs.google.com/presentation/d/1sHGLOxjZtccfWvdpzXdfbMnH8qeix-fh/edit?usp=drive_link&ouid=100670632054380842681&rtpof=true&sd=true",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2Fryds6J7i1e",
-			"record": "https://youtu.be/IDYpegbCvGQ",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/16f9e9/",
+			"uri": "https://sitcon.org/2025/agenda/d06ebf/",
 			"zh": {
-				"title": "Linux 核心 Min Heap 實作：教科書與現實差異",
-				"description": "在這場演講中，我將分享 Linux 核心中 Min Heap 實作的細節，並探討其與傳統教科書中 Min Heap 的差異。特別地，我們將討論如何通過高效演算法優化 heapify 操作，顯著減少交換次數，以及如何減少乘法指令並運用 bitwise trick 提升效能。\n\n## 先備知識\n資料結構、C 語言"
+				"title": "上線是起點：觀測×重構×擴充的系統迭代術",
+				"description": "許多開發者在完成初創服務後，常面臨「1 到 N」的增長困境：隨著功能不斷堆疊，系統不僅變得難以維護，效能瓶頸與改動風險也隨之飆升，變成聞風喪膽的「技術債」。\n\n本議程將跳脫單純的強加資源，核心是希望透過「可觀測性」建立開發回饋迴路。將探討如何利用日誌與指標等概念，讓隱藏的系統瓶頸顯現；接著分享如何在不翻修的前提下，運用演進式重構實現服務的平滑演進。\n\n透過實際案例，您將學會如何從數據中辨認瓶頸，將脆弱的系統轉化為可驗證、可回退且具高度彈性的現代化架構。讓「上線」不再是救火的開始，而是持續優化的起點。\n\n## 先備知識\n1. 了解 HTTP/API 基本概念\n2. 會寫後端或是能讀懂後端程式碼（任一語言皆可）\n3. 有基本資料庫概念（如查詢、索引）"
 			},
 			"en": {
-				"title": "Linux 核心 Min Heap 實作：教科書與現實差異",
-				"description": "在這場演講中，我將分享 Linux 核心中 Min Heap 實作的細節，並探討其與傳統教科書中 Min Heap 的差異。特別地，我們將討論如何通過高效演算法優化 heapify 操作，顯著減少交換次數，以及如何減少乘法指令並運用 bitwise trick 提升效能。\n\n## 先備知識\n資料結構、C 語言"
+				"title": "上線是起點：觀測×重構×擴充的系統迭代術",
+				"description": "許多開發者在完成初創服務後，常面臨「1 到 N」的增長困境：隨著功能不斷堆疊，系統不僅變得難以維護，效能瓶頸與改動風險也隨之飆升，變成聞風喪膽的「技術債」。\n\n本議程將跳脫單純的強加資源，核心是希望透過「可觀測性」建立開發回饋迴路。將探討如何利用日誌與指標等概念，讓隱藏的系統瓶頸顯現；接著分享如何在不翻修的前提下，運用演進式重構實現服務的平滑演進。\n\n透過實際案例，您將學會如何從數據中辨認瓶頸，將脆弱的系統轉化為可驗證、可回退且具高度彈性的現代化架構。讓「上線」不再是救火的開始，而是持續優化的起點。\n\n## 先備知識\n1. 了解 HTTP/API 基本概念\n2. 會寫後端或是能讀懂後端程式碼（任一語言皆可）\n3. 有基本資料庫概念（如查詢、索引）"
 			},
-			"speakers": ["ea3931"],
-			"tags": ["software"]
+			"speakers": ["a966ae"],
+			"tags": ["後端工程、系統設計"]
 		},
 		{
-			"id": "c54eb6",
+			"id": "48eebd",
 			"type": "S",
 			"room": "R3",
 			"broadcast": null,
-			"start": "2025-03-08T12:45:00+08:00",
-			"end": "2025-03-08T13:25:00+08:00",
+			"start": "2026-03-28T12:45:00+08:00",
+			"end": "2026-03-28T13:25:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/9nXs7tN6Ljwrg4q6ahdbte",
+			"qa": null,
 			"slide": null,
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FBkq1yl7i1g",
-			"record": "https://youtu.be/HrEM_8HqnnQ",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
 			"uri": null,
-			"zh": {
-				"title": "社群與資安：淺談駭客的攻防戰",
-				"description": "系統的運行需要各種功能，而功能的增加往往伴隨著風險，進而帶來漏洞與攻擊點，成為駭客攻防的原點。本場議程將從整體網路攻防的角度出發，探討當前公私組織資訊系統因系統漏洞或人為疏失所引發的資安風險。並深入解析現實世界駭客所採用的攻擊與生態。最後，將以人才培育的面相，對攻防案例與資安學習進行對比，作為議程總結。\n\n## 先備知識\n具有資訊通識等級"
-			},
-			"en": {
-				"title": "社群與資安：淺談駭客的攻防戰",
-				"description": "系統的運行需要各種功能，而功能的增加往往伴隨著風險，進而帶來漏洞與攻擊點，成為駭客攻防的原點。本場議程將從整體網路攻防的角度出發，探討當前公私組織資訊系統因系統漏洞或人為疏失所引發的資安風險。並深入解析現實世界駭客所採用的攻擊與生態。最後，將以人才培育的面相，對攻防案例與資安學習進行對比，作為議程總結。\n\n## 先備知識\n具有資訊通識等級"
-			},
-			"speakers": ["e4271b"],
+			"zh": { "title": "", "description": "" },
+			"en": { "title": "", "description": "" },
+			"speakers": [],
 			"tags": ["security"]
 		},
 		{
-			"id": "42be98",
+			"id": "2ba685",
 			"type": "U",
 			"room": "S",
 			"broadcast": null,
-			"start": "2025-03-08T12:45:00+08:00",
-			"end": "2025-03-08T14:15:00+08:00",
+			"start": "2026-03-28T12:45:00+08:00",
+			"end": "2026-03-28T14:15:00+08:00",
 			"": null,
 			"qa": null,
-			"slide": null,
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2Fr1xbggQo1e",
-			"record": "https://youtu.be/nbMqvSlEe94",
+			"slide": "#N/A",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/42be98/",
-			"zh": {
-				"title": "零時小學校 - 公民科技專案與 108 課綱對照表 - 共創工作坊",
-				"description": "讓專案與教育工作者更好理解專案與教育的關聯性，以及如何直接在 108 課綱下的教學現場使用，零時小學校以 Airtable 整理一份對照表，歡迎大家參加本次協作工作坊。\n\nFor 學生：自主探索各種領域的過程中，對照表希望能提供一個輔助，抽象的議題能有對應的專案與社群，可以接觸、接洽，也可以跳坑參與。\n\nFor 教育工作者：希望能夠協助老師直接找到各科目的課綱項目所對應的公民科技專案，增加課程與真實社會情境的連結，且許多專案皆有做出可操作的網站等數位工具，可於課堂中讓學生使用。\n\nFor 專案團隊：希望能讓想要將專案做教育推廣的團隊更清楚自身專案具有何種教育內涵，因此以 108 課綱的細項提供參考，讓專案團隊可以自行連結，並更清楚對教育工作者闡述與 108 課綱的關聯。\n\n本次的工作分組有「核心素養標記組」、「專案內容補充組」、「教學現場實踐組」，從三個面向一起來豐富對照表吧 ! 公民科技專案與 108 課綱對照表：https://g0v.hackmd.io/@jothon/edu-table\n\n## 先備知識\n無"
-			},
-			"en": {
-				"title": "零時小學校 - 公民科技專案與 108 課綱對照表 - 共創工作坊",
-				"description": "讓專案與教育工作者更好理解專案與教育的關聯性，以及如何直接在 108 課綱下的教學現場使用，零時小學校以 Airtable 整理一份對照表，歡迎大家參加本次協作工作坊。\n\nFor 學生：自主探索各種領域的過程中，對照表希望能提供一個輔助，抽象的議題能有對應的專案與社群，可以接觸、接洽，也可以跳坑參與。\n\nFor 教育工作者：希望能夠協助老師直接找到各科目的課綱項目所對應的公民科技專案，增加課程與真實社會情境的連結，且許多專案皆有做出可操作的網站等數位工具，可於課堂中讓學生使用。\n\nFor 專案團隊：希望能讓想要將專案做教育推廣的團隊更清楚自身專案具有何種教育內涵，因此以 108 課綱的細項提供參考，讓專案團隊可以自行連結，並更清楚對教育工作者闡述與 108 課綱的關聯。\n\n本次的工作分組有「核心素養標記組」、「專案內容補充組」、「教學現場實踐組」，從三個面向一起來豐富對照表吧 ! 公民科技專案與 108 課綱對照表：https://g0v.hackmd.io/@jothon/edu-table\n\n## 先備知識\n無"
-			},
-			"speakers": ["fa5d13"],
-			"tags": ["community", "beginners"]
+			"uri": "https://sitcon.org/2025/agenda/2ba685/",
+			"zh": { "title": "", "description": "" },
+			"en": { "title": "", "description": "" },
+			"speakers": [],
+			"tags": ["#N/A"]
 		},
 		{
-			"id": "710069",
+			"id": "60af8a",
 			"type": "Ev",
 			"room": "R1",
 			"broadcast": ["R1", "R3"],
-			"start": "2025-03-08T13:25:00+08:00",
-			"end": "2025-03-08T13:35:00+08:00",
+			"start": "2026-03-28T13:25:00+08:00",
+			"end": "2026-03-28T13:35:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -544,19 +502,19 @@
 			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/710069/",
+			"uri": "https://sitcon.org/2025/agenda/60af8a/",
 			"zh": { "title": "休息", "description": "" },
 			"en": { "title": "Break", "description": "" },
 			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "d01cb7",
+			"id": "efc6e5",
 			"type": "Ev",
 			"room": "R2",
 			"broadcast": null,
-			"start": "2025-03-08T13:25:00+08:00",
-			"end": "2025-03-08T13:35:00+08:00",
+			"start": "2026-03-28T13:25:00+08:00",
+			"end": "2026-03-28T13:35:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -564,97 +522,91 @@
 			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/d01cb7/",
+			"uri": "https://sitcon.org/2025/agenda/efc6e5/",
 			"zh": { "title": "休息", "description": "" },
 			"en": { "title": "Break", "description": "" },
 			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "1db24e",
+			"id": "014d17",
 			"type": "P",
 			"room": "R1",
 			"broadcast": null,
-			"start": "2025-03-08T13:35:00+08:00",
-			"end": "2025-03-08T14:15:00+08:00",
+			"start": "2026-03-28T13:35:00+08:00",
+			"end": "2026-03-28T14:15:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/8sjStbY23uGzJgPH3mdkXN",
-			"slide": "https://docs.google.com/presentation/d/1yrlQCozHcDkX1lrWzZMXw1xlJTYTI6VeNKuRR25fgkg/edit?usp=sharing",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FSyU5nk7jJx",
-			"record": "https://youtu.be/i2NCRyPxvhw",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/1db24e/",
+			"uri": "https://sitcon.org/2025/agenda/014d17/",
 			"zh": {
-				"title": "系統設計好好玩-從單體到微服務韌性設計",
-				"description": "本演講將帶領聽眾認識微服務，探索系統設計的進化旅程，從單體架構的基本概念到微服務架構的細緻實現，並深入探討韌性設計的重要性與應用方法。內容涵蓋如何在不同架構下平衡性能、可用性與擴展性，並通過實例分享實際挑戰與解決方案。無論您是初學者還是有經驗的工程師，都能從中找到提升系統穩健性的實用技巧，感受到設計架構的無窮樂趣與創造力。\n\n## 先備知識\n理解後端基本架構即可"
+				"title": "什麼? 原來工控安全也可以那麼好玩?!",
+				"description": "蛤? Modbus,DNP3,S7協定是什麼? OT場域跟IT場域差異在哪 ? 沒碰過真正工控場域怎麼辦？面對真實OT攻擊怎麼處理 ?\n\n本次議程將會與同學分享工控協定基本概念與如何在工控安全領域闖出一片天，從學生想要知道OT問題角度出發，解答同學對OT的提問。與學校課程不一樣的是，以第一線工控角度作產業分享，並且提供真實工控環境檔案給同學課後練習\n\n參加完本次議程後，你可以了解工控設備的基本通訊協定之外，技術方面可以了解最新工控攻擊手法，絕對不是紙上談兵，直接實機演練！讓我們一起攜手守護工控安全吧!\n\n## 先備知識\n理解基本網路運作知識"
 			},
 			"en": {
-				"title": "系統設計好好玩-從單體到微服務韌性設計",
-				"description": "本演講將帶領聽眾認識微服務，探索系統設計的進化旅程，從單體架構的基本概念到微服務架構的細緻實現，並深入探討韌性設計的重要性與應用方法。內容涵蓋如何在不同架構下平衡性能、可用性與擴展性，並通過實例分享實際挑戰與解決方案。無論您是初學者還是有經驗的工程師，都能從中找到提升系統穩健性的實用技巧，感受到設計架構的無窮樂趣與創造力。\n\n## 先備知識\n理解後端基本架構即可"
+				"title": "什麼? 原來工控安全也可以那麼好玩?!",
+				"description": "蛤? Modbus,DNP3,S7協定是什麼? OT場域跟IT場域差異在哪 ? 沒碰過真正工控場域怎麼辦？面對真實OT攻擊怎麼處理 ?\n\n本次議程將會與同學分享工控協定基本概念與如何在工控安全領域闖出一片天，從學生想要知道OT問題角度出發，解答同學對OT的提問。與學校課程不一樣的是，以第一線工控角度作產業分享，並且提供真實工控環境檔案給同學課後練習\n\n參加完本次議程後，你可以了解工控設備的基本通訊協定之外，技術方面可以了解最新工控攻擊手法，絕對不是紙上談兵，直接實機演練！讓我們一起攜手守護工控安全吧!\n\n## 先備知識\n理解基本網路運作知識"
 			},
-			"speakers": ["b72158"],
-			"tags": ["system", "beginners"]
+			"speakers": ["f9bb0f"],
+			"tags": ["OT Security", "Cyber Security"]
 		},
 		{
-			"id": "308a3b",
+			"id": "077a7f",
 			"type": "P",
 			"room": "R2",
 			"broadcast": null,
-			"start": "2025-03-08T13:35:00+08:00",
-			"end": "2025-03-08T14:15:00+08:00",
+			"start": "2026-03-28T13:35:00+08:00",
+			"end": "2026-03-28T14:15:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/qmG5u5ygxkyGrSZ8hRR3Nw ",
+			"qa": null,
 			"slide": null,
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FSJw0ak7i1l",
-			"record": "https://youtu.be/aji5vU1Lzwc",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/308a3b/",
+			"uri": "https://sitcon.org/2025/agenda/077a7f/",
 			"zh": {
-				"title": "從競程到開發：演算法的應用與思維轉變",
-				"description": "你是否曾懷疑：「大學學的演算法與資料結構，或競程經驗，真的在工作中派得上用場嗎？」如果你也有這樣的疑問，那這場議程絕對不能錯過！\n\n這場議程將透過實際專案案例，帶你了解演算法在軟體開發中的真實應用，讓你發現這些知識不僅是課本或競賽上的理論，更是一種提升效率、優化程式的設計思維。即使某些演算法與資料結構你可能一輩子都不會使用，但它們帶來的解題方式與邏輯思維，將深刻影響你在軟體開發中的思維。\n\n讓我們一起透過這一場議程認識演算法與資料結構帶給我們的價值吧！\n\n## 先備知識\n無，但如果具備一些演算法知識會更有共鳴"
+				"title": "從頭製作酷炫的 Grafana 儀表板",
+				"description": "你是否有想像過寫一個系統監控儀表板，可以在一個大畫面上呈現系統的即時動態、吞吐量，以及各種統計資料，讓你可以一眼就看出系統的異常，甚至是吸引同學們的關注和嘖嘖稱奇？\n\n這場議程我會深入淺出，介紹如何定義和收集系統指標（如登入次數、請求吞吐量）、統一管理應用程式的日誌，架設時序資料庫，以及如何搭配 Grafana 將資料轉化為美觀且即時更新的視覺化圖表。\n\n無論你是想要深入了解生產環境中系統的監控機制，亦或者是想往自己的系統中導入輕量化的監測機制，甚至是製作一個面向任何情境的儀表板，這場議程都可以帶著你一起揭開可觀測性的神秘面紗，讓你可以輕鬆做出各種儀表板！\n\n## 先備知識\n寫過 Web 後端系統"
 			},
 			"en": {
-				"title": "從競程到開發：演算法的應用與思維轉變",
-				"description": "你是否曾懷疑：「大學學的演算法與資料結構，或競程經驗，真的在工作中派得上用場嗎？」如果你也有這樣的疑問，那這場議程絕對不能錯過！\n\n這場議程將透過實際專案案例，帶你了解演算法在軟體開發中的真實應用，讓你發現這些知識不僅是課本或競賽上的理論，更是一種提升效率、優化程式的設計思維。即使某些演算法與資料結構你可能一輩子都不會使用，但它們帶來的解題方式與邏輯思維，將深刻影響你在軟體開發中的思維。\n\n讓我們一起透過這一場議程認識演算法與資料結構帶給我們的價值吧！\n\n## 先備知識\n無，但如果具備一些演算法知識會更有共鳴"
+				"title": "從頭製作酷炫的 Grafana 儀表板",
+				"description": "你是否有想像過寫一個系統監控儀表板，可以在一個大畫面上呈現系統的即時動態、吞吐量，以及各種統計資料，讓你可以一眼就看出系統的異常，甚至是吸引同學們的關注和嘖嘖稱奇？\n\n這場議程我會深入淺出，介紹如何定義和收集系統指標（如登入次數、請求吞吐量）、統一管理應用程式的日誌，架設時序資料庫，以及如何搭配 Grafana 將資料轉化為美觀且即時更新的視覺化圖表。\n\n無論你是想要深入了解生產環境中系統的監控機制，亦或者是想往自己的系統中導入輕量化的監測機制，甚至是製作一個面向任何情境的儀表板，這場議程都可以帶著你一起揭開可觀測性的神秘面紗，讓你可以輕鬆做出各種儀表板！\n\n## 先備知識\n寫過 Web 後端系統"
 			},
-			"speakers": ["10b30f"],
-			"tags": ["software"]
+			"speakers": ["4eaaad"],
+			"tags": ["軟體工程、可觀測性、系統監控"]
 		},
 		{
-			"id": "ca412a",
+			"id": "fd8209",
 			"type": "P",
 			"room": "R3",
 			"broadcast": null,
-			"start": "2025-03-08T13:35:00+08:00",
-			"end": "2025-03-08T14:15:00+08:00",
+			"start": "2026-03-28T13:35:00+08:00",
+			"end": "2026-03-28T14:15:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/2UcVSUaBAURdqskZgE3Zs1 ",
-			"slide": "https://www.canva.com/design/DAGfJFyQhYM/FXkbh_wrlR3ZYkPu55XpSw/edit?utm_content=DAGfJFyQhYM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FHyKMJlQikl",
-			"record": "https://youtu.be/RpFuQhOllAs",
+			"qa": null,
+			"slide": "#N/A",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/ca412a/",
-			"zh": {
-				"title": "反反作弊！Kernel 監控下讀寫的逃逸術",
-				"description": "你是否好奇過遊戲那些飛天遁地的外掛是如何實現的，反作弊怎麼有跟沒有一樣，網路上常常提到的 DMA 又是什麼呢。\n\n這場議程將會帶大家了解什麼是 UserMode 什麼是 KernelMode 以及他們背後的攻擊及防禦手法，並且也會講述如果想要入門 Kernel Driver 開發，有什麼洞可能會在一開始時碰到，需要怎麼解決。\n\n## 先備知識\n理解 User-Mode 和 Kernel-Mode 概念，對於 Windows API 有些許了解，修習過作業系統者"
-			},
-			"en": {
-				"title": "反反作弊！Kernel 監控下讀寫的逃逸術",
-				"description": "你是否好奇過遊戲那些飛天遁地的外掛是如何實現的，反作弊怎麼有跟沒有一樣，網路上常常提到的 DMA 又是什麼呢。\n\n這場議程將會帶大家了解什麼是 UserMode 什麼是 KernelMode 以及他們背後的攻擊及防禦手法，並且也會講述如果想要入門 Kernel Driver 開發，有什麼洞可能會在一開始時碰到，需要怎麼解決。\n\n## 先備知識\n理解 User-Mode 和 Kernel-Mode 概念，對於 Windows API 有些許了解，修習過作業系統者"
-			},
-			"speakers": ["7abe86"],
-			"tags": ["security"]
+			"uri": "https://sitcon.org/2025/agenda/fd8209/",
+			"zh": { "title": "", "description": "" },
+			"en": { "title": "", "description": "" },
+			"speakers": [],
+			"tags": ["#N/A"]
 		},
 		{
-			"id": "7540dc",
+			"id": "d4e9c5",
 			"type": "Ev",
 			"room": "R0",
 			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T14:15:00+08:00",
-			"end": "2025-03-08T14:25:00+08:00",
+			"start": "2026-03-28T14:15:00+08:00",
+			"end": "2026-03-28T14:25:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -662,149 +614,123 @@
 			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/7540dc/",
+			"uri": "https://sitcon.org/2025/agenda/d4e9c5/",
 			"zh": { "title": "休息", "description": "" },
 			"en": { "title": "Break", "description": "" },
 			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "15512d",
+			"id": "87eeb8",
 			"type": "E",
 			"room": "R0",
 			"broadcast": null,
-			"start": "2025-03-08T14:25:00+08:00",
-			"end": "2025-03-08T14:35:00+08:00",
+			"start": "2026-03-28T14:25:00+08:00",
+			"end": "2026-03-28T14:35:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/4a4HANQvyn3knSJK2MxkHW",
-			"slide": "https://www.canva.com/design/DAGgAJvKDls/Ag-Ts3kQBjVP3REgixlewg/edit?utm_content=DAGgAJvKDls&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FS1DUsJQj1g",
-			"record": "https://youtu.be/fr-ppa1-Z1I",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/15512d/",
+			"uri": "https://sitcon.org/2025/agenda/87eeb8/",
 			"zh": {
-				"title": "如何從零到千星？開源專案成功的實戰分享",
-				"description": "夢想讓自己的開源專案在 GitHub 上突破千星？這場演講將帶你瞭解如何成功打造好的開源專案，讓專案獲得廣泛關注的完整路徑。我會以我擁有 10k stars 的專案 superfile 爲例，描述如何打造一個具吸引力的開源專案，並結合實戰經驗，分享獲取社群支持的核心策略。\n\n演講內容將涵蓋專案啟動的初期思考、面對挑戰時的應對方式，以及如何透過行銷、協作與技術實力，還有後續的維護，將一個普通專案轉變成千星級別的專案。讓自己的開源專案發光發熱！ \n\n## 先備知識\n對於 GitHub 以及開源有基本的認識與瞭解"
+				"title": "Traefik: 解放你的雙手",
+				"description": "在雲原生時代，微服務部署的複雜性日益增加。傳統的反向代理設定繁瑣，難以適應服務的動態擴展。本次演講將介紹 Traefik，一個專為雲原生設計的現代邊緣路由器。我們將從容器化服務的基礎出發，解釋反向代理與服務發現的核心概念，並重點闡述 Traefik 如何利用 Docker 標籤（Labels）自動化服務發現和路由配置，同時一站式解決 TLS/Let's Encrypt 憑證的自動簽發與續訂，讓您的應用程式部署更加簡潔、安全且高效。\n\n## 先備知識\n基本的 Docker 容器概念（了解什麼是 Container、Image）。\n基本的網路概念（了解 Port、IP 地址）。\n了解 Nginx/Apache 等傳統反向代理的工作原理（非必需，但有助於理解優勢）。\n熟悉 YAML 格式 (用於 Docker Compose)。"
 			},
 			"en": {
-				"title": "如何從零到千星？開源專案成功的實戰分享",
-				"description": "夢想讓自己的開源專案在 GitHub 上突破千星？這場演講將帶你瞭解如何成功打造好的開源專案，讓專案獲得廣泛關注的完整路徑。我會以我擁有 10k stars 的專案 superfile 爲例，描述如何打造一個具吸引力的開源專案，並結合實戰經驗，分享獲取社群支持的核心策略。\n\n演講內容將涵蓋專案啟動的初期思考、面對挑戰時的應對方式，以及如何透過行銷、協作與技術實力，還有後續的維護，將一個普通專案轉變成千星級別的專案。讓自己的開源專案發光發熱！ \n\n## 先備知識\n對於 GitHub 以及開源有基本的認識與瞭解"
+				"title": "Traefik: 解放你的雙手",
+				"description": "在雲原生時代，微服務部署的複雜性日益增加。傳統的反向代理設定繁瑣，難以適應服務的動態擴展。本次演講將介紹 Traefik，一個專為雲原生設計的現代邊緣路由器。我們將從容器化服務的基礎出發，解釋反向代理與服務發現的核心概念，並重點闡述 Traefik 如何利用 Docker 標籤（Labels）自動化服務發現和路由配置，同時一站式解決 TLS/Let's Encrypt 憑證的自動簽發與續訂，讓您的應用程式部署更加簡潔、安全且高效。\n\n## 先備知識\n基本的 Docker 容器概念（了解什麼是 Container、Image）。\n基本的網路概念（了解 Port、IP 地址）。\n了解 Nginx/Apache 等傳統反向代理的工作原理（非必需，但有助於理解優勢）。\n熟悉 YAML 格式 (用於 Docker Compose)。"
 			},
-			"speakers": ["027243"],
-			"tags": ["software"]
+			"speakers": ["4fbf5d"],
+			"tags": ["#Traefik\n#ReverseProxy\n#Docker\n#DevOps"]
 		},
 		{
-			"id": "79fdcd",
+			"id": "4da81a",
 			"type": "E",
 			"room": "R1",
 			"broadcast": null,
-			"start": "2025-03-08T14:25:00+08:00",
-			"end": "2025-03-08T14:35:00+08:00",
+			"start": "2026-03-28T14:25:00+08:00",
+			"end": "2026-03-28T14:35:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/kGPrTKvtGWh2NKXjA2S1mX",
-			"slide": "https://docs.google.com/presentation/d/1ENMO8e1hdynzR4jN38D8-NUMfx1tRGjndvmYvn1yHKQ/edit?usp=drivesdk",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FSym6nkmikl",
-			"record": "https://youtu.be/6_1RUH7hr8E",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/79fdcd/",
+			"uri": "https://sitcon.org/2025/agenda/4da81a/",
 			"zh": {
-				"title": "踏進開源貢獻的第一步：注意事項與學習資源",
-				"description": "開源軟體在現今軟體開發中扮演著越來越重要的角色。科技公司利用開源社群的力量加速產品迭代，開發者則藉由參與開源專案展現技術能力與熱忱，在履歷和面試中脫穎而出。不過，踏出開源的第一步並不容易，如果專案的程式碼結構複雜，工作流程難以掌握，往往讓人卻步。因此，本講座將為開源初學者提供注意事項與實用建議，幫助大家了解如何選擇適合的專案，從文檔、簡單修正或 Bug 報告開始，逐步建立自信，成功融入開源社群。\n\n## 先備知識\n了解版控工具的功能（Git, SVN）, 基本程式語言能力, 基本英文"
+				"title": "壓縮、偽裝、釋放：Mr. Compress 的壓縮魔術",
+				"description": "壓縮，壓縮，再壓縮！\n你以為壓縮檔就很安全嗎？\n壓縮檔所帶來的危害，早已遠超你的想像——\n造就了許多全新攻擊路徑，也帶來更多全新危害，\n不只壓縮了惡意程式，造就了許多全新的攻擊路徑以及危害，\n同時連本議程的時間都被壓縮了！而且甚至連議程摘要ㄧㄝˇㄅ...\n\n本議程將探討壓縮檔如何在現實世界中成為攻擊者所使用的惡意載體之一。\n透過介紹數個真實被用於攻擊事件中的壓縮檔漏洞，以及不同壓縮軟體各自的\"feature\"，來詳細剖析其成因與實際利用方式。\n\n「當一切都被壓縮時，你真的確定解壓後還是安全的嗎？」\n\n## 先備知識\n無，但曾接觸過網路攻擊事件或具備基本資安概念，將更容易理解。"
 			},
 			"en": {
-				"title": "踏進開源貢獻的第一步：注意事項與學習資源",
-				"description": "開源軟體在現今軟體開發中扮演著越來越重要的角色。科技公司利用開源社群的力量加速產品迭代，開發者則藉由參與開源專案展現技術能力與熱忱，在履歷和面試中脫穎而出。不過，踏出開源的第一步並不容易，如果專案的程式碼結構複雜，工作流程難以掌握，往往讓人卻步。因此，本講座將為開源初學者提供注意事項與實用建議，幫助大家了解如何選擇適合的專案，從文檔、簡單修正或 Bug 報告開始，逐步建立自信，成功融入開源社群。\n\n## 先備知識\n了解版控工具的功能（Git, SVN）, 基本程式語言能力, 基本英文"
+				"title": "壓縮、偽裝、釋放：Mr. Compress 的壓縮魔術",
+				"description": "壓縮，壓縮，再壓縮！\n你以為壓縮檔就很安全嗎？\n壓縮檔所帶來的危害，早已遠超你的想像——\n造就了許多全新攻擊路徑，也帶來更多全新危害，\n不只壓縮了惡意程式，造就了許多全新的攻擊路徑以及危害，\n同時連本議程的時間都被壓縮了！而且甚至連議程摘要ㄧㄝˇㄅ...\n\n本議程將探討壓縮檔如何在現實世界中成為攻擊者所使用的惡意載體之一。\n透過介紹數個真實被用於攻擊事件中的壓縮檔漏洞，以及不同壓縮軟體各自的\"feature\"，來詳細剖析其成因與實際利用方式。\n\n「當一切都被壓縮時，你真的確定解壓後還是安全的嗎？」\n\n## 先備知識\n無，但曾接觸過網路攻擊事件或具備基本資安概念，將更容易理解。"
 			},
-			"speakers": ["52b0bf"],
-			"tags": ["community", "beginners"]
+			"speakers": ["b4db47"],
+			"tags": ["資訊安全、威脅情資"]
 		},
 		{
-			"id": "ee352d",
+			"id": "c1d927",
 			"type": "E",
 			"room": "R2",
 			"broadcast": null,
-			"start": "2025-03-08T14:25:00+08:00",
-			"end": "2025-03-08T14:35:00+08:00",
+			"start": "2026-03-28T14:25:00+08:00",
+			"end": "2026-03-28T14:35:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/aFjdf6wL9vUQFApirce7DB ",
-			"slide": "https://docs.google.com/presentation/d/1I8AO8D2xbxzGLBhaionJRWHXEMHXaXK0bmt72binCs0/edit?usp=sharing",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FS1rWA1ms1g",
-			"record": "https://youtu.be/pV61dTwBaGw",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/ee352d/",
+			"uri": "https://sitcon.org/2025/agenda/c1d927/",
 			"zh": {
-				"title": "不只 RDP！揭密 Windows 遠端控制術",
-				"description": "在這場 10 分鐘分享中，將帶你探索 Windows 遠端控制的多種可能性。\n\n無論是駭客經常利用的 SMB、WinRM 等技術，這場議程都將讓你快速掌握它們的基本概念與實際用途。\n\n同時，我們還將公開一款專為 Windows AD 環境設計的開源密碼管理器，幫助你更方便、安全地管理帳號密碼。\n\n適合對資訊安全與駭客技術感興趣的初學者與進階玩家參與，千萬不要錯過這次分享！\n\n## 先備知識\n有用過 CLI"
+				"title": "十倍開發！解脫雙手拋棄滑鼠的開發環境",
+				"description": "在這個有各種 Coding Agent 的時代下，時常要透過終端機召喚助理來協助開發\n常常打字打到一半需要移動手腕到滑鼠點到其他 buffer 或視窗到不同的 appliction 操作\n這場議程會跟你分享我的終端機開發環境！讓你可以解脫滑鼠的束縛，靠鍵盤完成所有操作\n\n## 先備知識\n有操作過編輯器轉寫程式、基礎的 SHELL Command / 概念"
 			},
 			"en": {
-				"title": "不只 RDP！揭密 Windows 遠端控制術",
-				"description": "在這場 10 分鐘分享中，將帶你探索 Windows 遠端控制的多種可能性。\n\n無論是駭客經常利用的 SMB、WinRM 等技術，這場議程都將讓你快速掌握它們的基本概念與實際用途。\n\n同時，我們還將公開一款專為 Windows AD 環境設計的開源密碼管理器，幫助你更方便、安全地管理帳號密碼。\n\n適合對資訊安全與駭客技術感興趣的初學者與進階玩家參與，千萬不要錯過這次分享！\n\n## 先備知識\n有用過 CLI"
+				"title": "十倍開發！解脫雙手拋棄滑鼠的開發環境",
+				"description": "在這個有各種 Coding Agent 的時代下，時常要透過終端機召喚助理來協助開發\n常常打字打到一半需要移動手腕到滑鼠點到其他 buffer 或視窗到不同的 appliction 操作\n這場議程會跟你分享我的終端機開發環境！讓你可以解脫滑鼠的束縛，靠鍵盤完成所有操作\n\n## 先備知識\n有操作過編輯器轉寫程式、基礎的 SHELL Command / 概念"
 			},
-			"speakers": ["37e881"],
-			"tags": ["security"]
+			"speakers": ["ead2c9"],
+			"tags": ["Terminal、開發、IDE、code editor、CLI / TUI、VIM"]
 		},
 		{
-			"id": "377055",
+			"id": "2ac983",
 			"type": "E",
 			"room": "R3",
 			"broadcast": null,
-			"start": "2025-03-08T14:25:00+08:00",
-			"end": "2025-03-08T14:35:00+08:00",
+			"start": "2026-03-28T14:25:00+08:00",
+			"end": "2026-03-28T14:35:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/c4eVu4PAS9PuDv6MEvTXp7",
-			"slide": "https://docs.google.com/presentation/d/1WPgjD_UUV4ZZAgp35_cQ255n1L-7H4TKciQwMLgbKww/edit?usp=sharing",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FHkLBygmsJe",
-			"record": "https://youtu.be/TVp9MwQylug",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/377055/",
+			"uri": "https://sitcon.org/2025/agenda/2ac983/",
 			"zh": {
-				"title": "當文組走向數據科學：速談我的轉型策略與思路",
-				"description": "「你也在猶豫是否要轉換賽道嗎？還是不知從何開始？」\n\n本演講將分享一個非傳統背景學生如何克服專業能力不足與數理知識的門檻，逐步轉型成為數據科學實踐者的思考歷程。\n\n“從迷茫於未來方向，到勇敢選擇延畢一年，挑戰雙主修；從對程式一無所知，到自學 Python 並擔任 Google 開發者社群負責人；從行銷實習生搖身一變，到成為知名公司數據分析實習生。“\n\n本議程將聚焦在跨領域學習的核心策略，探討如何有效挖掘資源，並在競爭激烈的環境中找到自己的定位。希望這場分享能為有志於跨領域發展或轉換跑道的學生提供一點啟發與思考，幫助大家對數據相關領域建立更多想像空間。\n\n## 先備知識\n無"
+				"title": "MeetHalf — 以 PWA 快速打造輕量級聚會即時定位工具",
+				"description": "在 AI 快速發展的時代，現代人對於 App 的下載意願已接近飽和。要讓使用者願意跨越商店搜尋、生物辨識、等待下載等層層關卡來體驗一個新產品，抑或是記住一個網站並回頭造訪門檻已逐年攀升。本次分享將以 MeetHalf 為例，分享如何利用 PWA (Progressive Web App) 技術，打造出「免下載、點開即用、卻具備原生體驗」的輕量級工具，包涵：\n\n1. 技術實現：如何利用 Service Worker 處理背景聯網、透過 Pusher 實現跨平台的 Web Push 原生通知，並結合 Google Maps API 進行地理中點的演算法優化。\n\n2. 生態剖析：為什麼 PWA 在台灣市場尚未普及？面對 iOS 的生態限制，開發者該如何透過裝置偵測與 UX 設計，在 Apple 的圍牆內優化轉換率。\n\n3. 開發思維：在 AI 賦能的開發流程中，如何以低成本快速驗證 MVP，並在 Web 靈活性與 Native 體驗之間取得完美平衡。\n\n不論你是想了解 PWA 實作細節的初學者，或是正在為產品上架門檻苦惱的開發者，都能透過這場分享，重新認識 Web 應用的強大潛力，並帶走一套完整的 PWA 即時應用開發路徑。\n\n## 先備知識\n1. 具備基礎的 HTML/JavaScript 知識\n2. 聽過 Web API 的基本概念"
 			},
 			"en": {
-				"title": "當文組走向數據科學：速談我的轉型策略與思路",
-				"description": "「你也在猶豫是否要轉換賽道嗎？還是不知從何開始？」\n\n本演講將分享一個非傳統背景學生如何克服專業能力不足與數理知識的門檻，逐步轉型成為數據科學實踐者的思考歷程。\n\n“從迷茫於未來方向，到勇敢選擇延畢一年，挑戰雙主修；從對程式一無所知，到自學 Python 並擔任 Google 開發者社群負責人；從行銷實習生搖身一變，到成為知名公司數據分析實習生。“\n\n本議程將聚焦在跨領域學習的核心策略，探討如何有效挖掘資源，並在競爭激烈的環境中找到自己的定位。希望這場分享能為有志於跨領域發展或轉換跑道的學生提供一點啟發與思考，幫助大家對數據相關領域建立更多想像空間。\n\n## 先備知識\n無"
+				"title": "MeetHalf — 以 PWA 快速打造輕量級聚會即時定位工具",
+				"description": "在 AI 快速發展的時代，現代人對於 App 的下載意願已接近飽和。要讓使用者願意跨越商店搜尋、生物辨識、等待下載等層層關卡來體驗一個新產品，抑或是記住一個網站並回頭造訪門檻已逐年攀升。本次分享將以 MeetHalf 為例，分享如何利用 PWA (Progressive Web App) 技術，打造出「免下載、點開即用、卻具備原生體驗」的輕量級工具，包涵：\n\n1. 技術實現：如何利用 Service Worker 處理背景聯網、透過 Pusher 實現跨平台的 Web Push 原生通知，並結合 Google Maps API 進行地理中點的演算法優化。\n\n2. 生態剖析：為什麼 PWA 在台灣市場尚未普及？面對 iOS 的生態限制，開發者該如何透過裝置偵測與 UX 設計，在 Apple 的圍牆內優化轉換率。\n\n3. 開發思維：在 AI 賦能的開發流程中，如何以低成本快速驗證 MVP，並在 Web 靈活性與 Native 體驗之間取得完美平衡。\n\n不論你是想了解 PWA 實作細節的初學者，或是正在為產品上架門檻苦惱的開發者，都能透過這場分享，重新認識 Web 應用的強大潛力，並帶走一套完整的 PWA 即時應用開發路徑。\n\n## 先備知識\n1. 具備基礎的 HTML/JavaScript 知識\n2. 聽過 Web API 的基本概念"
 			},
-			"speakers": ["a8e4fa"],
-			"tags": ["community", "beginners"]
+			"speakers": ["b9020d"],
+			"tags": ["#PWA\n#不要再叫我下載App了\n#Google Maps API"]
 		},
 		{
-			"id": "41b651",
+			"id": "eb9524",
 			"type": "E",
 			"room": "S",
 			"broadcast": null,
-			"start": "2025-03-08T14:25:00+08:00",
-			"end": "2025-03-08T14:35:00+08:00",
-			"": null,
-			"qa": "https://app.sli.do/event/563joZJxrQtcVhuJpZPYnv",
-			"slide": "https://www.canva.com/design/DAGhDQ6893Q/82hXkaVab3XXuYJh_X0V9A/edit?utm_content=DAGhDQ6893Q&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FrJaXegQoyx",
-			"record": "https://youtu.be/WLV-pGDXYkM",
-			"live": null,
-			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/41b651/",
-			"zh": {
-				"title": "讓我們把 ML 變簡單：AI CUP 首位高中生的經驗談",
-				"description": "我將分享參與 AI CUP 2024 秋季賽的經驗，聚焦於如何基於區域微氣候資料進行數據處理與模型構建，以提升發電量預測的準確性。演講內容包括從資料探索、特徵工程到模型選擇的完整過程，並介紹團隊在比賽中所採用的創新策略，如「交換天氣特徵」和堆疊回歸模型的應用。\n\n此外，作為一名高中生，我也將談及參與這類技術競賽的心得與挑戰，分享如何在資源有限的情況下充分發揮創意與團隊合作，從而實現有效的解決方案。本次演講旨在提供參賽過程的實踐經驗，並探討 AI 技術在能源管理中的潛在應用價值\n\n## 先備知識\n能理解一些 data science 的知識與技巧"
-			},
-			"en": {
-				"title": "讓我們把 ML 變簡單：AI CUP 首位高中生的經驗談",
-				"description": "我將分享參與 AI CUP 2024 秋季賽的經驗，聚焦於如何基於區域微氣候資料進行數據處理與模型構建，以提升發電量預測的準確性。演講內容包括從資料探索、特徵工程到模型選擇的完整過程，並介紹團隊在比賽中所採用的創新策略，如「交換天氣特徵」和堆疊回歸模型的應用。\n\n此外，作為一名高中生，我也將談及參與這類技術競賽的心得與挑戰，分享如何在資源有限的情況下充分發揮創意與團隊合作，從而實現有效的解決方案。本次演講旨在提供參賽過程的實踐經驗，並探討 AI 技術在能源管理中的潛在應用價值\n\n## 先備知識\n能理解一些 data science 的知識與技巧"
-			},
-			"speakers": ["02ee66"],
-			"tags": ["ai"]
-		},
-		{
-			"id": "e13fad",
-			"type": "Ev",
-			"room": "R0",
-			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T14:35:00+08:00",
-			"end": "2025-03-08T14:45:00+08:00",
+			"start": "2026-03-28T14:25:00+08:00",
+			"end": "2026-03-28T14:35:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -812,149 +738,149 @@
 			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/e13fad/",
+			"uri": "https://sitcon.org/2025/agenda/eb9524/",
+			"zh": {
+				"title": "告別AI寫扣大混亂，SDD精準開發術！",
+				"description": "「幫我做一個登入功能。」幾分鐘後 AI 說完成了，打開一看 —— 根本在浪費時間！登入成功不會跳轉、密碼錯誤沒有提示、架構跟自己想的完全不一樣。即便來回修改後，最後仍然拿到一堆自己看不懂的程式碼...\n\n這個場景大家一定不陌生。我們都經歷過 Vibe Coding 的甜蜜期：跟 AI 聊聊天，程式就生出來了，超爽。但當專案變複雜、需求變多或準備要產品化，超爽很快就變成超慘。問題出在哪？答案是我們和 AI 對「什麼叫做完成」根本沒有共識。\n\nSDD（Spec-Driven Development）規格驅動開發，就是要解決這件事。它的核心很簡單：在動手寫程式之前，先把規格定義清楚。聽起來有點像廢話沒錯，但這個「廢話」可能是讓你從 AI 混亂中解脫的關鍵。\n\n這場演講會帶您探索 Vibe Coding 到底出了什麼問題、SDD 怎麼運作、有哪些工具可以用，以及在 AI 時代，我們到底該練什麼技能。\n\n## 先備知識\n寫過程式（什麼語言都行），知道「寫 code → 跑 → 爆掉 → debug」這個循環、用過任何一種 AI 工具來幫忙寫程式的經驗"
+			},
+			"en": {
+				"title": "告別AI寫扣大混亂，SDD精準開發術！",
+				"description": "「幫我做一個登入功能。」幾分鐘後 AI 說完成了，打開一看 —— 根本在浪費時間！登入成功不會跳轉、密碼錯誤沒有提示、架構跟自己想的完全不一樣。即便來回修改後，最後仍然拿到一堆自己看不懂的程式碼...\n\n這個場景大家一定不陌生。我們都經歷過 Vibe Coding 的甜蜜期：跟 AI 聊聊天，程式就生出來了，超爽。但當專案變複雜、需求變多或準備要產品化，超爽很快就變成超慘。問題出在哪？答案是我們和 AI 對「什麼叫做完成」根本沒有共識。\n\nSDD（Spec-Driven Development）規格驅動開發，就是要解決這件事。它的核心很簡單：在動手寫程式之前，先把規格定義清楚。聽起來有點像廢話沒錯，但這個「廢話」可能是讓你從 AI 混亂中解脫的關鍵。\n\n這場演講會帶您探索 Vibe Coding 到底出了什麼問題、SDD 怎麼運作、有哪些工具可以用，以及在 AI 時代，我們到底該練什麼技能。\n\n## 先備知識\n寫過程式（什麼語言都行），知道「寫 code → 跑 → 爆掉 → debug」這個循環、用過任何一種 AI 工具來幫忙寫程式的經驗"
+			},
+			"speakers": ["532bf2"],
+			"tags": ["AI Coding、Software Engineering、開發方法論、Career Growth"]
+		},
+		{
+			"id": "8221a4",
+			"type": "Ev",
+			"room": "R0",
+			"broadcast": ["R0", "R1", "R2", "R3", "S"],
+			"start": "2026-03-28T14:35:00+08:00",
+			"end": "2026-03-28T14:45:00+08:00",
+			"": null,
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
+			"live": null,
+			"language": null,
+			"uri": "https://sitcon.org/2025/agenda/8221a4/",
 			"zh": { "title": "休息", "description": "" },
 			"en": { "title": "Break", "description": "" },
 			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "25cbbc",
+			"id": "2f85f0",
 			"type": "P",
 			"room": "R0",
 			"broadcast": null,
-			"start": "2025-03-08T14:45:00+08:00",
-			"end": "2025-03-08T15:25:00+08:00",
+			"start": "2026-03-28T14:45:00+08:00",
+			"end": "2026-03-28T15:25:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/8vYhh4Upi9bdM88pSuAfH3",
-			"slide": "https://drive.google.com/file/d/1oFQJ6mFD_usynJPzk0RYJzL1dD7K8X78/view?usp=sharing",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2Fr14tok7s1e",
-			"record": "https://youtu.be/GP0H3DP-GZQ",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/25cbbc/",
+			"uri": "https://sitcon.org/2025/agenda/2f85f0/",
 			"zh": {
-				"title": "獨自升級的駭客：自由之路從框架開始",
-				"description": "如何成為神秘卻又強大的駭客？\n\n對於資訊安全感興趣的人，相信多半都參加過一兩場 CTF，也對這類活動抱有相當複雜的情感。在學習資安相關知識與技術的過程中，CTF 是一個高效且具引導性的手段。雖然它不是解決所有問題的靈丹妙藥，但在成長的初期階段，CTF 題目就像課本的習題，解題的過程一定能帶來收穫，對於剛起步的初學者來說，是一個由淺入深的學習方法。\n\n一直以來也不乏有「CTF 無用」的質疑，導致一些剛起步的人無所適從，可能繞了遠路、做出低效的學習選擇，甚至只停留在某些固定的技能範疇，永遠只會那一千零一招。「CTF 無用」的背後，或許包含了像「這不實用」或「獎金太少，不如去刷 bounty」這類想法。我們需要明確地了解 CTF 能帶來的效益。當清楚這些效益後，如果認為自己已經具備相關能力，或者有更高效的方式達成目標，那麼 CTF 當然不必成為唯一的選擇。\n\n那麼，成為駭客僅有這一條路徑嗎？即便到了 2025 的現代我們還得進京趕考嗎？\n\n## 先備知識\n無"
+				"title": "一封 Email 盜走全校帳號：從 N-day 開始的漏洞研究",
+				"description": "幾個月前我收到一封垃圾 Email。出於好奇，我開始分析學校使用的 Webmail 是否存在漏洞，最後成功構造出「能夠自我擴散的蠕蟲式病毒 Email」只要點開就中毒。完成通報流程後，嘗試進一步在同一個開源專案 Roundcube 尋找全新的 0-day 漏洞（Spoiler：沒有成功，撞洞了 QQ）\n\n在這場議程中，將分享如何在沒有公開 PoC 的情況下確認漏洞存在，並一步步說明從 PoC 到實際利用的過程。全程以 high-level 的漏洞分析和繞過思路為主，不談艱澀原理，歡迎來聽一個真實翻車的故事。\n\n## 先備知識\n無"
 			},
 			"en": {
-				"title": "獨自升級的駭客：自由之路從框架開始",
-				"description": "如何成為神秘卻又強大的駭客？\n\n對於資訊安全感興趣的人，相信多半都參加過一兩場 CTF，也對這類活動抱有相當複雜的情感。在學習資安相關知識與技術的過程中，CTF 是一個高效且具引導性的手段。雖然它不是解決所有問題的靈丹妙藥，但在成長的初期階段，CTF 題目就像課本的習題，解題的過程一定能帶來收穫，對於剛起步的初學者來說，是一個由淺入深的學習方法。\n\n一直以來也不乏有「CTF 無用」的質疑，導致一些剛起步的人無所適從，可能繞了遠路、做出低效的學習選擇，甚至只停留在某些固定的技能範疇，永遠只會那一千零一招。「CTF 無用」的背後，或許包含了像「這不實用」或「獎金太少，不如去刷 bounty」這類想法。我們需要明確地了解 CTF 能帶來的效益。當清楚這些效益後，如果認為自己已經具備相關能力，或者有更高效的方式達成目標，那麼 CTF 當然不必成為唯一的選擇。\n\n那麼，成為駭客僅有這一條路徑嗎？即便到了 2025 的現代我們還得進京趕考嗎？\n\n## 先備知識\n無"
+				"title": "一封 Email 盜走全校帳號：從 N-day 開始的漏洞研究",
+				"description": "幾個月前我收到一封垃圾 Email。出於好奇，我開始分析學校使用的 Webmail 是否存在漏洞，最後成功構造出「能夠自我擴散的蠕蟲式病毒 Email」只要點開就中毒。完成通報流程後，嘗試進一步在同一個開源專案 Roundcube 尋找全新的 0-day 漏洞（Spoiler：沒有成功，撞洞了 QQ）\n\n在這場議程中，將分享如何在沒有公開 PoC 的情況下確認漏洞存在，並一步步說明從 PoC 到實際利用的過程。全程以 high-level 的漏洞分析和繞過思路為主，不談艱澀原理，歡迎來聽一個真實翻車的故事。\n\n## 先備知識\n無"
 			},
-			"speakers": ["1e0f9c"],
-			"tags": ["security"]
+			"speakers": ["b2ad80"],
+			"tags": ["資通安全、新手適合"]
 		},
 		{
-			"id": "53a09c",
+			"id": "023219",
 			"type": "P",
 			"room": "R1",
 			"broadcast": null,
-			"start": "2025-03-08T14:45:00+08:00",
-			"end": "2025-03-08T15:25:00+08:00",
+			"start": "2026-03-28T14:45:00+08:00",
+			"end": "2026-03-28T15:25:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/bV96yFB9A8ie6SAcKn1KCh ",
+			"qa": null,
 			"slide": null,
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2Fep17jyx",
-			"record": "https://youtu.be/ZkxE6nLq19s",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/53a09c/",
+			"uri": "https://sitcon.org/2025/agenda/023219/",
 			"zh": {
-				"title": "如何演奏春日影？初探影音格式原理與壓縮",
-				"description": "你是否曾好奇 YouTube、Netflix 的影片都是怎麼撥放的？為什麼有的時候影片畫質會忽高忽低？為什麼有的時候影片播著播著會突然有詭異的綠色方塊，但過一下下馬上又好了？本議程將帶你初探影像的傳輸與壓縮，帶你一窺一部影片是如何從令人怦然心動的畫面，透過攝影機紀錄後，經過一連串的處理、壓縮，最後傳送到你的電腦或手機上。\n\n## 先備知識\n無"
+				"title": "語言模型的認知、認同與對齊",
+				"description": "隨著大眾愈加依賴語言模型獲取資訊，模型如何生成回應顯得日益重要。當我們知道敘事內容的選擇與呈現方式皆能左右讀者的認知，我們不禁得好奇：語言模型是否擁有自身的認同與立場？若有，這又由誰決定？本議程將探討語言模型建立「Alignment（對齊）」的歷程。我們將先從訓練流程切入，介紹語言模型訓練的三個階段；接著深入剖析資料集篩選、RL 策略選擇、安全性與歧視防制等因素，如何在訓練中形塑模型的認同。最終，我們將討論產官學界對監督模型立場的看法，及未來可能的發展走向。期待透過本場議程，讓聽眾更理解語言模型，並洞悉模型回應背後的取捨機制。\n\n## 先備知識\n無，有一定機器學習背景知識者佳"
 			},
 			"en": {
-				"title": "如何演奏春日影？初探影音格式原理與壓縮",
-				"description": "你是否曾好奇 YouTube、Netflix 的影片都是怎麼撥放的？為什麼有的時候影片畫質會忽高忽低？為什麼有的時候影片播著播著會突然有詭異的綠色方塊，但過一下下馬上又好了？本議程將帶你初探影像的傳輸與壓縮，帶你一窺一部影片是如何從令人怦然心動的畫面，透過攝影機紀錄後，經過一連串的處理、壓縮，最後傳送到你的電腦或手機上。\n\n## 先備知識\n無"
+				"title": "語言模型的認知、認同與對齊",
+				"description": "隨著大眾愈加依賴語言模型獲取資訊，模型如何生成回應顯得日益重要。當我們知道敘事內容的選擇與呈現方式皆能左右讀者的認知，我們不禁得好奇：語言模型是否擁有自身的認同與立場？若有，這又由誰決定？本議程將探討語言模型建立「Alignment（對齊）」的歷程。我們將先從訓練流程切入，介紹語言模型訓練的三個階段；接著深入剖析資料集篩選、RL 策略選擇、安全性與歧視防制等因素，如何在訓練中形塑模型的認同。最終，我們將討論產官學界對監督模型立場的看法，及未來可能的發展走向。期待透過本場議程，讓聽眾更理解語言模型，並洞悉模型回應背後的取捨機制。\n\n## 先備知識\n無，有一定機器學習背景知識者佳"
 			},
-			"speakers": ["5a3b00"],
-			"tags": ["software"]
+			"speakers": ["64730a"],
+			"tags": ["ML、NLP、LLM"]
 		},
 		{
-			"id": "ef821f",
+			"id": "9a7e6b",
 			"type": "P",
 			"room": "R2",
 			"broadcast": null,
-			"start": "2025-03-08T14:45:00+08:00",
-			"end": "2025-03-08T15:25:00+08:00",
+			"start": "2026-03-28T14:45:00+08:00",
+			"end": "2026-03-28T15:25:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/89SndaEwuyud5ycQpMn81m",
+			"qa": null,
 			"slide": null,
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FBJz4017iyg",
-			"record": "https://youtu.be/ElhRVHl7xAc",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/ef821f/",
+			"uri": "https://sitcon.org/2025/agenda/9a7e6b/",
 			"zh": {
-				"title": "開發者的暗黑小紅帽：大野狼與 LLM",
-				"description": "隨著 LLM(Large Language Model) 的浪潮，許多企業都開始緊鑼密鼓地整合 LLM 到自家產品中，也促使許多學生/開發者開始學習如何串接LLM到自己的程式當中。\n\n然而！\n許多開發者卻忽略了整合 LLM 時伴隨而來的風險！使得駭客可以利用 LLM 另闢攻擊之道！藉由捏造惡意的 Prompt(指令/提示) 如同大野狼般入侵網站造成敏感資料洩漏、攻擊模型，又或者是與前後端常見的漏洞配合形成「串洞」，甚至情緒勒索，欺騙如同小紅帽的 LLM 🐺😈。\n\n這個議程要以開發者的第一視角聊聊駭客針對 LLM 的攻擊手法，以及要如何開發出安全的 LLM APP ，以應對大型語言模型時代下的大野狼！！\n\n## 先備知識\n有簡單使用 ChatGPT 的經驗即可！非常無經驗友善 :))"
+				"title": "網路治理？這啥鬼？從治理回看網路世界",
+				"description": "俗話說：網路並非一天造成的。\n在數十年前，全球網路的 IP 分配是由一個人親手寫在筆記本上完成的。 MIT 大手一揮，帶走了 1677 萬個 IP 位址。網域存在平行世界，不同使用者能解析程不同伺服器。\n\n那是一個沒有統一規則、一切仍處於混沌與試錯的時代。\n\n但我們今天不講古，且讓我們一同了解基礎網路治理的「多方利害關係人」架構，並走過我在亞太網路治理學院（APIGA）學習的經歷，透過 .amazon 的案例了解網路治理共識決所帶來的坑，一窺這套體系運作方式，更進一步的親身參與並貢獻其中。\n\n## 先備知識\n無"
 			},
 			"en": {
-				"title": "開發者的暗黑小紅帽：大野狼與 LLM",
-				"description": "隨著 LLM(Large Language Model) 的浪潮，許多企業都開始緊鑼密鼓地整合 LLM 到自家產品中，也促使許多學生/開發者開始學習如何串接LLM到自己的程式當中。\n\n然而！\n許多開發者卻忽略了整合 LLM 時伴隨而來的風險！使得駭客可以利用 LLM 另闢攻擊之道！藉由捏造惡意的 Prompt(指令/提示) 如同大野狼般入侵網站造成敏感資料洩漏、攻擊模型，又或者是與前後端常見的漏洞配合形成「串洞」，甚至情緒勒索，欺騙如同小紅帽的 LLM 🐺😈。\n\n這個議程要以開發者的第一視角聊聊駭客針對 LLM 的攻擊手法，以及要如何開發出安全的 LLM APP ，以應對大型語言模型時代下的大野狼！！\n\n## 先備知識\n有簡單使用 ChatGPT 的經驗即可！非常無經驗友善 :))"
+				"title": "網路治理？這啥鬼？從治理回看網路世界",
+				"description": "俗話說：網路並非一天造成的。\n在數十年前，全球網路的 IP 分配是由一個人親手寫在筆記本上完成的。 MIT 大手一揮，帶走了 1677 萬個 IP 位址。網域存在平行世界，不同使用者能解析程不同伺服器。\n\n那是一個沒有統一規則、一切仍處於混沌與試錯的時代。\n\n但我們今天不講古，且讓我們一同了解基礎網路治理的「多方利害關係人」架構，並走過我在亞太網路治理學院（APIGA）學習的經歷，透過 .amazon 的案例了解網路治理共識決所帶來的坑，一窺這套體系運作方式，更進一步的親身參與並貢獻其中。\n\n## 先備知識\n無"
 			},
-			"speakers": ["da9fc6"],
-			"tags": ["ai", "security"]
+			"speakers": ["541c4c"],
+			"tags": ["網路治理、新手友善"]
 		},
 		{
-			"id": "1a7c8d",
+			"id": "91836d",
 			"type": "P",
 			"room": "R3",
 			"broadcast": null,
-			"start": "2025-03-08T14:45:00+08:00",
-			"end": "2025-03-08T15:25:00+08:00",
+			"start": "2026-03-28T14:45:00+08:00",
+			"end": "2026-03-28T15:25:00+08:00",
 			"": null,
-			"qa": "https://app.sli.do/event/eh7GwnPNRxo4SxVvhhXaY6",
-			"slide": "https://docs.google.com/presentation/d/18I25UtckpNJkgbzh_LGV8w-CyvvlAbBS-YOg6gpGJXc/edit?usp=sharing",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FS1XdJgmoyx",
-			"record": "https://youtu.be/xjJrUzInY8g",
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/1a7c8d/",
+			"uri": "https://sitcon.org/2025/agenda/91836d/",
 			"zh": {
-				"title": "Python 的靈活！C++ 的速度！我全都要！pybind11 入門指南",
-				"description": "在科學計算的領域中，效能與易用性常常相互矛盾。Python 提供了直觀的程式介面，但在高效能計算的表現卻差強人意。為了彌補這一點，我們能呼叫 C/C++ 的演算法來提升效能，如科學計算常用的 NumPy 背後就是用 C 實作。這種整合方案提供了卓越的速度，同時保留 Python 友善的開發環境。\n\n這場演講將透過 pybind11 把 C++ 演算法包裝成 Python 套件，實作一個簡易的曲線擬合工具供開發者呼叫。聽眾將學習到怎麼結合 Python 的易用性與 C++ 的效率，開發自己的高效能計算工具。\n\n## 先備知識\n理解 Python 與 C++ 的基礎"
+				"title": "STM32 DOOM 裸機移植挑戰",
+				"description": "Can it run doom? 這是對運算裝置的經典提問。雖然我們看過 DOOM 跑在無數的裝置上，但你是否好奇過這是怎麼做到的？本議程將帶領大家在僅有 1MB SRAM 的 STM32H750 平台上，從零開始進行一場裸機移植挑戰。\n\n我們將拋開 HAL Library，直接面對硬體，在沒有任何抽象化的前提下，透過純粹的暫存器操作來操縱時鐘、UART 與 QSPI 等硬體週邊，完成基礎建設後使用 LTDC 輸出 VGA 訊號顯示畫面，重現經典。讓我們一起在這場從零開始的實作中，找回親手控制每一個 bit 的樂趣。\n\n## 先備知識\n懂得 C 語言、知道怎麼編譯與鏈結、對計算機組織有一定的認識"
 			},
 			"en": {
-				"title": "Python 的靈活！C++ 的速度！我全都要！pybind11 入門指南",
-				"description": "在科學計算的領域中，效能與易用性常常相互矛盾。Python 提供了直觀的程式介面，但在高效能計算的表現卻差強人意。為了彌補這一點，我們能呼叫 C/C++ 的演算法來提升效能，如科學計算常用的 NumPy 背後就是用 C 實作。這種整合方案提供了卓越的速度，同時保留 Python 友善的開發環境。\n\n這場演講將透過 pybind11 把 C++ 演算法包裝成 Python 套件，實作一個簡易的曲線擬合工具供開發者呼叫。聽眾將學習到怎麼結合 Python 的易用性與 C++ 的效率，開發自己的高效能計算工具。\n\n## 先備知識\n理解 Python 與 C++ 的基礎"
+				"title": "STM32 DOOM 裸機移植挑戰",
+				"description": "Can it run doom? 這是對運算裝置的經典提問。雖然我們看過 DOOM 跑在無數的裝置上，但你是否好奇過這是怎麼做到的？本議程將帶領大家在僅有 1MB SRAM 的 STM32H750 平台上，從零開始進行一場裸機移植挑戰。\n\n我們將拋開 HAL Library，直接面對硬體，在沒有任何抽象化的前提下，透過純粹的暫存器操作來操縱時鐘、UART 與 QSPI 等硬體週邊，完成基礎建設後使用 LTDC 輸出 VGA 訊號顯示畫面，重現經典。讓我們一起在這場從零開始的實作中，找回親手控制每一個 bit 的樂趣。\n\n## 先備知識\n懂得 C 語言、知道怎麼編譯與鏈結、對計算機組織有一定的認識"
 			},
-			"speakers": ["abacf4"],
-			"tags": ["software"]
+			"speakers": ["241c37"],
+			"tags": ["韌體開發、Bare Metal、VGA"]
 		},
 		{
-			"id": "f638e4",
+			"id": "dbd911",
 			"type": "U",
 			"room": "S",
 			"broadcast": null,
-			"start": "2025-03-08T14:45:00+08:00",
-			"end": "2025-03-08T16:45:00+08:00",
-			"": null,
-			"qa": null,
-			"slide": null,
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2Frko8eeXoJx",
-			"record": "https://youtu.be/xupSUjroEcU",
-			"live": null,
-			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/f638e4/",
-			"zh": {
-				"title": "從零開始學 Kubernetes：使用 Kubernetes in Docker (Kind) 的實作入門",
-				"description": "本 workshop 為初學者提供簡單易懂的 Kubernetes 入門教學，讓學員透過實作快速掌握 Kubernetes 的基本概念與操作。本次將以 Kubernetes in Docker (Kind) 為工具，幫助學員在個人電腦上建立模擬的 Kubernetes 叢集，並學習如何部署簡單應用程式、管理資源與進行基本的除錯。本課程適合對 Kubernetes 感興趣的初學者，無需事先經驗，但需具備基礎的 Docker 與 Linux 指令知識。\n\n## 先備知識\n對 Docker 有基礎認識、略懂 Linux 指令"
-			},
-			"en": {
-				"title": "從零開始學 Kubernetes：使用 Kubernetes in Docker (Kind) 的實作入門",
-				"description": "本 workshop 為初學者提供簡單易懂的 Kubernetes 入門教學，讓學員透過實作快速掌握 Kubernetes 的基本概念與操作。本次將以 Kubernetes in Docker (Kind) 為工具，幫助學員在個人電腦上建立模擬的 Kubernetes 叢集，並學習如何部署簡單應用程式、管理資源與進行基本的除錯。本課程適合對 Kubernetes 感興趣的初學者，無需事先經驗，但需具備基礎的 Docker 與 Linux 指令知識。\n\n## 先備知識\n對 Docker 有基礎認識、略懂 Linux 指令"
-			},
-			"speakers": ["fc5cd1"],
-			"tags": ["system"]
-		},
-		{
-			"id": "3a7777",
-			"type": "Ev",
-			"room": "R0",
-			"broadcast": ["R0", "R1", "R2", "R3"],
-			"start": "2025-03-08T15:25:00+08:00",
-			"end": "2025-03-08T16:05:00+08:00",
+			"start": "2026-03-28T14:45:00+08:00",
+			"end": "2026-03-28T16:45:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -962,123 +888,45 @@
 			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/3a7777/",
+			"uri": "https://sitcon.org/2025/agenda/dbd911/",
+			"zh": {
+				"title": "在書海中的航行指南；打開你對圖書館的全新視野！",
+				"description": "你是否曾經想過，在一間圖書館內有超過數十萬本以上的書籍，圖書館員是如何讓你在幾十萬本書中快速找到你需要的資料嗎？你猜得沒錯，用電腦直接搜尋就好啦！\n\n那麼，如果是在沒有電腦的遠古時代呢？\n\n在這場議程中，我想從「圖書資訊學」的角度來帶你揭開圖書館鮮為人知的面紗、帶你了解圖書館中的秘密，並向你介紹一種從「語意相似性」來進行演算的「書籍推薦系統」。\n\n\n## 先備知識\n知道什麼是向量（國中程度就好ㄌ）、一點點自然語言處理"
+			},
+			"en": {
+				"title": "在書海中的航行指南；打開你對圖書館的全新視野！",
+				"description": "你是否曾經想過，在一間圖書館內有超過數十萬本以上的書籍，圖書館員是如何讓你在幾十萬本書中快速找到你需要的資料嗎？你猜得沒錯，用電腦直接搜尋就好啦！\n\n那麼，如果是在沒有電腦的遠古時代呢？\n\n在這場議程中，我想從「圖書資訊學」的角度來帶你揭開圖書館鮮為人知的面紗、帶你了解圖書館中的秘密，並向你介紹一種從「語意相似性」來進行演算的「書籍推薦系統」。\n\n\n## 先備知識\n知道什麼是向量（國中程度就好ㄌ）、一點點自然語言處理"
+			},
+			"speakers": ["07a739"],
+			"tags": ["#Word Embedding\n#NLP"]
+		},
+		{
+			"id": "48cb06",
+			"type": "Ev",
+			"room": "R0",
+			"broadcast": ["R0", "R1", "R2", "R3"],
+			"start": "2026-03-28T15:25:00+08:00",
+			"end": "2026-03-28T16:05:00+08:00",
+			"": null,
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
+			"live": null,
+			"language": null,
+			"uri": "https://sitcon.org/2025/agenda/48cb06/",
 			"zh": { "title": "點心", "description": "" },
 			"en": { "title": "Coffee Break", "description": "" },
 			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "aa71e5",
-			"type": "P",
-			"room": "R0",
-			"broadcast": null,
-			"start": "2025-03-08T16:05:00+08:00",
-			"end": "2025-03-08T16:45:00+08:00",
-			"": null,
-			"qa": "https://app.sli.do/event/eQ129JHw44f1JCA3zBXfhh",
-			"slide": "https://github.com/Edit-Mr/SITCON2025",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FH1l3jk7jkl",
-			"record": "https://youtu.be/OhjUMJs5w-g",
-			"live": null,
-			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/aa71e5/",
-			"zh": {
-				"title": "前端特效：不都國中數學",
-				"description": "在現代網頁設計中，良好的使用者體驗與吸睛的動態特效是吸引注意並留下深刻印象的關鍵。然而，當市面上充斥著各種函式庫與框架，網站設計逐漸趨同，缺乏個性與創意。\n\n在這場議程中我要邀請你跳脫傳統框架的束縛。捨棄繁雜的工具，我將帶領大家使用純 CSS 和 JavaScript，結合國中數學的基礎邏輯，深入剖析那些令人驚豔的視覺效果。從 UI 元件到動態特效，我們將探索如何從現有的設計規則中尋找突破口，解放被框架限制的創意，打造獨一無二的互動體驗。\n\n## 先備知識\n認識 HTML、CSS 基礎語法"
-			},
-			"en": {
-				"title": "前端特效：不都國中數學",
-				"description": "在現代網頁設計中，良好的使用者體驗與吸睛的動態特效是吸引注意並留下深刻印象的關鍵。然而，當市面上充斥著各種函式庫與框架，網站設計逐漸趨同，缺乏個性與創意。\n\n在這場議程中我要邀請你跳脫傳統框架的束縛。捨棄繁雜的工具，我將帶領大家使用純 CSS 和 JavaScript，結合國中數學的基礎邏輯，深入剖析那些令人驚豔的視覺效果。從 UI 元件到動態特效，我們將探索如何從現有的設計規則中尋找突破口，解放被框架限制的創意，打造獨一無二的互動體驗。\n\n## 先備知識\n認識 HTML、CSS 基礎語法"
-			},
-			"speakers": ["1ec9f4"],
-			"tags": ["frontend", "beginners"]
-		},
-		{
-			"id": "90352d",
-			"type": "P",
-			"room": "R1",
-			"broadcast": null,
-			"start": "2025-03-08T16:05:00+08:00",
-			"end": "2025-03-08T16:45:00+08:00",
-			"": null,
-			"qa": "https://app.sli.do/event/ijKdVJGrtzT4d8kFZBrBnk",
-			"slide": "https://www.canva.com/design/DAGf5pNrzFA/qe52vvwTVsFyrRNqmnkCDA/edit?utm_content=DAGf5pNrzFA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FrJCM61miyg",
-			"record": "https://youtu.be/ACihG0wmOkY",
-			"live": null,
-			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/90352d/",
-			"zh": {
-				"title": "因為反抗，所以存在：監控資本主義下的自由如何可能？",
-				"description": "「這是為了更好用、免費的服務啊，不會有什麼太大影響啦！」使用者個資被科技公司無邊際地蒐集或許不是什麼新鮮事，但多數時候我們早已習以為常，難以感受到它正悄然操弄著生活的每一個層面，從社交、娛樂、交通、新聞，甚至選舉。演算法決定了什麼值得被看見、哪裡值得去……創作者們不得不依此調整內容，也深深影響了人們如何認識世界、參與社會生活。令人不安的是，它往往深藏於黑箱之中，難以被社會大眾或政府監管。面對如此龐大的權力不對等，我們能如何反抗？\n\n## 先備知識\n不需要任何基礎知識"
-			},
-			"en": {
-				"title": "因為反抗，所以存在：監控資本主義下的自由如何可能？",
-				"description": "「這是為了更好用、免費的服務啊，不會有什麼太大影響啦！」使用者個資被科技公司無邊際地蒐集或許不是什麼新鮮事，但多數時候我們早已習以為常，難以感受到它正悄然操弄著生活的每一個層面，從社交、娛樂、交通、新聞，甚至選舉。演算法決定了什麼值得被看見、哪裡值得去……創作者們不得不依此調整內容，也深深影響了人們如何認識世界、參與社會生活。令人不安的是，它往往深藏於黑箱之中，難以被社會大眾或政府監管。面對如此龐大的權力不對等，我們能如何反抗？\n\n## 先備知識\n不需要任何基礎知識"
-			},
-			"speakers": ["74ad21"],
-			"tags": ["community", "beginners"]
-		},
-		{
-			"id": "a7f767",
-			"type": "P",
-			"room": "R2",
-			"broadcast": null,
-			"start": "2025-03-08T16:05:00+08:00",
-			"end": "2025-03-08T16:45:00+08:00",
-			"": null,
-			"qa": "https://app.sli.do/event/cqfWthQyU1ixHoaBmdxb5t ",
-			"slide": "https://drive.google.com/file/d/1bZ0n5j_Aq0TxEsm3QC6NxLxoblzhk_e3/view?usp=drive_link",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FS1xwCk7oJg",
-			"record": "https://youtu.be/ujxlUTXlC04",
-			"live": null,
-			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/a7f767/",
-			"zh": {
-				"title": "手刻 RAG 客服！讓 AI 更聰明但不再「胡扯」",
-				"description": "如果你問 ChatGPT \"SITCON 2025 在哪裡舉辦\"，在沒有額外資料下，它往往會瞎掰出假消息。\n\n現代大規模語言模型（LLM）雖然強大，但經常因為訓練資料的限制或缺乏上下文資訊，產生錯誤或幻覺。本議程將介紹檢索增強生成（RAG）技術，如何透過結合外部數據檢索與生成模型，讓 AI 的回覆更有根據。深入淺出地從 Naive RAG 到 Modular RAG 的演進及種種優化，最後以國科會舉辦的 GenAI Star 特優作品為例，分享如何在不依賴 LangChain 等一體式框架的情況下，「手刻」完成回答學校問題的 AI 客服。\n\n## 先備知識\n- 基本理解生成式 AI 的原理與應用。\n- 能夠理解 Python 基礎語法。"
-			},
-			"en": {
-				"title": "手刻 RAG 客服！讓 AI 更聰明但不再「胡扯」",
-				"description": "如果你問 ChatGPT \"SITCON 2025 在哪裡舉辦\"，在沒有額外資料下，它往往會瞎掰出假消息。\n\n現代大規模語言模型（LLM）雖然強大，但經常因為訓練資料的限制或缺乏上下文資訊，產生錯誤或幻覺。本議程將介紹檢索增強生成（RAG）技術，如何透過結合外部數據檢索與生成模型，讓 AI 的回覆更有根據。深入淺出地從 Naive RAG 到 Modular RAG 的演進及種種優化，最後以國科會舉辦的 GenAI Star 特優作品為例，分享如何在不依賴 LangChain 等一體式框架的情況下，「手刻」完成回答學校問題的 AI 客服。\n\n## 先備知識\n- 基本理解生成式 AI 的原理與應用。\n- 能夠理解 Python 基礎語法。"
-			},
-			"speakers": ["ebe1b4"],
-			"tags": ["ai"]
-		},
-		{
-			"id": "a03517",
-			"type": "P",
-			"room": "R3",
-			"broadcast": null,
-			"start": "2025-03-08T16:05:00+08:00",
-			"end": "2025-03-08T16:45:00+08:00",
-			"": null,
-			"qa": "https://app.sli.do/event/59oHNdbPxvDiQWE9MNjN6s",
-			"slide": "https://link.pan93.com/sitcon2025-public",
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2FSklske7i1e",
-			"record": "https://youtu.be/1DyiunvIKf0",
-			"live": null,
-			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/a03517/",
-			"zh": {
-				"title": "選課卡成狗？微服務架構帶你翻轉校園系統",
-				"description": "選課系統一當機，整個校務系統就全掛了？考試系統回答到一半，答案卻送不出去？這些惱人的系統問題，其實很多都源自於傳統「單體架構」的限制！在這場議程中，我們將從學生熟悉的校園系統案例出發，看看微服務架構如何透過服務解耦、非同步處理等巧妙方式，化解這些困境。無論你是剛接觸後端開發的新手，或是對雲端系統架構充滿好奇的開發者，都能從中學習到實用的雲端技術概念。最後，我們還會分享如何運用 PaaS 和資源配置技巧，用最經濟實惠的方式實踐這些雲端服務！\n\n## 先備知識\n有寫過網頁後端的經驗"
-			},
-			"en": {
-				"title": "選課卡成狗？微服務架構帶你翻轉校園系統",
-				"description": "選課系統一當機，整個校務系統就全掛了？考試系統回答到一半，答案卻送不出去？這些惱人的系統問題，其實很多都源自於傳統「單體架構」的限制！在這場議程中，我們將從學生熟悉的校園系統案例出發，看看微服務架構如何透過服務解耦、非同步處理等巧妙方式，化解這些困境。無論你是剛接觸後端開發的新手，或是對雲端系統架構充滿好奇的開發者，都能從中學習到實用的雲端技術概念。最後，我們還會分享如何運用 PaaS 和資源配置技巧，用最經濟實惠的方式實踐這些雲端服務！\n\n## 先備知識\n有寫過網頁後端的經驗"
-			},
-			"speakers": ["9069bd"],
-			"tags": ["system"]
-		},
-		{
-			"id": "06dc3c",
+			"id": "efbcf9",
 			"type": "Ev",
-			"room": "R0",
-			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T16:45:00+08:00",
-			"end": "2025-03-08T16:55:00+08:00",
+			"room": "S",
+			"broadcast": null,
+			"start": "2026-03-28T15:25:00+08:00",
+			"end": "2026-03-28T16:45:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
@@ -1086,53 +934,177 @@
 			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/06dc3c/",
+			"uri": null,
+			"zh": { "title": "與講者有約", "description": "" },
+			"en": { "title": "", "description": "" },
+			"speakers": [],
+			"tags": []
+		},
+		{
+			"id": "58edff",
+			"type": "P",
+			"room": "R0",
+			"broadcast": null,
+			"start": "2026-03-28T16:05:00+08:00",
+			"end": "2026-03-28T16:45:00+08:00",
+			"": null,
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
+			"live": null,
+			"language": null,
+			"uri": "https://sitcon.org/2025/agenda/58edff/",
+			"zh": {
+				"title": "從 0 手搓 CPU：浪漫的學習之旅",
+				"description": "你是否曾好奇，CPU 到底是怎麼運作的？\n\n本議程將從最基礎出發，探討如何利用麵包板、邏輯閘與常見 IC，一步步「手搓」出一顆簡單但完整的 CPU。過程中不需要深厚的硬體背景，帶大家理解 pipeline、指令執行與時序控制等核心概念，並分享實作與踩坑的經驗。\n\n這不只是一場做硬體的分享，更是一段從「不懂 CPU」到「親手做出來」的學習旅程，讓初學者也能感受到電腦架構最直觀、最純粹的魅力。\n\n## 先備知識\n會一點基本電學即可"
+			},
+			"en": {
+				"title": "從 0 手搓 CPU：浪漫的學習之旅",
+				"description": "你是否曾好奇，CPU 到底是怎麼運作的？\n\n本議程將從最基礎出發，探討如何利用麵包板、邏輯閘與常見 IC，一步步「手搓」出一顆簡單但完整的 CPU。過程中不需要深厚的硬體背景，帶大家理解 pipeline、指令執行與時序控制等核心概念，並分享實作與踩坑的經驗。\n\n這不只是一場做硬體的分享，更是一段從「不懂 CPU」到「親手做出來」的學習旅程，讓初學者也能感受到電腦架構最直觀、最純粹的魅力。\n\n## 先備知識\n會一點基本電學即可"
+			},
+			"speakers": ["c0a116"],
+			"tags": ["frontend", "beginners"]
+		},
+		{
+			"id": "bc71a1",
+			"type": "P",
+			"room": "R1",
+			"broadcast": null,
+			"start": "2026-03-28T16:05:00+08:00",
+			"end": "2026-03-28T16:45:00+08:00",
+			"": null,
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
+			"live": null,
+			"language": null,
+			"uri": "https://sitcon.org/2025/agenda/bc71a1/",
+			"zh": {
+				"title": "在醫院實作醫療 AI：從研究到臨床",
+				"description": "生成式 AI 正快速進入醫療領域，但研究成果走向臨床仍具挑戰。本議程分享我以學生身分，在臺北榮總資訊室參與醫療實作 AI的經驗，說明研究與系統如何在醫院場域中實際運作。\n內容包含兩項研究案例：其一為多模態臨床診斷研究，先發表於 ICBHI 2024 與 MEDINFO 2025，後續擴充為 Digital Health 期刊論文，並透過 demo 說明其臨床前應用；其二為發表於 npj Precision Oncology 的癌症基因變異分類研究，分享可重現研究流程與投稿經驗。\n\n## 先備知識\n具備基礎程式設計概念（如 Python），了解機器學習或大型語言模型的基本概念，熟悉一般 API 呼叫與推論流程者佳，不需醫療背景，保持對醫療應用與研究實作的好奇即可。"
+			},
+			"en": {
+				"title": "在醫院實作醫療 AI：從研究到臨床",
+				"description": "生成式 AI 正快速進入醫療領域，但研究成果走向臨床仍具挑戰。本議程分享我以學生身分，在臺北榮總資訊室參與醫療實作 AI的經驗，說明研究與系統如何在醫院場域中實際運作。\n內容包含兩項研究案例：其一為多模態臨床診斷研究，先發表於 ICBHI 2024 與 MEDINFO 2025，後續擴充為 Digital Health 期刊論文，並透過 demo 說明其臨床前應用；其二為發表於 npj Precision Oncology 的癌症基因變異分類研究，分享可重現研究流程與投稿經驗。\n\n## 先備知識\n具備基礎程式設計概念（如 Python），了解機器學習或大型語言模型的基本概念，熟悉一般 API 呼叫與推論流程者佳，不需醫療背景，保持對醫療應用與研究實作的好奇即可。"
+			},
+			"speakers": ["e92fb0"],
+			"tags": ["醫療 AI、生成式 AI、多模態 AI、研究實作"]
+		},
+		{
+			"id": "032998",
+			"type": "P",
+			"room": "R2",
+			"broadcast": null,
+			"start": "2026-03-28T16:05:00+08:00",
+			"end": "2026-03-28T16:45:00+08:00",
+			"": null,
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
+			"live": null,
+			"language": null,
+			"uri": "https://sitcon.org/2025/agenda/032998/",
+			"zh": {
+				"title": "煩死了！為什麼 eduroam 又連不上？我也要連！",
+				"description": "你曾經看著別人在學校免費用了一輩子無線網路，自己卻一輩子都連不上嗎？\n或看著一堆讓人頭昏眼花的設定，想說從來不覺得連 eduroam 開心過？\n在這場議程中，我將會告訴你現在的學術網路漫遊到底發生了什麼問題，導致他那麼難用。\n並且在最後，會分享怎麼合法的解決帳號問題、同時使用自動化設定，讓你可以輕鬆連上 eduroam。\n古人有云：逸一時，誤一世，現在就來花三十分鐘的時間，試試解決連不上學校網路的問題吧！\n\n## 先備知識\n無，但有碰過 Network 的話會聽得比較輕鬆"
+			},
+			"en": {
+				"title": "煩死了！為什麼 eduroam 又連不上？我也要連！",
+				"description": "你曾經看著別人在學校免費用了一輩子無線網路，自己卻一輩子都連不上嗎？\n或看著一堆讓人頭昏眼花的設定，想說從來不覺得連 eduroam 開心過？\n在這場議程中，我將會告訴你現在的學術網路漫遊到底發生了什麼問題，導致他那麼難用。\n並且在最後，會分享怎麼合法的解決帳號問題、同時使用自動化設定，讓你可以輕鬆連上 eduroam。\n古人有云：逸一時，誤一世，現在就來花三十分鐘的時間，試試解決連不上學校網路的問題吧！\n\n## 先備知識\n無，但有碰過 Network 的話會聽得比較輕鬆"
+			},
+			"speakers": ["95f177"],
+			"tags": ["#資通安全 #無線網路"]
+		},
+		{
+			"id": "104084",
+			"type": "P",
+			"room": "R3",
+			"broadcast": null,
+			"start": "2026-03-28T16:05:00+08:00",
+			"end": "2026-03-28T16:45:00+08:00",
+			"": null,
+			"qa": null,
+			"slide": "#N/A",
+			"co_write": null,
+			"record": null,
+			"live": null,
+			"language": null,
+			"uri": "https://sitcon.org/2025/agenda/104084/",
+			"zh": {
+				"title": "AI浪潮下要簽博嗎",
+				"description": "在生成式 AI 席捲各行各業的浪潮下，「要不要簽博」不再只是興趣選擇，而是影響職涯風險與機會成本的重大決策。本演講以講者在 NLP 與語音領域的研究與產學經驗為主軸，包含大型語言模型與多模態模型訓練、國際實習，以及開源貢獻等第一手觀察，系統性拆解攻讀博班在今日 AI 生態中的實際價值。內容將從研究題目可見度、學術與產業影響力差異、博士訓練中可轉移技能出發，搭配具體案例，討論不同階段學生的決策框架。目標不是說服你簽或不簽，而是提供一套可複製的思考工具，協助你在 AI 浪潮中作出較不容易後悔的選擇。 \n\n## 先備知識\n看過李宏毅老師的課程"
+			},
+			"en": {
+				"title": "AI浪潮下要簽博嗎",
+				"description": "在生成式 AI 席捲各行各業的浪潮下，「要不要簽博」不再只是興趣選擇，而是影響職涯風險與機會成本的重大決策。本演講以講者在 NLP 與語音領域的研究與產學經驗為主軸，包含大型語言模型與多模態模型訓練、國際實習，以及開源貢獻等第一手觀察，系統性拆解攻讀博班在今日 AI 生態中的實際價值。內容將從研究題目可見度、學術與產業影響力差異、博士訓練中可轉移技能出發，搭配具體案例，討論不同階段學生的決策框架。目標不是說服你簽或不簽，而是提供一套可複製的思考工具，協助你在 AI 浪潮中作出較不容易後悔的選擇。 \n\n## 先備知識\n看過李宏毅老師的課程"
+			},
+			"speakers": ["9e62e5"],
+			"tags": ["#N/A"]
+		},
+		{
+			"id": "ace760",
+			"type": "Ev",
+			"room": "R0",
+			"broadcast": ["R0", "R1", "R2", "R3", "S"],
+			"start": "2026-03-28T16:45:00+08:00",
+			"end": "2026-03-28T16:55:00+08:00",
+			"": null,
+			"qa": null,
+			"slide": null,
+			"co_write": null,
+			"record": null,
+			"live": null,
+			"language": null,
+			"uri": "#REF!",
 			"zh": { "title": "休息", "description": "" },
 			"en": { "title": "Break", "description": "" },
 			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "9c4939",
+			"id": "28cd59",
 			"type": "L",
 			"room": "R0",
 			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T16:55:00+08:00",
-			"end": "2025-03-08T17:45:00+08:00",
+			"start": "2026-03-28T16:55:00+08:00",
+			"end": "2026-03-28T17:45:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
-			"co_write": "https://hackmd.io/@SITCON/2025/%2F%40SITCON%2F",
-			"record": "https://youtu.be/fCaPYAd6UgY",
+			"co_write": null,
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/9c4939/",
+			"uri": "https://sitcon.org/2025/agenda/28cd59/",
 			"zh": {
 				"title": "Lightning Talk",
-				"description": "Lightning Talk，中文譯為「閃電秀」，又稱 data blitz（資料閃電戰），顧名思義即為「閃電一般短的演講」， 包含準備與連接投影機的時間在內，每位講者僅有 5 分鐘的時間。  \n講者必須以飛快的速度，進行簡潔扼要的分享。要是沒能在 5 分鐘結束，將被直接切斷訊號！對於講者，以及聽眾，都是十分刺激又轟動全場的體驗唷！\n\n## 精彩議程\n1. SCoML 學生機器學習社群 by. ddd, 鱸魚, kohiro, Naup堇姬, Aukro \n2. open source到底是什麼 by. 陳璟星\n3. 資訊活動在幹嘛？SCIST寒訓分享 by. 鐵喬\n4. 淺談 eduroam by. chilin.h, e0pwr\n5. 跌倒偵測手環的研發 by. 鯊魚\n6. 專案分享：零信任網路微分段 by. 路邊停\n7. 如何繞過 🦁 的攻擊下單 by. 俗投, artist18766\n8. 玩 SITCON 大地遊戲 by. Vincent55\n\n## 投稿時間\n年會當天 10:00~15:30 皆可至白板投稿。\n\n## 投稿方式\n首先至閃電講專屬白板選擇一個順位，然後寫上標題 + 投稿者即可，例如：「我在 SITCON 2025 的趣事分享 by OsGa」。\n\n## 注意事項\n- 投稿後請於下午 16:40 到 R0 3F 右側集合，並攜帶自己的設備，將會有議程組夥伴在那邊等你。\n- 今年閃電講為 5 分鐘，請各位講者注意時間。\n- 一個人限投一件，順位先搶先贏。\n- 我們不歡迎太過商業的投稿，先會進行提醒，如勸導無效超過 10 秒我們將會直接切掉畫面。"
+				"description": "Lightning Talk，中文譯為「閃電秀」，又稱 data blitz（資料閃電戰），顧名思義即為「閃電一般短的演講」， 包含準備與連接投影機的時間在內，每位講者僅有 5 分鐘的時間。  \n講者必須以飛快的速度，進行簡潔扼要的分享。要是沒能在 5 分鐘結束，將被直接切斷訊號！對於講者，以及聽眾，都是十分刺激又轟動全場的體驗唷！\n\n## 精彩議程\n1. \n2. \n3. \n4. \n5. \n6. \n7. \n8. \n\n## 投稿時間\n年會當天 10:00~15:30 皆可至白板投稿。\n\n## 投稿方式\n首先至閃電講專屬白板選擇一個順位，然後寫上標題 + 投稿者即可，例如：「我在 SITCON 2025 的趣事分享 by OsGa」。\n\n## 注意事項\n- 投稿後請於下午 16:40 到 R0 3F 右側集合，並攜帶自己的設備，將會有議程組夥伴在那邊等你。\n- 今年閃電講為 5 分鐘，請各位講者注意時間。\n- 一個人限投一件，順位先搶先贏。\n- 我們不歡迎太過商業的投稿，先會進行提醒，如勸導無效超過 10 秒我們將會直接切掉畫面。"
 			},
 			"en": {
 				"title": "Lightning Talk",
-				"description": "Lightning Talk，中文譯為「閃電秀」，又稱 data blitz（資料閃電戰），顧名思義即為「閃電一般短的演講」， 包含準備與連接投影機的時間在內，每位講者僅有 5 分鐘的時間。  \n講者必須以飛快的速度，進行簡潔扼要的分享。要是沒能在 5 分鐘結束，將被直接切斷訊號！對於講者，以及聽眾，都是十分刺激又轟動全場的體驗唷！\n\n## 精彩議程\n1. SCoML 學生機器學習社群 by. ddd, 鱸魚, kohiro, Naup堇姬, Aukro \n2. open source到底是什麼 by. 陳璟星\n3. 資訊活動在幹嘛？SCIST寒訓分享 by. 鐵喬\n4. 淺談 eduroam by. chilin.h, e0pwr\n5. 跌倒偵測手環的研發 by. 鯊魚\n6. 專案分享：零信任網路微分段 by. 路邊停\n7. 如何繞過 🦁 的攻擊下單 by. 俗投, artist18766\n8. 玩 SITCON 大地遊戲 by. Vincent55\n\n## 投稿時間\n年會當天 10:00~15:30 皆可至白板投稿。\n\n## 投稿方式\n首先至閃電講專屬白板選擇一個順位，然後寫上標題 + 投稿者即可，例如：「我在 SITCON 2025 的趣事分享 by OsGa」。\n\n## 注意事項\n- 投稿後請於下午 16:40 到 R0 3F 右側集合，並攜帶自己的設備，將會有議程組夥伴在那邊等你。\n- 今年閃電講為 5 分鐘，請各位講者注意時間。\n- 一個人限投一件，順位先搶先贏。\n- 我們不歡迎太過商業的投稿，先會進行提醒，如勸導無效超過 10 秒我們將會直接切掉畫面。"
+				"description": "Lightning Talk，中文譯為「閃電秀」，又稱 data blitz（資料閃電戰），顧名思義即為「閃電一般短的演講」， 包含準備與連接投影機的時間在內，每位講者僅有 5 分鐘的時間。  \n講者必須以飛快的速度，進行簡潔扼要的分享。要是沒能在 5 分鐘結束，將被直接切斷訊號！對於講者，以及聽眾，都是十分刺激又轟動全場的體驗唷！\n\n## 精彩議程\n1. \n2. \n3. \n4. \n5. \n6. \n7. \n8. \n\n## 投稿時間\n年會當天 10:00~15:30 皆可至白板投稿。\n\n## 投稿方式\n首先至閃電講專屬白板選擇一個順位，然後寫上標題 + 投稿者即可，例如：「我在 SITCON 2025 的趣事分享 by OsGa」。\n\n## 注意事項\n- 投稿後請於下午 16:40 到 R0 3F 右側集合，並攜帶自己的設備，將會有議程組夥伴在那邊等你。\n- 今年閃電講為 5 分鐘，請各位講者注意時間。\n- 一個人限投一件，順位先搶先贏。\n- 我們不歡迎太過商業的投稿，先會進行提醒，如勸導無效超過 10 秒我們將會直接切掉畫面。"
 			},
 			"speakers": [],
 			"tags": []
 		},
 		{
-			"id": "404b94",
+			"id": "5efc48",
 			"type": "Ev",
 			"room": "R0",
 			"broadcast": ["R0", "R1", "R2", "R3", "S"],
-			"start": "2025-03-08T17:45:00+08:00",
-			"end": "2025-03-08T17:55:00+08:00",
+			"start": "2026-03-28T17:45:00+08:00",
+			"end": "2026-03-28T17:55:00+08:00",
 			"": null,
 			"qa": null,
 			"slide": null,
 			"co_write": null,
-			"record": "https://youtu.be/bMP_Z1WBWLI",
+			"record": null,
 			"live": null,
 			"language": null,
-			"uri": "https://sitcon.org/2025/agenda/404b94/",
+			"uri": "https://sitcon.org/2025/agenda/5efc48/",
 			"zh": { "title": "閉幕", "description": "" },
 			"en": { "title": "Closing", "description": "" },
 			"speakers": [],
@@ -1140,395 +1112,302 @@
 		}
 	],
 	"speakers": [
+		{ "id": "848137", "avatar": "https://sitcon.org/2025/avatar/848137.jpg", "zh": { "name": "總召", "bio": "" }, "en": { "name": "總召", "bio": "" } },
+		{ "id": "084731", "avatar": "https://sitcon.org/2025/avatar/084731.jpg", "zh": { "name": "", "bio": "" }, "en": { "name": "", "bio": "" } },
 		{
-			"id": "d9c7a9",
-			"avatar": "https://sitcon.org/2025/avatar/d9c7a9.jpg",
+			"id": "2266b7",
+			"avatar": "https://sitcon.org/2025/avatar/2266b7.jpg",
 			"zh": {
-				"name": "總召 77",
-				"bio": "77 是一個來自花果山大學可能是不分系的 SITCON 2025 總召，是快要擁有巴黎作息時間的斜槓青年。\n\n擔任過多個社群（COSCUP 、MOPCON、HITCON ……）的活動志工，曾為 OCF 開放科技專案暑期實習生。\n玩過機器人也寫過一點書，夢想是成為同時擁有理工腦和文學心的創作者。\n"
+				"name": "蔡嘉平",
+				"bio": "於成功大學資訊工程所取得博士學位。為現任 Apache Taipei Chapter leader，並已擔任 Apache Member 多年；也於 2023 年創辦台灣在地開源社群「源來適你（OpenSource4You）」。\r\n蔡嘉平博士長期投入 Apache 生態系的開源貢獻與社群推動，從 Committer（核心貢獻者）一路參與到成為 Apache HBase、Kafka、YuniKorn 等專案的 PMC member（專案管理委員），與世界各地的工程師們合作，持續協助專案發展與社群協作。他創辦的「源來適你」以導師制度、中文友善環境與固定活動降低新手門檻，讓更多工程師能從旁觀者變成參與者；社群也定期舉辦線上例會、讀書會與分享交流。此外，他曾多次受邀在 COSCUP 與校園專題演講，分享「從台灣參與並影響國際開源社群」的路徑與實作經驗。\r"
 			},
 			"en": {
-				"name": "總召 77",
-				"bio": "77 是一個來自花果山大學可能是不分系的 SITCON 2025 總召，是快要擁有巴黎作息時間的斜槓青年。\n\n擔任過多個社群（COSCUP 、MOPCON、HITCON ……）的活動志工，曾為 OCF 開放科技專案暑期實習生。\n玩過機器人也寫過一點書，夢想是成為同時擁有理工腦和文學心的創作者。\n"
+				"name": "蔡嘉平",
+				"bio": "於成功大學資訊工程所取得博士學位。為現任 Apache Taipei Chapter leader，並已擔任 Apache Member 多年；也於 2023 年創辦台灣在地開源社群「源來適你（OpenSource4You）」。\r\n蔡嘉平博士長期投入 Apache 生態系的開源貢獻與社群推動，從 Committer（核心貢獻者）一路參與到成為 Apache HBase、Kafka、YuniKorn 等專案的 PMC member（專案管理委員），與世界各地的工程師們合作，持續協助專案發展與社群協作。他創辦的「源來適你」以導師制度、中文友善環境與固定活動降低新手門檻，讓更多工程師能從旁觀者變成參與者；社群也定期舉辦線上例會、讀書會與分享交流。此外，他曾多次受邀在 COSCUP 與校園專題演講，分享「從台灣參與並影響國際開源社群」的路徑與實作經驗。\r"
+			}
+		},
+		{ "id": "c22420", "avatar": "https://sitcon.org/2025/avatar/c22420.jpg", "zh": { "name": "主持人 - ", "bio": "" }, "en": { "name": "主持人 - ", "bio": "" } },
+		{
+			"id": "8665f8",
+			"avatar": "https://sitcon.org/2025/avatar/8665f8.jpg",
+			"zh": {
+				"name": "與談人 - 李比鄰",
+				"bio": "Cofacts cofounder\r\n\r\nBillion is the cofounder of Cofacts, a project she initiated in 2016. She is a staunch advocate for marriage equality and open freedom, dedicating herself to bridging diverse communities and providing empowerment courses to combat disinformation. She is expertise in civic technology and digital democracy. Billion has participated in the Fellowship of Professional Fellows Program and the decentralized Dweb Camp fellowship. She has visited PolitiFact and Poynter in the United States for exchanges, fostering collaboration with contributors from various countries to clarify information. Besides, she manages a community focused on developing OSINT fact-checking skills and enhancing media literacy. Billion is experienced in public speaking. She has delivered talks in Thailand, Singapore, Australia, the UＳ, UK , Canada, Tunisia, Albania, the European Union, Costa Rica, and the United Nations in Geneva. Billion's efforts are aimed at creating a more informed and connected society, combating disinformation through education and community engagement.\r\n\r\nBillion 在 2016 年共同發起 Cofacts 真的假的專案。她長期在婚姻平權、開放與自由的領域深耕多元的倡議與對話，比鄰也開發對抗不實訊息的培力課程。她專精公民科技與數位民主活動，曾獲選美國國務院專業人才交流計畫之學友與去中心化學友專案，在美國 PolitiFact 與 Poynter進行訪問學者交流，與不同國家的貢獻者進行協作與澄清資訊，也組織了ＯＳＩＮＴ公開來源情報的查核社群推廣查核技巧與媒體識讀訓練。曾前往泰國、新加坡、澳洲、美國、加拿大、英國、突尼西亞、阿爾巴尼亞、歐盟、哥斯大黎加與聯合國日內瓦參與會議或發表演說。Billion 希望可以連結社會，並透過社群連結與教育推廣抵禦不實資訊的威脅。\r"
+			},
+			"en": {
+				"name": "與談人 - 李比鄰",
+				"bio": "Cofacts cofounder\r\n\r\nBillion is the cofounder of Cofacts, a project she initiated in 2016. She is a staunch advocate for marriage equality and open freedom, dedicating herself to bridging diverse communities and providing empowerment courses to combat disinformation. She is expertise in civic technology and digital democracy. Billion has participated in the Fellowship of Professional Fellows Program and the decentralized Dweb Camp fellowship. She has visited PolitiFact and Poynter in the United States for exchanges, fostering collaboration with contributors from various countries to clarify information. Besides, she manages a community focused on developing OSINT fact-checking skills and enhancing media literacy. Billion is experienced in public speaking. She has delivered talks in Thailand, Singapore, Australia, the UＳ, UK , Canada, Tunisia, Albania, the European Union, Costa Rica, and the United Nations in Geneva. Billion's efforts are aimed at creating a more informed and connected society, combating disinformation through education and community engagement.\r\n\r\nBillion 在 2016 年共同發起 Cofacts 真的假的專案。她長期在婚姻平權、開放與自由的領域深耕多元的倡議與對話，比鄰也開發對抗不實訊息的培力課程。她專精公民科技與數位民主活動，曾獲選美國國務院專業人才交流計畫之學友與去中心化學友專案，在美國 PolitiFact 與 Poynter進行訪問學者交流，與不同國家的貢獻者進行協作與澄清資訊，也組織了ＯＳＩＮＴ公開來源情報的查核社群推廣查核技巧與媒體識讀訓練。曾前往泰國、新加坡、澳洲、美國、加拿大、英國、突尼西亞、阿爾巴尼亞、歐盟、哥斯大黎加與聯合國日內瓦參與會議或發表演說。Billion 希望可以連結社會，並透過社群連結與教育推廣抵禦不實資訊的威脅。\r"
 			}
 		},
 		{
-			"id": "aa6028",
-			"avatar": "https://sitcon.org/2025/avatar/aa6028.jpg",
+			"id": "ce2b3d",
+			"avatar": "https://sitcon.org/2025/avatar/ce2b3d.jpg",
 			"zh": {
-				"name": "葉丙成 Benson",
-				"bio": "教育部政務次長、國立臺灣大學電機工程學系教授\n\n葉丙成教授，自臺大數學系畢業，於臺大電機工程研究所取得碩士學位，負笈美國密西根大學，於2005年獲頒電機博士學位後，進入臺大電機系任教。\n\n2013年開臺大教授創業風氣之先，創辦了臺灣最大數位教育平台，其使用者人數超過三百萬人，使臺灣無數弱勢學生得以使用免費學習資源。該平台於2014年自全球 428 所大學名校隊伍中脫穎而出，榮獲華頓商學院 Reimagine Education 全球教育創新首獎。\n\n2015 年創辦臺北市第一所橫跨小學、國中、高中之實驗學校，開創許多創新教學模式，分享給臺灣體制內外許多老師。2016 年，葉教授榮獲臺灣最高創新獎項「總統創新獎」，為臺灣首位以教育創新得此殊榮者。"
+				"name": "與談人 - 趙式隆",
+				"bio": "趙式隆先生是現任臺北市政府資訊局局長。作為一位資料科學家與行動主義者，趙先生致力於以開放原始碼的精神，打造臺北成為數位世界中的自由、平等與博愛之城。\r\n在就任目前職務之前，趙先生是一位公認的連續創業家與創新者，擁有近二十年的產業經驗。在他創辦的公司中，最知名的兩家分別是學悅科技 (Zuvio) 和洽吧智能 (BravoAI)。學悅科技是一家成立於 2013 年，專注於教育科技的平台公司；洽吧智能則是一家成立於 2017 年，使用人工智慧實現保險自動化的金融科技公司。2023 年，學悅科技被成功收購；與此同時，洽吧智能則繼續由創始團隊經營，至今仍是臺灣保險科技產業的龍頭。\r\n在學術領域方面，趙先生的研究興趣包括無線行動網路、現代人工智慧和數位治理。趙先生於 2008 年共同創辦了國立臺灣大學創意創業學程，成為臺灣創業教育的先驅之一。隨後，他先後任教於國立臺灣大學電機工程學系和國立陽明交通大學經營管理研究所。目前，趙先生仍於國立臺灣大學創意創業學程兼任助理教授一職。\r\n趙式隆先生擁有國立臺灣大學電機工程學學士與碩士學位。\r"
 			},
 			"en": {
-				"name": "葉丙成 Benson",
-				"bio": "教育部政務次長、國立臺灣大學電機工程學系教授\n\n葉丙成教授，自臺大數學系畢業，於臺大電機工程研究所取得碩士學位，負笈美國密西根大學，於2005年獲頒電機博士學位後，進入臺大電機系任教。\n\n2013年開臺大教授創業風氣之先，創辦了臺灣最大數位教育平台，其使用者人數超過三百萬人，使臺灣無數弱勢學生得以使用免費學習資源。該平台於2014年自全球 428 所大學名校隊伍中脫穎而出，榮獲華頓商學院 Reimagine Education 全球教育創新首獎。\n\n2015 年創辦臺北市第一所橫跨小學、國中、高中之實驗學校，開創許多創新教學模式，分享給臺灣體制內外許多老師。2016 年，葉教授榮獲臺灣最高創新獎項「總統創新獎」，為臺灣首位以教育創新得此殊榮者。"
+				"name": "與談人 - 趙式隆",
+				"bio": "趙式隆先生是現任臺北市政府資訊局局長。作為一位資料科學家與行動主義者，趙先生致力於以開放原始碼的精神，打造臺北成為數位世界中的自由、平等與博愛之城。\r\n在就任目前職務之前，趙先生是一位公認的連續創業家與創新者，擁有近二十年的產業經驗。在他創辦的公司中，最知名的兩家分別是學悅科技 (Zuvio) 和洽吧智能 (BravoAI)。學悅科技是一家成立於 2013 年，專注於教育科技的平台公司；洽吧智能則是一家成立於 2017 年，使用人工智慧實現保險自動化的金融科技公司。2023 年，學悅科技被成功收購；與此同時，洽吧智能則繼續由創始團隊經營，至今仍是臺灣保險科技產業的龍頭。\r\n在學術領域方面，趙先生的研究興趣包括無線行動網路、現代人工智慧和數位治理。趙先生於 2008 年共同創辦了國立臺灣大學創意創業學程，成為臺灣創業教育的先驅之一。隨後，他先後任教於國立臺灣大學電機工程學系和國立陽明交通大學經營管理研究所。目前，趙先生仍於國立臺灣大學創意創業學程兼任助理教授一職。\r\n趙式隆先生擁有國立臺灣大學電機工程學學士與碩士學位。\r"
+			}
+		},
+		{ "id": "a9a80b", "avatar": "https://sitcon.org/2025/avatar/a9a80b.jpg", "zh": { "name": "與談人 - ", "bio": "" }, "en": { "name": "與談人 - ", "bio": "" } },
+		{
+			"id": "b4db47",
+			"avatar": "https://sitcon.org/2025/avatar/b4db47.jpg",
+			"zh": {
+				"name": "貝坦betan",
+				"bio": "嗨我貝坦\n地球 online 20年老玩家，目前一轉職業是資安研究員，未來考慮二轉去當召喚師\n技能樹都點在資安了，對威脅情資、漏洞研究、以及如何考出一個香濃的起司蛋糕都很有興趣！\n\n「欸不是，這遊戲的 BUG 也太多了吧？」"
+			},
+			"en": {
+				"name": "貝坦betan",
+				"bio": "嗨我貝坦\n地球 online 20年老玩家，目前一轉職業是資安研究員，未來考慮二轉去當召喚師\n技能樹都點在資安了，對威脅情資、漏洞研究、以及如何考出一個香濃的起司蛋糕都很有興趣！\n\n「欸不是，這遊戲的 BUG 也太多了吧？」"
 			}
 		},
 		{
-			"id": "b71d74",
-			"avatar": "https://sitcon.org/2025/avatar/b71d74.jpg",
-			"zh": {
-				"name": "邱銘彰 (Birdman)",
-				"bio": "奧義智慧科技創辦人，畢業於中央大學與大同資工所，同時也是台灣駭客協會顧問。超過 20 年的資安技術研究專家，以開發自動化分析系統、駭客活動分析、惡意程式分析、機器學習演算法為主要研究範疇，多次在國際知名研討會發表專業的資安技術研究，如 Black Hat、DEFCON、SyScan、HITCON、FIRST、AVTokyo、HTICA、OWASP Asia 與 iThome CYBERSEC 等，擅長透過詼諧生動的演講傳授資安知識。而身為臺灣資安界著名的連續創業者，曾於 2011 年與吳明蔚 ( Benson ) 共同創立臺灣第一家專門研發 APT 防禦產品的新創公司，並在 2014 年受到美國 NASDAQ 的以色列資安公司肯定與併購。目前創辦的奧義智慧科技，則專注在人工智慧與資安科技領域的結合上。"
-			},
-			"en": {
-				"name": "邱銘彰 (Birdman)",
-				"bio": "奧義智慧科技創辦人，畢業於中央大學與大同資工所，同時也是台灣駭客協會顧問。超過 20 年的資安技術研究專家，以開發自動化分析系統、駭客活動分析、惡意程式分析、機器學習演算法為主要研究範疇，多次在國際知名研討會發表專業的資安技術研究，如 Black Hat、DEFCON、SyScan、HITCON、FIRST、AVTokyo、HTICA、OWASP Asia 與 iThome CYBERSEC 等，擅長透過詼諧生動的演講傳授資安知識。而身為臺灣資安界著名的連續創業者，曾於 2011 年與吳明蔚 ( Benson ) 共同創立臺灣第一家專門研發 APT 防禦產品的新創公司，並在 2014 年受到美國 NASDAQ 的以色列資安公司肯定與併購。目前創辦的奧義智慧科技，則專注在人工智慧與資安科技領域的結合上。"
-			}
-		},
-		{
-			"id": "a70879",
-			"avatar": "https://sitcon.org/2025/avatar/a70879.jpg",
-			"zh": {
-				"name": "主持人 - 路怡珍女士 國際論壇專業主持人",
-				"bio": "台灣雙語新聞主播、財經節目主持人。於 2024 年獲選 Tatler Asia 2024 Gen.T 新銳先鋒年度人物。\n\n專長科技商業趨勢與國際外交領域，多次以英語主持大型國際論壇活動，曾與日本首富孫正義及美國前聯準會副主席等重要人物對談。\n\n現於風傳媒主持《下班經濟學》，Podcast《全球串連早安新聞》，以及於 LINE 主持《TODAY 財知道》。\n\nPortaly 連結：[https://portaly.cc/catelu](https://portaly.cc/catelu)"
-			},
-			"en": {
-				"name": "主持人 - 路怡珍女士 國際論壇專業主持人",
-				"bio": "台灣雙語新聞主播、財經節目主持人。於 2024 年獲選 Tatler Asia 2024 Gen.T 新銳先鋒年度人物。\n\n專長科技商業趨勢與國際外交領域，多次以英語主持大型國際論壇活動，曾與日本首富孫正義及美國前聯準會副主席等重要人物對談。\n\n現於風傳媒主持《下班經濟學》，Podcast《全球串連早安新聞》，以及於 LINE 主持《TODAY 財知道》。\n\nPortaly 連結：[https://portaly.cc/catelu](https://portaly.cc/catelu)"
-			}
-		},
-		{
-			"id": "83249b",
-			"avatar": "https://sitcon.org/2025/avatar/83249b.jpg",
-			"zh": {
-				"name": "與談人 - 吳哲宇先生 生成式藝術家",
-				"bio": "「在數位世界中創造永恆的生命與情感」\n\n吳哲宇，台灣新媒體藝術家、創意技術開發者，專注於生成式藝術、互動裝置、沉浸式體驗與創意程式設計，透過演算法探索人類情感、數位生命與人工智慧的交錯。他的創作將數學、物理、自然模式與藝術融合，使數位技術成為能表達生命力的媒介。\n\n他認為數位世界不只是代碼與運算，而是一個能承載記憶、感知與詩意的場域。他的作品不僅提供視覺體驗，更在虛擬與現實之間搭建橋樑，透過演算法與互動技術，模擬生命的生長、時間的流動與空間的變異，使觀者在數位藝術中感受到時間與生命的軌跡。\n\n吳哲宇創辦 墨雨設計 / MonoLab，致力於推動科技與藝術的跨領域創新，與 Nissan、國立故宮博物院、台北市政府等機構合作，作品曾於威尼斯雙年展、Art Basel Miami、Tezos Foundation 等國際展覽展出，代表作包括「SoulFish 靈魂魚」、「The Soul of Flowers 花的靈魂」、「Urban Contour 城市輪廓」等。\n\n近年來，他也積極推動程式創作教育，開設 Hahow 創意編碼與互動藝術課程，累積超過 13,000 名學生 修讀，並受邀於 SITCON、Processing Community Day、WebConf 等技術與藝術論壇，探討數位藝術與演算法創作的未來可能性。\n\nPortaly 連結：[https://portaly.cc/cheyuwu](https://portaly.cc/cheyuwu)"
-			},
-			"en": {
-				"name": "與談人 - 吳哲宇先生 生成式藝術家",
-				"bio": "「在數位世界中創造永恆的生命與情感」\n\n吳哲宇，台灣新媒體藝術家、創意技術開發者，專注於生成式藝術、互動裝置、沉浸式體驗與創意程式設計，透過演算法探索人類情感、數位生命與人工智慧的交錯。他的創作將數學、物理、自然模式與藝術融合，使數位技術成為能表達生命力的媒介。\n\n他認為數位世界不只是代碼與運算，而是一個能承載記憶、感知與詩意的場域。他的作品不僅提供視覺體驗，更在虛擬與現實之間搭建橋樑，透過演算法與互動技術，模擬生命的生長、時間的流動與空間的變異，使觀者在數位藝術中感受到時間與生命的軌跡。\n\n吳哲宇創辦 墨雨設計 / MonoLab，致力於推動科技與藝術的跨領域創新，與 Nissan、國立故宮博物院、台北市政府等機構合作，作品曾於威尼斯雙年展、Art Basel Miami、Tezos Foundation 等國際展覽展出，代表作包括「SoulFish 靈魂魚」、「The Soul of Flowers 花的靈魂」、「Urban Contour 城市輪廓」等。\n\n近年來，他也積極推動程式創作教育，開設 Hahow 創意編碼與互動藝術課程，累積超過 13,000 名學生 修讀，並受邀於 SITCON、Processing Community Day、WebConf 等技術與藝術論壇，探討數位藝術與演算法創作的未來可能性。\n\nPortaly 連結：[https://portaly.cc/cheyuwu](https://portaly.cc/cheyuwu)"
-			}
-		},
-		{
-			"id": "98b581",
-			"avatar": "https://sitcon.org/2025/avatar/98b581.jpg",
-			"zh": {
-				"name": "與談人 - 李奕樵先生 軟體工程師 x 小說家",
-				"bio": "正職為網路後端工程師的業餘小說創作者。擔任國內最大規模文學創作者團體「（IF）想像朋友」監事。曾獲林榮三文學獎小說獎二獎。台北文學獎小說獎首獎。作品曾入選《一○二年小說選》、《一○六年小說選》（九歌）。著有小說集《遊戲自黑暗》，獲得該年度 Openbook 好書獎、博客來年度選書推薦。"
-			},
-			"en": {
-				"name": "與談人 - 李奕樵先生 軟體工程師 x 小說家",
-				"bio": "正職為網路後端工程師的業餘小說創作者。擔任國內最大規模文學創作者團體「（IF）想像朋友」監事。曾獲林榮三文學獎小說獎二獎。台北文學獎小說獎首獎。作品曾入選《一○二年小說選》、《一○六年小說選》（九歌）。著有小說集《遊戲自黑暗》，獲得該年度 Openbook 好書獎、博客來年度選書推薦。"
-			}
-		},
-		{
-			"id": "e3d337",
-			"avatar": "https://sitcon.org/2025/avatar/e3d337.jpg",
-			"zh": {
-				"name": "與談人 - 蔡宗翰教授 資工 x 數位人文研究者",
-				"bio": "蔡宗翰教授為國立中央大學資訊工程學系教授，同時受聘於理工屬性的中央大學資工系與人文屬性的中研院人社中心，也是國科會台灣大型語言模型計劃 [TAIDE](https://taide.tw) 的共同創始人，目前正將 TAIDE 模型導入教育領域。 蔡教授的研究領域涵蓋資訊領域的自然語言處理、電腦視覺等 AI 技術，並將這些 AI 技術用於解決人文研究問題，也就是所謂「數位人文研究」，為台灣少見之跨理工人文的學者。\n\n此外，更愛好寫文章與作詩，因而被稱為「 AI 界李白」。著有《寫給中學生看的AI課（增訂版）》，榮獲第十二屆吳大猷科學普及著作獎青少年科普特別推薦獎。"
-			},
-			"en": {
-				"name": "與談人 - 蔡宗翰教授 資工 x 數位人文研究者",
-				"bio": "蔡宗翰教授為國立中央大學資訊工程學系教授，同時受聘於理工屬性的中央大學資工系與人文屬性的中研院人社中心，也是國科會台灣大型語言模型計劃 [TAIDE](https://taide.tw) 的共同創始人，目前正將 TAIDE 模型導入教育領域。 蔡教授的研究領域涵蓋資訊領域的自然語言處理、電腦視覺等 AI 技術，並將這些 AI 技術用於解決人文研究問題，也就是所謂「數位人文研究」，為台灣少見之跨理工人文的學者。\n\n此外，更愛好寫文章與作詩，因而被稱為「 AI 界李白」。著有《寫給中學生看的AI課（增訂版）》，榮獲第十二屆吳大猷科學普及著作獎青少年科普特別推薦獎。"
-			}
-		},
-		{
-			"id": "027243",
-			"avatar": "https://sitcon.org/2025/avatar/027243.jpg",
-			"zh": {
-				"name": "yorukot",
-				"bio": "我是一名高二學生，對於將程式開發轉化為有意義的實作專案充滿熱情。相比競賽程式，我更喜歡專注於實際應用，創造能解決問題或帶來價值的工具。目前，我的主要開源專案爲 superfile ，一個專注於 UI 的檔案處理工具，在 GitHub 上獲得超過 10k stars。我期待未來能夠持續發展更多實用的專案，並透過開源的方式與更多人分享我的創作！"
-			},
-			"en": {
-				"name": "yorukot",
-				"bio": "我是一名高二學生，對於將程式開發轉化為有意義的實作專案充滿熱情。相比競賽程式，我更喜歡專注於實際應用，創造能解決問題或帶來價值的工具。目前，我的主要開源專案爲 superfile ，一個專注於 UI 的檔案處理工具，在 GitHub 上獲得超過 10k stars。我期待未來能夠持續發展更多實用的專案，並透過開源的方式與更多人分享我的創作！"
-			}
-		},
-		{
-			"id": "52b0bf",
-			"avatar": "https://sitcon.org/2025/avatar/52b0bf.jpg",
-			"zh": {
-				"name": "Jackie",
-				"bio": "嗨！我是陳首吉（Jackie），目前是台科資工碩一的研究生。\n我在大學時期並非資訊相關科系，但對開源與技術的熱愛讓我踏上了這條道路。我從零開始學習，不僅撰寫自己的專案，也積極參與開源社群，截至目前為止，我已提交了 10 個 PR 並完成了約 10 個個人專案。\n開源改變了我的學習方式，也讓我在技術的世界裡不斷突破，讓我獲得了軟體工程實習以及推甄的機會。這次不藏私，希望能夠幫助所有開源社群的新手！"
-			},
-			"en": {
-				"name": "Jackie",
-				"bio": "嗨！我是陳首吉（Jackie），目前是台科資工碩一的研究生。\n我在大學時期並非資訊相關科系，但對開源與技術的熱愛讓我踏上了這條道路。我從零開始學習，不僅撰寫自己的專案，也積極參與開源社群，截至目前為止，我已提交了 10 個 PR 並完成了約 10 個個人專案。\n開源改變了我的學習方式，也讓我在技術的世界裡不斷突破，讓我獲得了軟體工程實習以及推甄的機會。這次不藏私，希望能夠幫助所有開源社群的新手！"
-			}
-		},
-		{
-			"id": "37e881",
-			"avatar": "https://sitcon.org/2025/avatar/37e881.jpg",
-			"zh": {
-				"name": "Vincent55",
-				"bio": "Vincent55 是一隻來自成大資工大四的魟魚，成大資安社創社幹部兼 B33F 50UP 戰隊隊長。\n\n以學習資訊的各種領域為樂趣，並且近期在資安領域有較多著墨，目前任職於 DEVCORE 擔任紅隊實習生，目前育有一隻熊熊🐻，請多指教喔。"
-			},
-			"en": {
-				"name": "Vincent55",
-				"bio": "Vincent55 是一隻來自成大資工大四的魟魚，成大資安社創社幹部兼 B33F 50UP 戰隊隊長。\n\n以學習資訊的各種領域為樂趣，並且近期在資安領域有較多著墨，目前任職於 DEVCORE 擔任紅隊實習生，目前育有一隻熊熊🐻，請多指教喔。"
-			}
-		},
-		{
-			"id": "a8e4fa",
-			"avatar": "https://sitcon.org/2025/avatar/a8e4fa.jpg",
-			"zh": {
-				"name": "Isaac",
-				"bio": "國立臺北大學 雙主修企管系&統計系 在讀  \n🧑‍🎓 Data Science 研究助理現正修行中  \n🏫 Google Developer Groups NTPU - Organizer  \n🏢 前 TOYOTA、台灣大哥大實習生  \n📸 有跳坑 SITCON 紀錄組  \n\n社群初心者，日常身分是延畢生兼羽球校隊隊員，平時喜歡拍照、聽日韓獨立樂團，為了變成很酷的人在大四開始雙統計，準備今年八月準時畢業，祝我這學期歐趴。\n\n- [LinkedIn](https://www.linkedin.com/in/shang-cheng-shih-566326249/)\n- [Instagram](https://www.instagram.com/isx_o6/)"
-			},
-			"en": {
-				"name": "Isaac",
-				"bio": "國立臺北大學 雙主修企管系&統計系 在讀  \n🧑‍🎓 Data Science 研究助理現正修行中  \n🏫 Google Developer Groups NTPU - Organizer  \n🏢 前 TOYOTA、台灣大哥大實習生  \n📸 有跳坑 SITCON 紀錄組  \n\n社群初心者，日常身分是延畢生兼羽球校隊隊員，平時喜歡拍照、聽日韓獨立樂團，為了變成很酷的人在大四開始雙統計，準備今年八月準時畢業，祝我這學期歐趴。\n\n- [LinkedIn](https://www.linkedin.com/in/shang-cheng-shih-566326249/)\n- [Instagram](https://www.instagram.com/isx_o6/)"
-			}
-		},
-		{
-			"id": "02ee66",
-			"avatar": "https://sitcon.org/2025/avatar/02ee66.jpg",
-			"zh": {
-				"name": "CCLin",
-				"bio": "林靖鈞，目前就讀於竹北高中，大家可以稱呼我為 cclin。我對數據分析充滿熱情，並曾有幸參與教育部主辦的大專校院人工智慧競賽，取得不錯的成績。平日熱愛文學與馬拉松，認為這兩者能在心靈與體能上帶來平衡與啟發。我希望藉由持續的學習與探索，結合科技與人文，為未來創造更多價值。"
-			},
-			"en": {
-				"name": "CCLin",
-				"bio": "林靖鈞，目前就讀於竹北高中，大家可以稱呼我為 cclin。我對數據分析充滿熱情，並曾有幸參與教育部主辦的大專校院人工智慧競賽，取得不錯的成績。平日熱愛文學與馬拉松，認為這兩者能在心靈與體能上帶來平衡與啟發。我希望藉由持續的學習與探索，結合科技與人文，為未來創造更多價值。"
-			}
-		},
-		{
-			"id": "ff3341",
-			"avatar": "https://sitcon.org/2025/avatar/ff3341.jpg",
-			"zh": { "name": "工常張 Shawn", "bio": "一個身在管院，手卻在 coding 的公館大學生，3+ 網站開發工作經驗，喜歡透過 Vue 開發中小型 Web app，也喜歡早上喝一杯不加糖拿鐵" },
-			"en": { "name": "工常張 Shawn", "bio": "一個身在管院，手卻在 coding 的公館大學生，3+ 網站開發工作經驗，喜歡透過 Vue 開發中小型 Web app，也喜歡早上喝一杯不加糖拿鐵" }
-		},
-		{
-			"id": "70ae31",
-			"avatar": "https://sitcon.org/2025/avatar/70ae31.jpg",
-			"zh": {
-				"name": "Vic Wen",
-				"bio": "*斜咖青年 / 台科資工大二*\n\n熱愛科技與交流，如社群領導與經營、全端網頁開發、ML/DL、BlockChain。\n領導超過三十位現任幹部，堅信夥伴是最大的力量。\n\n* 現任 GDG on Campus NTUST Lead\n* 現任 台科資工系系學會 會長\n* 曾任 瑞芳高中熱舞社 社長\n* 曾任 3490地區新北瑞芳扶少團 創團團長\n* 曾任 瑞芳國中學生自治會 會長"
-			},
-			"en": {
-				"name": "Vic Wen",
-				"bio": "*斜咖青年 / 台科資工大二*\n\n熱愛科技與交流，如社群領導與經營、全端網頁開發、ML/DL、BlockChain。\n領導超過三十位現任幹部，堅信夥伴是最大的力量。\n\n* 現任 GDG on Campus NTUST Lead\n* 現任 台科資工系系學會 會長\n* 曾任 瑞芳高中熱舞社 社長\n* 曾任 3490地區新北瑞芳扶少團 創團團長\n* 曾任 瑞芳國中學生自治會 會長"
-			}
-		},
-		{
-			"id": "890e5c",
-			"avatar": "https://sitcon.org/2025/avatar/890e5c.jpg",
-			"zh": { "name": "ExplorerRay", "bio": "本名為黃柏竣，GitHub ID 是 ExplorerRay，是一名交大資工大四學生暨系計中助教，正在努力往 data center infra 相關研究邁進" },
-			"en": { "name": "ExplorerRay", "bio": "本名為黃柏竣，GitHub ID 是 ExplorerRay，是一名交大資工大四學生暨系計中助教，正在努力往 data center infra 相關研究邁進" }
-		},
-		{
-			"id": "95a69d",
-			"avatar": "https://sitcon.org/2025/avatar/95a69d.jpg",
-			"zh": {
-				"name": "老黃",
-				"bio": "我是老黃，現在高二，從高一開始就對演算法與人工智慧產生興趣，也參與過大大小小的演算法競賽。  \n我相信科技的力量可以為這個世界帶來改變，我希望能透過自己不斷的學習，利用自己小小的力量改變世界。"
-			},
-			"en": {
-				"name": "老黃",
-				"bio": "我是老黃，現在高二，從高一開始就對演算法與人工智慧產生興趣，也參與過大大小小的演算法競賽。  \n我相信科技的力量可以為這個世界帶來改變，我希望能透過自己不斷的學習，利用自己小小的力量改變世界。"
-			}
-		},
-		{
-			"id": "3de490",
-			"avatar": "https://sitcon.org/2025/avatar/3de490.jpg",
-			"zh": {
-				"name": "百變怪",
-				"bio": "百變怪，資電院不分系大四生，人如其名，不喜歡受限於單一領域，喜歡研究新事物、做奇怪的專案、學習各領域新知識。  \nSITCON 2024 開放式議程講者、SITCON Hackathon 2024 活動組組長。"
-			},
-			"en": {
-				"name": "百變怪",
-				"bio": "百變怪，資電院不分系大四生，人如其名，不喜歡受限於單一領域，喜歡研究新事物、做奇怪的專案、學習各領域新知識。  \nSITCON 2024 開放式議程講者、SITCON Hackathon 2024 活動組組長。"
-			}
-		},
-		{
-			"id": "ea3931",
-			"avatar": "https://sitcon.org/2025/avatar/ea3931.jpg",
-			"zh": {
-				"name": "visitorckw",
-				"bio": "活躍於 Linux 核心開發，目前是 Linux 核心 min heap library 的維護者。除了 Linux 開發外，也對 glibc、newlib、rv32emu 等開源專案有所貢獻。過去曾在 Yahoo、Logitech、Google 和 AMD 等公司實習。現在是陽明交大資工所二年級的學生，正努力祈禱能準時畢業。\n\nActive in Linux kernel development and currently the maintainer of the Linux kernel min heap library. In addition to Linux development, I have contributed to open-source projects such as glibc, newlib, and rv32emu. Previously interned at Yahoo, Logitech, Google, and AMD. Currently a second-year master's student in Computer Science at NYCU, striving to graduate on time."
-			},
-			"en": {
-				"name": "visitorckw",
-				"bio": "活躍於 Linux 核心開發，目前是 Linux 核心 min heap library 的維護者。除了 Linux 開發外，也對 glibc、newlib、rv32emu 等開源專案有所貢獻。過去曾在 Yahoo、Logitech、Google 和 AMD 等公司實習。現在是陽明交大資工所二年級的學生，正努力祈禱能準時畢業。\n\nActive in Linux kernel development and currently the maintainer of the Linux kernel min heap library. In addition to Linux development, I have contributed to open-source projects such as glibc, newlib, and rv32emu. Previously interned at Yahoo, Logitech, Google, and AMD. Currently a second-year master's student in Computer Science at NYCU, striving to graduate on time."
-			}
-		},
-		{
-			"id": "b72158",
-			"avatar": "https://sitcon.org/2025/avatar/b72158.jpg",
-			"zh": {
-				"name": "FKT",
-				"bio": "您好我是 FKT  \n曾經負責過 2023 與 2024 的 COSCUP SITCON X GDSC X OpenEDU 學生軌  \n也是 2024 SITCON Camp 課活組組員，是黑客松、闖關活動、開源精神短講的負責人  \n2024 SITCON 講者 - 我從參加社團到發展校園社群的經驗分享  \n參與過許多社群也有不同技能的專案開發經驗，除硬實力之外領導與專案管理類型的軟實力也有許多經驗"
-			},
-			"en": {
-				"name": "FKT",
-				"bio": "您好我是 FKT  \n曾經負責過 2023 與 2024 的 COSCUP SITCON X GDSC X OpenEDU 學生軌  \n也是 2024 SITCON Camp 課活組組員，是黑客松、闖關活動、開源精神短講的負責人  \n2024 SITCON 講者 - 我從參加社團到發展校園社群的經驗分享  \n參與過許多社群也有不同技能的專案開發經驗，除硬實力之外領導與專案管理類型的軟實力也有許多經驗"
-			}
-		},
-		{
-			"id": "10b30f",
-			"avatar": "https://sitcon.org/2025/avatar/10b30f.jpg",
-			"zh": {
-				"name": "Colten",
-				"bio": "我是 Colten！一名成大資工大三的學生，高中主要打競技程式設計競賽，也因此對演算法與資料結構領域有非常強烈的興趣，喜歡在平時的專案加入一些演算法的小巧思，解決生活中大大小小的問題！對我來說，寫程式的目的就是解決問題 >< 享受解決問題的過程！"
-			},
-			"en": {
-				"name": "Colten",
-				"bio": "我是 Colten！一名成大資工大三的學生，高中主要打競技程式設計競賽，也因此對演算法與資料結構領域有非常強烈的興趣，喜歡在平時的專案加入一些演算法的小巧思，解決生活中大大小小的問題！對我來說，寫程式的目的就是解決問題 >< 享受解決問題的過程！"
-			}
-		},
-		{
-			"id": "7abe86",
-			"avatar": "https://sitcon.org/2025/avatar/7abe86.jpg",
-			"zh": { "name": "ShallowFeather", "bio": "中山大學 資訊工程學系 大二  \n星爆吉娃娃 & 竹狐 成員  \nReverse CTF Player  \n興趣使然的 Windows 研究者" },
-			"en": { "name": "ShallowFeather", "bio": "中山大學 資訊工程學系 大二  \n星爆吉娃娃 & 竹狐 成員  \nReverse CTF Player  \n興趣使然的 Windows 研究者" }
-		},
-		{
-			"id": "1e0f9c",
-			"avatar": "https://sitcon.org/2025/avatar/1e0f9c.jpg",
-			"zh": {
-				"name": "NiNi",
-				"bio": "陳廷宇，逆逆（NiNi），DEVCORE 的資安研究員，同時也是 Balsn CTF 團隊的成員、TWN48 一期生。他與 DEVCORE 團隊在 Pwn2Own Toronto 2022 中贏得「Master of Pwn」的頭銜。NiNi 在 CTF 比賽中也取得了顯著的成就，參與如：HITCON⚔BFKinesiS、HITCON⚔Balsn、TWN48 等團隊，在 DEF CON CTF 中多次取得第二名和第三名的名次。目前，NiNi 投身於漏洞研究和逆向工程，持續精進他的技能。您可以透過他的 Twitter 帳號 @terrynini38514 或者他的部落格 http://blog.terrynini.tw/ 了解他最新的發現和心得。"
-			},
-			"en": {
-				"name": "NiNi",
-				"bio": "陳廷宇，逆逆（NiNi），DEVCORE 的資安研究員，同時也是 Balsn CTF 團隊的成員、TWN48 一期生。他與 DEVCORE 團隊在 Pwn2Own Toronto 2022 中贏得「Master of Pwn」的頭銜。NiNi 在 CTF 比賽中也取得了顯著的成就，參與如：HITCON⚔BFKinesiS、HITCON⚔Balsn、TWN48 等團隊，在 DEF CON CTF 中多次取得第二名和第三名的名次。目前，NiNi 投身於漏洞研究和逆向工程，持續精進他的技能。您可以透過他的 Twitter 帳號 @terrynini38514 或者他的部落格 http://blog.terrynini.tw/ 了解他最新的發現和心得。"
-			}
-		},
-		{
-			"id": "5a3b00",
-			"avatar": "https://sitcon.org/2025/avatar/5a3b00.jpg",
-			"zh": {
-				"name": "James Kuo-Ping Lo (Misawai)",
-				"bio": "James Kuo-Ping Lo (Misawai) 目前就讀國立臺灣師範大學，曾於 2024 年 Google Summer of Code 貢獻 VideoLAN Project。期望透過本次演講，與各位交流。\n\n- [LinkedIn](https://www.linkedin.com/in/misawai)"
-			},
-			"en": {
-				"name": "James Kuo-Ping Lo (Misawai)",
-				"bio": "James Kuo-Ping Lo (Misawai) 目前就讀國立臺灣師範大學，曾於 2024 年 Google Summer of Code 貢獻 VideoLAN Project。期望透過本次演講，與各位交流。\n\n- [LinkedIn](https://www.linkedin.com/in/misawai)"
-			}
-		},
-		{
-			"id": "da9fc6",
-			"avatar": "https://sitcon.org/2025/avatar/da9fc6.jpg",
-			"zh": { "name": "slasho", "bio": "交大資工，賽博農民工🧑‍🌾🌾  \n偶爾玩玩音樂、視覺執行、手工車" },
-			"en": { "name": "slasho", "bio": "交大資工，賽博農民工🧑‍🌾🌾  \n偶爾玩玩音樂、視覺執行、手工車" }
-		},
-		{
-			"id": "abacf4",
-			"avatar": "https://sitcon.org/2025/avatar/abacf4.jpg",
-			"zh": {
-				"name": "Jason Teng",
-				"bio": "哈囉！我是 Jason，目前交大碩一數據所，喜歡碰一堆有的沒的領域，像是程式競賽、軟體工程、深度學習、IT infra 或各種奇怪的東西。各種技術都很好玩，越學感覺越無知，時間永遠不夠，所以要多碰！  \n另外我是 Vim 派，不喜歡滑鼠 : D"
-			},
-			"en": {
-				"name": "Jason Teng",
-				"bio": "哈囉！我是 Jason，目前交大碩一數據所，喜歡碰一堆有的沒的領域，像是程式競賽、軟體工程、深度學習、IT infra 或各種奇怪的東西。各種技術都很好玩，越學感覺越無知，時間永遠不夠，所以要多碰！  \n另外我是 Vim 派，不喜歡滑鼠 : D"
-			}
-		},
-		{
-			"id": "1ec9f4",
-			"avatar": "https://sitcon.org/2025/avatar/1ec9f4.jpg",
-			"zh": {
-				"name": "毛哥EM",
-				"bio": "毛哥EM 擁有九年網頁開發經驗，精通全端工程與各類數位創作。目前為交大資工大一準新生，擔任網頁界奧斯卡 Awwwards 的常態評審。其作品屢獲國際肯定，包括 CSS Light SOTD、Awwwards HM 等獎項，並在 2025 iThome 鐵人賽中獲得佳作。此外曾擔任中電會第三屆資訊組組長，展現優異的領導與專業實力。"
-			},
-			"en": {
-				"name": "毛哥EM",
-				"bio": "毛哥EM 擁有九年網頁開發經驗，精通全端工程與各類數位創作。目前為交大資工大一準新生，擔任網頁界奧斯卡 Awwwards 的常態評審。其作品屢獲國際肯定，包括 CSS Light SOTD、Awwwards HM 等獎項，並在 2025 iThome 鐵人賽中獲得佳作。此外曾擔任中電會第三屆資訊組組長，展現優異的領導與專業實力。"
-			}
-		},
-		{
-			"id": "74ad21",
-			"avatar": "https://sitcon.org/2025/avatar/74ad21.jpg",
-			"zh": { "name": "游聿堂", "bio": "臺大人類學系大二，對程式和音樂、藝術也很有興趣。" },
-			"en": { "name": "游聿堂", "bio": "臺大人類學系大二，對程式和音樂、藝術也很有興趣。" }
-		},
-		{
-			"id": "ebe1b4",
-			"avatar": "https://sitcon.org/2025/avatar/ebe1b4.jpg",
-			"zh": { "name": "Harry", "bio": "不務正業的高二生，喜歡攝影、辯論、剪輯，目前深入大型語言模型（LLM）的安全研究。很期待在 SITCON 與大家交流！" },
-			"en": { "name": "Harry", "bio": "不務正業的高二生，喜歡攝影、辯論、剪輯，目前深入大型語言模型（LLM）的安全研究。很期待在 SITCON 與大家交流！" }
-		},
-		{
-			"id": "9069bd",
-			"avatar": "https://sitcon.org/2025/avatar/9069bd.jpg",
-			"zh": {
-				"name": "Pan",
-				"bio": "[Pan](https://pan93.com) 是一個目前任職於 Zeabur 的後端實習生和工程師，主要撰寫 Go、Rust、PHP、Node.js 等語言。他熟悉如 Zeabur 的 PaaS 解決方案，並能有效應用 AWS、GCP 和 Cloudflare 等雲端服務進行系統和低成本專案部署，並熟悉 Cloud Native 的解決方案，如 MQ、OpenTelemetry 及 gRPC 等。同時 Pan 也活躍在許多開源社群及討論群組，擁抱並支持開放技術。"
-			},
-			"en": {
-				"name": "Pan",
-				"bio": "[Pan](https://pan93.com) 是一個目前任職於 Zeabur 的後端實習生和工程師，主要撰寫 Go、Rust、PHP、Node.js 等語言。他熟悉如 Zeabur 的 PaaS 解決方案，並能有效應用 AWS、GCP 和 Cloudflare 等雲端服務進行系統和低成本專案部署，並熟悉 Cloud Native 的解決方案，如 MQ、OpenTelemetry 及 gRPC 等。同時 Pan 也活躍在許多開源社群及討論群組，擁抱並支持開放技術。"
-			}
-		},
-		{
-			"id": "27bfba",
-			"avatar": "https://sitcon.org/2025/avatar/27bfba.jpg",
-			"zh": { "name": "堇姬Naup", "bio": "一隻 4002 歲的簑羽鶴，我是一位 CTF 競賽玩家，主要研究 Web x Crypto x Pwn，喜歡參與各種資安競賽、研究底層及漏洞" },
-			"en": { "name": "堇姬Naup", "bio": "一隻 4002 歲的簑羽鶴，我是一位 CTF 競賽玩家，主要研究 Web x Crypto x Pwn，喜歡參與各種資安競賽、研究底層及漏洞" }
-		},
-		{
-			"id": "fa5d13",
-			"avatar": "https://sitcon.org/2025/avatar/fa5d13.jpg",
-			"zh": {
-				"name": "chewei",
-				"bio": "零時小學校（Sch001）是聚焦在教育的 g0v 專案，將代表數位原生世代的 0 與 1 放入代表教育的「學校（School）」，從零重新思考學校的意涵，同時也代表教育與數位社群的連結與協作。"
-			},
-			"en": {
-				"name": "chewei",
-				"bio": "零時小學校（Sch001）是聚焦在教育的 g0v 專案，將代表數位原生世代的 0 與 1 放入代表教育的「學校（School）」，從零重新思考學校的意涵，同時也代表教育與數位社群的連結與協作。"
-			}
-		},
-		{
-			"id": "fc5cd1",
-			"avatar": "https://sitcon.org/2025/avatar/fc5cd1.jpg",
-			"zh": {
-				"name": "梯口 tico88612",
-				"bio": "現任的雲端原生計算基金會推廣大使 (CNCF Ambassador)、Kubernetes 太空人 (Kubestronaut)、雲端原生臺灣使用者社群 (CNTUG) 共同組織者、Kubernetes Community Days (KCD) Taipei 2025 總召，並積極開源貢獻於 Kubernetes 和 CNCF 專案等，Kubespray 擔任 Code Reviewer、Kubernetes v1.32 & v1.33 Release Signal Shadow。"
-			},
-			"en": {
-				"name": "梯口 tico88612",
-				"bio": "現任的雲端原生計算基金會推廣大使 (CNCF Ambassador)、Kubernetes 太空人 (Kubestronaut)、雲端原生臺灣使用者社群 (CNTUG) 共同組織者、Kubernetes Community Days (KCD) Taipei 2025 總召，並積極開源貢獻於 Kubernetes 和 CNCF 專案等，Kubespray 擔任 Code Reviewer、Kubernetes v1.32 & v1.33 Release Signal Shadow。"
-			}
-		},
-		{
-			"id": "932782",
-			"avatar": "https://sitcon.org/2025/avatar/932782.jpg",
+			"id": "ead2c9",
+			"avatar": "https://sitcon.org/2025/avatar/ead2c9.jpg",
 			"zh": {
 				"name": "OsGa",
-				"bio": "從高二因為學長的關係接觸到網路安全的世界，第一次參加資安比賽就被強者打得體無完膚。在學習資安的過程中，發現自己從零開始學習非常困難，因此積極參加舉辦各種活動和課程，期望透過自己的力量，成為能夠讓更多人能夠輕鬆進入資訊安全這個領域的社群人。"
+				"bio": "Alo 我是 OsGa，去年議程組夥伴，今年開發組副組長，連續兩年閃電講主持人，SITCON 御用小丑\n喜歡開發一些酷東西、打一些靶機、玩一些網路，屬實什麼都會一點這些但還有億點要學，時常走跳在資訊圈飄來飄去。\n\n去年 SITCON 2025 的時候家裡養了一隻狗勾叫 cookie，請不要偷走我的 cookie\n\n個人網站：https://osga.dev\nbtw I use VIM"
 			},
 			"en": {
 				"name": "OsGa",
-				"bio": "從高二因為學長的關係接觸到網路安全的世界，第一次參加資安比賽就被強者打得體無完膚。在學習資安的過程中，發現自己從零開始學習非常困難，因此積極參加舉辦各種活動和課程，期望透過自己的力量，成為能夠讓更多人能夠輕鬆進入資訊安全這個領域的社群人。"
+				"bio": "Alo 我是 OsGa，去年議程組夥伴，今年開發組副組長，連續兩年閃電講主持人，SITCON 御用小丑\n喜歡開發一些酷東西、打一些靶機、玩一些網路，屬實什麼都會一點這些但還有億點要學，時常走跳在資訊圈飄來飄去。\n\n去年 SITCON 2025 的時候家裡養了一隻狗勾叫 cookie，請不要偷走我的 cookie\n\n個人網站：https://osga.dev\nbtw I use VIM"
 			}
 		},
 		{
-			"id": "ca2ff3",
-			"avatar": "https://sitcon.org/2025/avatar/ca2ff3.jpg",
-			"zh": {
-				"name": "陳兆閔 (asef18766)",
-				"bio": "陳兆閔 (asef18766) 現為奧義智慧科技的資安研究員。畢業於國立台灣大學資訊安全碩士班，專注於車輛安全與自動化程式分析等領域，曾於 USENIX Security 2024 發表學術海報。同時，也曾在 MOPCON、SITCON 等地發表演說，目前亦是 CTF Players，在 Balsn、TWN48、w33d 等 CTF 戰隊參與許多 CTF 比賽，也在 DEFCON 決賽取得過第三名。目前正於以上領域持續精進他的技能。"
-			},
-			"en": {
-				"name": "陳兆閔 (asef18766)",
-				"bio": "陳兆閔 (asef18766) 現為奧義智慧科技的資安研究員。畢業於國立台灣大學資訊安全碩士班，專注於車輛安全與自動化程式分析等領域，曾於 USENIX Security 2024 發表學術海報。同時，也曾在 MOPCON、SITCON 等地發表演說，目前亦是 CTF Players，在 Balsn、TWN48、w33d 等 CTF 戰隊參與許多 CTF 比賽，也在 DEFCON 決賽取得過第三名。目前正於以上領域持續精進他的技能。"
-			}
+			"id": "4fbf5d",
+			"avatar": "https://sitcon.org/2025/avatar/4fbf5d.jpg",
+			"zh": { "name": "Yuki", "bio": "我是 Yuki，跟社團一起做軟體開發的大學生。我主要會寫的是網頁的前端，也稍微會一些後端系統，目標是成為全端工程師！" },
+			"en": { "name": "Yuki", "bio": "我是 Yuki，跟社團一起做軟體開發的大學生。我主要會寫的是網頁的前端，也稍微會一些後端系統，目標是成為全端工程師！" }
 		},
-		{ "id": "tba", "avatar": "https://sitcon.org/2018/static/img/staffs/stone.png", "zh": { "name": "TBA", "bio": "" }, "en": { "name": "TBA", "bio": "" } },
 		{
-			"id": "e4271b",
-			"avatar": "https://sitcon.org/2025/avatar/e4271b.jpg",
+			"id": "532bf2",
+			"avatar": "https://sitcon.org/2025/avatar/532bf2.jpg",
 			"zh": {
-				"name": "台灣駭客協會 理事 陳仲寬 (CK)",
-				"bio": "陳仲寬現為奧義智慧的資安研究處長，負責協調資安研究團隊。 他於國立交通大學網路安全實驗室攻讀博士學位。他的研究方向專注於利用機器學習等技術協助事件應變、惡意程式分析、漏洞分析與挖掘。在許多技術會議，如：BlackHat、HITCON、VXCON、Line Becks、FIRST conference、RootCon、CodeBlue，積極參與並發表其研究。此外，他致力於資安教育，在交大創立交大網路安全策進會，鼓勵並培訓學生參與國際型 CTF 比賽，並有兩次參與世界資安大賽 DEFCON CTF 決賽經驗。 他為台灣資安社群相當活躍的成員，現為 Chroot 成員之一，並常擔任 HITCON/ FIRST Conf/ 荷蘭 HITB 資安會議的審查委員。"
+				"name": "Aaron Yeh",
+				"bio": "Full-stack Engineer Intern @Titansoft\nCo-Founder @CasDoc\nCommunity Lead @Google Developer Groups on Campus, University of Taipei\n\n平常就上上學和上上班的大學生，閒暇之餘也創創業、玩玩社群、搞搞區塊鏈。"
 			},
 			"en": {
-				"name": "台灣駭客協會 理事 陳仲寬 (CK)",
-				"bio": "陳仲寬現為奧義智慧的資安研究處長，負責協調資安研究團隊。 他於國立交通大學網路安全實驗室攻讀博士學位。他的研究方向專注於利用機器學習等技術協助事件應變、惡意程式分析、漏洞分析與挖掘。在許多技術會議，如：BlackHat、HITCON、VXCON、Line Becks、FIRST conference、RootCon、CodeBlue，積極參與並發表其研究。此外，他致力於資安教育，在交大創立交大網路安全策進會，鼓勵並培訓學生參與國際型 CTF 比賽，並有兩次參與世界資安大賽 DEFCON CTF 決賽經驗。 他為台灣資安社群相當活躍的成員，現為 Chroot 成員之一，並常擔任 HITCON/ FIRST Conf/ 荷蘭 HITB 資安會議的審查委員。"
+				"name": "Aaron Yeh",
+				"bio": "Full-stack Engineer Intern @Titansoft\nCo-Founder @CasDoc\nCommunity Lead @Google Developer Groups on Campus, University of Taipei\n\n平常就上上學和上上班的大學生，閒暇之餘也創創業、玩玩社群、搞搞區塊鏈。"
 			}
 		},
 		{
-			"id": "bae523",
-			"avatar": "https://sitcon.org/2025/avatar/bae523.jpg",
+			"id": "b9020d",
+			"avatar": "https://sitcon.org/2025/avatar/b9020d.jpg",
 			"zh": {
-				"name": "Sandy Su",
-				"bio": "Sandy 是台北市某間 還蠻不錯（真的啦） 高中的資訊老師，主線任務是陪伴對未來感到迷茫的高中生，副本挑戰是把「這什麼鬼看不懂」的知識，轉化成「print(\"懂了!!\")」的頓悟時刻。  \n最近熱衷於把 超抽象的 AI 理論 轉譯成 人類可讀（human-readable）的版本，加上 debug=True 確保知識無痛寫入，不讓學生直接 throw exception。  \n此外Sandy也與研究室合作，但實際上不只是做實驗而已——實際上常常變成 全方位支援的隱藏 BOSS，負責優化邏輯、優化 pipeline、debug 論文（？），偶爾還得 commit 他們的進度。  \n她的信念是：學程式不只是練 for 迴圈＋解 segmentation fault，而是解鎖全新的視野，讓自己成為 擁有 root 權限的冒險者。如果你正為資訊知識打怪升級，那恭喜你，你就是勇敢追夢的 主線英雄"
+				"name": "Bowen",
+				"bio": "台大資管大三，目前在 LINE Taiwan 實習，喜歡開發各種小工具以及嘗試新事物，希望自己的服務能被需要的人使用；也慶幸自己身處 AI 時代能低成本地發掘各種可能性。有什麼想聊聊的歡迎聯絡我！\n個人網站（不定期更新）：https://bowenchen.vercel.app/"
 			},
 			"en": {
-				"name": "Sandy Su",
-				"bio": "Sandy 是台北市某間 還蠻不錯（真的啦） 高中的資訊老師，主線任務是陪伴對未來感到迷茫的高中生，副本挑戰是把「這什麼鬼看不懂」的知識，轉化成「print(\"懂了!!\")」的頓悟時刻。  \n最近熱衷於把 超抽象的 AI 理論 轉譯成 人類可讀（human-readable）的版本，加上 debug=True 確保知識無痛寫入，不讓學生直接 throw exception。  \n此外Sandy也與研究室合作，但實際上不只是做實驗而已——實際上常常變成 全方位支援的隱藏 BOSS，負責優化邏輯、優化 pipeline、debug 論文（？），偶爾還得 commit 他們的進度。  \n她的信念是：學程式不只是練 for 迴圈＋解 segmentation fault，而是解鎖全新的視野，讓自己成為 擁有 root 權限的冒險者。如果你正為資訊知識打怪升級，那恭喜你，你就是勇敢追夢的 主線英雄"
+				"name": "Bowen",
+				"bio": "台大資管大三，目前在 LINE Taiwan 實習，喜歡開發各種小工具以及嘗試新事物，希望自己的服務能被需要的人使用；也慶幸自己身處 AI 時代能低成本地發掘各種可能性。有什麼想聊聊的歡迎聯絡我！\n個人網站（不定期更新）：https://bowenchen.vercel.app/"
+			}
+		},
+		{
+			"id": "d7aa95",
+			"avatar": "https://sitcon.org/2025/avatar/d7aa95.jpg",
+			"zh": {
+				"name": "Harry",
+				"bio": "持續不務正業的高三生，準臺大資工新生。我是一名從攝影、辯論玩到 AI 安全的學生，享受把腦中的想法動手打造成系統，也試著將研究過程寫成學術論文。目前著有兩篇關於 LLM 安全的論文，其中一篇有幸發表於國際期刊 TMLR。很高興能站上 SITCON，期待與大家交流！\n個人網站 / Portfolio: https://harrychang.me"
+			},
+			"en": {
+				"name": "Harry",
+				"bio": "持續不務正業的高三生，準臺大資工新生。我是一名從攝影、辯論玩到 AI 安全的學生，享受把腦中的想法動手打造成系統，也試著將研究過程寫成學術論文。目前著有兩篇關於 LLM 安全的論文，其中一篇有幸發表於國際期刊 TMLR。很高興能站上 SITCON，期待與大家交流！\n個人網站 / Portfolio: https://harrychang.me"
+			}
+		},
+		{
+			"id": "64730a",
+			"avatar": "https://sitcon.org/2025/avatar/64730a.jpg",
+			"zh": {
+				"name": "Ak",
+				"bio": "Ak，陽明交大資工系學生。曾在 IJCAI 與 AAAI 發表兩篇 LLM 相關論文，也在國科會 TAIDE 計畫打造專屬於台灣的語言模型。熱衷於自然語言處理相關研究，也受邀為 FLLM 2023-25 Technical PC Member。閒暇之餘喜歡研究前端開發，同時是資訊社群的活躍參與者，目前在陽明交大軟體開發社（NYCU SDC）擔任社長，也在 SITCON 多項活動中現身。"
+			},
+			"en": {
+				"name": "Ak",
+				"bio": "Ak，陽明交大資工系學生。曾在 IJCAI 與 AAAI 發表兩篇 LLM 相關論文，也在國科會 TAIDE 計畫打造專屬於台灣的語言模型。熱衷於自然語言處理相關研究，也受邀為 FLLM 2023-25 Technical PC Member。閒暇之餘喜歡研究前端開發，同時是資訊社群的活躍參與者，目前在陽明交大軟體開發社（NYCU SDC）擔任社長，也在 SITCON 多項活動中現身。"
+			}
+		},
+		{
+			"id": "a966ae",
+			"avatar": "https://sitcon.org/2025/avatar/a966ae.jpg",
+			"zh": {
+				"name": "Vic",
+				"bio": "曾任 GDG On Campus NTUST Lead，對技術社群充滿熱情。技術領域涵蓋 Backend / AI / Data，期望將技術玩具打磨成穩健產品。同時也是為開源貢獻者，為 Apache Airflow 和 Astronomer dag-factory Contributor 之一。"
+			},
+			"en": {
+				"name": "Vic",
+				"bio": "曾任 GDG On Campus NTUST Lead，對技術社群充滿熱情。技術領域涵蓋 Backend / AI / Data，期望將技術玩具打磨成穩健產品。同時也是為開源貢獻者，為 Apache Airflow 和 Astronomer dag-factory Contributor 之一。"
+			}
+		},
+		{
+			"id": "541c4c",
+			"avatar": "https://sitcon.org/2025/avatar/541c4c.jpg",
+			"zh": {
+				"name": "Arnoldsky",
+				"bio": "Hi~ 我是 Arnoldsky！熱衷於參與社群、分享技術，以及探討心理學與哲學。\n\nNobody knows everything, but everybody knows something.\n\n跟隨這句座右銘，我持續學習與成長，並分享自己的所學。參與社群認識許多朋友，以此增廣視野，不斷跳脫舒適圈。"
+			},
+			"en": {
+				"name": "Arnoldsky",
+				"bio": "Hi~ 我是 Arnoldsky！熱衷於參與社群、分享技術，以及探討心理學與哲學。\n\nNobody knows everything, but everybody knows something.\n\n跟隨這句座右銘，我持續學習與成長，並分享自己的所學。參與社群認識許多朋友，以此增廣視野，不斷跳脫舒適圈。"
+			}
+		},
+		{
+			"id": "06c005",
+			"avatar": "https://sitcon.org/2025/avatar/06c005.jpg",
+			"zh": { "name": "slasho", "bio": "交大資工，現任微軟 RD 實習生，對音樂、新媒體藝術以及人類學很感興趣。\n" },
+			"en": { "name": "slasho", "bio": "交大資工，現任微軟 RD 實習生，對音樂、新媒體藝術以及人類學很感興趣。\n" }
+		},
+		{
+			"id": "c26748",
+			"avatar": "https://sitcon.org/2025/avatar/c26748.jpg",
+			"zh": { "name": "游聿堂", "bio": "臺大人類，曾任中研院資訊科學所暑期實習生。除了人類學也對很多事好奇。" },
+			"en": { "name": "游聿堂", "bio": "臺大人類，曾任中研院資訊科學所暑期實習生。除了人類學也對很多事好奇。" }
+		},
+		{
+			"id": "b2ad80",
+			"avatar": "https://sitcon.org/2025/avatar/b2ad80.jpg",
+			"zh": {
+				"name": "林紘騰 Flydragon",
+				"bio": "臺大資工大二 / TRAPA Security Intern / CTF Player / 獨立遊戲開發者\n\n興趣是做遊戲，願意花費 100 美金只為了把作品上架 Steam\n有空的時候都會和 CakeisTheFake 戰隊的好朋友們一起參加各種 CTF\n希望未來能成為漏洞研究員🙏\n\n- https://linktr.ee/flydragonw"
+			},
+			"en": {
+				"name": "林紘騰 Flydragon",
+				"bio": "臺大資工大二 / TRAPA Security Intern / CTF Player / 獨立遊戲開發者\n\n興趣是做遊戲，願意花費 100 美金只為了把作品上架 Steam\n有空的時候都會和 CakeisTheFake 戰隊的好朋友們一起參加各種 CTF\n希望未來能成為漏洞研究員🙏\n\n- https://linktr.ee/flydragonw"
+			}
+		},
+		{
+			"id": "e92fb0",
+			"avatar": "https://sitcon.org/2025/avatar/e92fb0.jpg",
+			"zh": {
+				"name": "KH LIN",
+				"bio": "KH 目前於臺北榮總資訊室參與醫療 AI 相關研究與系統實作，同時就讀於國立臺北護理健康大學資訊管理系三年級。研究聚焦於生成式 AI 與多模態醫療 AI 在臨床決策與診斷輔助上的應用。相關成果以第一作者身份發表於 npj Precision Oncology，並曾於 ICBHI、MEDINFO 等國際會議發表研究，後續延伸為 Digital Health 期刊論文，並於 2026 年獲提名加入 Sigma Xi 科學研究榮譽學會。\r\n\r\n致力於讓 AI 技術真正走進醫療現場，並分享學生在臨床體系中參與醫療 AI 研究與實作的第一線經驗。"
+			},
+			"en": {
+				"name": "KH LIN",
+				"bio": "KH 目前於臺北榮總資訊室參與醫療 AI 相關研究與系統實作，同時就讀於國立臺北護理健康大學資訊管理系三年級。研究聚焦於生成式 AI 與多模態醫療 AI 在臨床決策與診斷輔助上的應用。相關成果以第一作者身份發表於 npj Precision Oncology，並曾於 ICBHI、MEDINFO 等國際會議發表研究，後續延伸為 Digital Health 期刊論文，並於 2026 年獲提名加入 Sigma Xi 科學研究榮譽學會。\r\n\r\n致力於讓 AI 技術真正走進醫療現場，並分享學生在臨床體系中參與醫療 AI 研究與實作的第一線經驗。"
+			}
+		},
+		{
+			"id": "241c37",
+			"avatar": "https://sitcon.org/2025/avatar/241c37.jpg",
+			"zh": { "name": "rota1001", "bio": "陳麒升(rota1001)，是個來自牛肉湯的 CTF 玩家、業餘競程仔、嵌入式系統與韌體開發者，現在是成大資工大三，曾當過 HITCON 2025 講者，湯匙是世界上最棒的餐具。" },
+			"en": { "name": "rota1001", "bio": "陳麒升(rota1001)，是個來自牛肉湯的 CTF 玩家、業餘競程仔、嵌入式系統與韌體開發者，現在是成大資工大三，曾當過 HITCON 2025 講者，湯匙是世界上最棒的餐具。" }
+		},
+		{
+			"id": "c0a116",
+			"avatar": "https://sitcon.org/2025/avatar/c0a116.jpg",
+			"zh": { "name": "sakinu", "bio": "高睿（sakinu），成大資工大三，業餘競程仔\n對電腦科學和音樂有興趣，最近愛打羽球" },
+			"en": { "name": "sakinu", "bio": "高睿（sakinu），成大資工大三，業餘競程仔\n對電腦科學和音樂有興趣，最近愛打羽球" }
+		},
+		{
+			"id": "95f177",
+			"avatar": "https://sitcon.org/2025/avatar/95f177.jpg",
+			"zh": {
+				"name": "ChiLin.H",
+				"bio": "這裡是麒麟，目前為臺師大資工大一學生。\n平常喜歡研究網路架構和資訊安全。最近在碰無線網路認證和 BGP 相關的東西。\n同時也是 ICEDTEA 冰茶資安的成員。還請各位多多指教 =w=\n\nhttps://neko70.net/about/"
+			},
+			"en": {
+				"name": "ChiLin.H",
+				"bio": "這裡是麒麟，目前為臺師大資工大一學生。\n平常喜歡研究網路架構和資訊安全。最近在碰無線網路認證和 BGP 相關的東西。\n同時也是 ICEDTEA 冰茶資安的成員。還請各位多多指教 =w=\n\nhttps://neko70.net/about/"
+			}
+		},
+		{
+			"id": "365f0b",
+			"avatar": "https://sitcon.org/2025/avatar/365f0b.jpg",
+			"zh": {
+				"name": "Sky Hong",
+				"bio": "我是 Sky Hong，目前在陽明交大讀研究所。\n目前專注於 Human–Computer Interaction、Social Computing 與 Personal Informatics。\n喜歡把複雜的系統拆開，再重新設計成可用、可擴充的工具。\n關心自我資料蒐集、數位足跡、注意力管理，以及人與技術的互動。\n現在在學術與開源社群之間遊走，探索能真正改善生活的科技。\n\n我的個人網站： https://skyhong.tw"
+			},
+			"en": {
+				"name": "Sky Hong",
+				"bio": "我是 Sky Hong，目前在陽明交大讀研究所。\n目前專注於 Human–Computer Interaction、Social Computing 與 Personal Informatics。\n喜歡把複雜的系統拆開，再重新設計成可用、可擴充的工具。\n關心自我資料蒐集、數位足跡、注意力管理，以及人與技術的互動。\n現在在學術與開源社群之間遊走，探索能真正改善生活的科技。\n\n我的個人網站： https://skyhong.tw"
+			}
+		},
+		{
+			"id": "4eaaad",
+			"avatar": "https://sitcon.org/2025/avatar/4eaaad.jpg",
+			"zh": {
+				"name": "Pan",
+				"bio": "是一個大四學生，也是 Zeabur 平台工程師，建置了許多 Zeabur 的基礎架構。在本業之外，也在大專生計畫和各種專題中擔任主要開發者的角色，在 Threads 上也發表過一些技術上的文章：@pan93412"
+			},
+			"en": {
+				"name": "Pan",
+				"bio": "是一個大四學生，也是 Zeabur 平台工程師，建置了許多 Zeabur 的基礎架構。在本業之外，也在大專生計畫和各種專題中擔任主要開發者的角色，在 Threads 上也發表過一些技術上的文章：@pan93412"
+			}
+		},
+		{
+			"id": "9e62e5",
+			"avatar": "https://sitcon.org/2025/avatar/9e62e5.jpg",
+			"zh": { "name": "Eric Lam", "bio": "大家好，我是 Eric Lam，一名專注於人工智慧研究與模型開發的博士生，也熱衷在 GitHub 上做開源貢獻，今天很開心能在 SITCON 和大家一起交流。" },
+			"en": { "name": "Eric Lam", "bio": "大家好，我是 Eric Lam，一名專注於人工智慧研究與模型開發的博士生，也熱衷在 GitHub 上做開源貢獻，今天很開心能在 SITCON 和大家一起交流。" }
+		},
+		{
+			"id": "5deedc",
+			"avatar": "https://sitcon.org/2025/avatar/5deedc.jpg",
+			"zh": { "name": "竺原", "bio": "我是一名高三生，喜歡在各大社群拿著相機遊走，紀錄下各種瞬間\n同時也對網路相關方面感興趣，歡迎一起交流討論！" },
+			"en": { "name": "竺原", "bio": "我是一名高三生，喜歡在各大社群拿著相機遊走，紀錄下各種瞬間\n同時也對網路相關方面感興趣，歡迎一起交流討論！" }
+		},
+		{
+			"id": "34e272",
+			"avatar": "https://sitcon.org/2025/avatar/34e272.jpg",
+			"zh": { "name": "ItisCaleb", "bio": "曾是 CTF 選手，參與過 HITCON CTF Final、Balsn CTF 等大型資安競賽\n但以上不重要\n覺得資安沒那麼好玩ㄌ所以來做遊戲引擎\n幻想可以做台灣的 3A 遊戲" },
+			"en": { "name": "ItisCaleb", "bio": "曾是 CTF 選手，參與過 HITCON CTF Final、Balsn CTF 等大型資安競賽\n但以上不重要\n覺得資安沒那麼好玩ㄌ所以來做遊戲引擎\n幻想可以做台灣的 3A 遊戲" }
+		},
+		{
+			"id": "07a739",
+			"avatar": "https://sitcon.org/2025/avatar/07a739.jpg",
+			"zh": {
+				"name": "阿六",
+				"bio": "你好我是阿六，目前就讀一個問十個人，有九個人不知道在幹嘛的「圖書資訊學系」，因為數學太差所以讀不了資工，但是寫寫 code 還是沒問題的。\n\n因為喜歡寫作所以跳坑了 SITCON 編輯組，也喜歡在網路上寫很多奇奇怪怪的文章，也許你曾經也在某個網路角落看過我寫的文，欸嘿 :p \n\n曾經當過 SITCON 2025 編輯組長，現在是編輯組員 + 行銷組員，希望可以和大家辦一輩子的 SITCON (x\n"
+			},
+			"en": {
+				"name": "阿六",
+				"bio": "你好我是阿六，目前就讀一個問十個人，有九個人不知道在幹嘛的「圖書資訊學系」，因為數學太差所以讀不了資工，但是寫寫 code 還是沒問題的。\n\n因為喜歡寫作所以跳坑了 SITCON 編輯組，也喜歡在網路上寫很多奇奇怪怪的文章，也許你曾經也在某個網路角落看過我寫的文，欸嘿 :p \n\n曾經當過 SITCON 2025 編輯組長，現在是編輯組員 + 行銷組員，希望可以和大家辦一輩子的 SITCON (x\n"
+			}
+		},
+		{
+			"id": "f9bb0f",
+			"avatar": "https://sitcon.org/2025/avatar/f9bb0f.jpg",
+			"zh": { "name": "Cindy Wang", "bio": "工控產業領域 副工程師 \n擁有CEH、CHFI 、ISO17025 、MCFE等國際資安證照\n工控產業領域 1年+\n學校課程OT講師" },
+			"en": { "name": "Cindy Wang", "bio": "工控產業領域 副工程師 \n擁有CEH、CHFI 、ISO17025 、MCFE等國際資安證照\n工控產業領域 1年+\n學校課程OT講師" }
+		},
+		{
+			"id": "d24164",
+			"avatar": "https://sitcon.org/2025/avatar/d24164.jpg",
+			"zh": {
+				"name": "77",
+				"bio": "77 是一個來自花果山大學可能是不分系的 SITCON 2025 總召，是快要擁有巴黎作息時間的斜槓青年。\n\n擔任過多個社群（COSCUP 、MOPCON、HITCON ……）的活動志工，曾為 OCF 開放科技專案暑期實習生。 玩過機器人也寫過一點書，夢想是成為同時擁有理工腦和文學心的創作者。"
+			},
+			"en": {
+				"name": "77",
+				"bio": "77 是一個來自花果山大學可能是不分系的 SITCON 2025 總召，是快要擁有巴黎作息時間的斜槓青年。\n\n擔任過多個社群（COSCUP 、MOPCON、HITCON ……）的活動志工，曾為 OCF 開放科技專案暑期實習生。 玩過機器人也寫過一點書，夢想是成為同時擁有理工腦和文學心的創作者。"
+			}
+		},
+		{
+			"id": "7c4507",
+			"avatar": "https://sitcon.org/2025/avatar/7c4507.jpg",
+			"zh": {
+				"name": "陳伶志（台灣人工智慧學校 執行長）",
+				"bio": "陳伶志博士目前是中央研究院資訊服務處處長，同時也是中央研究院資訊科學研究所研究員，並兼任台灣人工智慧學校執行長。畢業於美國加州大學洛杉磯分校（UCLA）計算機科學博士學位，專長於物聯網（IoT）、行動無線網路，以及結合 AI 技術的時空大數據分析。其代表性成果「微型 PM2.5 感測系統」已於全球 59 個國家部署超過 2 萬個感測器，推動空氣品質感測、即時資料分析與智慧城市應用。近年亦帶領團隊投入資安與行政數位轉型，並導入生成式 AI 於行政服務流程；同時在台灣人工智慧學校推動 AI 能力認證、公民 AI 素養與百工百業 AI 導入，致力提升全民 AI 素養與跨域應用。"
+			},
+			"en": {
+				"name": "陳伶志（台灣人工智慧學校 執行長）",
+				"bio": "陳伶志博士目前是中央研究院資訊服務處處長，同時也是中央研究院資訊科學研究所研究員，並兼任台灣人工智慧學校執行長。畢業於美國加州大學洛杉磯分校（UCLA）計算機科學博士學位，專長於物聯網（IoT）、行動無線網路，以及結合 AI 技術的時空大數據分析。其代表性成果「微型 PM2.5 感測系統」已於全球 59 個國家部署超過 2 萬個感測器，推動空氣品質感測、即時資料分析與智慧城市應用。近年亦帶領團隊投入資安與行政數位轉型，並導入生成式 AI 於行政服務流程；同時在台灣人工智慧學校推動 AI 能力認證、公民 AI 素養與百工百業 AI 導入，致力提升全民 AI 素養與跨域應用。"
+			}
+		},
+		{
+			"id": "47db6c",
+			"avatar": "https://sitcon.org/2025/avatar/47db6c.jpg",
+			"zh": {
+				"name": "呂承諭博士（台達電 資訊經理）",
+				"bio": "曾獲國科會「千里馬計畫」獎學金赴法國南錫第二大學深造。取得博士學位後，曾任中央研究院資訊科學研究所博士後研究員，專攻機器學習領域。2012 年轉戰業界加入痞客邦，擔任技術總監期間，親手打造大數據平台並開發核心演算法，將痞客邦推向本土網站流量巔峰。隨後加入 104 人力銀行擔任數據長，創立數據團隊並開發多項核心演算法。現任職於台達電子資訊部門，領導大型專案。擁有橫跨學術理論與業界實戰的深厚底蘊，他將在此分享並解構 AI 浪潮下人才需求的質變與職涯新機遇。"
+			},
+			"en": {
+				"name": "呂承諭博士（台達電 資訊經理）",
+				"bio": "曾獲國科會「千里馬計畫」獎學金赴法國南錫第二大學深造。取得博士學位後，曾任中央研究院資訊科學研究所博士後研究員，專攻機器學習領域。2012 年轉戰業界加入痞客邦，擔任技術總監期間，親手打造大數據平台並開發核心演算法，將痞客邦推向本土網站流量巔峰。隨後加入 104 人力銀行擔任數據長，創立數據團隊並開發多項核心演算法。現任職於台達電子資訊部門，領導大型專案。擁有橫跨學術理論與業界實戰的深厚底蘊，他將在此分享並解構 AI 浪潮下人才需求的質變與職涯新機遇。"
 			}
 		}
 	],
