@@ -423,13 +423,13 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				const deltaX = x - startX;
 				const width = gallery.offsetWidth || 1;
 				// Drag across full width ~= 180deg (right = clockwise)
-				const deltaDeg = (deltaX / width) * 180;
+				const deltaDeg = (deltaX / width) * 45;
 
 				// Calculate velocity for inertia (degrees per millisecond)
 				const timeDelta = currentTime - lastTime;
 				if (timeDelta > 0) {
 					const moveDeltaX = x - lastX;
-					const moveDeltaDeg = (moveDeltaX / width) * 180;
+					const moveDeltaDeg = (moveDeltaX / width) * 45;
 					velocity = moveDeltaDeg / timeDelta;
 				}
 
