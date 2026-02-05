@@ -4,8 +4,6 @@ definitions:
     properties:
       name:
         type: string
-      qrcode_token:
-        type: string
       type:
         type: string
       visited:
