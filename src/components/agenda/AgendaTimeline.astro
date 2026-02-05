@@ -189,8 +189,30 @@ function getSessionsForVenue(venueId: string) {
 const venueHasSessions = (venueId: string) => items.some(item => item.broadcast?.includes(venueId)) || items.some(item => !item.broadcast?.length && item.venue === venueId);
 const activeVenues = venues.filter(venueHasSessions);
 
-// Phone view: which time block is "current" per venue (latest session start <= now). Only when now is in range.
+// Phone view: get all sessions grouped by time (across all venues)
+function getAllSessionsByTime() {
+	const allItems = [...items];
+	allItems.sort((a, b) => parseTime(a.startTime) - parseTime(b.startTime));
+	const byTime = new Map<number, AgendaItem[]>();
+	allItems.forEach(item => {
+		const t = parseTime(item.startTime);
+		if (!byTime.has(t)) byTime.set(t, []);
+		byTime.get(t)!.push(item);
+	});
+	return Array.from(byTime.entries()).sort(([a], [b]) => a - b);
+}
+const allTimeBlocks = getAllSessionsByTime();
+
+// Phone view: which time block is "current" (latest session start <= now). Only when now is in range.
 const nowInRange = now >= minTime && now <= maxTime;
+function getPhoneCurrentTime(): number | null {
+	if (!nowInRange) return null;
+	const startTimes = allTimeBlocks.map(([t]) => t).filter(t => t <= now);
+	return startTimes.length > 0 ? Math.max(...startTimes) : null;
+}
+const phoneCurrentTime = getPhoneCurrentTime();
+
+// Legacy: keep for compatibility
 function getPhoneCurrentTimeForVenue(venueId: string): number | null {
 	if (!nowInRange) return null;
 	const timeBlocks = getSessionsForVenue(venueId);
@@ -334,63 +356,41 @@ activeVenues.forEach(venueId => {
 		</div>
 	</div>
 
-	<!-- Phone: vertical view with sliding venue tabs -->
+	<!-- Phone: vertical view showing all sessions grouped by time -->
 	<div class="agenda-phone-view" id="agenda-phone-view" aria-hidden="true">
-		<div class="venue-tabs-wrap">
-			<div class="venue-tabs" role="tablist" id="venue-tabs-list">
-				<div class="venue-tab-slider" id="venue-tab-slider" aria-hidden="true"></div>
-				{
-					activeVenues.map((venueId, index) => (
-						<button type="button" class="venue-tab" role="tab" aria-selected={index === 0} aria-controls={`panel-${venueId}`} id={`tab-${venueId}`} data-venue={venueId}>
-							{venueId}
-						</button>
-					))
-				}
-			</div>
-		</div>
-		<div class="venue-panels">
+		<div class="phone-time-blocks">
 			{
-				activeVenues.map((venueId, panelIndex) => {
-					const timeBlocks = getSessionsForVenue(venueId);
+				allTimeBlocks.map(([timeTs, sessionItems]) => {
+					const isCurrent = phoneCurrentTime === timeTs;
 					return (
-						<div class="venue-panel" id={`panel-${venueId}`} role="tabpanel" aria-labelledby={`tab-${venueId}`} hidden={panelIndex !== 0} data-venue={venueId}>
-							<div class="phone-time-blocks">
-								{timeBlocks.map(([timeTs, sessionItems]) => {
-									const isCurrent = phoneCurrentByVenue[venueId] === timeTs;
+						<div class={`time-block ${isCurrent ? "current" : ""}`} data-time={timeTs}>
+							<div class="time-block-label">
+								{isCurrent && <span class="phone-time-indicator" aria-hidden="true" />}
+								{formatTime(timeTs)}
+							</div>
+							<div class="session-list">
+								{sessionItems.map(item => {
+									const startTimestamp = parseTime(item.startTime);
+									const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
 									return (
-										<div class={`time-block ${isCurrent ? "current" : ""}`} data-time={timeTs} data-venue={venueId}>
-											<div class="time-block-label">
-												{isCurrent && <span class="phone-time-indicator" aria-hidden="true" />}
-												{formatTime(timeTs)}
-											</div>
-											<div class="session-list">
-												{sessionItems.map((item, idx) => {
-													const startTimestamp = parseTime(item.startTime);
-													const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
-													const venueLabel = item.venue || undefined;
-													return (
-														<div class="phone-session-row" data-venue-label={venueLabel}>
-															<SessionBlock
-																id={item.id}
-																type={item.type}
-																name={item.name}
-																description={item.description}
-																speakers={item.speakers}
-																tags={item.tags}
-																venue={item.venue}
-																startTime={item.startTime}
-																endTime={item.endTime || new Date(endTimestamp).toISOString()}
-																leftPercent={0}
-																widthPercent={100}
-																slidoLink={item.slidoLink}
-																slidesLink={item.slidesLink}
-																notesLink={item.notesLink}
-																lang={lang}
-															/>
-														</div>
-													);
-												})}
-											</div>
+										<div class="phone-session-row">
+											<SessionBlock
+												id={item.id}
+												type={item.type}
+												name={item.name}
+												description={item.description}
+												speakers={item.speakers}
+												tags={item.tags}
+												venue={item.venue}
+												startTime={item.startTime}
+												endTime={item.endTime || new Date(endTimestamp).toISOString()}
+												leftPercent={0}
+												widthPercent={100}
+												slidoLink={item.slidoLink}
+												slidesLink={item.slidesLink}
+												notesLink={item.notesLink}
+												lang={lang}
+											/>
 										</div>
 									);
 								})}
@@ -431,6 +431,16 @@ activeVenues.forEach(venueId => {
 			</button>
 		</div>
 	</div>
+
+	<button
+		type="button"
+		class="share-jam-trigger-mobile"
+		id="share-jam-trigger-mobile"
+		aria-label={lang === "en" ? "Share your Jam" : "分享你的專屬 Jam"}
+		title={lang === "en" ? "Share your Jam" : "你的專屬 Jam"}
+	>
+		{lang === "en" ? "Share Jam" : "分享我的精選"}
+	</button>
 </div>
 
 <script>
@@ -725,52 +735,6 @@ activeVenues.forEach(venueId => {
 		}
 	}
 
-	const venueTabsList = document.getElementById("venue-tabs-list");
-	const venueTabSlider = document.getElementById("venue-tab-slider");
-	const venueTabs = document.querySelectorAll(".agenda-phone-view .venue-tab");
-	const venuePanels = document.querySelectorAll(".agenda-phone-view .venue-panel");
-
-	function updateVenueTabSlider() {
-		if (!venueTabsList || !venueTabSlider) return;
-		const activeTab = venueTabsList.querySelector(".venue-tab.active, .venue-tab[aria-selected='true']") as HTMLElement;
-		if (!activeTab) return;
-		const listRect = venueTabsList.getBoundingClientRect();
-		const tabRect = activeTab.getBoundingClientRect();
-		venueTabSlider.style.left = `${tabRect.left - listRect.left}px`;
-		venueTabSlider.style.width = `${tabRect.width}px`;
-	}
-
-	venueTabs.forEach(tab => {
-		tab.addEventListener("click", () => {
-			const venue = (tab as HTMLElement).dataset.venue;
-			if (!venue) return;
-			venueTabs.forEach(t => {
-				t.setAttribute("aria-selected", "false");
-				t.classList.remove("active");
-			});
-			tab.setAttribute("aria-selected", "true");
-			tab.classList.add("active");
-			venuePanels.forEach(panel => {
-				const panelVenue = (panel as HTMLElement).dataset.venue;
-				(panel as HTMLElement).hidden = panelVenue !== venue;
-			});
-			updateVenueTabSlider();
-		});
-	});
-
-	// Set first tab active on load and position slider
-	const firstTab = document.querySelector(".agenda-phone-view .venue-tab");
-	if (firstTab) {
-		firstTab.classList.add("active");
-	}
-	// Position slider after layout (phone view may be hidden initially)
-	requestAnimationFrame(() => {
-		updateVenueTabSlider();
-	});
-	if (venueTabSlider) {
-		window.addEventListener("resize", updateVenueTabSlider);
-	}
-
 	// Filter: All / Favorites sliding tab
 	const timelineContainer = document.getElementById("agenda-timeline");
 	const filterTabsList = document.getElementById("filter-tabs-list");
@@ -823,25 +787,61 @@ activeVenues.forEach(venueId => {
 
 	// Share Jam trigger: open share modal; show only when user has bookmarks
 	const shareJamTrigger = document.getElementById("share-jam-trigger");
+	const shareJamTriggerMobile = document.getElementById("share-jam-trigger-mobile");
 	const BOOKMARKS_STORAGE_KEY = "sitcon2026:agendaBookmarks";
+	let previousHasBookmarks = false;
+
 	function updateShareJamTriggerVisibility() {
-		if (!shareJamTrigger) return;
 		try {
 			const raw = localStorage.getItem(BOOKMARKS_STORAGE_KEY);
 			const arr = raw ? JSON.parse(raw) : [];
 			const hasBookmarks = Array.isArray(arr) && arr.length > 0;
-			shareJamTrigger.style.display = hasBookmarks ? "" : "none";
+
+			// Desktop trigger
+			if (shareJamTrigger) {
+				shareJamTrigger.style.display = hasBookmarks ? "" : "none";
+			}
+
+			// Mobile trigger with slide animation
+			if (shareJamTriggerMobile) {
+				if (hasBookmarks && !previousHasBookmarks) {
+					// Slide up animation when bookmarks become > 0
+					shareJamTriggerMobile.classList.remove("hidden");
+					shareJamTriggerMobile.classList.add("slide-in");
+				} else if (!hasBookmarks && previousHasBookmarks) {
+					// Slide down animation when bookmarks become 0
+					shareJamTriggerMobile.classList.remove("slide-in");
+					shareJamTriggerMobile.classList.add("hidden");
+				} else if (hasBookmarks) {
+					// Already visible
+					shareJamTriggerMobile.classList.remove("hidden");
+					shareJamTriggerMobile.classList.add("slide-in");
+				} else {
+					// No bookmarks
+					shareJamTriggerMobile.classList.add("hidden");
+					shareJamTriggerMobile.classList.remove("slide-in");
+				}
+			}
+
+			previousHasBookmarks = hasBookmarks;
 		} catch {
-			shareJamTrigger.style.display = "none";
+			if (shareJamTrigger) shareJamTrigger.style.display = "none";
+			if (shareJamTriggerMobile) shareJamTriggerMobile.classList.add("hidden");
 		}
 	}
+
 	if (shareJamTrigger) {
 		shareJamTrigger.addEventListener("click", () => {
 			(window as any).openShareJamModal?.();
 		});
-		updateShareJamTriggerVisibility();
-		document.addEventListener("agendaBookmarksChanged", updateShareJamTriggerVisibility);
 	}
+	if (shareJamTriggerMobile) {
+		shareJamTriggerMobile.addEventListener("click", () => {
+			(window as any).openShareJamModal?.();
+		});
+	}
+	updateShareJamTriggerVisibility();
+	document.addEventListener("agendaBookmarksChanged", updateShareJamTriggerVisibility);
 
 	// Phone view: update current time indicator every minute (indicator = latest session start <= now). Only when now is in range.
 	function updatePhoneTimeIndicator() {
@@ -861,33 +861,30 @@ activeVenues.forEach(venueId => {
 			});
 			return;
 		}
-		phoneView.querySelectorAll(".agenda-phone-view .venue-panel").forEach(panel => {
-			const venueId = (panel as HTMLElement).dataset.venue;
-			if (!venueId) return;
-			const blocks = panel.querySelectorAll(".time-block");
-			let currentTs: number | null = null;
-			blocks.forEach(block => {
-				const ts = parseInt((block as HTMLElement).dataset.time ?? "", 10);
-				if (!isNaN(ts) && ts <= now) currentTs = currentTs == null ? ts : Math.max(currentTs, ts);
-			});
-			blocks.forEach(block => {
-				const ts = parseInt((block as HTMLElement).dataset.time ?? "", 10);
-				const isCurrent = currentTs != null && ts === currentTs;
-				const label = block.querySelector(".time-block-label");
-				let indicator = block.querySelector(".phone-time-indicator");
-				if (isCurrent) {
-					block.classList.add("current");
-					if (!indicator && label) {
-						indicator = document.createElement("span");
-						indicator.className = "phone-time-indicator";
-						indicator.setAttribute("aria-hidden", "true");
-						label.insertBefore(indicator, label.firstChild);
-					}
-				} else {
-					block.classList.remove("current");
-					indicator?.remove();
+		// Update current time indicator for all time blocks
+		const blocks = phoneView.querySelectorAll(".time-block");
+		let currentTs: number | null = null;
+		blocks.forEach(block => {
+			const ts = parseInt((block as HTMLElement).dataset.time ?? "", 10);
+			if (!isNaN(ts) && ts <= now) currentTs = currentTs == null ? ts : Math.max(currentTs, ts);
+		});
+		blocks.forEach(block => {
+			const ts = parseInt((block as HTMLElement).dataset.time ?? "", 10);
+			const isCurrent = currentTs != null && ts === currentTs;
+			const label = block.querySelector(".time-block-label");
+			let indicator = block.querySelector(".phone-time-indicator");
+			if (isCurrent) {
+				block.classList.add("current");
+				if (!indicator && label) {
+					indicator = document.createElement("span");
+					indicator.className = "phone-time-indicator";
+					indicator.setAttribute("aria-hidden", "true");
+					label.insertBefore(indicator, label.firstChild);
 				}
-			});
+			} else {
+				block.classList.remove("current");
+				indicator?.remove();
+			}
 		});
 	}
 	const phoneViewEl = document.getElementById("agenda-phone-view");
@@ -976,7 +973,8 @@ activeVenues.forEach(venueId => {
 		color: #1a1a1a;
 	}
 
-	.share-jam-trigger {
+	.share-jam-trigger,
+	.share-jam-trigger-mobile {
 		padding: 0.5rem 0.75rem;
 		font-size: 0.9375rem;
 		font-weight: bold;
@@ -991,14 +989,28 @@ activeVenues.forEach(venueId => {
 			border-color 0.2s;
 	}
 
+	.share-jam-trigger-mobile {
+		display: none;
+	}
+
+	.share-jam-trigger-mobile.hidden {
+		transform: translateY(100%);
+		opacity: 0;
+	}
+
+	.share-jam-trigger-mobile.slide-in {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
 	/* When Favorites selected: hide non-bookmarked session blocks (not when URL-curated) */
 	.agenda-timeline-container.agenda-filter-favorites:not(.agenda-url-curated) :global(.session-block:not(:has(.session-bookmark.is-bookmarked))) {
-		display: none !important;
+		display: none;
 	}
 
 	/* URL-curated: hide blocks not in q= list (class toggled by agenda.astro) */
 	:global(.session-block.hidden-by-curated) {
-		display: none !important;
+		display: none;
 	}
 
 	.agenda-content-wrapper {
@@ -1288,75 +1300,11 @@ activeVenues.forEach(venueId => {
 		font-size: 1.25rem;
 	}
 
-	/* Phone view: vertical layout with venue tabs */
+	/* Phone view: vertical layout showing all sessions */
 	.agenda-phone-view {
 		display: none;
 		padding: 0.75rem;
 		min-height: 60vh;
-	}
-
-	/* Sliding tab: pill container */
-	.agenda-phone-view .venue-tabs-wrap {
-		padding: 0.25rem;
-		margin-bottom: 0.75rem;
-		background: rgba(0, 0, 0, 0.25);
-		border-radius: 9999px;
-	}
-
-	.agenda-phone-view .venue-tabs {
-		position: relative;
-		display: flex;
-		align-items: stretch;
-		border-radius: 9999px;
-		min-height: 2.5rem;
-	}
-
-	.agenda-phone-view .venue-tab-slider {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		width: 0;
-		background: #fff;
-		border-radius: 9999px;
-		transition:
-			left 0.25s ease,
-			width 0.25s ease;
-		z-index: 0;
-		pointer-events: none;
-	}
-
-	.agenda-phone-view .venue-tab {
-		flex: 1;
-		position: relative;
-		z-index: 1;
-		padding: 0.5rem 0.75rem;
-		font-size: 0.9375rem;
-		font-weight: bold;
-		background: transparent;
-		border: none;
-		color: rgba(255, 255, 255, 0.9);
-		cursor: pointer;
-		border-radius: 9999px;
-		transition: color 0.2s;
-		min-width: 0;
-	}
-
-	.agenda-phone-view .venue-tab:hover {
-		color: #fff;
-	}
-
-	.agenda-phone-view .venue-tab.active,
-	.agenda-phone-view .venue-tab[aria-selected="true"] {
-		color: #1a1a1a;
-	}
-
-	.agenda-phone-view .venue-panels {
-		position: relative;
-	}
-
-	.agenda-phone-view .venue-panel {
-		width: 100%;
 	}
 
 	.agenda-phone-view .phone-time-blocks {
@@ -1431,10 +1379,10 @@ activeVenues.forEach(venueId => {
 
 	/* Full-width session blocks in phone view */
 	.agenda-phone-view :global(.session-block) {
-		position: static !important;
-		left: auto !important;
-		width: 90% !important;
-		height: auto !important;
+		position: relative;
+		left: auto;
+		width: 90%;
+		height: auto;
 		min-height: 4rem;
 		margin-bottom: 0;
 		overflow: visible;
@@ -1443,7 +1391,7 @@ activeVenues.forEach(venueId => {
 
 	/* Bookmark sticks to top-right of screen in phone view */
 	.agenda-phone-view :global(.session-block) :global(.session-bookmark) {
-		position: sticky !important;
+		position: sticky;
 		top: 0.75rem;
 		right: 0.75rem;
 		float: right;
@@ -1456,11 +1404,43 @@ activeVenues.forEach(venueId => {
 
 	@media (max-width: 768px) {
 		.agenda-desktop-view {
-			display: none !important;
+			display: none;
 		}
 
 		.agenda-phone-view {
-			display: block !important;
+			display: block;
+		}
+
+		.share-jam-trigger {
+			display: none;
+		}
+
+		.share-jam-trigger-mobile {
+			display: block;
+			position: sticky;
+			font-size: 1.15rem;
+			bottom: 1.5rem;
+			margin: 0 auto;
+			z-index: 100;
+			transition:
+				transform 0.3s ease-out,
+				opacity 0.3s ease-out;
+			box-shadow:
+				0 0 12px 3px rgba(255, 232, 120, 0.7),
+				0 0 32px 8px rgba(255, 223, 50, 0.3);
+			border: 2px solid rgba(255, 232, 120, 0.8);
+		}
+
+		.share-jam-trigger-mobile.hidden {
+			transform: translateY(100%);
+			opacity: 0;
+			pointer-events: none;
+		}
+
+		.share-jam-trigger-mobile.slide-in {
+			transform: translateY(0);
+			opacity: 1;
+			pointer-events: auto;
 		}
 
 		.scroll-controls {
