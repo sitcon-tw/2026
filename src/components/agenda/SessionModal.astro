@@ -48,12 +48,15 @@ function getSpeakerAvatar(speaker: string | Speaker): string | undefined {
 	return typeof speaker === "string" ? undefined : speaker.avatar;
 }
 
-// Format time for display
+// Format time for display (forced to GMT+8 / Asia/Taipei)
 function formatTime(isoString: string): string {
 	const date = new Date(isoString);
-	const hours = date.getHours().toString().padStart(2, "0");
-	const minutes = date.getMinutes().toString().padStart(2, "0");
-	return `${hours}:${minutes}`;
+	return date.toLocaleTimeString("en-US", {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+		timeZone: "Asia/Taipei"
+	});
 }
 
 // Weighted random ad from ads.json: { name: possibility }. Desktop: name.webp, mobile: name-mobile.webp.
@@ -348,7 +351,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 			const formatTimeStr = (iso: string) => {
 				if (!iso) return "";
 				const d = new Date(iso);
-				return d.toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit", hour12: false });
+				return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Taipei" });
 			};
 			timeMetaEl.textContent = `${formatTimeStr(sessionStartTime)}${sessionEndTime ? ` - ${formatTimeStr(sessionEndTime)}` : ""}`;
 		}
