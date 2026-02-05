@@ -35,7 +35,7 @@ interface Props {
 const { items, lang = "zh" } = Astro.props;
 const tAgenda = useTranslations(lang).agenda;
 const filterAllLabel = tAgenda.filterAll ?? (lang === "en" ? "All Agenda" : "全部議程");
-const filterFavoritesLabel = tAgenda.filterFavorites ?? (lang === "en" ? "Favorites" : "精選議程");
+const filterFavoritesLabel = tAgenda.filterFavorites ?? (lang === "en" ? "Favorites" : "收藏議程");
 
 // Parse ISO 8601 string to timestamp (milliseconds)
 function parseTime(isoString: string): number {
@@ -110,6 +110,29 @@ function getLeftPercent(timestamp: number): number {
 
 // Fixed width for all session blocks (one slot width)
 const slotWidthPercent = totalSlots > 0 ? (1 / totalSlots) * 100 : 100;
+
+// Calculate indicator position based on slot boundaries (variable speed per slot)
+function getIndicatorPercent(timestamp: number): number {
+	if (totalSlots <= 0 || timeLabels.length < 2) return 0;
+
+	// Find which slot the timestamp falls into
+	for (let i = 0; i < timeLabels.length - 1; i++) {
+		const slotStart = timeLabels[i];
+		const slotEnd = timeLabels[i + 1];
+
+		if (timestamp >= slotStart && timestamp <= slotEnd) {
+			// Calculate progress within this slot (0 to 1)
+			const slotDuration = slotEnd - slotStart;
+			const progress = slotDuration > 0 ? (timestamp - slotStart) / slotDuration : 0;
+			// Position = (slotIndex + progress) / totalSlots * 100
+			return ((i + progress) / totalSlots) * 100;
+		}
+	}
+
+	// If before first slot, return 0; if after last slot, return 100
+	if (timestamp < timeLabels[0]) return 0;
+	return 100;
+}
 
 // Format time for display (forced to GMT+8 / Asia/Taipei)
 function formatTime(timestamp: number): string {
@@ -202,7 +225,15 @@ activeVenues.forEach(venueId => {
 	<!-- Desktop: horizontal timeline -->
 	<div class="agenda-desktop-view agenda-content-wrapper">
 		<div class="agenda-scroll-container" id="agenda-scroll">
-			<div class="agenda-timeline" id="agenda-timeline-inner" data-min-time={minTime} data-max-time={maxTime} data-total-slots={totalSlots} style="--time-scale: 1;">
+			<div
+				class="agenda-timeline"
+				id="agenda-timeline-inner"
+				data-min-time={minTime}
+				data-max-time={maxTime}
+				data-total-slots={totalSlots}
+				data-time-labels={JSON.stringify(timeLabels)}
+				style="--time-scale: 1;"
+			>
 				<div class="time-axis">
 					{
 						timeLabels.map((time, idx) => (
@@ -211,7 +242,7 @@ activeVenues.forEach(venueId => {
 							</div>
 						))
 					}
-					<div class="current-time-indicator" style={`left: ${((now - minTime) / (maxTime - minTime)) * 100}%`} id="current-time-indicator">
+					<div class="current-time-indicator" style={`left: ${getIndicatorPercent(now)}%`} id="current-time-indicator">
 						<div class="indicator-triangle"></div>
 						<div class="indicator-line"></div>
 					</div>
@@ -220,7 +251,7 @@ activeVenues.forEach(venueId => {
 				<div class="venue-tracks">
 					<div class="time-lines-overlay">
 						{timeLabels.map((time, idx) => <div class="time-line" style={`left: ${(idx / totalSlots) * 100}%`} />)}
-						<div class="current-time-line" style={`left: ${((now - minTime) / (maxTime - minTime)) * 100}%`} id="current-time-line">
+						<div class="current-time-line" style={`left: ${getIndicatorPercent(now)}%`} id="current-time-line">
 							<div class="indicator-line-extended"></div>
 							<div class="indicator-triangle-extended"></div>
 						</div>
@@ -604,12 +635,44 @@ activeVenues.forEach(venueId => {
 		const timelineElement = document.getElementById("agenda-timeline-inner");
 		const minTimeStr = timelineElement?.dataset.minTime;
 		const maxTimeStr = timelineElement?.dataset.maxTime;
+		const totalSlotsStr = timelineElement?.dataset.totalSlots;
+		const timeLabelsStr = timelineElement?.dataset.timeLabels;
 
-		if (timelineElement && currentTimeIndicator && currentTimeLine && minTimeStr && maxTimeStr) {
+		if (timelineElement && currentTimeIndicator && currentTimeLine && minTimeStr && maxTimeStr && totalSlotsStr && timeLabelsStr) {
 			const minTime = parseInt(minTimeStr, 10);
 			const maxTime = parseInt(maxTimeStr, 10);
+			const totalSlots = parseInt(totalSlotsStr, 10);
+			let timeLabels: number[] = [];
+			try {
+				timeLabels = JSON.parse(timeLabelsStr);
+			} catch {
+				timeLabels = [];
+			}
 
-			if (!isNaN(minTime) && !isNaN(maxTime)) {
+			// Calculate indicator position based on slot boundaries (variable speed per slot)
+			const getIndicatorPercent = (timestamp: number): number => {
+				if (totalSlots <= 0 || timeLabels.length < 2) return 0;
+
+				// Find which slot the timestamp falls into
+				for (let i = 0; i < timeLabels.length - 1; i++) {
+					const slotStart = timeLabels[i];
+					const slotEnd = timeLabels[i + 1];
+
+					if (timestamp >= slotStart && timestamp <= slotEnd) {
+						// Calculate progress within this slot (0 to 1)
+						const slotDuration = slotEnd - slotStart;
+						const progress = slotDuration > 0 ? (timestamp - slotStart) / slotDuration : 0;
+						// Position = (slotIndex + progress) / totalSlots * 100
+						return ((i + progress) / totalSlots) * 100;
+					}
+				}
+
+				// If before first slot, return 0; if after last slot, return 100
+				if (timestamp < timeLabels[0]) return 0;
+				return 100;
+			};
+
+			if (!isNaN(minTime) && !isNaN(maxTime) && timeLabels.length >= 2) {
 				const now = Date.now();
 
 				// If now is not within [minTime, maxTime], remove timeline indicator(s)
@@ -638,14 +701,11 @@ activeVenues.forEach(venueId => {
 					const updateTimeIndicator = () => {
 						const nowCur = Date.now();
 						if (nowCur >= minTime && nowCur <= maxTime) {
-							const timeRange = maxTime - minTime;
-							if (timeRange > 0) {
-								const leftPercent = ((nowCur - minTime) / timeRange) * 100;
-								const leftPercentStr = `${leftPercent}%`;
-								// Update both indicators
-								currentTimeIndicator.style.left = leftPercentStr;
-								currentTimeLine.style.left = leftPercentStr;
-							}
+							const leftPercent = getIndicatorPercent(nowCur);
+							const leftPercentStr = `${leftPercent}%`;
+							// Update both indicators
+							currentTimeIndicator.style.left = leftPercentStr;
+							currentTimeLine.style.left = leftPercentStr;
 						} else {
 							// Out of range: remove timeline indicator(s)
 							if (currentTimeIndicator.parentNode) {
@@ -1006,7 +1066,7 @@ activeVenues.forEach(venueId => {
 		position: absolute;
 		top: 0;
 		height: 100%;
-		z-index: 10;
+		z-index: 20;
 		pointer-events: none;
 		transform: translateX(-50%);
 	}
@@ -1062,7 +1122,7 @@ activeVenues.forEach(venueId => {
 		top: 0;
 		bottom: 0;
 		width: 2px;
-		z-index: 2;
+		z-index: 20;
 		pointer-events: none;
 		transform: translateX(-50%);
 	}
