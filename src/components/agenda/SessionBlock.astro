@@ -14,7 +14,7 @@ function getSpeakerName(speaker: string | Speaker): string {
 ---
 
 <div
-	class={`session-block ${type}`}
+	class={`session-block ${type} ${!description || description === "" ? "no-description" : ""}`}
 	style={`left: calc(${leftPercent}% + 0.25rem); width: calc(${widthPercent}% - 0.1rem)`}
 	data-session-id={sessionId}
 	data-session-type={type}
@@ -75,11 +75,22 @@ function getSpeakerName(speaker: string | Speaker): string {
 		box-sizing: border-box;
 	}
 
+	.session-block.no-description {
+		cursor: default;
+	}
+
 	.session-block:hover {
 		transform: scale(1.025);
 		filter: brightness(1.2);
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 		z-index: 10;
+	}
+
+	.session-block.no-description:hover {
+		transform: none;
+		filter: none;
+		box-shadow: none;
+		z-index: 1;
 	}
 
 	.session-block.keynote {
@@ -303,6 +314,11 @@ function getSpeakerName(speaker: string | Speaker): string {
 				const type = block.getAttribute("data-session-type") || "";
 				const name = block.getAttribute("data-session-name") || "";
 				const description = block.getAttribute("data-session-description") || "";
+
+				if (!description || description === "") {
+					return;
+				}
+
 				const venue = block.getAttribute("data-session-venue") || "";
 				const startTime = block.getAttribute("data-session-start-time") || "";
 				const endTime = block.getAttribute("data-session-end-time") || "";
