@@ -200,8 +200,8 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 		if (velocityY <= 0) return; // Only when moving down
 
 		// Scale impulse based on y-axis velocity (pixels/second -> physics units)
-		// Typical fast swipe is ~1000-2000 px/s, gentle drag is ~100-300 px/s
-		const impulseStrength = Math.min(velocityY * 0.008, 10);
+		// More sensitive: even gentle drags (~50-100 px/s) create visible movement
+		const impulseStrength = Math.min(velocityY * 0.02, 15);
 
 		circleBodies.forEach(body => {
 			if (!body) return;
@@ -517,15 +517,15 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 			const deltaTime = (now - lastDragTime) / 1000; // Convert to seconds
 			if (deltaTime > 0) {
 				const instantVelocity = deltaY / deltaTime;
-				// Smooth velocity with exponential moving average
-				dragVelocityY = dragVelocityY * 0.6 + instantVelocity * 0.4;
+				// More responsive smoothing (less averaging = faster reaction)
+				dragVelocityY = dragVelocityY * 0.4 + instantVelocity * 0.6;
 			}
 			lastDragY = currentY;
 			lastDragTime = now;
 
 			// Apply impulse when dragging down (positive velocity)
-			if (dragVelocityY > 50) {
-				// Threshold to avoid micro-movements
+			if (dragVelocityY > 15) {
+				// Low threshold for high sensitivity
 				applyDragImpulse(dragVelocityY);
 			}
 		}
