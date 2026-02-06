@@ -1,0 +1,1615 @@
+---
+import SessionBlock from "./SessionBlock.astro";
+import { Guitar } from "@lucide/astro";
+import { useTranslations } from "@/utils/i18n";
+
+interface Speaker {
+	name: string;
+	avatar?: string;
+	description?: string;
+}
+
+interface AgendaItem {
+	id: string;
+	type: string;
+	venue: string;
+	/** When non-null/non-empty, session spans these rooms (overlay). When null/empty, use venue only. */
+	broadcast: string[] | null;
+	name: string;
+	description: string;
+	speakers: (string | Speaker)[];
+	tags: string[];
+	startTime: string;
+	extended?: boolean;
+	endTime?: string;
+	slidoLink?: string;
+	slidesLink?: string;
+	notesLink?: string;
+}
+
+interface Props {
+	items: AgendaItem[];
+	lang?: "zh" | "en";
+}
+
+const { items, lang = "zh" } = Astro.props;
+const tAgenda = useTranslations(lang).agenda;
+const filterAllLabel = tAgenda.filterAll ?? (lang === "en" ? "All Agenda" : "全部議程");
+const filterFavoritesLabel = tAgenda.filterFavorites ?? (lang === "en" ? "Favorites" : "收藏議程");
+
+// Parse ISO 8601 string to timestamp (milliseconds)
+function parseTime(isoString: string): number {
+	const date = new Date(isoString);
+	if (isNaN(date.getTime())) {
+		throw new Error(`Invalid ISO 8601 date string: ${isoString}`);
+	}
+	return date.getTime();
+}
+
+// Calculate duration based on type (Ev=generic, K=keynote, P=presentation, U=undefined, E=espresso, S=sponsored)
+function getDuration(item: AgendaItem): number {
+	if (item.type === "generic" && item.endTime) {
+		const startTimestamp = parseTime(item.startTime);
+		const endTimestamp = parseTime(item.endTime);
+		const durationMs = endTimestamp - startTimestamp;
+		return Math.max(0, durationMs / (60 * 1000));
+	}
+	if (item.type === "espresso") return 10;
+	if (item.type === "keynote") return item.extended ? 90 : 40;
+	if (item.type === "generic") return 40;
+	return 40; // presentation, undefined, sponsored
+}
+
+// Define all possible venues (always show all, even if empty)
+const venues = ["R0", "R1", "R2", "R3", "S"];
+
+// Get all unique time points from session start and end times only
+const allTimes = new Set<number>();
+items.forEach(item => {
+	const startTimestamp = parseTime(item.startTime);
+	allTimes.add(startTimestamp);
+	// Always use actual endTime if it exists; otherwise calculate from duration
+	const endTime = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
+	allTimes.add(endTime);
+});
+const sortedTimes = Array.from(allTimes).sort((a, b) => a - b);
+
+// Use session times directly - minTime is first session start, maxTime is last session end
+let minTime: number;
+let maxTime: number;
+let timeLabels: number[] = [];
+
+if (sortedTimes.length > 0) {
+	minTime = sortedTimes[0]; // First session start time
+	maxTime = sortedTimes[sortedTimes.length - 1]; // Last session end time
+	timeLabels = sortedTimes; // Use all unique time points as labels
+} else {
+	// Fallback for empty data
+	const today = new Date();
+	today.setHours(8, 30, 0, 0);
+	minTime = today.getTime();
+	today.setHours(18, 0, 0, 0);
+	maxTime = today.getTime();
+	timeLabels = [minTime, maxTime];
+}
+
+// Total number of time slots (for equal-width positioning)
+const totalSlots = timeLabels.length - 1;
+
+// Check if a slot has all sessions without descriptions (for narrower display on desktop)
+function slotHasOnlyNoDescriptionSessions(slotStartTime: number): boolean {
+	const sessionsAtSlot = items.filter(item => parseTime(item.startTime) === slotStartTime);
+	if (sessionsAtSlot.length === 0) return true; // Empty slots are narrow
+	return sessionsAtSlot.every(item => !item.description || item.description.trim() === "");
+}
+
+// Calculate weight for each slot (0.5 for no-description slots, 1 for slots with descriptions)
+const NARROW_SLOT_WEIGHT = 0.5;
+const NORMAL_SLOT_WEIGHT = 1;
+const slotWeights: number[] = [];
+for (let i = 0; i < totalSlots; i++) {
+	const slotStartTime = timeLabels[i];
+	const isNarrow = slotHasOnlyNoDescriptionSessions(slotStartTime);
+	slotWeights.push(isNarrow ? NARROW_SLOT_WEIGHT : NORMAL_SLOT_WEIGHT);
+}
+const totalWeight = slotWeights.reduce((sum, w) => sum + w, 0) || 1;
+
+// Calculate cumulative left positions for each slot
+const slotLeftPercents: number[] = [0];
+for (let i = 0; i < slotWeights.length; i++) {
+	const prevLeft = slotLeftPercents[i];
+	const slotWidth = (slotWeights[i] / totalWeight) * 100;
+	slotLeftPercents.push(prevLeft + slotWidth);
+}
+
+// Helper: get slot index for a given timestamp
+function getSlotIndex(timestamp: number): number {
+	const idx = timeLabels.indexOf(timestamp);
+	return idx >= 0 ? idx : 0;
+}
+
+// Helper: calculate left percent based on variable slot widths
+function getLeftPercent(timestamp: number): number {
+	if (totalSlots <= 0) return 0;
+	const idx = getSlotIndex(timestamp);
+	return slotLeftPercents[idx] ?? 0;
+}
+
+// Helper: calculate width percent for a slot
+function getSlotWidthPercent(slotIndex: number): number {
+	if (totalSlots <= 0 || slotIndex >= slotWeights.length) return 100;
+	return (slotWeights[slotIndex] / totalWeight) * 100;
+}
+
+// Helper: calculate width percent for a session spanning from startTimestamp to endTimestamp
+function getSessionWidthPercent(startTimestamp: number, endTimestamp: number): number {
+	if (totalSlots <= 0 || timeLabels.length < 2) return 100;
+
+	const startSlotIdx = getSlotIndex(startTimestamp);
+
+	// Find the slot index where the session ends (or the last slot if it extends beyond)
+	let endSlotIdx = startSlotIdx;
+	for (let i = startSlotIdx; i < timeLabels.length - 1; i++) {
+		const slotEnd = timeLabels[i + 1];
+		if (endTimestamp > slotEnd) {
+			endSlotIdx = i + 1;
+		} else {
+			break;
+		}
+	}
+
+	// Sum up the widths of all slots from start to end (inclusive)
+	let totalWidthPercent = 0;
+	for (let i = startSlotIdx; i <= endSlotIdx && i < slotWeights.length; i++) {
+		totalWidthPercent += getSlotWidthPercent(i);
+	}
+
+	return totalWidthPercent;
+}
+
+// Calculate indicator position based on slot boundaries (variable width per slot)
+function getIndicatorPercent(timestamp: number): number {
+	if (totalSlots <= 0 || timeLabels.length < 2) return 0;
+
+	// Find which slot the timestamp falls into
+	for (let i = 0; i < timeLabels.length - 1; i++) {
+		const slotStart = timeLabels[i];
+		const slotEnd = timeLabels[i + 1];
+
+		if (timestamp >= slotStart && timestamp <= slotEnd) {
+			// Calculate progress within this slot (0 to 1)
+			const slotDuration = slotEnd - slotStart;
+			const progress = slotDuration > 0 ? (timestamp - slotStart) / slotDuration : 0;
+			// Position = slotLeftPercent + progress * slotWidth
+			const slotWidth = getSlotWidthPercent(i);
+			return slotLeftPercents[i] + progress * slotWidth;
+		}
+	}
+
+	// If before first slot, return 0; if after last slot, return 100
+	if (timestamp < timeLabels[0]) return 0;
+	return 100;
+}
+
+// Format time for display (forced to GMT+8 / Asia/Taipei)
+function formatTime(timestamp: number): string {
+	const date = new Date(timestamp);
+	const options: Intl.DateTimeFormatOptions = {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+		timeZone: "Asia/Taipei"
+	};
+	return date.toLocaleString("en-US", options);
+}
+
+// Get current time
+const now = Date.now();
+
+// session.broadcast = ["R0", "R1", "R2"] → span those rooms (overlay). broadcast = null → use session.room only (single room).
+const spanningItems = items.filter(item => (item.broadcast?.length ?? 0) > 0);
+
+// Split broadcast into contiguous ranges by venue order. [R0, R2] → [[R0], [R2]]; [R0, R1, R2] → [[R0, R1, R2]].
+function getContiguousRanges(broadcast: string[], venueOrder: string[]): string[][] {
+	if (!broadcast?.length) return [];
+	const sorted = [...broadcast].filter(v => venueOrder.includes(v)).sort((a, b) => venueOrder.indexOf(a) - venueOrder.indexOf(b));
+	if (sorted.length === 0) return [];
+	const ranges: string[][] = [];
+	let current: string[] = [sorted[0]];
+	for (let i = 1; i < sorted.length; i++) {
+		const prevIdx = venueOrder.indexOf(sorted[i - 1]);
+		const currIdx = venueOrder.indexOf(sorted[i]);
+		if (currIdx === prevIdx + 1) current.push(sorted[i]);
+		else {
+			ranges.push(current);
+			current = [sorted[i]];
+		}
+	}
+	ranges.push(current);
+	return ranges;
+}
+
+// One overlay block per (session, contiguous range). Non-contiguous → multiple blocks; contiguous → one block.
+const overlayBlocks = spanningItems.flatMap(item => getContiguousRanges(item.broadcast ?? [], venues).map(range => ({ item, range })));
+
+function getSessionsForVenue(venueId: string) {
+	const venueItems = items.filter(item => item.broadcast?.includes(venueId) || (!item.broadcast?.length && item.venue === venueId));
+	venueItems.sort((a, b) => parseTime(a.startTime) - parseTime(b.startTime));
+	const byTime = new Map<number, AgendaItem[]>();
+	venueItems.forEach(item => {
+		const t = parseTime(item.startTime);
+		if (!byTime.has(t)) byTime.set(t, []);
+		byTime.get(t)!.push(item);
+	});
+	return Array.from(byTime.entries()).sort(([a], [b]) => a - b);
+}
+const venueHasSessions = (venueId: string) => items.some(item => item.broadcast?.includes(venueId)) || items.some(item => !item.broadcast?.length && item.venue === venueId);
+const activeVenues = venues.filter(venueHasSessions);
+
+// Phone view: get all sessions grouped by time (across all venues)
+// Sessions that span multiple time slots appear in all slots they overlap with
+function getAllSessionsByTime() {
+	const allItems = [...items];
+	const byTime = new Map<number, AgendaItem[]>();
+
+	// First, collect all unique time slot start times
+	const allSlotTimes = new Set<number>();
+	allItems.forEach(item => {
+		allSlotTimes.add(parseTime(item.startTime));
+	});
+	const sortedSlotTimes = Array.from(allSlotTimes).sort((a, b) => a - b);
+
+	// For each item, add it to every time slot it overlaps with
+	allItems.forEach(item => {
+		const itemStart = parseTime(item.startTime);
+		const itemEnd = item.endTime ? parseTime(item.endTime) : itemStart + getDuration(item) * 60 * 1000;
+
+		sortedSlotTimes.forEach(slotTime => {
+			// Find the end of this slot (next slot's start time, or itemEnd if last slot)
+			const slotIndex = sortedSlotTimes.indexOf(slotTime);
+			const slotEnd = slotIndex < sortedSlotTimes.length - 1 ? sortedSlotTimes[slotIndex + 1] : slotTime + 60 * 60 * 1000;
+
+			// Check if session overlaps with this slot (session starts before slot ends AND session ends after slot starts)
+			if (itemStart < slotEnd && itemEnd > slotTime) {
+				if (!byTime.has(slotTime)) byTime.set(slotTime, []);
+				// Avoid duplicates
+				if (!byTime.get(slotTime)!.some(existing => existing.id === item.id)) {
+					byTime.get(slotTime)!.push(item);
+				}
+			}
+		});
+	});
+
+	return Array.from(byTime.entries()).sort(([a], [b]) => a - b);
+}
+const allTimeBlocks = getAllSessionsByTime();
+
+// Phone view: which time block is "current" (latest session start <= now). Only when now is in range.
+const nowInRange = now >= minTime && now <= maxTime;
+function getPhoneCurrentTime(): number | null {
+	if (!nowInRange) return null;
+	const startTimes = allTimeBlocks.map(([t]) => t).filter(t => t <= now);
+	return startTimes.length > 0 ? Math.max(...startTimes) : null;
+}
+const phoneCurrentTime = getPhoneCurrentTime();
+
+// Legacy: keep for compatibility
+function getPhoneCurrentTimeForVenue(venueId: string): number | null {
+	if (!nowInRange) return null;
+	const timeBlocks = getSessionsForVenue(venueId);
+	const startTimes = timeBlocks.map(([t]) => t).filter(t => t <= now);
+	return startTimes.length > 0 ? Math.max(...startTimes) : null;
+}
+const phoneCurrentByVenue: Record<string, number | null> = {};
+activeVenues.forEach(venueId => {
+	phoneCurrentByVenue[venueId] = getPhoneCurrentTimeForVenue(venueId);
+});
+---
+
+<div class="agenda-timeline-container" id="agenda-timeline">
+	<!-- Filter: All / Favorites (sliding tab, same style for desktop and phone) -->
+	<div class="agenda-filter-wrap">
+		<div class="filter-tabs-wrap">
+			<div class="filter-tabs" role="tablist" id="filter-tabs-list">
+				<div class="filter-tab-slider" id="filter-tab-slider" aria-hidden="true"></div>
+				<button type="button" class="filter-tab active" role="tab" aria-selected="true" id="filter-tab-all" data-filter="all">
+					{filterAllLabel}
+				</button>
+				<button type="button" class="filter-tab" role="tab" aria-selected="false" id="filter-tab-favorites" data-filter="favorites">
+					{filterFavoritesLabel}
+				</button>
+			</div>
+		</div>
+		<button type="button" class="share-jam-trigger" id="share-jam-trigger" aria-label={lang === "en" ? "Share your Jam" : "分享你的專屬 Jam"} title={lang === "en" ? "Share your Jam" : "你的專屬 Jam"}>
+			{lang === "en" ? "Share Jam" : "分享我的精選"}
+		</button>
+	</div>
+
+	<!-- Desktop: horizontal timeline -->
+	<div class="agenda-desktop-view agenda-content-wrapper">
+		<div class="agenda-scroll-container" id="agenda-scroll">
+			<div
+				class="agenda-timeline"
+				id="agenda-timeline-inner"
+				data-min-time={minTime}
+				data-max-time={maxTime}
+				data-total-slots={totalSlots}
+				data-time-labels={JSON.stringify(timeLabels)}
+				data-slot-left-percents={JSON.stringify(slotLeftPercents)}
+				data-slot-weights={JSON.stringify(slotWeights)}
+				data-total-weight={totalWeight}
+				style="--time-scale: 1;"
+			>
+				<div class="time-axis">
+					{
+						timeLabels.map((time, idx) => (
+							<div class="time-marker" style={`left: ${slotLeftPercents[idx]}%`}>
+								<span class="time-label">{formatTime(time)}</span>
+							</div>
+						))
+					}
+					<div class="current-time-indicator" style={`left: ${getIndicatorPercent(now)}%`} id="current-time-indicator">
+						<div class="indicator-triangle"></div>
+						<div class="indicator-line"></div>
+					</div>
+				</div>
+
+				<div class="venue-tracks">
+					<div class="time-lines-overlay">
+						{timeLabels.map((time, idx) => <div class="time-line" style={`left: ${slotLeftPercents[idx]}%`} />)}
+						<div class="current-time-line" style={`left: ${getIndicatorPercent(now)}%`} id="current-time-line">
+							<div class="indicator-line-extended"></div>
+							<div class="indicator-triangle-extended"></div>
+						</div>
+					</div>
+					{
+						overlayBlocks.length > 0 && (
+							<div class="generic-sessions-overlay">
+								{overlayBlocks.map(({ item, range }) => {
+									const startTimestamp = parseTime(item.startTime);
+									const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
+									const startPercent = getLeftPercent(startTimestamp);
+									const widthPercent = getSessionWidthPercent(startTimestamp, endTimestamp);
+									const venueStart = venues.indexOf(range[0]);
+									const topPercent = (venueStart / venues.length) * 100;
+									const heightPercent = (range.length / venues.length) * 100;
+									return (
+										<div class="overlay-block-cell" style={`left: ${startPercent}%; width: ${widthPercent}%; top: ${topPercent}%; height: ${heightPercent}%;`}>
+											<SessionBlock
+												id={item.id}
+												type={item.type}
+												name={item.name}
+												description={item.description}
+												speakers={item.speakers}
+												tags={item.tags}
+												venue={item.venue}
+												startTime={item.startTime}
+												endTime={item.endTime || new Date(endTimestamp).toISOString()}
+												leftPercent={0}
+												widthPercent={100}
+												slidoLink={item.slidoLink}
+												slidesLink={item.slidesLink}
+												notesLink={item.notesLink}
+												lang={lang}
+											/>
+										</div>
+									);
+								})}
+							</div>
+						)
+					}
+					{
+						venues.map(venue => (
+							<div class="venue-track" data-venue={venue}>
+								<div class="venue-label">
+									<span>{venue}</span>
+									<Guitar class="venue-icon" />
+								</div>
+								<div class="venue-sessions">
+									{items
+										.filter(item => !item.broadcast?.length && item.venue === venue)
+										.map(item => {
+											const startTimestamp = parseTime(item.startTime);
+											const startPercent = getLeftPercent(startTimestamp);
+											const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
+											const widthPercent = getSessionWidthPercent(startTimestamp, endTimestamp);
+											return (
+												<SessionBlock
+													id={item.id}
+													type={item.type}
+													name={item.name}
+													description={item.description}
+													speakers={item.speakers}
+													tags={item.tags}
+													venue={item.venue}
+													startTime={item.startTime}
+													endTime={item.endTime || new Date(endTimestamp).toISOString()}
+													leftPercent={startPercent}
+													widthPercent={widthPercent}
+													slidoLink={item.slidoLink}
+													slidesLink={item.slidesLink}
+													notesLink={item.notesLink}
+													lang={lang}
+												/>
+											);
+										})}
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Phone: vertical view showing all sessions grouped by time -->
+	<div class="agenda-phone-view" id="agenda-phone-view" aria-hidden="true">
+		<div class="phone-time-blocks">
+			{
+				allTimeBlocks.map(([timeTs, sessionItems]) => {
+					const isCurrent = phoneCurrentTime === timeTs;
+					return (
+						<div class={`time-block ${isCurrent ? "current" : ""}`} data-time={timeTs}>
+							<div class="time-block-label">
+								{isCurrent && <span class="phone-time-indicator" aria-hidden="true" />}
+								{formatTime(timeTs)}
+							</div>
+							<div class="session-list">
+								{sessionItems.map(item => {
+									const startTimestamp = parseTime(item.startTime);
+									const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
+									return (
+										<div class="phone-session-row">
+											<SessionBlock
+												id={item.id}
+												type={item.type}
+												name={item.name}
+												description={item.description}
+												speakers={item.speakers}
+												tags={item.tags}
+												venue={item.venue}
+												startTime={item.startTime}
+												endTime={item.endTime || new Date(endTimestamp).toISOString()}
+												leftPercent={0}
+												widthPercent={100}
+												slidoLink={item.slidoLink}
+												slidesLink={item.slidesLink}
+												notesLink={item.notesLink}
+												lang={lang}
+											/>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					);
+				})
+			}
+		</div>
+	</div>
+
+	<div class="scroll-controls">
+		<button class="scroll-btn scroll-left" id="scroll-left" aria-label="向左滾動">
+			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="m15 18-6-6 6-6"></path>
+			</svg>
+		</button>
+		<button class="scroll-btn scroll-right" id="scroll-right" aria-label="向右滾動">
+			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="m9 18 6-6-6-6"></path>
+			</svg>
+		</button>
+		<div class="zoom-controls">
+			<button class="zoom-btn zoom-in" id="zoom-in" aria-label="放大">
+				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="11" cy="11" r="8"></circle>
+					<path d="m21 21-4.35-4.35"></path>
+					<path d="M11 8v6"></path>
+					<path d="M8 11h6"></path>
+				</svg>
+			</button>
+			<button class="zoom-btn zoom-out" id="zoom-out" aria-label="縮小">
+				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="11" cy="11" r="8"></circle>
+					<path d="m21 21-4.35-4.35"></path>
+					<path d="M8 11h6"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+
+	<button
+		type="button"
+		class="share-jam-trigger-mobile"
+		id="share-jam-trigger-mobile"
+		aria-label={lang === "en" ? "Share your Jam" : "分享你的專屬 Jam"}
+		title={lang === "en" ? "Share your Jam" : "你的專屬 Jam"}
+	>
+		{lang === "en" ? "Share Jam" : "分享我的精選"}
+	</button>
+</div>
+
+<script>
+	import { gsap } from "gsap";
+
+	const scrollContainer = document.getElementById("agenda-scroll");
+	const scrollLeftBtn = document.getElementById("scroll-left");
+	const scrollRightBtn = document.getElementById("scroll-right");
+	const zoomInBtn = document.getElementById("zoom-in");
+	const zoomOutBtn = document.getElementById("zoom-out");
+	const currentTimeIndicator = document.getElementById("current-time-indicator");
+	const currentTimeLine = document.getElementById("current-time-line");
+	const timelineElement = document.getElementById("agenda-timeline-inner");
+
+	if (!scrollContainer || !scrollLeftBtn || !scrollRightBtn) {
+		// Elements not found, likely no agenda items
+		console.warn("Agenda timeline elements not found");
+	}
+
+	// Zoom functionality - scales the time axis spacing and stretches session blocks
+	if (timelineElement && zoomInBtn && zoomOutBtn) {
+		let timeScale = 2;
+		const minZoom = 0;
+		const maxZoom = 5;
+		const zoomStep = 0.25;
+
+		const updateZoom = () => {
+			timelineElement.style.setProperty("--time-scale", timeScale.toString());
+		};
+
+		// Set initial zoom
+		updateZoom();
+
+		zoomInBtn.addEventListener("click", () => {
+			timeScale = Math.min(maxZoom, timeScale + zoomStep);
+			updateZoom();
+		});
+
+		zoomOutBtn.addEventListener("click", () => {
+			timeScale = Math.max(minZoom, timeScale - zoomStep);
+			updateZoom();
+		});
+	}
+
+	if (scrollContainer && scrollLeftBtn && scrollRightBtn) {
+		const scrollAmount = 300; // pixels per scroll
+
+		// Button scroll handlers
+		scrollLeftBtn.addEventListener("click", () => {
+			scrollContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+		});
+
+		scrollRightBtn.addEventListener("click", () => {
+			scrollContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
+		});
+
+		// Drag to scroll with inertia using GSAP
+		let isDragging = false;
+		let startX = 0;
+		let startScrollLeft = 0;
+		let lastX = 0;
+		let lastTime = 0;
+		let velocity = 0;
+		let inertiaTween: gsap.core.Tween | null = null;
+
+		const startDrag = (e: MouseEvent | TouchEvent) => {
+			const target = e.target as HTMLElement;
+			if (!target) return;
+
+			// Don't enable drag if modal is open
+			const modal = document.getElementById("session-modal");
+			if (modal?.classList.contains("active")) {
+				return;
+			}
+
+			// Don't enable drag if clicking on venue-label, button, or link
+			const venueLabel = target.closest(".venue-label");
+			if (venueLabel) return;
+			if (target.tagName === "BUTTON" || target.tagName === "A" || target.closest("button") || target.closest("a")) {
+				return;
+			}
+
+			// Stop any ongoing inertia animation
+			if (inertiaTween) {
+				inertiaTween.kill();
+				inertiaTween = null;
+			}
+
+			isDragging = true;
+			const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+			startX = clientX;
+			startScrollLeft = scrollContainer.scrollLeft;
+			lastX = clientX;
+			lastTime = Date.now();
+			velocity = 0;
+			scrollContainer.style.cursor = "grabbing";
+			scrollContainer.style.userSelect = "none";
+
+			// Prevent default to avoid text selection
+			e.preventDefault();
+		};
+
+		const drag = (e: MouseEvent | TouchEvent) => {
+			if (!isDragging) return;
+
+			// Stop dragging if modal is open
+			const modal = document.getElementById("session-modal");
+			if (modal?.classList.contains("active")) {
+				endDrag();
+				return;
+			}
+
+			const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+			const currentTime = Date.now();
+			const deltaX = clientX - startX;
+			const timeDelta = currentTime - lastTime;
+
+			// Calculate velocity for inertia (pixels per millisecond)
+			if (timeDelta > 0) {
+				velocity = (clientX - lastX) / timeDelta;
+			}
+
+			scrollContainer.scrollLeft = startScrollLeft - deltaX;
+			lastX = clientX;
+			lastTime = currentTime;
+
+			e.preventDefault();
+		};
+
+		const endDrag = () => {
+			if (!isDragging) return;
+
+			isDragging = false;
+			scrollContainer.style.cursor = "grab";
+			scrollContainer.style.userSelect = "";
+
+			// Apply inertia using GSAP
+			if (Math.abs(velocity) > 0.01) {
+				const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+				const currentScroll = scrollContainer.scrollLeft;
+				// Scale velocity for smoother animation (negative because we're scrolling left)
+				const velocityPixels = -velocity * 1000; // Convert to pixels per second
+				const targetScroll = currentScroll + velocityPixels * 0.5; // Adjust multiplier for feel
+				const clampedTarget = Math.max(0, Math.min(maxScroll, targetScroll));
+
+				// Use GSAP to animate with inertia
+				inertiaTween = gsap.to(scrollContainer, {
+					scrollLeft: clampedTarget,
+					duration: Math.min(2, Math.abs(velocity) * 10), // Dynamic duration based on velocity
+					ease: "power2.out", // Ease out for natural deceleration
+					onUpdate: () => {
+						// Clamp scroll position during animation
+						if (scrollContainer.scrollLeft < 0) {
+							scrollContainer.scrollLeft = 0;
+							if (inertiaTween) {
+								inertiaTween.kill();
+								inertiaTween = null;
+							}
+						} else if (scrollContainer.scrollLeft > maxScroll) {
+							scrollContainer.scrollLeft = maxScroll;
+							if (inertiaTween) {
+								inertiaTween.kill();
+								inertiaTween = null;
+							}
+						}
+					},
+					onComplete: () => {
+						inertiaTween = null;
+					}
+				});
+			}
+		};
+
+		// Mouse events
+		scrollContainer.addEventListener("mousedown", startDrag);
+		document.addEventListener("mousemove", drag);
+		document.addEventListener("mouseup", endDrag);
+
+		// Touch events
+		scrollContainer.addEventListener("touchstart", startDrag, { passive: false });
+		scrollContainer.addEventListener("touchmove", drag, { passive: false });
+		scrollContainer.addEventListener("touchend", endDrag);
+
+		// Mouse wheel and touchpad scroll (horizontal)
+		scrollContainer.addEventListener(
+			"wheel",
+			e => {
+				// Don't interfere with modal scrolling - check if modal is open
+				const modal = document.getElementById("session-modal");
+				if (modal?.classList.contains("active")) {
+					// Modal is open, don't prevent default to allow modal scrolling
+					return;
+				}
+
+				// Check if horizontal scroll is intended (deltaX) or use vertical scroll as horizontal
+				const deltaX = e.deltaX || 0;
+				const deltaY = e.deltaY || 0;
+
+				// If there's horizontal delta, use it; otherwise convert vertical to horizontal
+				if (Math.abs(deltaX) > Math.abs(deltaY)) {
+					// Horizontal scroll
+					if (deltaX !== 0) {
+						e.preventDefault();
+						scrollContainer.scrollBy({
+							left: deltaX,
+							behavior: "auto"
+						});
+					}
+				} else if (deltaY !== 0 && e.shiftKey) {
+					// Shift + vertical scroll = horizontal scroll
+					e.preventDefault();
+					scrollContainer.scrollBy({
+						left: deltaY,
+						behavior: "auto"
+					});
+				}
+			},
+			{ passive: false }
+		);
+
+		// Update/destroy current time indicator based on whether now is between start and end time
+		const timelineElement = document.getElementById("agenda-timeline-inner");
+		const minTimeStr = timelineElement?.dataset.minTime;
+		const maxTimeStr = timelineElement?.dataset.maxTime;
+		const totalSlotsStr = timelineElement?.dataset.totalSlots;
+		const timeLabelsStr = timelineElement?.dataset.timeLabels;
+		const slotLeftPercentsStr = timelineElement?.dataset.slotLeftPercents;
+		const slotWeightsStr = timelineElement?.dataset.slotWeights;
+		const totalWeightStr = timelineElement?.dataset.totalWeight;
+
+		if (timelineElement && currentTimeIndicator && currentTimeLine && minTimeStr && maxTimeStr && totalSlotsStr && timeLabelsStr && slotLeftPercentsStr && slotWeightsStr && totalWeightStr) {
+			const minTime = parseInt(minTimeStr, 10);
+			const maxTime = parseInt(maxTimeStr, 10);
+			const totalSlots = parseInt(totalSlotsStr, 10);
+			const totalWeight = parseFloat(totalWeightStr);
+			let timeLabels: number[] = [];
+			let slotLeftPercents: number[] = [];
+			let slotWeights: number[] = [];
+			try {
+				timeLabels = JSON.parse(timeLabelsStr);
+				slotLeftPercents = JSON.parse(slotLeftPercentsStr);
+				slotWeights = JSON.parse(slotWeightsStr);
+			} catch {
+				timeLabels = [];
+				slotLeftPercents = [];
+				slotWeights = [];
+			}
+
+			// Calculate indicator position based on slot boundaries (variable width per slot)
+			const getIndicatorPercent = (timestamp: number): number => {
+				if (totalSlots <= 0 || timeLabels.length < 2) return 0;
+
+				// Find which slot the timestamp falls into
+				for (let i = 0; i < timeLabels.length - 1; i++) {
+					const slotStart = timeLabels[i];
+					const slotEnd = timeLabels[i + 1];
+
+					if (timestamp >= slotStart && timestamp <= slotEnd) {
+						// Calculate progress within this slot (0 to 1)
+						const slotDuration = slotEnd - slotStart;
+						const progress = slotDuration > 0 ? (timestamp - slotStart) / slotDuration : 0;
+						// Position = slotLeftPercent + progress * slotWidth
+						const slotWidth = (slotWeights[i] / totalWeight) * 100;
+						return slotLeftPercents[i] + progress * slotWidth;
+					}
+				}
+
+				// If before first slot, return 0; if after last slot, return 100
+				if (timestamp < timeLabels[0]) return 0;
+				return 100;
+			};
+
+			if (!isNaN(minTime) && !isNaN(maxTime) && timeLabels.length >= 2) {
+				const now = Date.now();
+
+				// If now is not within [minTime, maxTime], remove timeline indicator(s)
+				if (now < minTime || now > maxTime) {
+					if (currentTimeIndicator.parentNode) {
+						currentTimeIndicator.parentNode.removeChild(currentTimeIndicator);
+					}
+					if (currentTimeLine.parentNode) {
+						currentTimeLine.parentNode.removeChild(currentTimeLine);
+					}
+				} else {
+					// Now is within range, update indicator and auto-scroll on first load
+					let hasScrolledToCurrentTime = false;
+					const timeIndicator = currentTimeLine || currentTimeIndicator;
+					if (timeIndicator && !hasScrolledToCurrentTime) {
+						const indicatorLeft = timeIndicator.offsetLeft;
+						const containerWidth = scrollContainer.clientWidth;
+						const scrollPosition = indicatorLeft - containerWidth / 2;
+						scrollContainer.scrollTo({
+							left: Math.max(0, scrollPosition),
+							behavior: "smooth"
+						});
+						hasScrolledToCurrentTime = true;
+					}
+
+					const updateTimeIndicator = () => {
+						const nowCur = Date.now();
+						if (nowCur >= minTime && nowCur <= maxTime) {
+							const leftPercent = getIndicatorPercent(nowCur);
+							const leftPercentStr = `${leftPercent}%`;
+							// Update both indicators
+							currentTimeIndicator.style.left = leftPercentStr;
+							currentTimeLine.style.left = leftPercentStr;
+						} else {
+							// Out of range: remove timeline indicator(s)
+							if (currentTimeIndicator.parentNode) {
+								currentTimeIndicator.parentNode.removeChild(currentTimeIndicator);
+							}
+							if (currentTimeLine.parentNode) {
+								currentTimeLine.parentNode.removeChild(currentTimeLine);
+							}
+						}
+					};
+
+					// Update immediately and then every second
+					updateTimeIndicator();
+					setInterval(updateTimeIndicator, 1000);
+				}
+			}
+		}
+	}
+
+	// Filter: All / Favorites sliding tab
+	const timelineContainer = document.getElementById("agenda-timeline");
+	const filterTabsList = document.getElementById("filter-tabs-list");
+	const filterTabSlider = document.getElementById("filter-tab-slider");
+	const filterTabs = document.querySelectorAll(".filter-tab");
+
+	function updateFilterTabSlider() {
+		if (!filterTabsList || !filterTabSlider) return;
+		const activeTab = filterTabsList.querySelector(".filter-tab.active, .filter-tab[aria-selected='true']") as HTMLElement;
+		if (!activeTab) return;
+		const listRect = filterTabsList.getBoundingClientRect();
+		const tabRect = activeTab.getBoundingClientRect();
+		filterTabSlider.style.left = `${tabRect.left - listRect.left}px`;
+		filterTabSlider.style.width = `${tabRect.width}px`;
+	}
+
+	filterTabs.forEach(tab => {
+		tab.addEventListener("click", () => {
+			const filter = (tab as HTMLElement).dataset.filter;
+			if (!filter) return;
+			// When switching to "all" from URL-curated view, revert to default (clear URL and show all)
+			if (filter === "all" && timelineContainer?.classList.contains("agenda-url-curated")) {
+				document.dispatchEvent(new CustomEvent("clearUrlCuratedState"));
+				updateFilterTabSlider();
+				return;
+			}
+			filterTabs.forEach(t => {
+				t.setAttribute("aria-selected", "false");
+				t.classList.remove("active");
+			});
+			tab.setAttribute("aria-selected", "true");
+			tab.classList.add("active");
+			if (timelineContainer) {
+				if (filter === "favorites") {
+					timelineContainer.classList.add("agenda-filter-favorites");
+				} else {
+					timelineContainer.classList.remove("agenda-filter-favorites");
+				}
+			}
+			updateFilterTabSlider();
+		});
+	});
+
+	requestAnimationFrame(() => {
+		updateFilterTabSlider();
+	});
+	if (filterTabSlider) {
+		window.addEventListener("resize", updateFilterTabSlider);
+	}
+
+	// Share Jam trigger: open share modal; show only when user has bookmarks
+	const shareJamTrigger = document.getElementById("share-jam-trigger");
+	const shareJamTriggerMobile = document.getElementById("share-jam-trigger-mobile");
+	const BOOKMARKS_STORAGE_KEY = "sitcon2026:agendaBookmarks";
+	let previousHasBookmarks = false;
+
+	function updateShareJamTriggerVisibility() {
+		try {
+			const raw = localStorage.getItem(BOOKMARKS_STORAGE_KEY);
+			const arr = raw ? JSON.parse(raw) : [];
+			const hasBookmarks = Array.isArray(arr) && arr.length > 0;
+
+			// Desktop trigger
+			if (shareJamTrigger) {
+				shareJamTrigger.style.display = hasBookmarks ? "" : "none";
+			}
+
+			// Mobile trigger with slide animation
+			if (shareJamTriggerMobile) {
+				if (hasBookmarks && !previousHasBookmarks) {
+					// Slide up animation when bookmarks become > 0
+					shareJamTriggerMobile.classList.remove("hidden");
+					shareJamTriggerMobile.classList.add("slide-in", "glowing");
+					// Fade out glow after 2 seconds
+					setTimeout(() => {
+						shareJamTriggerMobile.classList.remove("glowing");
+					}, 2000);
+				} else if (!hasBookmarks && previousHasBookmarks) {
+					// Slide down animation when bookmarks become 0
+					shareJamTriggerMobile.classList.remove("slide-in", "glowing");
+					shareJamTriggerMobile.classList.add("hidden");
+				} else if (hasBookmarks) {
+					// Already visible (no glow on page load if already had bookmarks)
+					shareJamTriggerMobile.classList.remove("hidden");
+					shareJamTriggerMobile.classList.add("slide-in");
+				} else {
+					// No bookmarks
+					shareJamTriggerMobile.classList.add("hidden");
+					shareJamTriggerMobile.classList.remove("slide-in", "glowing");
+				}
+			}
+
+			previousHasBookmarks = hasBookmarks;
+		} catch {
+			if (shareJamTrigger) shareJamTrigger.style.display = "none";
+			if (shareJamTriggerMobile) shareJamTriggerMobile.classList.add("hidden");
+		}
+	}
+
+	if (shareJamTrigger) {
+		shareJamTrigger.addEventListener("click", () => {
+			(window as any).openShareJamModal?.();
+		});
+	}
+	if (shareJamTriggerMobile) {
+		shareJamTriggerMobile.addEventListener("click", () => {
+			(window as any).openShareJamModal?.();
+		});
+	}
+	updateShareJamTriggerVisibility();
+	document.addEventListener("agendaBookmarksChanged", updateShareJamTriggerVisibility);
+
+	// Phone view: update current time indicator every minute (indicator = latest session start <= now). Only when now is in range.
+	function updatePhoneTimeIndicator() {
+		const phoneView = document.getElementById("agenda-phone-view");
+		if (!phoneView || window.matchMedia("(min-width: 769px)").matches) return;
+		const timelineEl = document.getElementById("agenda-timeline-inner");
+		const minTimeStr = timelineEl?.getAttribute("data-min-time");
+		const maxTimeStr = timelineEl?.getAttribute("data-max-time");
+		const minTime = minTimeStr != null ? parseInt(minTimeStr, 10) : NaN;
+		const maxTime = maxTimeStr != null ? parseInt(maxTimeStr, 10) : NaN;
+		const now = Date.now();
+		if (isNaN(minTime) || isNaN(maxTime) || now < minTime || now > maxTime) {
+			// Out of range: clear all current indicators
+			phoneView.querySelectorAll(".time-block.current").forEach(block => {
+				block.classList.remove("current");
+				block.querySelector(".phone-time-indicator")?.remove();
+			});
+			return;
+		}
+		// Update current time indicator for all time blocks
+		const blocks = phoneView.querySelectorAll(".time-block");
+		let currentTs: number | null = null;
+		blocks.forEach(block => {
+			const ts = parseInt((block as HTMLElement).dataset.time ?? "", 10);
+			if (!isNaN(ts) && ts <= now) currentTs = currentTs == null ? ts : Math.max(currentTs, ts);
+		});
+		blocks.forEach(block => {
+			const ts = parseInt((block as HTMLElement).dataset.time ?? "", 10);
+			const isCurrent = currentTs != null && ts === currentTs;
+			const label = block.querySelector(".time-block-label");
+			let indicator = block.querySelector(".phone-time-indicator");
+			if (isCurrent) {
+				block.classList.add("current");
+				if (!indicator && label) {
+					indicator = document.createElement("span");
+					indicator.className = "phone-time-indicator";
+					indicator.setAttribute("aria-hidden", "true");
+					label.insertBefore(indicator, label.firstChild);
+				}
+			} else {
+				block.classList.remove("current");
+				indicator?.remove();
+			}
+		});
+	}
+	const phoneViewEl = document.getElementById("agenda-phone-view");
+	const timelineElForRange = document.getElementById("agenda-timeline-inner");
+	const minTimeStr = timelineElForRange?.getAttribute("data-min-time");
+	const maxTimeStr = timelineElForRange?.getAttribute("data-max-time");
+	const minTimeNum = minTimeStr != null ? parseInt(minTimeStr, 10) : NaN;
+	const maxTimeNum = maxTimeStr != null ? parseInt(maxTimeStr, 10) : NaN;
+	const nowInRangeForListener = !isNaN(minTimeNum) && !isNaN(maxTimeNum) && Date.now() >= minTimeNum && Date.now() <= maxTimeNum;
+	if (phoneViewEl && nowInRangeForListener) {
+		updatePhoneTimeIndicator();
+		setInterval(updatePhoneTimeIndicator, 60 * 1000);
+	}
+</script>
+
+<style>
+	.agenda-timeline-container {
+		width: 100%;
+		min-height: 85vh;
+		background-color: #a97c21;
+		color: #fff;
+		padding: 0 0;
+	}
+
+	.agenda-filter-wrap {
+		display: flex;
+		padding: 2rem 0.75rem 0;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 0.75rem;
+	}
+
+	.agenda-filter-wrap .filter-tabs-wrap {
+		max-width: 20rem;
+		margin: 0;
+		padding: 0.25rem;
+		background: rgba(0, 0, 0, 0.25);
+		border-radius: 9999px;
+	}
+
+	.agenda-filter-wrap .filter-tabs {
+		position: relative;
+		display: flex;
+		align-items: stretch;
+		border-radius: 9999px;
+		min-height: 2.5rem;
+	}
+
+	.agenda-filter-wrap .filter-tab-slider {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: 0;
+		background: #fff;
+		border-radius: 9999px;
+		transition:
+			left 0.25s ease,
+			width 0.25s ease;
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	.agenda-filter-wrap .filter-tab {
+		flex: 1;
+		position: relative;
+		z-index: 1;
+		padding: 0.5rem 0.75rem;
+		font-size: 0.9375rem;
+		font-weight: bold;
+		background: transparent;
+		border: none;
+		color: rgba(255, 255, 255, 0.9);
+		cursor: pointer;
+		border-radius: 9999px;
+		transition: color 0.2s;
+		min-width: 0;
+	}
+
+	.agenda-filter-wrap .filter-tab:hover {
+		color: #fff;
+	}
+
+	.agenda-filter-wrap .filter-tab.active,
+	.agenda-filter-wrap .filter-tab[aria-selected="true"] {
+		color: #1a1a1a;
+	}
+
+	.share-jam-trigger,
+	.share-jam-trigger-mobile {
+		padding: 0.5rem 0.75rem;
+		font-size: 0.9375rem;
+		font-weight: bold;
+		background: #2d2d2d;
+		border: none;
+		padding: 1rem;
+		border-radius: 9999px;
+		color: #fff;
+		cursor: pointer;
+		transition:
+			background 0.2s,
+			border-color 0.2s;
+	}
+
+	.share-jam-trigger-mobile {
+		display: none;
+	}
+
+	.share-jam-trigger-mobile.hidden {
+		transform: translateY(100%);
+		opacity: 0;
+	}
+
+	.share-jam-trigger-mobile.slide-in {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	/* When Favorites selected: hide non-bookmarked session blocks (not when URL-curated) */
+	.agenda-timeline-container.agenda-filter-favorites:not(.agenda-url-curated) :global(.session-block:not(:has(.session-favorite.is-marked))) {
+		display: none;
+	}
+
+	/* URL-curated: hide blocks not in q= list (class toggled by agenda.astro) */
+	:global(.session-block.hidden-by-curated) {
+		display: none;
+	}
+
+	.agenda-content-wrapper {
+		position: relative;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.agenda-scroll-container {
+		overflow-x: auto;
+		overflow-y: hidden;
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+		cursor: grab;
+	}
+
+	.agenda-scroll-container:active {
+		cursor: grabbing;
+	}
+
+	.agenda-scroll-container::-webkit-scrollbar {
+		height: 8px;
+	}
+
+	.agenda-scroll-container::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.agenda-scroll-container::-webkit-scrollbar-thumb {
+		background-color: rgba(255, 255, 255, 0.3);
+		border-radius: 4px;
+	}
+
+	.agenda-timeline {
+		position: relative;
+		min-width: calc(170% * var(--time-scale, 1));
+		padding-top: 1.5rem;
+		transition: min-width 0.3s ease-in-out;
+	}
+
+	.time-axis {
+		position: relative;
+		height: 3rem;
+		margin-left: 12rem;
+	}
+
+	.time-marker {
+		position: absolute;
+		top: 1rem;
+		height: 100%;
+		font-family: "JetBrainsMono", monospace;
+	}
+
+	.time-label {
+		position: absolute;
+		top: 0.5rem;
+		left: 0;
+		transform: translateX(-50%);
+		font-size: 0.875rem;
+		color: #fff;
+		white-space: nowrap;
+	}
+
+	.current-time-indicator {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		z-index: 20;
+		pointer-events: none;
+		transform: translateX(-50%);
+	}
+
+	.indicator-line {
+		width: 2px;
+		height: 100%;
+		background-color: #fff;
+		margin: 0 auto;
+	}
+
+	.indicator-triangle {
+		width: 0;
+		height: 0;
+		border-left: 12px solid transparent;
+		border-right: 12px solid transparent;
+		border-top: 22px solid #fff;
+		margin: 0 auto;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: 1.8rem;
+	}
+
+	.venue-tracks {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		position: relative;
+	}
+
+	.time-lines-overlay {
+		position: absolute;
+		top: 0;
+		left: 12rem;
+		right: 0;
+		bottom: 0;
+		pointer-events: none;
+	}
+
+	.time-line {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 1px;
+		background-color: rgba(255, 255, 255, 0.3);
+		pointer-events: none;
+		transform: translateX(-50%);
+	}
+
+	.current-time-line {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 2px;
+		z-index: 20;
+		pointer-events: none;
+		transform: translateX(-50%);
+	}
+
+	.indicator-line-extended {
+		width: 2px;
+		height: 100%;
+		background-color: #fff;
+		margin: 0 auto;
+		z-index: 10;
+	}
+
+	.indicator-triangle-extended {
+		width: 0;
+		height: 0;
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		border-top: 12px solid #fff;
+		margin: 0 auto;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: -12px;
+	}
+
+	.venue-track {
+		display: flex;
+		position: relative;
+		min-height: 8rem;
+		flex: 1;
+	}
+
+	.venue-label {
+		width: 12rem;
+		display: flex;
+		align-items: center;
+		justify-content: end;
+		gap: 0.5rem;
+		font-size: 2.2rem;
+		font-weight: bold;
+		position: sticky;
+		left: 0;
+		background-color: #242627;
+		z-index: 20;
+		padding: 0.5rem;
+		border-right: 1px solid rgba(255, 255, 255, 0.1);
+		min-height: 8rem;
+	}
+
+	.venue-icon {
+		width: 2rem;
+		height: 2rem;
+		flex-shrink: 0;
+		margin-left: 1rem;
+		margin-right: 2rem;
+	}
+
+	.venue-sessions {
+		flex: 1;
+		position: relative;
+		min-height: 8rem;
+	}
+
+	.generic-sessions-overlay {
+		position: absolute;
+		top: 0;
+		left: 12rem;
+		right: 0;
+		bottom: 0;
+		pointer-events: none;
+		z-index: 2;
+	}
+
+	.generic-sessions-overlay .overlay-block-cell {
+		position: absolute;
+		pointer-events: none;
+		box-sizing: border-box;
+		padding: 0 0.125rem;
+	}
+
+	.generic-sessions-overlay .overlay-block-cell :global(.session-block) {
+		pointer-events: auto;
+		top: 0rem;
+		bottom: 0.1rem;
+		height: auto;
+		box-sizing: border-box;
+	}
+
+	.scroll-controls {
+		position: sticky;
+		bottom: 1rem;
+		margin-left: auto;
+		margin-right: 2rem;
+		width: fit-content;
+		display: flex;
+		gap: 0.5rem;
+		z-index: 20;
+		align-items: center;
+	}
+
+	.zoom-controls {
+		display: flex;
+		gap: 0.5rem;
+		margin-left: 0.5rem;
+		padding-left: 0.5rem;
+		border-left: 1px solid rgba(255, 255, 255, 0.3);
+	}
+
+	.scroll-btn {
+		width: 2.3rem;
+		height: 2.3rem;
+		border-radius: 0%;
+		background-color: black;
+		border: 1px solid black;
+		color: #fff;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition:
+			background-color 0.2s,
+			transform 0.2s;
+	}
+
+	.scroll-btn:hover {
+		background-color: black;
+		transform: scale(1.05);
+	}
+
+	.scroll-btn:active {
+		transform: scale(0.95);
+	}
+
+	.zoom-btn {
+		width: 2.3rem;
+		height: 2.3rem;
+		border-radius: 0%;
+		background-color: black;
+		border: 1px solid black;
+		color: #fff;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition:
+			background-color 0.2s,
+			transform 0.2s;
+	}
+
+	.zoom-btn:hover {
+		background-color: black;
+		transform: scale(1.05);
+	}
+
+	.zoom-btn:active {
+		transform: scale(0.95);
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 5rem 2rem;
+		color: rgba(255, 255, 255, 0.7);
+		font-size: 1.25rem;
+	}
+
+	/* Phone view: vertical layout showing all sessions */
+	.agenda-phone-view {
+		display: none;
+		padding: 0.75rem;
+		padding-left: 0;
+		min-height: 60vh;
+	}
+
+	.agenda-phone-view .phone-time-blocks {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		position: relative;
+	}
+
+	.agenda-phone-view .time-block {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		position: relative;
+	}
+
+	.agenda-phone-view .time-block-label {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 4rem;
+		flex-shrink: 0;
+		font-family: "JetBrainsMono", monospace;
+		font-size: 0.85rem;
+		color: rgba(255, 255, 255, 0.7);
+		padding-top: 0.5rem;
+		position: relative;
+	}
+
+	/* Vertical timeline line */
+	.agenda-phone-view .time-block-label::after {
+		content: "";
+		position: absolute;
+		top: 1.8rem;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 2px;
+		height: calc(100% - 1.3rem);
+		background: rgba(255, 255, 255, 0.2);
+	}
+
+	/* Hide line on last time block */
+	.agenda-phone-view .time-block:last-child .time-block-label::after {
+		display: none;
+	}
+
+	/* Phone: current time indicator */
+	.agenda-phone-view .phone-time-indicator {
+		display: inline-block;
+		width: 8px;
+		height: 8px;
+		background: #fff;
+		border-radius: 50%;
+		margin-bottom: 0.25rem;
+	}
+
+	.agenda-phone-view .time-block.current .time-block-label {
+		color: #fff;
+		font-weight: 600;
+	}
+
+	.agenda-phone-view .time-block.current .time-block-label::after {
+		background: rgba(255, 255, 255, 0.5);
+	}
+
+	.agenda-phone-view .session-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		flex: 1;
+		padding: 0.25rem 0.5rem 1rem 0.5rem;
+	}
+
+	.agenda-phone-view .phone-session-row {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		width: 100%;
+	}
+
+	.agenda-phone-view .venue-badge {
+		font-size: 0.75rem;
+		font-weight: bold;
+		color: rgba(255, 255, 255, 0.8);
+		margin-left: 0.25rem;
+	}
+
+	/* Full-width session blocks in phone view */
+	.agenda-phone-view :global(.session-block) {
+		position: relative;
+		left: auto;
+		width: 100%;
+		height: auto;
+		min-height: 3.5rem;
+		margin-bottom: 0;
+		overflow: visible;
+	}
+
+	/* Bookmark sticks to top-right of screen in phone view */
+	.agenda-phone-view :global(.session-block) :global(.session-favorite) {
+		position: sticky;
+		top: 0.75rem;
+		right: 0.75rem;
+		float: right;
+		margin: -0.25rem 0 0 0;
+	}
+
+	.agenda-phone-view :global(.session-block) :global(.session-content) {
+		padding-right: 2.25rem;
+	}
+
+	@media (max-width: 768px) {
+		.agenda-desktop-view {
+			display: none;
+		}
+
+		.agenda-phone-view {
+			display: block;
+		}
+
+		.share-jam-trigger {
+			display: none;
+		}
+
+		.share-jam-trigger-mobile {
+			display: block;
+			position: sticky;
+			font-size: 1.15rem;
+			bottom: 1.5rem;
+			margin: 0 auto;
+			z-index: 100;
+			transition:
+				transform 0.3s ease-out,
+				opacity 0.3s ease-out,
+				box-shadow 1s ease-out,
+				border-color 1s ease-out;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+			border: 2px solid transparent;
+		}
+
+		.share-jam-trigger-mobile.glowing {
+			box-shadow:
+				0 0 12px 3px rgba(255, 232, 120, 0.7),
+				0 0 32px 8px rgba(255, 223, 50, 0.3);
+			border-color: rgba(255, 232, 120, 0.8);
+		}
+
+		.share-jam-trigger-mobile.hidden {
+			transform: translateY(100%);
+			opacity: 0;
+			pointer-events: none;
+		}
+
+		.share-jam-trigger-mobile.slide-in {
+			transform: translateY(0);
+			opacity: 1;
+			pointer-events: auto;
+		}
+
+		.scroll-controls {
+			display: none;
+		}
+
+		.agenda-title {
+			font-size: 2.5rem;
+		}
+
+		.agenda-legend {
+			gap: 1rem;
+		}
+
+		.agenda-filter-wrap {
+			justify-content: center;
+		}
+
+		.venue-label {
+			width: 3rem;
+			font-size: 1rem;
+		}
+
+		.scroll-btn {
+			width: 2.5rem;
+			height: 2.5rem;
+		}
+	}
+</style>

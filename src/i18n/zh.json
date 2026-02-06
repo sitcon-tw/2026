@@ -126,7 +126,14 @@
 		"emergency": "緊急逃生指引"
 	},
 	"agenda": {
-		"title": "議程表"
+		"title": "議程表",
+		"filterAll": "全部議程",
+		"filterFavorites": "收藏議程",
+		"shareJamTitle": "你的專屬 Jam",
+		"shareJamPlaceholder": "輸入匿名",
+		"shareJamCopy": "複製連結",
+		"shareJamCopied": "已複製！",
+		"curatedTitleSuffix": "嚴選議程"
 	},
 	"teamPage": {
 		"title": "團隊成員",

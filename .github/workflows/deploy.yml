@@ -33,6 +33,15 @@ jobs:
         with:
           run_install: false
 
+      - name: Generate Schedule Json
+        uses: CCIP-App/schedule-json-generator-action@v2
+        with:
+          gcp-api-key: ${{ secrets.GCP_SHEET_KEY }}
+          spreadsheet-key: "1dNMq9XnOZPMqo4XPIAuNPBlsO_IACKt6jnUaI7--K4o"
+          default-avatar: "https://sitcon.org/2022/imgs/deafult_avatar.jpg"
+          avatar-base-url: "https://sitcon.org/2026/img/avatar/speaker/"
+          output-path: ./public/sessions.json
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 

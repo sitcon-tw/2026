@@ -130,7 +130,14 @@
 		"emergency": "Emergency Evacuation Guide"
 	},
 	"agenda": {
-		"title": "Agenda"
+		"title": "Agenda",
+		"filterAll": "All Agenda",
+		"filterFavorites": "Favorites",
+		"shareJamTitle": "Your Exclusive Jam",
+		"shareJamPlaceholder": "Enter your name",
+		"shareJamCopy": "Copy link",
+		"shareJamCopied": "Copied!",
+		"curatedTitleSuffix": "Picks"
 	},
 	"teamPage": {
 		"title": "Team Members",
