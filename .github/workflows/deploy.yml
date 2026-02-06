@@ -2,8 +2,11 @@ name: Deploy Official Website
 
 on:
   push:
-    branches: ["main"]
-  workflow_dispatch:
+    branches:
+      - main
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 0 * * *"
 
 permissions:
   contents: write
@@ -12,7 +15,37 @@ permissions:
   actions: write
 
 jobs:
-  push:
+  update-sessions-json:
+    name: Update Sessions Json
+    runs-on: ubuntu-latest
+    if: github.repository == 'sitcon-tw/2026'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set timezone to Asia/Taipei
+        uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: "Asia/Taipei"
+          timezoneMacos: "Asia/Taipei"
+
+      - name: Generate Schedule Json
+        uses: CCIP-App/schedule-json-generator-action@v2
+        with:
+          gcp-api-key: ${{ secrets.GCP_SHEET_KEY }}
+          spreadsheet-key: "1dNMq9XnOZPMqo4XPIAuNPBlsO_IACKt6jnUaI7--K4o"
+          default-avatar: "https://sitcon.org/2022/imgs/deafult_avatar.jpg"
+          avatar-base-url: "https://sitcon.org/2026/img/avatar/speaker/"
+          output-path: ./public/sessions.json
+
+      - name: Commit and Push Schedule Json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/sessions.json
+          git commit -m "chore: Update sessions.json" || echo "No changes to commit"
+          git push origin main
+
+  build-and-push:
+    name: Build and Push to build branch
     runs-on: ubuntu-latest
     if: github.repository == 'sitcon-tw/2026'
     steps:
@@ -32,16 +65,6 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           run_install: false
-
-      - name: Generate Schedule Json
-        uses: CCIP-App/schedule-json-generator-action@v2
-        with:
-          gcp-api-key: ${{ secrets.GCP_SHEET_KEY }}
-          spreadsheet-key: "1dNMq9XnOZPMqo4XPIAuNPBlsO_IACKt6jnUaI7--K4o"
-          default-avatar: "https://sitcon.org/2022/imgs/deafult_avatar.jpg"
-          avatar-base-url: "https://sitcon.org/2026/img/avatar/speaker/"
-          output-path: ./public/sessions.json
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -63,7 +86,7 @@ jobs:
           git add .
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "Deploy home site" || echo "No changes to commit"
+          git commit -m "chore: Deploy main site" || echo "No changes to commit"
           git push origin build
 
       - name: Trigger Deploy Final Website workflow
