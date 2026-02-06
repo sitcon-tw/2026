@@ -2,6 +2,7 @@
 import { marked } from "marked";
 import { Share2, X, Clock, MapPin } from "@lucide/astro";
 import adsData from "@/data/ads.json";
+import bookmarkIcon from "@/../public/img/bookmark.svg";
 
 interface Speaker {
 	name: string;
@@ -78,8 +79,8 @@ if (accumulatedPossibility > 0) {
 	}
 }
 const hasAdImage = !!selectedAdName;
-const adImageDesktopSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}.webp` : null;
-const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobile.webp` : null;
+const adImageDesktopSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdName}.webp` : null;
+const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdName}-mobile.webp` : null;
 ---
 
 <div class="session-modal" id="session-modal">
@@ -99,9 +100,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 			<div class="modal-drag-handle" id="modal-drag-handle" aria-hidden="true"></div>
 			<div class="modal-bookmark-area" id="modal-bookmark-area" aria-label="Bookmark session" role="button" tabindex="0"></div>
 			<div class="modal-bookmark-ribbon" id="modal-bookmark-ribbon" aria-hidden="true">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-					<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
-				</svg>
+				<img src={bookmarkIcon.src} alt="Bookmark" class="bookmark-icon" />
 			</div>
 			<!-- <div class="session-video-section" id="session-video-section">
                 <div class="video-container" id="video-container">
@@ -150,7 +149,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 								: type === "undefined"
 									? lang === "en"
 										? "Undefined"
-										: "開放式"
+										: "開放式議程"
 									: type === "espresso"
 										? "Espresso"
 										: type === "sponsored"
@@ -338,7 +337,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 			const typeLabels: Record<string, string> = {
 				keynote: "Keynote",
 				presentation: "Presentation",
-				undefined: sessionLang === "en" ? "Undefined" : "開放式",
+				undefined: sessionLang === "en" ? "Undefined" : "開放式議程",
 				espresso: "Espresso",
 				sponsored: sessionLang === "en" ? "Sponsored" : "合作議程"
 			};
@@ -681,18 +680,18 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		top: 0;
 		left: 0;
 		width: 10rem;
-		height: 9rem;
-		z-index: 2;
+		height: 10rem;
+		z-index: 20;
 		cursor: pointer;
 		border-radius: 0 0 0.5rem 0;
 	}
 
 	.modal-bookmark-ribbon {
 		position: absolute;
-		top: -1rem;
-		left: 0;
-		width: 10rem;
-		height: 10rem;
+		top: 0rem;
+		left: 3rem;
+		width: 6rem;
+		height: 6rem;
 		color: #b8a99a;
 		pointer-events: none;
 		z-index: 1;
@@ -1052,6 +1051,13 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 
 		.modal-container.dragging {
 			transition: none;
+		}
+
+		.modal-bookmark-ribbon {
+			top: -0.5rem;
+			left: 1rem;
+			width: 5rem;
+			height: 5rem;
 		}
 
 		.modal-drag-handle {

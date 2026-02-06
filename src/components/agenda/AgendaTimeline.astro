@@ -1125,7 +1125,7 @@ activeVenues.forEach(venueId => {
 	}
 
 	/* When Favorites selected: hide non-bookmarked session blocks (not when URL-curated) */
-	.agenda-timeline-container.agenda-filter-favorites:not(.agenda-url-curated) :global(.session-block:not(:has(.session-bookmark.is-bookmarked))) {
+	.agenda-timeline-container.agenda-filter-favorites:not(.agenda-url-curated) :global(.session-block:not(:has(.session-favorite.is-marked))) {
 		display: none;
 	}
 
@@ -1526,7 +1526,7 @@ activeVenues.forEach(venueId => {
 	}
 
 	/* Bookmark sticks to top-right of screen in phone view */
-	.agenda-phone-view :global(.session-block) :global(.session-bookmark) {
+	.agenda-phone-view :global(.session-block) :global(.session-favorite) {
 		position: sticky;
 		top: 0.75rem;
 		right: 0.75rem;

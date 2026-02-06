@@ -41,7 +41,7 @@ const durationMinutes = getDurationMinutes();
 	data-session-speakers={JSON.stringify(speakers.map((s: string | Speaker) => (typeof s === "string" ? { name: s } : s)))}
 	data-session-tags={JSON.stringify(tags)}
 >
-	<div class="session-bookmark" aria-label="Bookmark session" role="button" tabindex="0" data-session-id={sessionId}></div>
+	<div class="session-favorite" aria-label="Favorite session" role="button" tabindex="0" data-session-id={sessionId}></div>
 	<div class="session-content">
 		<div class="session-name">{name}</div>
 		<div class="session-info-wrapper">
@@ -126,7 +126,7 @@ const durationMinutes = getDurationMinutes();
 		color: #3c2d0e;
 	}
 
-	.session-block.espresso .session-bookmark {
+	.session-block.espresso .session-favorite {
 		opacity: 0.5;
 	}
 
@@ -144,7 +144,7 @@ const durationMinutes = getDurationMinutes();
 		background-color: #1d1d1d84;
 	}
 
-	.session-bookmark {
+	.session-favorite {
 		position: absolute;
 		top: 0.5rem;
 		right: 0.5rem;
@@ -158,7 +158,7 @@ const durationMinutes = getDurationMinutes();
 		cursor: pointer;
 	}
 
-	.session-bookmark.is-bookmarked {
+	.session-favorite.is-marked {
 		opacity: 1;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='white' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z'/%3E%3C/svg%3E");
 	}
@@ -359,7 +359,7 @@ const durationMinutes = getDurationMinutes();
 	}
 
 	function updateBookmarkUI(bookmarkEl: Element, isBookmarked: boolean) {
-		bookmarkEl.classList.toggle("is-bookmarked", isBookmarked);
+		bookmarkEl.classList.toggle("is-marked", isBookmarked);
 	}
 
 	// Add click handler to open modal
@@ -369,7 +369,7 @@ const durationMinutes = getDurationMinutes();
 
 		sessionBlocks.forEach(block => {
 			// Init bookmark state
-			const bookmarkEl = block.querySelector(".session-bookmark");
+			const bookmarkEl = block.querySelector(".session-favorite");
 			const sessionId = block.getAttribute("data-session-id") || "";
 			if (bookmarkEl && sessionId) {
 				updateBookmarkUI(bookmarkEl, bookmarks.has(sessionId));
@@ -398,7 +398,7 @@ const durationMinutes = getDurationMinutes();
 				}
 
 				// Don't trigger if clicking the bookmark
-				if ((e.target as HTMLElement).closest(".session-bookmark")) {
+				if ((e.target as HTMLElement).closest(".session-favorite")) {
 					return;
 				}
 
@@ -481,7 +481,7 @@ const durationMinutes = getDurationMinutes();
 		const sessionId = e.detail?.sessionId;
 		if (!sessionId) return;
 		const block = document.querySelector(`.session-block[data-session-id="${CSS.escape(sessionId)}"]`);
-		const bookmarkEl = block?.querySelector(".session-bookmark");
+		const bookmarkEl = block?.querySelector(".session-favorite");
 		if (bookmarkEl) {
 			updateBookmarkUI(bookmarkEl, readBookmarks().has(sessionId));
 		}
