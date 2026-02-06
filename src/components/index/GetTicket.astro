@@ -1,7 +1,7 @@
 ---
-import { Plane, Users, CodeXml } from "@lucide/astro";
+import { Plane, Users, CodeXml, ArrowRight } from "@lucide/astro";
 import Danmaku from "./effects/Danmaku.astro";
-import danmakuData from "../../data/danmakuLines.json";
+import danmakuLines from "../../data/danmakuLines.json";
 import { useTranslations, type Lang } from "@/utils/i18n";
 
 interface Props {
@@ -54,14 +54,12 @@ const tickets = [
 		url: t.longDistance.url
 	}
 ];
-
-const danmakuLines: string[] = danmakuData.lines;
 ---
 
-<section id="get-ticket">
+<section id="tickets">
 	<div class="container">
 		<div class="title">
-			<h1 class="text-reveal-title">{t.title}</h1>
+			<h2 class="text-reveal-title">{t.title}</h2>
 		</div>
 
 		<div class="ticket-container">
@@ -85,9 +83,9 @@ const danmakuLines: string[] = danmakuData.lines;
 													<ticket.icon size={28} />
 												</div>
 												<div class="title-wrapper">
-													<h2 class="ticket-title" data-max-size="4">
+													<h3 class="ticket-title" data-max-size="4">
 														{ticket.englishTitle}
-													</h2>
+													</h3>
 												</div>
 											</div>
 
@@ -143,9 +141,7 @@ const danmakuLines: string[] = danmakuData.lines;
 			</div>
 			<div class="referral-content">
 				<a class="btn-filled" href="referral">
-					<svg xmlns="http://www.w3.org/2000/svg" width="49" height="49" viewBox="0 0 49 49" fill="none" aria-hidden="true">
-						<path d="M3.5 24.5H45.5M45.5 24.5L24.5 3.5M45.5 24.5L24.5 45.5" stroke="#634A15" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
-					</svg>
+					<ArrowRight size="55" stroke-width="3" color="#634A15" aria-hidden="true" />
 				</a>
 			</div>
 		</div>
@@ -207,15 +203,10 @@ const danmakuLines: string[] = danmakuData.lines;
 	}
 
 	.title {
-		font-size: 2.25rem;
 		padding-top: 6rem;
 		color: white;
 		text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
 		margin-bottom: 3rem;
-	}
-
-	.title h1 {
-		font-weight: 700;
 	}
 
 	.ticket-container {
@@ -568,7 +559,6 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 
 		.title {
-			font-size: 2rem;
 			padding-top: 5rem;
 			margin-bottom: 2.5rem;
 		}
@@ -711,7 +701,6 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 
 		.title {
-			font-size: 1.75rem;
 			padding-top: 4rem;
 			margin-bottom: 2rem;
 		}
@@ -900,7 +889,6 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 
 		.title {
-			font-size: 1.5rem;
 			padding-top: 3rem;
 			margin-bottom: 1.5rem;
 		}
@@ -945,7 +933,6 @@ const danmakuLines: string[] = danmakuData.lines;
 		}
 
 		.title {
-			font-size: 1.25rem;
 			padding-top: 2.5rem;
 			margin-bottom: 1rem;
 		}
@@ -981,6 +968,32 @@ const danmakuLines: string[] = danmakuData.lines;
 		.btn-outline {
 			padding: 0.5rem 0.75rem;
 			font-size: 0.85rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ticket-card {
+			transition: none;
+		}
+
+		.ticket-main {
+			transition: none;
+		}
+
+		.ticket-content-wrapper {
+			transition: none;
+		}
+
+		.mobile-toggle {
+			transition: none;
+		}
+
+		.btn-outline {
+			transition: none;
+		}
+
+		.btn-filled {
+			transition: none;
 		}
 	}
 </style>

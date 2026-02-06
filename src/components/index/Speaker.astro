@@ -126,13 +126,6 @@ const speakers = [
 		gap: 2rem;
 	}
 
-	.title h2 {
-		font-size: 5rem;
-		margin: 0;
-		font-weight: 600;
-		white-space: nowrap;
-	}
-
 	.line {
 		height: 0.0625rem;
 		background-color: #a79164;
@@ -161,13 +154,6 @@ const speakers = [
 		text-align: left;
 		padding-right: 2rem;
 		box-sizing: border-box;
-	}
-
-	.speaker-item h2 {
-		font-size: inherit;
-		font-weight: inherit;
-		color: inherit;
-		line-height: 1.7;
 	}
 
 	.speaker-item.active {
@@ -287,12 +273,6 @@ const speakers = [
 			align-items: center;
 		}
 
-		.title h2 {
-			font-size: 3rem;
-			margin: 0;
-			line-height: 1;
-		}
-
 		.line {
 			width: 100%;
 			margin: 0;
@@ -371,6 +351,28 @@ const speakers = [
 
 		.bg-optimized {
 			height: 70%;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.parallax > use {
+			animation: none;
+		}
+
+		.marquee-track {
+			animation: none;
+		}
+
+		.speaker-item {
+			transition: none;
+		}
+
+		.desktop-img {
+			transition: none;
+		}
+
+		.cta-btn {
+			transition: none;
 		}
 	}
 </style>

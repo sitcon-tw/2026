@@ -1,5 +1,6 @@
 ---
 import { useTranslations, type Lang } from "@/utils/i18n";
+import { X } from "@lucide/astro";
 import sponsors from "@/data/sponsor.json";
 
 interface Props {
@@ -29,10 +30,10 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 	<div class="content-wrapper">
 		<div class="top-tier-grid">
 			<div class="tier-item">
-				<h3 class="tier-title">{t.main}</h3>
+				<h3 class="tier-title" id="main">{t.main}</h3>
 				{
-					sponsors.main.map(s => (
-						<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.main} data-img={getLogo(s)} data-url={s.url}>
+					sponsors.main.map((s, idx) => (
+						<button class="logo-box center-box sponsor-trigger" data-id={`main-${idx}`} data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.main} data-img={getLogo(s)} data-url={s.url}>
 							<img src={getLogo(s)} alt={getTitle(s)} />
 						</button>
 					))
@@ -40,11 +41,11 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			</div>
 
 			<div class="tier-item">
-				<h3 class="tier-title">{t.cohost}</h3>
+				<h3 class="tier-title" id="cohost">{t.cohost}</h3>
 				<div class="logo-row-2">
 					{
-						sponsors.cohost.map(s => (
-							<button class="logo-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.cohost} data-img={getLogo(s)} data-url={s.url}>
+						sponsors.cohost.map((s, idx) => (
+							<button class="logo-box sponsor-trigger" data-id={`cohost-${idx}`} data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.cohost} data-img={getLogo(s)} data-url={s.url}>
 								<img src={getLogo(s)} alt={getTitle(s)} />
 							</button>
 						))
@@ -53,10 +54,10 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			</div>
 
 			<div class="tier-item">
-				<h3 class="tier-title">{t.organizer}</h3>
+				<h3 class="tier-title" id="organizer">{t.organizer}</h3>
 				{
-					sponsors.organizer.map(s => (
-						<button class="logo-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.organizer} data-img={getLogo(s)} data-url={s.url}>
+					sponsors.organizer.map((s, idx) => (
+						<button class="logo-box sponsor-trigger" data-id={`organizer-${idx}`} data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.organizer} data-img={getLogo(s)} data-url={s.url}>
 							<img src={getLogo(s)} alt={getTitle(s)} />
 						</button>
 					))
@@ -84,20 +85,28 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 					</button>
 				))
 			}
-		</div>
+		</div> -->
 
-		<h3 class="tier-title text-reveal-title">{t.sponsorVisionary}</h3>
+		<h3 class="tier-title text-reveal-title" id="sponsorVisionary">{t.sponsorVisionary}</h3>
 		<div class="main-grid">
 			{
-				sponsors.sponsorVisionary.map(s => (
-					<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.sponsorVisionary} data-img={getLogo(s)} data-url={s.url}>
+				sponsors.sponsorVisionary.map((s, idx) => (
+					<button
+						class="logo-box center-box sponsor-trigger"
+						data-id={`sponsorVisionary-${idx}`}
+						data-name={getTitle(s)}
+						data-desc={getDesc(s)}
+						data-type={t.sponsorVisionary}
+						data-img={getLogo(s)}
+						data-url={s.url}
+					>
 						<img src={getLogo(s)} alt={getTitle(s)} />
 					</button>
 				))
 			}
 		</div>
 
-		<h3 class="tier-title text-reveal-title">{t.sponsorNewSprout}</h3>
+		<!-- <h3 class="tier-title text-reveal-title">{t.sponsorNewSprout}</h3>
 		<div class="main-grid">
 			{
 				sponsors.sponsorNewSprout.map(s => (
@@ -139,9 +148,7 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 	<dialog id="sponsor-dialog">
 		<div class="dialog-wrapper">
 			<button id="close-dialog" aria-label="Close">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-					<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
-				</svg>
+				<X size="24" stroke-width="2.2" aria-hidden="true" />
 			</button>
 
 			<div class="dialog-content">
@@ -152,11 +159,8 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				<div class="logo-area">
 					<img id="dialog-img" alt="Sponsor Logo" />
 				</div>
-
-				<div class="text-area">
-					<h2 id="dialog-title">{t.sponsorName}</h2>
-					<p id="dialog-desc">{t.sponsorDesc}</p>
-				</div>
+				<h2 id="dialog-title">{t.sponsorName}</h2>
+				<p id="dialog-desc">{t.sponsorDesc}</p>
 				<div class="action-area">
 					<a href="#" target="_blank" class="visit-btn">{t.visitWebsite}</a>
 				</div>
@@ -180,11 +184,18 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			gap: 1rem;
 		}
 
-		.tier-title {
+		h2 {
+			font-size: 1.3rem;
+			margin-bottom: 1rem;
+			color: #1f2937;
+		}
+
+		h3 {
 			font-size: 1.1rem;
 			font-weight: bold;
 			margin-bottom: 2rem;
 			color: #222;
+			scroll-margin-top: 5rem;
 		}
 
 		.logo-box {
@@ -300,6 +311,10 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			text-align: center;
 		}
 
+		.dialog-wrapper p {
+			color: #6b7280;
+		}
+
 		#close-dialog {
 			position: absolute;
 			top: 1rem;
@@ -352,26 +367,6 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			max-height: 100%;
 			max-width: 18rem;
 			object-fit: contain;
-		}
-
-		.text-area {
-			display: flex;
-			flex-direction: column;
-			gap: 0.75rem;
-		}
-
-		.text-area h2 {
-			margin: 0;
-			font-size: 1.4rem;
-			color: #1f2937;
-			line-height: 1.2;
-		}
-
-		.text-area p {
-			margin: 0;
-			font-size: 1rem;
-			color: #6b7280;
-			line-height: 1.6;
 		}
 
 		.action-area {
@@ -503,18 +498,56 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			.dialog-wrapper {
 				padding: 3rem;
 			}
+		}
 
-			.text-area h2 {
-				font-size: 1.8rem;
+		@media (prefers-reduced-motion: reduce) {
+			.logo-box img {
+				transition: none;
 			}
 
-			.text-area p {
-				font-size: 1.1rem;
+			.person-sponsor {
+				transition: none;
+				animation: none;
 			}
+
+			dialog[open] {
+				animation: none;
+				opacity: 1;
+				transform: scale(1);
+			}
+
+			dialog.closing {
+				animation: none;
+			}
+
+			dialog::backdrop {
+				animation: none;
+				background: rgba(0, 0, 0, 0.6);
+			}
+
+			dialog.closing::backdrop {
+				animation: none;
+			}
+
+			.visit-btn {
+				transition: none;
+			}
+
+			#close-dialog {
+				transition: none;
+			}
+		}
+
+		#dialog-desc :global(a) {
+			text-decoration: underline;
+			text-underline-offset: 4px;
+			text-decoration-thickness: 2px;
 		}
 	</style>
 
 	<script>
+		import { marked } from "marked";
+
 		const initSponsorDialog = () => {
 			const container = document.querySelector(".sponsor-container") as HTMLElement | null;
 			if (!container) return () => {};
@@ -533,6 +566,11 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				if (!dialog) return;
 				dialog.classList.add("closing");
 
+				// Clear URL hash
+				if (window.location.hash) {
+					history.pushState(null, "", window.location.pathname + window.location.search);
+				}
+
 				dialog.addEventListener(
 					"animationend",
 					() => {
@@ -543,22 +581,31 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				);
 			};
 
+			const openSponsorDialog = async (trigger: HTMLElement) => {
+				if (!dialog) return;
+				const { name, desc, type, img, url, id } = trigger.dataset;
+
+				if (dialogTitle) dialogTitle.textContent = name ?? null;
+				if (dialogDesc) dialogDesc.innerHTML = desc ? await marked.parse(String(desc)) : "";
+				if (dialogType) dialogType.textContent = type ?? null;
+				if (dialogImg && img) dialogImg.src = img;
+				if (visitBtn) {
+					visitBtn.href = url || "#";
+					visitBtn.style.display = url ? "inline-block" : "none";
+				}
+
+				// Update URL hash
+				if (id) {
+					history.pushState(null, "", `#${id}`);
+				}
+
+				dialog.showModal();
+			};
+
 			const documentClickHandler = (e: Event) => {
 				const trigger = (e.target as Element)?.closest(".sponsor-trigger") as HTMLElement | null;
-
-				if (trigger && dialog) {
-					const { name, desc, type, img, url } = trigger.dataset;
-
-					if (dialogTitle) dialogTitle.textContent = name ?? null;
-					if (dialogDesc) dialogDesc.innerHTML = desc ?? "";
-					if (dialogType) dialogType.textContent = type ?? null;
-					if (dialogImg && img) dialogImg.src = img;
-					if (visitBtn) {
-						visitBtn.href = url || "#";
-						visitBtn.style.display = url ? "inline-block" : "none";
-					}
-
-					dialog.showModal();
+				if (trigger) {
+					openSponsorDialog(trigger);
 				}
 			};
 
@@ -584,10 +631,37 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				dialog.addEventListener("click", dialogClickHandler);
 			}
 
+			// Handle hash change (browser back/forward)
+			const hashChangeHandler = () => {
+				const hash = window.location.hash.slice(1);
+				if (hash && dialog && !dialog.open) {
+					const trigger = container.querySelector(`[data-id="${hash}"]`) as HTMLElement | null;
+					if (trigger) {
+						openSponsorDialog(trigger);
+					}
+				} else if (!hash && dialog?.open) {
+					closeDialogAnim();
+				}
+			};
+
+			window.addEventListener("hashchange", hashChangeHandler);
+
+			// Check initial hash on load
+			const initialHash = window.location.hash.slice(1);
+			if (initialHash) {
+				const trigger = container.querySelector(`[data-id="${initialHash}"]`) as HTMLElement | null;
+				if (trigger) {
+					// scroll to #sponsors
+					window.onload = () => document.getElementById("sponsors")?.scrollIntoView();
+					openSponsorDialog(trigger);
+				}
+			}
+
 			return () => {
 				document.removeEventListener("click", documentClickHandler);
 				if (closeBtn) closeBtn.removeEventListener("click", closeHandler);
 				if (dialog) dialog.removeEventListener("click", dialogClickHandler);
+				window.removeEventListener("hashchange", hashChangeHandler);
 				container.dataset.sponsorInit = "false";
 			};
 		};

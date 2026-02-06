@@ -246,6 +246,7 @@ const t = useTranslations(lang).venue;
 		.title {
 			font-size: 2.5rem;
 		}
+
 		.content-wrapper {
 			flex-direction: column;
 			min-height: auto;
@@ -303,6 +304,8 @@ const t = useTranslations(lang).venue;
 	let currentFloor: string | null = null;
 	let animationId: number;
 	let modelGroup: THREE.Group;
+
+	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 	const initThree = () => {
 		const canvas = document.getElementById("venue-canvas") as HTMLCanvasElement;
@@ -467,11 +470,15 @@ const t = useTranslations(lang).venue;
 			// Animate to stacked position with gap
 			const targetY = (group.userData.originalY || 0) + floorIndex * FLOOR_GAP;
 
-			gsap.to(group.position, {
-				y: targetY,
-				duration: 0.8,
-				ease: "power2.inOut"
-			});
+			if (prefersReducedMotion()) {
+				group.position.y = targetY;
+			} else {
+				gsap.to(group.position, {
+					y: targetY,
+					duration: 0.8,
+					ease: "power2.inOut"
+				});
+			}
 
 			// Fade in all meshes
 			group.traverse(child => {
@@ -517,51 +524,75 @@ const t = useTranslations(lang).venue;
 				// Show selected floor
 				group.visible = true;
 
-				gsap.to(group.position, {
-					y: group.userData.originalY || 0,
-					duration: 0.6,
-					ease: "power2.inOut"
-				});
+				if (prefersReducedMotion()) {
+					group.position.y = group.userData.originalY || 0;
+					group.traverse(child => {
+						if (child instanceof THREE.Mesh && child.material) {
+							const materials = Array.isArray(child.material) ? child.material : [child.material];
+							materials.forEach(mat => {
+								if ("opacity" in mat) mat.opacity = 1;
+							});
+						}
+					});
+				} else {
+					gsap.to(group.position, {
+						y: group.userData.originalY || 0,
+						duration: 0.6,
+						ease: "power2.inOut"
+					});
 
-				// Fade in
-				group.traverse(child => {
-					if (child instanceof THREE.Mesh && child.material) {
-						const materials = Array.isArray(child.material) ? child.material : [child.material];
-						materials.forEach(mat => {
-							if ("opacity" in mat) {
-								gsap.to(mat, {
-									opacity: 1,
-									duration: 0.4
-								});
-							}
-						});
-					}
-				});
+					// Fade in
+					group.traverse(child => {
+						if (child instanceof THREE.Mesh && child.material) {
+							const materials = Array.isArray(child.material) ? child.material : [child.material];
+							materials.forEach(mat => {
+								if ("opacity" in mat) {
+									gsap.to(mat, {
+										opacity: 1,
+										duration: 0.4
+									});
+								}
+							});
+						}
+					});
+				}
 			} else {
 				// Hide other floors
-				group.traverse(child => {
-					if (child instanceof THREE.Mesh && child.material) {
-						const materials = Array.isArray(child.material) ? child.material : [child.material];
-						materials.forEach(mat => {
-							if ("opacity" in mat) {
-								gsap.to(mat, {
-									opacity: 0,
-									duration: 0.3,
-									onComplete: () => {
-										group.visible = false;
-									}
-								});
-							}
-						});
-					}
-				});
+				if (prefersReducedMotion()) {
+					group.visible = false;
+					group.traverse(child => {
+						if (child instanceof THREE.Mesh && child.material) {
+							const materials = Array.isArray(child.material) ? child.material : [child.material];
+							materials.forEach(mat => {
+								if ("opacity" in mat) mat.opacity = 0;
+							});
+						}
+					});
+				} else {
+					group.traverse(child => {
+						if (child instanceof THREE.Mesh && child.material) {
+							const materials = Array.isArray(child.material) ? child.material : [child.material];
+							materials.forEach(mat => {
+								if ("opacity" in mat) {
+									gsap.to(mat, {
+										opacity: 0,
+										duration: 0.3,
+										onComplete: () => {
+											group.visible = false;
+										}
+									});
+								}
+							});
+						}
+					});
 
-				// Fallback for groups without mesh materials
-				gsap.delayedCall(0.3, () => {
-					if (currentFloor !== fId) {
-						group.visible = false;
-					}
-				});
+					// Fallback for groups without mesh materials
+					gsap.delayedCall(0.3, () => {
+						if (currentFloor !== fId) {
+							group.visible = false;
+						}
+					});
+				}
 			}
 		});
 
@@ -570,21 +601,26 @@ const t = useTranslations(lang).venue;
 		const floorIndex = targetGroup?.userData.floorIndex || 0;
 		const cameraY = 4 + floorIndex * 0.3;
 
-		gsap.to(camera.position, {
-			x: -6,
-			y: cameraY,
-			z: 6,
-			duration: 1,
-			ease: "power2.inOut"
-		});
+		if (prefersReducedMotion()) {
+			camera.position.set(-6, cameraY, 6);
+			controls.target.set(0, 0.5, 0);
+		} else {
+			gsap.to(camera.position, {
+				x: -6,
+				y: cameraY,
+				z: 6,
+				duration: 1,
+				ease: "power2.inOut"
+			});
 
-		gsap.to(controls.target, {
-			x: 0,
-			y: 0.5,
-			z: 0,
-			duration: 1,
-			ease: "power2.inOut"
-		});
+			gsap.to(controls.target, {
+				x: 0,
+				y: 0.5,
+				z: 0,
+				duration: 1,
+				ease: "power2.inOut"
+			});
+		}
 	};
 
 	const onWindowResize = () => {

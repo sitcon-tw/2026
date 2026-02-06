@@ -10,7 +10,7 @@ const { id = "member-info-modal" } = Astro.props;
 		</button>
 	</div>
 	<h1 id="member-name"></h1>
-	<h2 id="member-position"></h2>
+	<p id="member-position"></p>
 	<div class="avatar">
 		<div class="avatar-container" id="member-avatar-container">
 			<!-- 根據 mode 動態生成層級 -->
@@ -324,14 +324,11 @@ const { id = "member-info-modal" } = Astro.props;
 	}
 
 	h1 {
-		font-family: "GenKiMinTW";
 		font-size: 5.25rem;
-		font-weight: 700;
 	}
 
-	h2 {
+	.member-position {
 		font-family: "GenKiMinTW";
-		font-size: 1rem;
 		font-weight: 700;
 		padding: 1.5rem 0;
 		line-height: 1.5;
@@ -408,6 +405,28 @@ const { id = "member-info-modal" } = Astro.props;
 		padding-top: 3.75rem;
 		font-weight: 700;
 		line-height: 1.5;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.member-info {
+			transition: none;
+		}
+
+		.member-info.show {
+			transition: none;
+		}
+
+		.close-btn {
+			transition: none;
+		}
+
+		#member-social-btn {
+			transition: none;
+		}
+
+		.avatar-layer {
+			transition: none;
+		}
 	}
 
 	@media (max-width: 40rem) {

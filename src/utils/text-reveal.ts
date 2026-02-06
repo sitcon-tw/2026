@@ -15,6 +15,10 @@ import { SplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
+const prefersReducedMotion = (): boolean => {
+	return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+};
+
 /**
  * 檢查元素是否包含 br 標籤
  */
@@ -77,7 +81,6 @@ const splitTextIntoLines = (element: HTMLElement): void => {
 	const split = SplitText.create(element, {
 		type: "lines",
 		mask: "lines",
-		autoSplit: true,
 
 		prepareText: (text: string) => {
 			return text.replace(CJK, m => m + ZWSP);
@@ -102,10 +105,11 @@ const initTitleReveal = (element: HTMLElement): void => {
 	const spans = element.querySelectorAll(".text-reveal-content");
 	if (spans.length === 0) return;
 
-	// 如果已經播放過動畫，直接顯示
-	if (element.dataset.animPlayed === "true") {
+	// 如果使用者偏好減少動態或已經播放過動畫，直接顯示
+	if (prefersReducedMotion() || element.dataset.animPlayed === "true") {
 		gsap.set(spans, { y: "0%", opacity: 1, skewY: 0 });
 		element.dataset.animationInitialized = "true";
+		element.dataset.animPlayed = "true";
 		return;
 	}
 
@@ -146,10 +150,11 @@ const initParagraphReveal = (element: HTMLElement): void => {
 	const spans = element.querySelectorAll(".text-reveal-content");
 	if (spans.length === 0) return;
 
-	// 如果已經播放過動畫，直接顯示
-	if (element.dataset.animPlayed === "true") {
+	// 如果使用者偏好減少動態或已經播放過動畫，直接顯示
+	if (prefersReducedMotion() || element.dataset.animPlayed === "true") {
 		gsap.set(spans, { y: "0%", opacity: 1, skewY: 0 });
 		element.dataset.animationInitialized = "true";
+		element.dataset.animPlayed = "true";
 		return;
 	}
 

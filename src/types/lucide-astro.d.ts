@@ -27,4 +27,8 @@ declare module "@lucide/astro" {
 	export const Clock: any;
 	export const Play: any;
 	export const Triangle: any;
+	export const ArrowUp: any;
+	export const ArrowRight: any;
+	export const ArrowUpRight: any;
+	export const MessageCircle: any;
 }
