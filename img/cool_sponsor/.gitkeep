@@ -1,0 +1,3 @@
+## 若要顯示贊助商圖片，需要做以下事情
+- 在 /img/sponsor/ 底下放 [名稱].webp 以及 [名稱]-mobile.webp
+- 在 /data/ads.json 中新增一筆資料，格式為 { "name": "廣告名稱", "weight": 1, "link": "廣告連結" }
