@@ -742,7 +742,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		flex: 1 1 auto;
 		display: flex;
 		flex-direction: column;
-		padding: 8rem 4rem 0 5rem;
+		padding: 8rem 4rem 4rem 5rem;
 		min-height: 0;
 		max-height: 100%;
 		background: #faf9f6;
@@ -885,6 +885,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		overflow-y: auto;
 		overflow-x: hidden;
 		width: 100%;
+		padding-right: 1.5rem;
 	}
 
 	.session-actions :global(.action-btn) {
@@ -1083,6 +1084,10 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 
 		.session-actions {
 			gap: 0.5rem;
+		}
+
+		.session-content {
+			padding-right: 0.75rem;
 		}
 	}
 </style>
