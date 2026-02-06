@@ -571,11 +571,25 @@ const posters = Array.isArray(postersData) ? postersData : [];
 			});
 	}
 
+	function cleanNonExistBookmarks() {
+		let bookmarks = JSON.parse(window.localStorage.getItem("sitcon2026:agendaBookmarks") || "[]");
+		const blocks = document.querySelectorAll(".session-block");
+		let existsBookmarks = [];
+		blocks.forEach(block => {
+			const id = block.getAttribute("data-session-id");
+			if (id) existsBookmarks.push(id);
+		});
+
+		bookmarks = bookmarks.filter(id => existsBookmarks.includes(id)) || [];
+		window.localStorage.setItem("sitcon2026:agendaBookmarks", JSON.stringify(bookmarks));
+	}
+
 	document.addEventListener("clearUrlCuratedState", clearUrlCuratedState);
 
 	// Deep link on first load
 	document.addEventListener("DOMContentLoaded", () => {
 		applyUrlCuratedState();
+		cleanNonExistBookmarks();
 		const idFromPath = getAgendaIdFromPathname(window.location.pathname);
 		const ssrAgendaId = agendaID || null;
 		const id = idFromPath || ssrAgendaId;
