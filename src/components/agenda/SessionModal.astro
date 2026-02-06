@@ -416,7 +416,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 									avatar
 										? `<div class="speaker-detail-avatar-wrapper-mobile">
 									<div class="speaker-detail-avatar-frame">
-										<img src="${avatar}" alt="${name}" class="speaker-detail-avatar" />
+										<img src="${avatar}" alt="${name}" class="speaker-detail-avatar" onerror="this.onerror=null; this.src='https://sitcon.org/2022/imgs/deafult_avatar.jpg'" />
 									</div>
 								</div>`
 										: ""
@@ -428,7 +428,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 									avatar
 										? `<div class="speaker-detail-avatar-wrapper">
 									<div class="speaker-detail-avatar-frame">
-										<img src="${avatar}" alt="${name}" class="speaker-detail-avatar" />
+										<img src="${avatar}" alt="${name}" class="speaker-detail-avatar" onerror="this.onerror=null; this.src='https://sitcon.org/2022/imgs/deafult_avatar.jpg'" />
 									</div>
 								</div>`
 										: ""
