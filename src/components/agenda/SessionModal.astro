@@ -229,6 +229,11 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 			if (lenis && typeof lenis.start === "function") {
 				lenis.start();
 			}
+			// Reset scroll position to top
+			const sessionContent = modal.querySelector(".session-content") as HTMLElement;
+			if (sessionContent) {
+				sessionContent.scrollTop = 0;
+			}
 			document.dispatchEvent(new CustomEvent("closeSessionModal"));
 		}, duration);
 	}
@@ -554,6 +559,11 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 			}
 			if (currentY >= DRAG_CLOSE_THRESHOLD) {
 				const height = container.getBoundingClientRect().height;
+				// Reset scroll position to top
+				const sessionContent = mod.querySelector(".session-content") as HTMLElement;
+				if (sessionContent) {
+					sessionContent.scrollTop = 0;
+				}
 				gsapLib.to(container, {
 					y: height,
 					duration: 0.25,
