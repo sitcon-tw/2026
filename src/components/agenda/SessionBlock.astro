@@ -32,8 +32,8 @@ const durationMinutes = getDurationMinutes();
 	data-session-name={name}
 	data-session-description={description || ""}
 	data-session-venue={venue || ""}
-	data-session-start-time={startTime || ""}
-	data-session-end-time={endTime || ""}
+	data-session-start-time={startTime ? new Date(startTime).getTime() : ""}
+	data-session-end-time={endTime ? new Date(endTime).getTime() : ""}
 	data-session-slido={slidoLink || ""}
 	data-session-slides={slidesLink || ""}
 	data-session-notes={notesLink || ""}
@@ -218,10 +218,14 @@ const durationMinutes = getDurationMinutes();
 
 	.session-tag {
 		font-size: 0.75rem;
-		color: #36ff62;
+		color: #30de56;
 		white-space: nowrap;
 		overflow: hidden;
 		flex-shrink: 0;
+	}
+
+	.espresso .session-tag {
+		color: #096c00;
 	}
 
 	.session-links {

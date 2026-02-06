@@ -250,8 +250,8 @@ const posters = Array.isArray(postersData) ? postersData : [];
 
 			// Update time (forced to GMT+8 / Asia/Taipei)
 			if (timeEl && data.startTime) {
-				const formatTime = isoString => {
-					const date = new Date(isoString);
+				const formatTime = timestamp => {
+					const date = new Date(Number(timestamp));
 					return date.toLocaleTimeString("en-US", {
 						hour: "2-digit",
 						minute: "2-digit",
@@ -507,7 +507,7 @@ const posters = Array.isArray(postersData) ? postersData : [];
 		if (ids.length === 0) return;
 
 		const name = n ? decodeURIComponent(n).trim() : "";
-		const curatedLabel = isEn ? "Picks" : "嚴選議程";
+		const curatedLabel = isEn ? "Picks" : "的精選議程";
 		if (agendaTitleEl) {
 			agendaTitleEl.textContent = name ? `${name} ${curatedLabel}` : curatedLabel;
 		}

@@ -348,9 +348,9 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/ads/${selectedAdName}-mobil
 		// Update time
 		const timeMetaEl = modal?.querySelector(".meta-item:first-child span");
 		if (timeMetaEl) {
-			const formatTimeStr = (iso: string) => {
-				if (!iso) return "";
-				const d = new Date(iso);
+			const formatTimeStr = (timestamp: string) => {
+				if (!timestamp) return "";
+				const d = new Date(Number(timestamp));
 				return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Taipei" });
 			};
 			timeMetaEl.textContent = `${formatTimeStr(sessionStartTime)}${sessionEndTime ? ` - ${formatTimeStr(sessionEndTime)}` : ""}`;

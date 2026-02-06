@@ -141,6 +141,32 @@ function getSlotWidthPercent(slotIndex: number): number {
 	return (slotWeights[slotIndex] / totalWeight) * 100;
 }
 
+// Helper: calculate width percent for a session spanning from startTimestamp to endTimestamp
+function getSessionWidthPercent(startTimestamp: number, endTimestamp: number): number {
+	if (totalSlots <= 0 || timeLabels.length < 2) return 100;
+
+	const startSlotIdx = getSlotIndex(startTimestamp);
+
+	// Find the slot index where the session ends (or the last slot if it extends beyond)
+	let endSlotIdx = startSlotIdx;
+	for (let i = startSlotIdx; i < timeLabels.length - 1; i++) {
+		const slotEnd = timeLabels[i + 1];
+		if (endTimestamp > slotEnd) {
+			endSlotIdx = i + 1;
+		} else {
+			break;
+		}
+	}
+
+	// Sum up the widths of all slots from start to end (inclusive)
+	let totalWidthPercent = 0;
+	for (let i = startSlotIdx; i <= endSlotIdx && i < slotWeights.length; i++) {
+		totalWidthPercent += getSlotWidthPercent(i);
+	}
+
+	return totalWidthPercent;
+}
+
 // Calculate indicator position based on slot boundaries (variable width per slot)
 function getIndicatorPercent(timestamp: number): number {
 	if (totalSlots <= 0 || timeLabels.length < 2) return 0;
@@ -221,15 +247,39 @@ const venueHasSessions = (venueId: string) => items.some(item => item.broadcast?
 const activeVenues = venues.filter(venueHasSessions);
 
 // Phone view: get all sessions grouped by time (across all venues)
+// Sessions that span multiple time slots appear in all slots they overlap with
 function getAllSessionsByTime() {
 	const allItems = [...items];
-	allItems.sort((a, b) => parseTime(a.startTime) - parseTime(b.startTime));
 	const byTime = new Map<number, AgendaItem[]>();
+
+	// First, collect all unique time slot start times
+	const allSlotTimes = new Set<number>();
 	allItems.forEach(item => {
-		const t = parseTime(item.startTime);
-		if (!byTime.has(t)) byTime.set(t, []);
-		byTime.get(t)!.push(item);
+		allSlotTimes.add(parseTime(item.startTime));
 	});
+	const sortedSlotTimes = Array.from(allSlotTimes).sort((a, b) => a - b);
+
+	// For each item, add it to every time slot it overlaps with
+	allItems.forEach(item => {
+		const itemStart = parseTime(item.startTime);
+		const itemEnd = item.endTime ? parseTime(item.endTime) : itemStart + getDuration(item) * 60 * 1000;
+
+		sortedSlotTimes.forEach(slotTime => {
+			// Find the end of this slot (next slot's start time, or itemEnd if last slot)
+			const slotIndex = sortedSlotTimes.indexOf(slotTime);
+			const slotEnd = slotIndex < sortedSlotTimes.length - 1 ? sortedSlotTimes[slotIndex + 1] : slotTime + 60 * 60 * 1000;
+
+			// Check if session overlaps with this slot (session starts before slot ends AND session ends after slot starts)
+			if (itemStart < slotEnd && itemEnd > slotTime) {
+				if (!byTime.has(slotTime)) byTime.set(slotTime, []);
+				// Avoid duplicates
+				if (!byTime.get(slotTime)!.some(existing => existing.id === item.id)) {
+					byTime.get(slotTime)!.push(item);
+				}
+			}
+		});
+	});
+
 	return Array.from(byTime.entries()).sort(([a], [b]) => a - b);
 }
 const allTimeBlocks = getAllSessionsByTime();
@@ -319,8 +369,7 @@ activeVenues.forEach(venueId => {
 									const startTimestamp = parseTime(item.startTime);
 									const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
 									const startPercent = getLeftPercent(startTimestamp);
-									const slotIdx = getSlotIndex(startTimestamp);
-									const widthPercent = getSlotWidthPercent(slotIdx);
+									const widthPercent = getSessionWidthPercent(startTimestamp, endTimestamp);
 									const venueStart = venues.indexOf(range[0]);
 									const topPercent = (venueStart / venues.length) * 100;
 									const heightPercent = (range.length / venues.length) * 100;
@@ -362,9 +411,8 @@ activeVenues.forEach(venueId => {
 										.map(item => {
 											const startTimestamp = parseTime(item.startTime);
 											const startPercent = getLeftPercent(startTimestamp);
-											const slotIdx = getSlotIndex(startTimestamp);
-											const widthPercent = getSlotWidthPercent(slotIdx);
 											const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
+											const widthPercent = getSessionWidthPercent(startTimestamp, endTimestamp);
 											return (
 												<SessionBlock
 													id={item.id}
@@ -375,7 +423,7 @@ activeVenues.forEach(venueId => {
 													tags={item.tags}
 													venue={item.venue}
 													startTime={item.startTime}
-													endTime={new Date(endTimestamp).toISOString()}
+													endTime={item.endTime || new Date(endTimestamp).toISOString()}
 													leftPercent={startPercent}
 													widthPercent={widthPercent}
 													slidoLink={item.slidoLink}

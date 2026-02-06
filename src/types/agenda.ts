@@ -1,8 +1,8 @@
 /**
  * Agenda schema from agenda_now.json.
- * Type codes: Ev = Generic, K = Keynote, P = Presentation, U = Undefined (開放式), E = Espresso, S = Sponsored (合作議程)
+ * Type codes: Ev = Generic, K = Keynote, P = Presentation, U = Undefined (開放式), E = Espresso, S = Sponsored (合作議程), PD = Poster Discussion (generic color)
  */
-export type SessionTypeCode = "Ev" | "K" | "P" | "U" | "E" | "S";
+export type SessionTypeCode = "Ev" | "K" | "P" | "U" | "E" | "S" | "PD";
 
 export const SESSION_TYPE_CODES = {
 	Ev: "generic",
@@ -10,7 +10,8 @@ export const SESSION_TYPE_CODES = {
 	P: "presentation",
 	U: "undefined",
 	E: "espresso",
-	S: "sponsored"
+	S: "sponsored",
+	PD: "generic"
 } as const satisfies Record<SessionTypeCode, string>;
 
 export type SessionTypeInternal = "generic" | "keynote" | "presentation" | "undefined" | "espresso" | "sponsored";
