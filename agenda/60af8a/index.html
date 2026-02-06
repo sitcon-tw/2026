@@ -708,8 +708,15 @@ const shareJamCopied = "已複製！";
 				el.style.transform = "translate(-50%, -50%)";
 				const img = document.createElement("img");
 				img.className = "share-jam-circle-img";
-				img.src = src;
 				img.alt = "";
+				img.addEventListener(
+					"error",
+					function () {
+						this.src = "https://sitcon.org/2022/imgs/deafult_avatar.jpg";
+					},
+					{ once: true }
+				);
+				img.src = src;
 				el.appendChild(img);
 				containerEl.appendChild(el);
 			});
@@ -808,9 +815,16 @@ const shareJamCopied = "已複製！";
 					el.style.top = `${(1 - body.position.y / worldHeight) * 100}%`;
 					el.style.transform = "translate(-50%, -50%)";
 					const img = document.createElement("img");
-					img.src = avatarUrls[i];
 					img.alt = "";
 					img.loading = "lazy";
+					img.addEventListener(
+						"error",
+						function () {
+							this.src = "https://sitcon.org/2022/imgs/deafult_avatar.jpg";
+						},
+						{ once: true }
+					);
+					img.src = avatarUrls[i];
 					el.appendChild(img);
 					containerEl.appendChild(el);
 					circleEls.push(el);
