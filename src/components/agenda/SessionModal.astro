@@ -1,6 +1,6 @@
 ---
 import { marked } from "marked";
-import { Share2, X, Clock, MapPin } from "@lucide/astro";
+import { Share2, Check, X, Clock, MapPin } from "@lucide/astro";
 import adsData from "@/data/ads.json";
 import bookmarkIcon from "@/../public/img/bookmark.svg";
 
@@ -190,9 +190,14 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 							</a>
 						)
 					}
-					<button type="button" class="action-btn" id="share-btn">
+					<button type="button" class="action-btn" id="share-btn" aria-label={lang === "en" ? "Share" : "分享"}>
 						<span>
-							<Share2 size={24} />
+							<span class="share-icon share-icon--share" aria-hidden="true">
+								<Share2 size={24} />
+							</span>
+							<span class="share-icon share-icon--check" aria-hidden="true">
+								<Check size={24} />
+							</span>
 						</span>
 					</button>
 				</div>
@@ -250,6 +255,16 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		overlay.addEventListener("click", closeModal);
 	}
 
+	let shareSuccessTimer = 0;
+	function showShareSuccess() {
+		if (!shareBtn) return;
+		shareBtn.classList.add("is-success");
+		if (shareSuccessTimer) window.clearTimeout(shareSuccessTimer);
+		shareSuccessTimer = window.setTimeout(() => {
+			shareBtn?.classList.remove("is-success");
+		}, 2000);
+	}
+
 	if (shareBtn) {
 		shareBtn.addEventListener("click", async () => {
 			if (navigator.share) {
@@ -259,12 +274,18 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 						text: document.querySelector(".session-description")?.textContent || "",
 						url: window.location.href
 					});
+					showShareSuccess();
 				} catch (err) {
 					console.log("Error sharing:", err);
 				}
 			} else {
 				// Fallback: copy to clipboard
-				navigator.clipboard.writeText(window.location.href);
+				try {
+					await navigator.clipboard.writeText(window.location.href);
+					showShareSuccess();
+				} catch (err) {
+					console.log("Error copying:", err);
+				}
 			}
 		});
 	}
@@ -955,6 +976,24 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		align-items: center;
 		gap: 0.5rem;
 		font-size: 1.25rem;
+	}
+
+	.session-actions :global(.action-btn .share-icon) {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.session-actions :global(.action-btn .share-icon--check) {
+		display: none;
+	}
+
+	.session-actions :global(.action-btn.is-success .share-icon--share) {
+		display: none;
+	}
+
+	.session-actions :global(.action-btn.is-success .share-icon--check) {
+		display: inline-flex;
 	}
 
 	.session-actions :global(.action-btn:hover) {
