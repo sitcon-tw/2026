@@ -89,7 +89,7 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 		const seenIds = new Set();
 		const result = [];
 		blocks.forEach(block => {
-			const bookmarkEl = block.querySelector(".session-bookmark.is-bookmarked");
+			const bookmarkEl = block.querySelector(".session-favorite.is-marked");
 			if (!bookmarkEl) return;
 			const id = block.getAttribute("data-session-id");
 			const name = block.getAttribute("data-session-name");
