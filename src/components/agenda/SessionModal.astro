@@ -122,23 +122,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 				<X size={24} />
 			</button>
 			<div class="session-content">
-				<div class="session-header">
-					{
-						speakers.length > 0 && (
-							<div class="speaker-info">
-								{speakers.map((speaker: string | Speaker, index: number) => {
-									const avatar = getSpeakerAvatar(speaker);
-									return (
-										<div class="speaker-item">
-											{avatar && <img src={avatar} alt={getSpeakerName(speaker)} class="speaker-avatar" />}
-											<span class="speaker-name">{getSpeakerName(speaker)}</span>
-										</div>
-									);
-								})}
-							</div>
-						)
-					}
-				</div>
+				<div class="session-header"></div>
 
 				<div class="session-type-badge">
 					{
@@ -214,6 +198,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 				</div>
 
 				<div class="session-description" set:html={description ? marked.parse(description) : ""} />
+				<div class="session-speaker-detail"></div>
 			</div>
 		</div>
 		<button class="modal-close-mobile" id="modal-close-mobile" aria-label="Close">
@@ -375,24 +360,68 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 			}
 		}
 
-		// Update speakers
-		const speakerInfoEl = modal?.querySelector(".speaker-info");
-		if (speakerInfoEl) {
+		// Update speakers (header chips + detailed card section)
+		const speakerDetailEl = modal?.querySelector(".session-speaker-detail");
+		if (speakerDetailEl) {
 			if (sessionSpeakers.length > 0) {
-				speakerInfoEl.innerHTML = sessionSpeakers
+				const chipsHtml = sessionSpeakers
 					.map((speaker: any) => {
 						const name = typeof speaker === "string" ? speaker : speaker.name;
 						const avatar = typeof speaker === "object" ? speaker.avatar : null;
 						return `<div class="speaker-item">
-						${avatar ? `<img src="${avatar}" alt="${name}" class="speaker-avatar" />` : ""}
-						<span class="speaker-name">${name}</span>
-					</div>`;
+							${avatar ? `<img src="${avatar}" alt="${name}" class="speaker-avatar" />` : ""}
+							<span class="speaker-name">${name}</span>
+						</div>`;
 					})
 					.join("");
-				(speakerInfoEl as HTMLElement).style.display = "";
+
+				const detailHtml = sessionSpeakers
+					.map((speaker: any) => {
+						const name = typeof speaker === "string" ? speaker : speaker.name;
+						const avatar = typeof speaker === "object" ? speaker.avatar : null;
+						const description = typeof speaker === "object" ? speaker.description || "" : "";
+						const descriptionHtml = description ? `<p class="speaker-detail-bio">${description.replace(/\n/g, "<br />")}</p>` : "";
+						return `<article class="speaker-detail-card">
+							<div class="speaker-detail-header">
+								<h2 class="speaker-detail-name">
+									${name}
+								</h2>
+								${
+									avatar
+										? `<div class="speaker-detail-avatar-wrapper-mobile">
+									<div class="speaker-detail-avatar-frame">
+										<img src="${avatar}" alt="${name}" class="speaker-detail-avatar" />
+									</div>
+								</div>`
+										: ""
+								}
+							</div>
+
+							<div class="speaker-detail-text">
+								${
+									avatar
+										? `<div class="speaker-detail-avatar-wrapper">
+									<div class="speaker-detail-avatar-frame">
+										<img src="${avatar}" alt="${name}" class="speaker-detail-avatar" />
+									</div>
+								</div>`
+										: ""
+								}
+								${descriptionHtml}
+							</div>
+						</article>`;
+					})
+					.join("");
+
+				if (speakerDetailEl) {
+					speakerDetailEl.innerHTML = detailHtml;
+					(speakerDetailEl as HTMLElement).style.display = "";
+				}
 			} else {
-				speakerInfoEl.innerHTML = "";
-				(speakerInfoEl as HTMLElement).style.display = "none";
+				if (speakerDetailEl) {
+					speakerDetailEl.innerHTML = "";
+					(speakerDetailEl as HTMLElement).style.display = "none";
+				}
 			}
 		}
 
@@ -804,13 +833,6 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		margin-bottom: 1.5rem;
 	}
 
-	.speaker-info {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		flex-wrap: wrap;
-	}
-
 	.speaker-item {
 		display: flex;
 		align-items: center;
@@ -928,6 +950,68 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		line-height: 1.8;
 		color: #333;
 		margin-bottom: 2rem;
+	}
+
+	.session-content :global(.session-speaker-detail) {
+		margin-top: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1.75rem;
+	}
+
+	.session-speaker-detail :global(.speaker-detail-card) {
+		display: flex;
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 1.5rem;
+		border-radius: 1.5rem;
+	}
+
+	.session-speaker-detail :global(.speaker-detail-avatar-wrapper) {
+		flex-shrink: 0;
+	}
+
+	.session-speaker-detail :global(.speaker-detail-avatar-wrapper-mobile) {
+		display: none;
+	}
+
+	.session-speaker-detail :global(.speaker-detail-avatar-frame) {
+		width: 16rem;
+		height: 16rem;
+		border-radius: 1.25rem;
+		overflow: hidden;
+		background: #262626;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.session-speaker-detail :global(.speaker-detail-avatar) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.session-speaker-detail :global(.speaker-detail-text) {
+		display: flex;
+		flex-direction: row;
+		gap: 0.75rem;
+		font-weight: 500;
+	}
+
+	.session-speaker-detail :global(.speaker-detail-name) {
+		font-family: "GenKiGothic2", sans-serif;
+		font-size: 1.5rem;
+		font-weight: bolder;
+		color: #241c0f;
+		margin: 0;
+	}
+
+	.session-speaker-detail :global(.speaker-detail-bio) {
+		margin: 0;
+		font-size: 0.98rem;
+		line-height: 1.9;
+		color: #333;
 	}
 
 	.session-description :global(p) {
@@ -1094,6 +1178,40 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 
 		.session-content {
 			padding-right: 0.75rem;
+		}
+
+		.session-speaker-detail :global(.speaker-detail-card) {
+			gap: 1.25rem;
+		}
+
+		.session-speaker-detail :global(.speaker-detail-avatar-wrapper-mobile) {
+			display: block;
+			margin-left: auto;
+		}
+
+		.session-speaker-detail :global(.speaker-detail-avatar-wrapper) {
+			display: none;
+		}
+
+		.session-speaker-detail :global(.speaker-detail-header) {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 0.5rem;
+			width: 100%;
+		}
+
+		.session-speaker-detail :global(.speaker-detail-avatar-frame) {
+			width: 9rem;
+			height: 9rem;
+		}
+
+		.session-speaker-detail :global(.speaker-detail-name) {
+			font-size: 1.75rem;
+		}
+
+		.session-speaker-detail :global(.speaker-detail-bio) {
+			font-size: 1.1rem;
 		}
 	}
 </style>

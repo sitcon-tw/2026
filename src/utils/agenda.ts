@@ -6,6 +6,8 @@ export type Lang = "zh" | "en";
 export interface SpeakerResolved {
 	name: string;
 	avatar?: string;
+	/** Optional localized bio/description of the speaker */
+	description?: string;
 }
 
 /**
@@ -36,7 +38,15 @@ function buildSpeakerMap(speakers: AgendaSpeakerRaw[] | undefined, lang: Lang): 
 	if (!speakers) return map;
 	for (const s of speakers) {
 		const name = lang === "zh" ? s.zh?.name : s.en?.name;
-		if (name !== undefined) map.set(s.id, { name, avatar: s.avatar });
+		if (name !== undefined) {
+			const bio = lang === "zh" ? s.zh?.bio : s.en?.bio;
+			const speaker: SpeakerResolved = {
+				name,
+				avatar: s.avatar
+			};
+			if (bio) speaker.description = bio;
+			map.set(s.id, speaker);
+		}
 	}
 	return map;
 }
