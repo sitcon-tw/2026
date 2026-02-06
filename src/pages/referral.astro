@@ -2,6 +2,7 @@
 import Layout from "@/layout/Layout.astro";
 import Footer from "@/components/Footer.astro";
 import { useTranslations } from "@/utils/i18n";
+import { ArrowRight } from "@lucide/astro";
 
 const lang = Astro.props.lang ?? "zh";
 const i18n = useTranslations(lang);
@@ -31,9 +32,7 @@ const { referral } = i18n;
 								</div>
 								{index < 2 && (
 									<div class="step-arrow" aria-hidden="true">
-										<svg width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M 5 20 L 50 20 M 40 10 L 50 20 L 40 30" stroke="#ffd172" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-										</svg>
+										<ArrowRight size="48" stroke-width="3.4" color="#ffd172" />
 									</div>
 								)}
 							</>
