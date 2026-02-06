@@ -34,12 +34,12 @@ const posters = Array.isArray(postersData) ? postersData : [];
 					<span>Presentation</span>
 				</div>
 				<div class="legend-item">
-					<div class="legend-color undefined"></div>
-					<span>{lang === "en" ? "Undefined" : "開放式"}</span>
-				</div>
-				<div class="legend-item">
 					<div class="legend-color espresso"></div>
 					<span>Espresso</span>
+				</div>
+				<div class="legend-item">
+					<div class="legend-color undefined"></div>
+					<span>{lang === "en" ? "Undefined" : "開放式議程"}</span>
 				</div>
 				<div class="legend-item">
 					<div class="legend-color sponsored"></div>
@@ -204,7 +204,7 @@ const posters = Array.isArray(postersData) ? postersData : [];
 							: data.type === "undefined"
 								? data.lang === "en"
 									? "Undefined"
-									: "開放式"
+									: "開放式議程"
 								: data.type === "espresso"
 									? "Espresso"
 									: data.type === "sponsored"
