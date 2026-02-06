@@ -365,6 +365,30 @@ const posters = Array.isArray(postersData) ? postersData : [];
 					if (shareSvg.firstElementChild) shareSpan.appendChild(shareSvg.firstElementChild);
 					shareBtn.appendChild(shareHoverBg);
 					shareBtn.appendChild(shareSpan);
+
+					const shareIcon = shareSpan.querySelector("svg");
+					const checkSvg = document.createElement("div");
+					checkSvg.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${shareIconSize}" height="${shareIconSize}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M20 6 9 17l-5-5"></path>
+					</svg>`;
+					const checkIcon = checkSvg.firstElementChild;
+					if (checkIcon) {
+						checkIcon.style.display = "none";
+						shareSpan.appendChild(checkIcon);
+					}
+
+					let shareSuccessTimer = 0;
+					const showShareSuccess = () => {
+						if (!shareIcon || !checkIcon) return;
+						shareIcon.style.display = "none";
+						checkIcon.style.display = "block";
+						if (shareSuccessTimer) window.clearTimeout(shareSuccessTimer);
+						shareSuccessTimer = window.setTimeout(() => {
+							checkIcon.style.display = "none";
+							shareIcon.style.display = "block";
+						}, 2000);
+					};
+
 					shareBtn.addEventListener("click", async () => {
 						if (navigator.share) {
 							try {
@@ -373,12 +397,17 @@ const posters = Array.isArray(postersData) ? postersData : [];
 									text: data.description || "",
 									url: window.location.href
 								});
+								showShareSuccess();
 							} catch (err) {
 								console.log("Error sharing:", err);
 							}
 						} else {
-							navigator.clipboard.writeText(window.location.href);
-							alert("Link copied to clipboard!");
+							try {
+								await navigator.clipboard.writeText(window.location.href);
+								showShareSuccess();
+							} catch (err) {
+								console.log("Error copying:", err);
+							}
 						}
 					});
 					actionsEl.appendChild(shareBtn);
