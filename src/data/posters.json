@@ -1,37 +1,9 @@
 [
 	{
 		"id": "1",
-		"title": "SITCON 2026",
-		"image": "1.jpg",
-		"description": "## 學生計算機年會\n\nSITCON 學生計算機年會，由對資訊抱持熱誠的學生們所組成的同名社群自發籌辦，希望能透過技術與知識的交流，串連起各地的學生們，共同耕耘台灣資訊大環境。\n\n我們希望讓學生們在走出校園前，就能夠體驗到開源社群的樂趣，並且在交流中拓展視野，找到志同道合的夥伴。",
-		"youtubeId": "dQw4w9WgXcQ"
-	},
-	{
-		"id": "2",
-		"title": "年度主題",
-		"image": "2.jpg",
-		"description": "## Human After All\n\nAI 時代的來臨，讓我們重新思考人與科技的關係。在演算法與數據的洪流中，我們依然保有獨特的人性價值。",
-		"youtubeId": ""
-	},
-	{
-		"id": "3",
-		"title": "社群精神",
-		"image": "3.jpg",
-		"description": "## Open Source\n\n開源不只是程式碼的開放，更是一種分享、協作的精神。我們鼓勵學生們參與開源專案，從中學習技術，也回饋社群。",
-		"youtubeId": ""
-	},
-	{
-		"id": "4",
-		"title": "志工招募",
-		"image": "4.jpg",
-		"description": "## Join Us\n\n每年的年會都由百位志工共同完成。如果你也想體驗籌辦大型研討會的過程，歡迎加入我們的行列！",
-		"youtubeId": ""
-	},
-	{
-		"id": "5",
-		"title": "歷年回顧",
-		"image": "5.jpg",
-		"description": "## History\n\n從 2013 年至今，SITCON 已經走過了十多個年頭。每一年的年會都有不同的主題與特色，記錄著當時學生們的熱情與創意。",
+		"title": "TBA",
+		"image": "poster_tba.jpg",
+		"description": "### 目前還在準備中",
 		"youtubeId": ""
 	}
 ]
