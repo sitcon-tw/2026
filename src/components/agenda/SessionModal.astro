@@ -780,7 +780,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		flex: 1 1 auto;
 		display: flex;
 		flex-direction: column;
-		padding: 8rem 4rem 4rem 5rem;
+		padding: 4rem;
 		min-height: 0;
 		max-height: 100%;
 		background: #faf9f6;
@@ -917,6 +917,14 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		overflow-x: hidden;
 		width: 100%;
 		padding-right: 1.5rem;
+		/* For Internet Explorer, Edge */
+		-ms-overflow-style: none;
+		/* For Firefox */
+		scrollbar-width: none;
+	}
+
+	.session-content::-webkit-scrollbar {
+		display: none;
 	}
 
 	.session-actions :global(.action-btn) {
@@ -959,14 +967,14 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		font-size: 1.1rem;
 		line-height: 1.8;
 		color: #333;
-		margin-bottom: 2rem;
+		margin-bottom: 3rem;
 	}
 
 	.session-content :global(.session-speaker-detail) {
 		margin-top: 1.5rem;
 		display: flex;
 		flex-direction: column;
-		gap: 1.75rem;
+		gap: 3.5rem;
 	}
 
 	.session-speaker-detail :global(.speaker-detail-card) {
@@ -1005,7 +1013,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 	.session-speaker-detail :global(.speaker-detail-text) {
 		display: flex;
 		flex-direction: row;
-		gap: 1rem;
+		gap: 2rem;
 		font-weight: 500;
 	}
 
@@ -1034,6 +1042,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		font-weight: bolder;
 		font-size: 1.5rem;
 		margin-top: 1.5rem;
+		margin-bottom: 0.5rem;
 		color: #1a1a1a;
 	}
 
@@ -1191,7 +1200,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		}
 
 		.session-speaker-detail :global(.speaker-detail-card) {
-			gap: 1.25rem;
+			gap: 2rem;
 		}
 
 		.session-speaker-detail :global(.speaker-detail-avatar-wrapper-mobile) {
