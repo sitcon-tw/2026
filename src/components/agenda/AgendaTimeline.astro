@@ -1,6 +1,6 @@
 ---
 import SessionBlock from "./SessionBlock.astro";
-import { Guitar } from "@lucide/astro";
+import { Guitar, Share2 } from "@lucide/astro";
 import { useTranslations } from "@/utils/i18n";
 
 interface Speaker {
@@ -518,15 +518,32 @@ activeVenues.forEach(venueId => {
 		</div>
 	</div>
 
-	<button
-		type="button"
-		class="share-jam-trigger-mobile"
-		id="share-jam-trigger-mobile"
-		aria-label={lang === "en" ? "Share your Jam" : "分享你的專屬 Jam"}
-		title={lang === "en" ? "Share your Jam" : "你的專屬 Jam"}
-	>
-		{lang === "en" ? "Share Jam" : "分享我的精選"}
-	</button>
+	<div class="agenda-mobile-controls share-button-hidden" id="agenda-mobile-controls">
+		<div class="agenda-filter-wrap-mobile">
+			<div class="filter-tabs-wrap">
+				<div class="filter-tabs" role="tablist" id="filter-tabs-list-mobile">
+					<div class="filter-tab-slider" id="filter-tab-slider-mobile" aria-hidden="true"></div>
+					<button type="button" class="filter-tab active" role="tab" aria-selected="true" id="filter-tab-all-mobile" data-filter="all">
+						{filterAllLabel}
+					</button>
+					<button type="button" class="filter-tab" role="tab" aria-selected="false" id="filter-tab-favorites-mobile" data-filter="favorites">
+						{filterFavoritesLabel}
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="share-jam-trigger-mobile-wrap">
+			<button
+				type="button"
+				class="share-jam-trigger-mobile"
+				id="share-jam-trigger-mobile"
+				aria-label={lang === "en" ? "Share your Jam" : "分享你的專屬 Jam"}
+				title={lang === "en" ? "Share your Jam" : "你的專屬 Jam"}
+			>
+				<Share2 class="share-icon" />
+			</button>
+		</div>
+	</div>
 </div>
 
 <script>
@@ -852,20 +869,23 @@ activeVenues.forEach(venueId => {
 		}
 	}
 
-	// Filter: All / Favorites sliding tab
+	// Filter: All / Favorites sliding tab (desktop + mobile each have own slider)
 	const timelineContainer = document.getElementById("agenda-timeline");
-	const filterTabsList = document.getElementById("filter-tabs-list");
-	const filterTabSlider = document.getElementById("filter-tab-slider");
+	const filterTabListSliderPairs: { list: HTMLElement; slider: HTMLElement }[] = [
+		{ list: document.getElementById("filter-tabs-list")!, slider: document.getElementById("filter-tab-slider")! },
+		{ list: document.getElementById("filter-tabs-list-mobile")!, slider: document.getElementById("filter-tab-slider-mobile")! }
+	].filter((p): p is { list: HTMLElement; slider: HTMLElement } => !!p.list && !!p.slider);
 	const filterTabs = document.querySelectorAll(".filter-tab");
 
 	function updateFilterTabSlider() {
-		if (!filterTabsList || !filterTabSlider) return;
-		const activeTab = filterTabsList.querySelector(".filter-tab.active, .filter-tab[aria-selected='true']") as HTMLElement;
-		if (!activeTab) return;
-		const listRect = filterTabsList.getBoundingClientRect();
-		const tabRect = activeTab.getBoundingClientRect();
-		filterTabSlider.style.left = `${tabRect.left - listRect.left}px`;
-		filterTabSlider.style.width = `${tabRect.width}px`;
+		filterTabListSliderPairs.forEach(({ list, slider }) => {
+			const activeTab = list.querySelector(".filter-tab.active, .filter-tab[aria-selected='true']") as HTMLElement;
+			if (!activeTab) return;
+			const listRect = list.getBoundingClientRect();
+			const tabRect = activeTab.getBoundingClientRect();
+			slider.style.left = `${tabRect.left - listRect.left}px`;
+			slider.style.width = `${tabRect.width}px`;
+		});
 	}
 
 	filterTabs.forEach(tab => {
@@ -878,12 +898,18 @@ activeVenues.forEach(venueId => {
 				updateFilterTabSlider();
 				return;
 			}
+			// Sync active state to the other tab with same data-filter (desktop ↔ mobile)
+			const otherTabs = Array.from(filterTabs).filter(t => t !== tab && (t as HTMLElement).dataset.filter === filter);
 			filterTabs.forEach(t => {
 				t.setAttribute("aria-selected", "false");
 				t.classList.remove("active");
 			});
 			tab.setAttribute("aria-selected", "true");
 			tab.classList.add("active");
+			otherTabs.forEach(t => {
+				t.setAttribute("aria-selected", "true");
+				t.classList.add("active");
+			});
 			if (timelineContainer) {
 				if (filter === "favorites") {
 					timelineContainer.classList.add("agenda-filter-favorites");
@@ -898,7 +924,7 @@ activeVenues.forEach(venueId => {
 	requestAnimationFrame(() => {
 		updateFilterTabSlider();
 	});
-	if (filterTabSlider) {
+	if (filterTabListSliderPairs.length > 0) {
 		window.addEventListener("resize", updateFilterTabSlider);
 	}
 
@@ -919,35 +945,48 @@ activeVenues.forEach(venueId => {
 				shareJamTrigger.style.display = hasBookmarks ? "" : "none";
 			}
 
-			// Mobile trigger with slide animation
+			// Mobile trigger with shrink in/out animation; sync parent for filter position
+			const agendaMobileControls = document.getElementById("agenda-mobile-controls");
 			if (shareJamTriggerMobile) {
 				if (hasBookmarks && !previousHasBookmarks) {
-					// Slide up animation when bookmarks become > 0
+					// Shrink in when bookmarks become > 0
 					shareJamTriggerMobile.classList.remove("hidden");
 					shareJamTriggerMobile.classList.add("slide-in", "glowing");
+					agendaMobileControls?.classList.add("share-button-visible");
+					agendaMobileControls?.classList.remove("share-button-hidden");
 					// Fade out glow after 2 seconds
 					setTimeout(() => {
 						shareJamTriggerMobile.classList.remove("glowing");
 					}, 2000);
 				} else if (!hasBookmarks && previousHasBookmarks) {
-					// Slide down animation when bookmarks become 0
+					// Shrink out when bookmarks become 0
 					shareJamTriggerMobile.classList.remove("slide-in", "glowing");
 					shareJamTriggerMobile.classList.add("hidden");
+					agendaMobileControls?.classList.add("share-button-hidden");
+					agendaMobileControls?.classList.remove("share-button-visible");
 				} else if (hasBookmarks) {
 					// Already visible (no glow on page load if already had bookmarks)
 					shareJamTriggerMobile.classList.remove("hidden");
 					shareJamTriggerMobile.classList.add("slide-in");
+					agendaMobileControls?.classList.add("share-button-visible");
+					agendaMobileControls?.classList.remove("share-button-hidden");
 				} else {
 					// No bookmarks
 					shareJamTriggerMobile.classList.add("hidden");
 					shareJamTriggerMobile.classList.remove("slide-in", "glowing");
+					agendaMobileControls?.classList.add("share-button-hidden");
+					agendaMobileControls?.classList.remove("share-button-visible");
 				}
 			}
 
 			previousHasBookmarks = hasBookmarks;
 		} catch {
 			if (shareJamTrigger) shareJamTrigger.style.display = "none";
-			if (shareJamTriggerMobile) shareJamTriggerMobile.classList.add("hidden");
+			if (shareJamTriggerMobile) {
+				shareJamTriggerMobile.classList.add("hidden");
+				document.getElementById("agenda-mobile-controls")?.classList.add("share-button-hidden");
+				document.getElementById("agenda-mobile-controls")?.classList.remove("share-button-visible");
+			}
 		}
 	}
 
@@ -1030,7 +1069,8 @@ activeVenues.forEach(venueId => {
 		padding: 0 0;
 	}
 
-	.agenda-filter-wrap {
+	.agenda-filter-wrap,
+	.agenda-filter-wrap-mobile {
 		display: flex;
 		padding: 2rem 0.75rem 0;
 		flex-wrap: wrap;
@@ -1038,7 +1078,8 @@ activeVenues.forEach(venueId => {
 		gap: 0.75rem;
 	}
 
-	.agenda-filter-wrap .filter-tabs-wrap {
+	.agenda-filter-wrap .filter-tabs-wrap,
+	.agenda-filter-wrap-mobile .filter-tabs-wrap {
 		max-width: 20rem;
 		margin: 0;
 		padding: 0.25rem;
@@ -1046,7 +1087,8 @@ activeVenues.forEach(venueId => {
 		border-radius: 9999px;
 	}
 
-	.agenda-filter-wrap .filter-tabs {
+	.agenda-filter-wrap .filter-tabs,
+	.agenda-filter-wrap-mobile .filter-tabs {
 		position: relative;
 		display: flex;
 		align-items: stretch;
@@ -1054,7 +1096,8 @@ activeVenues.forEach(venueId => {
 		min-height: 2.5rem;
 	}
 
-	.agenda-filter-wrap .filter-tab-slider {
+	.agenda-filter-wrap .filter-tab-slider,
+	.agenda-filter-wrap-mobile .filter-tab-slider {
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -1069,12 +1112,12 @@ activeVenues.forEach(venueId => {
 		pointer-events: none;
 	}
 
-	.agenda-filter-wrap .filter-tab {
+	.agenda-filter-wrap .filter-tab,
+	.agenda-filter-wrap-mobile .filter-tab {
 		flex: 1;
 		position: relative;
 		z-index: 1;
 		padding: 0.5rem 0.75rem;
-		font-size: 0.9375rem;
 		font-weight: bold;
 		background: transparent;
 		border: none;
@@ -1085,12 +1128,15 @@ activeVenues.forEach(venueId => {
 		min-width: 0;
 	}
 
-	.agenda-filter-wrap .filter-tab:hover {
+	.agenda-filter-wrap .filter-tab:hover,
+	.agenda-filter-wrap-mobile .filter-tab:hover {
 		color: #fff;
 	}
 
 	.agenda-filter-wrap .filter-tab.active,
-	.agenda-filter-wrap .filter-tab[aria-selected="true"] {
+	.agenda-filter-wrap .filter-tab[aria-selected="true"],
+	.agenda-filter-wrap-mobile .filter-tab.active,
+	.agenda-filter-wrap-mobile .filter-tab[aria-selected="true"] {
 		color: #1a1a1a;
 	}
 
@@ -1110,17 +1156,19 @@ activeVenues.forEach(venueId => {
 			border-color 0.2s;
 	}
 
+	.agenda-mobile-controls {
+		display: none;
+	}
+
 	.share-jam-trigger-mobile {
 		display: none;
 	}
 
 	.share-jam-trigger-mobile.hidden {
-		transform: translateY(100%);
 		opacity: 0;
 	}
 
 	.share-jam-trigger-mobile.slide-in {
-		transform: translateY(0);
 		opacity: 1;
 	}
 
@@ -1551,37 +1599,88 @@ activeVenues.forEach(venueId => {
 			display: none;
 		}
 
+		.agenda-filter-wrap {
+			display: none;
+		}
+
+		.agenda-filter-wrap-mobile .filter-tabs-wrap {
+			backdrop-filter: blur(6px);
+			-webkit-backdrop-filter: blur(6px);
+			padding: 0.6rem;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+		}
+
+		.share-jam-trigger-mobile-wrap {
+			flex-shrink: 0;
+			overflow: hidden;
+			border-radius: 9999px;
+			transition:
+				max-width 0.3s ease-out,
+				margin-left 0.3s ease-out;
+		}
+
+		/* Collapse wrapper after button fades out so circle isn’t clipped */
+		.agenda-mobile-controls.share-button-hidden .share-jam-trigger-mobile-wrap {
+			max-width: 0;
+			margin-left: 0;
+		}
+
+		.agenda-mobile-controls.share-button-visible .share-jam-trigger-mobile-wrap {
+			max-width: 4rem;
+			margin-left: 0.5rem;
+			transition-delay: 0.3s;
+			/* Backdrop on wrapper so blur works with overflow (Safari/iOS) */
+			background: rgba(45, 45, 45, 0);
+			backdrop-filter: blur(6px);
+			-webkit-backdrop-filter: blur(6px);
+		}
+
+		.agenda-mobile-controls.share-button-visible .share-jam-trigger-mobile-wrap .share-jam-trigger-mobile.glowing {
+			background: rgba(45, 45, 45, 0.9);
+		}
+
 		.share-jam-trigger-mobile {
 			display: block;
-			position: sticky;
 			font-size: 1.15rem;
-			bottom: 1.5rem;
-			margin: 0 auto;
 			z-index: 100;
+			border-radius: 9999px;
+			min-width: 2rem;
 			transition:
-				transform 0.3s ease-out,
 				opacity 0.3s ease-out,
 				box-shadow 1s ease-out,
-				border-color 1s ease-out;
+				border-color 1s ease-out,
+				background 0.3s ease-out;
+			transition-delay: 0s;
+		}
+		/* Fade in button after wrapper expands so circle isn’t clipped */
+		.share-jam-trigger-mobile.slide-in {
+			transition-delay: 0.3s;
 			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 			border: 2px solid transparent;
+			font-size: 1rem;
+			/* Semi-transparent so wrapper’s backdrop blur shows; wrapper does blur when visible */
+			background: rgba(45, 45, 45, 0.75);
 		}
 
 		.share-jam-trigger-mobile.glowing {
+			background: rgba(45, 45, 45, 0.9);
 			box-shadow:
 				0 0 12px 3px rgba(255, 232, 120, 0.7),
 				0 0 32px 8px rgba(255, 223, 50, 0.3);
 			border-color: rgba(255, 232, 120, 0.8);
 		}
 
+		.share-jam-trigger-mobile.slide-in:not(.glowing) {
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+		}
+
 		.share-jam-trigger-mobile.hidden {
-			transform: translateY(100%);
 			opacity: 0;
 			pointer-events: none;
+			transition-delay: 0s;
 		}
 
 		.share-jam-trigger-mobile.slide-in {
-			transform: translateY(0);
 			opacity: 1;
 			pointer-events: auto;
 		}
@@ -1598,8 +1697,30 @@ activeVenues.forEach(venueId => {
 			gap: 1rem;
 		}
 
-		.agenda-filter-wrap {
+		.agenda-mobile-controls .agenda-filter-wrap-mobile {
+			min-width: 0;
+			padding: 0.75rem 0.5rem 0.75rem 0.75rem;
+			transition: justify-content 0.3s ease-out;
+		}
+
+		.agenda-mobile-controls.share-button-hidden .agenda-filter-wrap-mobile {
 			justify-content: center;
+		}
+
+		.agenda-mobile-controls.share-button-visible .agenda-filter-wrap-mobile {
+			justify-content: flex-start;
+		}
+
+		.agenda-mobile-controls {
+			display: flex;
+			position: sticky;
+			bottom: 0;
+			top: auto;
+			z-index: 10;
+			justify-content: center;
+			align-items: center;
+			gap: 0;
+			padding: 0;
 		}
 
 		.venue-label {
