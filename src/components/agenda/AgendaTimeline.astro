@@ -918,11 +918,34 @@ activeVenues.forEach(venueId => {
 				}
 			}
 			updateFilterTabSlider();
+			updatePhoneTimeBlockVisibility();
 		});
 	});
 
+	// Mobile: hide time-blocks that have no visible sessions when filter is Favorites only
+	function updatePhoneTimeBlockVisibility() {
+		const container = document.getElementById("agenda-timeline");
+		const phoneView = document.getElementById("agenda-phone-view");
+		if (!container || !phoneView) return;
+		const isFavorites = container.classList.contains("agenda-filter-favorites") && !container.classList.contains("agenda-url-curated");
+		const timeBlocks = phoneView.querySelectorAll(".time-block");
+		timeBlocks.forEach(block => {
+			const sessionBlocks = block.querySelectorAll(".session-block");
+			const allHidden = sessionBlocks.length > 0 && Array.from(sessionBlocks).every(sb => !sb.querySelector(".session-favorite.is-marked"));
+			if (isFavorites && allHidden) {
+				block.classList.add("time-block-no-visible-sessions");
+			} else {
+				block.classList.remove("time-block-no-visible-sessions");
+			}
+		});
+	}
+
 	requestAnimationFrame(() => {
 		updateFilterTabSlider();
+		updatePhoneTimeBlockVisibility();
+	});
+	document.addEventListener("agendaBookmarksChanged", () => {
+		updatePhoneTimeBlockVisibility();
 	});
 	if (filterTabListSliderPairs.length > 0) {
 		window.addEventListener("resize", updateFilterTabSlider);
@@ -1540,6 +1563,11 @@ activeVenues.forEach(venueId => {
 		background: rgba(255, 255, 255, 0.5);
 	}
 
+	/* Hide time-blocks with no visible sessions when filter is Favorites only (JS adds class) */
+	.agenda-phone-view .time-block.time-block-no-visible-sessions {
+		display: none;
+	}
+
 	.agenda-phone-view .session-list {
 		display: flex;
 		flex-direction: column;
@@ -1615,8 +1643,8 @@ activeVenues.forEach(venueId => {
 			overflow: hidden;
 			border-radius: 9999px;
 			transition:
-				max-width 0.3s ease-out,
-				margin-left 0.3s ease-out;
+				max-width 0.1s ease-out,
+				margin-left 0.1s ease-out;
 		}
 
 		/* Collapse wrapper after button fades out so circle isn’t clipped */
