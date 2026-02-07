@@ -24,7 +24,7 @@ const defaultDescriptions = {
 	en: "SITCON 2026 - Students' Information Technology Conference. Theme: 'Jam the Chaos'. Join us on 2026/03/28 at Academia Sinica Humanities and Social Sciences Building."
 };
 
-const title = defaultTitles[lang];
+const title = Astro.props.title ?? defaultTitles[lang];
 const description = defaultDescriptions[lang];
 
 const siteUrl = lang === "en" ? "https://sitcon.org/2026/en/" : "https://sitcon.org/2026/";
