@@ -444,6 +444,9 @@ activeVenues.forEach(venueId => {
 
 	<!-- Phone: vertical view showing all sessions grouped by time -->
 	<div class="agenda-phone-view" id="agenda-phone-view" aria-hidden="true">
+		<p class="agenda-phone-empty-favorites" id="agenda-phone-empty-favorites" aria-live="polite" hidden>
+			{lang === "en" ? "You don't have any favorite sessions yet." : "你還沒有任何精選議程喔"}
+		</p>
 		<div class="phone-time-blocks">
 			{
 				allTimeBlocks.map(([timeTs, sessionItems]) => {
@@ -922,22 +925,36 @@ activeVenues.forEach(venueId => {
 		});
 	});
 
-	// Mobile: hide time-blocks that have no visible sessions when filter is Favorites only
+	// Mobile: hide time-blocks that have no visible sessions when filter is Favorites only; show empty message when no favorites
 	function updatePhoneTimeBlockVisibility() {
 		const container = document.getElementById("agenda-timeline");
 		const phoneView = document.getElementById("agenda-phone-view");
+		const emptyFavoritesEl = document.getElementById("agenda-phone-empty-favorites");
 		if (!container || !phoneView) return;
 		const isFavorites = container.classList.contains("agenda-filter-favorites") && !container.classList.contains("agenda-url-curated");
 		const timeBlocks = phoneView.querySelectorAll(".time-block");
+		let hasAnyFavorite = false;
 		timeBlocks.forEach(block => {
 			const sessionBlocks = block.querySelectorAll(".session-block");
 			const allHidden = sessionBlocks.length > 0 && Array.from(sessionBlocks).every(sb => !sb.querySelector(".session-favorite.is-marked"));
+			if (Array.from(sessionBlocks).some(sb => sb.querySelector(".session-favorite.is-marked"))) {
+				hasAnyFavorite = true;
+			}
 			if (isFavorites && allHidden) {
 				block.classList.add("time-block-no-visible-sessions");
 			} else {
 				block.classList.remove("time-block-no-visible-sessions");
 			}
 		});
+		if (emptyFavoritesEl) {
+			if (isFavorites && !hasAnyFavorite) {
+				emptyFavoritesEl.removeAttribute("hidden");
+				emptyFavoritesEl.classList.add("agenda-phone-empty-favorites-visible");
+			} else {
+				emptyFavoritesEl.setAttribute("hidden", "");
+				emptyFavoritesEl.classList.remove("agenda-phone-empty-favorites-visible");
+			}
+		}
 	}
 
 	requestAnimationFrame(() => {
@@ -1566,6 +1583,18 @@ activeVenues.forEach(venueId => {
 	/* Hide time-blocks with no visible sessions when filter is Favorites only (JS adds class) */
 	.agenda-phone-view .time-block.time-block-no-visible-sessions {
 		display: none;
+	}
+
+	.agenda-phone-view .agenda-phone-empty-favorites {
+		display: none;
+		padding: 2rem 1rem;
+		text-align: center;
+		color: rgba(255, 255, 255, 0.85);
+		font-size: 1.5rem;
+		margin: 0;
+	}
+	.agenda-phone-view .agenda-phone-empty-favorites.agenda-phone-empty-favorites-visible {
+		display: block;
 	}
 
 	.agenda-phone-view .session-list {
