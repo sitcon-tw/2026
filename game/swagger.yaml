@@ -64,6 +64,8 @@ definitions:
     properties:
       id:
         type: string
+      nickname:
+        type: string
       staff_id:
         type: string
       total:
@@ -341,7 +343,75 @@ paths:
       summary: 取得自己的折扣券
       tags:
       - discount
-  /discount/staff/{userCouponToken}:
+  /discount/staff/history:
+    get:
+      description: 需要 staff token，回傳該 staff 操作的折扣券使用紀錄
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/discount.historyItem'
+            type: array
+        "400":
+          description: missing token
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "401":
+          description: unauthorized staff
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 取得工作人員使用的折扣紀錄
+      tags:
+      - discount
+  /discount/staff/user/{userCouponToken}:
+    get:
+      description: 需要 staff token，帶 userCouponToken 查詢該使用者尚未使用的折扣券與總額
+      parameters:
+      - description: User coupon token
+        in: path
+        name: userCouponToken
+        required: true
+        type: string
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/discount.getUserCouponsResponse'
+        "400":
+          description: missing token | invalid coupon token
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "401":
+          description: unauthorized staff
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 工作人員查詢某使用者可用折扣券
+      tags:
+      - discount
     post:
       description: 用 QR Code 掃描器掃會眾的折價券，然後折價券就會被標記為已使用，同時返回這個折價券的詳細資訊。你要傳送 staff 的
         api key 在 header 裡面才能使用這個 endpoint。
@@ -376,75 +446,6 @@ paths:
           schema:
             $ref: '#/definitions/res.ErrorResponse'
       summary: 工作人員掃 QR Code 來使用折扣券
-      tags:
-      - discount
-  /discount/staff/history:
-    get:
-      description: 需要 staff token，回傳該 staff 操作的折扣券使用紀錄
-      parameters:
-      - description: Bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/discount.historyItem'
-            type: array
-        "400":
-          description: missing token
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "401":
-          description: unauthorized staff
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-      summary: 取得工作人員使用的折扣紀錄
-      tags:
-      - discount
-  /discount/user/{userCouponToken}:
-    get:
-      description: 需要 staff token，帶 userCouponToken 查詢該使用者尚未使用的折扣券與總額
-      parameters:
-      - description: User coupon token
-        in: path
-        name: userCouponToken
-        required: true
-        type: string
-      - description: Bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/discount.getUserCouponsResponse'
-        "400":
-          description: missing token | invalid coupon token
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "401":
-          description: unauthorized staff
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-      summary: 工作人員查詢某使用者可用折扣券
       tags:
       - discount
   /friends/{userQRCode}:
