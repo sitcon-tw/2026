@@ -21,13 +21,54 @@ definitions:
       count:
         type: integer
     type: object
-  discount.discountUsedResponse:
+  discount.couponItem:
     properties:
       discount_id:
         type: string
       id:
         type: string
       price:
+        type: integer
+      token:
+        type: string
+    type: object
+  discount.discountUsedResponse:
+    properties:
+      count:
+        type: integer
+      coupon_token:
+        type: string
+      coupons:
+        items:
+          $ref: '#/definitions/discount.couponItem'
+        type: array
+      total:
+        type: integer
+      used_at:
+        type: string
+      used_by:
+        type: string
+      user_id:
+        type: string
+      user_name:
+        type: string
+    type: object
+  discount.getUserCouponsResponse:
+    properties:
+      coupons:
+        items:
+          $ref: '#/definitions/discount.couponItem'
+        type: array
+      total:
+        type: integer
+    type: object
+  discount.historyItem:
+    properties:
+      id:
+        type: string
+      staff_id:
+        type: string
+      total:
         type: integer
       used_at:
         type: string
@@ -91,19 +132,23 @@ definitions:
         type: string
       discount_id:
         type: string
+      history_id:
+        type: string
       id:
         type: string
       price:
         type: integer
-      token:
-        type: string
       used_at:
+        type: string
+      used_by:
         type: string
       user_id:
         type: string
     type: object
   models.User:
     properties:
+      coupon_token:
+        type: string
       created_at:
         type: string
       current_level:
@@ -333,6 +378,75 @@ paths:
           schema:
             $ref: '#/definitions/res.ErrorResponse'
       summary: 工作人員掃 QR Code 來使用折扣券
+      tags:
+      - discount
+  /discount/history:
+    get:
+      description: 需要 staff token，回傳該 staff 操作的折扣券使用紀錄
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/discount.historyItem'
+            type: array
+        "400":
+          description: missing token
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "401":
+          description: unauthorized staff
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 取得工作人員自己的折扣使用紀錄
+      tags:
+      - discount
+  /discount/user/{couponToken}:
+    get:
+      description: 需要 staff token，帶 couponToken 查詢該使用者尚未使用的折扣券與總額
+      parameters:
+      - description: User coupon token
+        in: path
+        name: couponToken
+        required: true
+        type: string
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/discount.getUserCouponsResponse'
+        "400":
+          description: missing token | invalid coupon token
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "401":
+          description: unauthorized staff
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 工作人員查詢某使用者可用折扣券
       tags:
       - discount
   /friends/{userQRCode}:
