@@ -66,6 +66,7 @@ jobs:
           git config user.email "ci@sitcon.org"
           git add public/sessions.json public/sessions-web.json
           git commit -m "chore: Update sessions.json" || exit 0
+          ssh -T git@github.com || true
           git push origin main
 
   build-and-push:
