@@ -145,9 +145,10 @@ async function generateSessionImage(session, speakerMap, typeMap) {
 	ctx.drawImage(deco, 0, 0, WIDTH, HEIGHT);
 
 	const outPath = path.join(ROOT, "../public", "img", "session", `${session.id}.png`);
-	fs.writeFileSync(outPath, canvas.toBuffer("image/png"));
-
-	console.log(`✓ ${session.id}.png`);
+	const pngBuffer = canvas.toBuffer("image/png");
+	const webpBuffer = await sharp(pngBuffer).webp({ quality: 80 }).toBuffer();
+	fs.writeFileSync(outPath.replace(/\.png$/, ".webp"), webpBuffer);
+	console.log(`✓ ${session.id}.webp`);
 }
 
 async function main() {
