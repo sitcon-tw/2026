@@ -7,11 +7,22 @@ export function getStaticPaths() {
 	return sessions.map(session => ({
 		params: {
 			agendaID: session.id
+		},
+		props: {
+			session
 		}
 	}));
 }
 
 const { agendaID } = Astro.params;
+const { session } = Astro.props;
+
+// 準備 SEO 數據
+const sessionTitle = session?.zh?.title || "議程";
+const sessionDescription = session?.zh?.description?.substring(0, 150) || "SITCON 2026 學生計算機年會議程";
+const ogImage = `https://sitcon.org/2026/img/session/${agendaID}.webp`;
+const pageTitle = `${sessionTitle} - SITCON 2026`;
+const seoUrl = `https://sitcon.org/2026/agenda/${agendaID}/`;
 ---
 
-<Page agendaID={agendaID} />
+<Page agendaID={agendaID} title={pageTitle} description={sessionDescription} ogImage={ogImage} seoUrl={seoUrl} />

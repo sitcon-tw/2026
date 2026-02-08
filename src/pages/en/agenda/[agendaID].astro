@@ -7,11 +7,20 @@ export function getStaticPaths() {
 	return sessions.map(session => ({
 		params: {
 			agendaID: session.id
+		},
+		props: {
+			session
 		}
 	}));
 }
 
 const { agendaID } = Astro.params;
+const { session } = Astro.props;
+const sessionTitle = session?.en?.title || "Session";
+const sessionDescription = session?.en?.description?.substring(0, 150) || "SITCON 2026 - Students' Information Technology Conference Session";
+const ogImage = `https://sitcon.org/2026/img/session/${agendaID}.webp`;
+const pageTitle = `${sessionTitle} - SITCON 2026`;
+const seoUrl = `https://sitcon.org/2026/en/agenda/${agendaID}/`;
 ---
 
-<Page lang="en" agendaID={agendaID} />
+<Page lang="en" agendaID={agendaID} title={pageTitle} description={sessionDescription} ogImage={ogImage} seoUrl={seoUrl} />

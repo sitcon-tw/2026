@@ -8,6 +8,7 @@ interface Props {
 	title?: string;
 	description?: string;
 	ogImage?: string;
+	seoUrl?: string;
 	lang?: Lang;
 }
 
@@ -25,9 +26,9 @@ const defaultDescriptions = {
 };
 
 const title = Astro.props.title ?? defaultTitles[lang];
-const description = defaultDescriptions[lang];
-
-const siteUrl = lang === "en" ? "https://sitcon.org/2026/en/" : "https://sitcon.org/2026/";
+const description = Astro.props.description ?? defaultDescriptions[lang];
+const ogImage = Astro.props.ogImage ?? "https://sitcon.org/2026/img/og.webp";
+const siteUrl = Astro.props.seoUrl ?? (lang === "en" ? "https://sitcon.org/2026/en/" : "https://sitcon.org/2026/");
 const alternateLang = lang === "en" ? "zh" : "en";
 const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 ---
@@ -59,7 +60,7 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		<meta property="og:url" content={siteUrl} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content="https://sitcon.org/2026/img/og.webp" />
+		<meta property="og:image" content={ogImage} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
 		<meta property="og:locale" content={meta.ogLocale} />
@@ -69,7 +70,7 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		<meta name="twitter:url" content={siteUrl} />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content="https://sitcon.org/2026/img/og.webp" />
+		<meta name="twitter:image" content={ogImage} />
 		<meta name="twitter:site" content="@SITCONtw" />
 		<meta name="twitter:creator" content="@SITCONtw" />
 

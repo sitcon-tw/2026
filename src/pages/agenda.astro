@@ -69,6 +69,8 @@ const posters = Array.isArray(postersData) ? postersData : [];
 	const isEn = window.location.pathname.startsWith("/2026/en/");
 	const basePath = isEn ? "/2026/en/agenda" : "/2026/agenda";
 
+	const originalTitle = document.title;
+
 	function initActionBtnEffects(container) {
 		if (!container) return;
 		import("gsap")
@@ -176,6 +178,11 @@ const posters = Array.isArray(postersData) ? postersData : [];
 		if (!modal) return;
 
 		const data = e.detail ?? {};
+
+		if (data?.name) {
+			document.title = `${data.name} - SITCON 2026`;
+		}
+
 		// URL sync: /2026/agenda/:id/ or /2026/en/agenda/:id/
 		if (data?.id) {
 			const nextUrl = `${basePath}/${data.id}/`;
@@ -508,6 +515,8 @@ const posters = Array.isArray(postersData) ? postersData : [];
 	// URL sync: closing reverts to /2026/agenda/ or /2026/en/agenda/
 	// Use replaceState to avoid adding extra history entries and prevent scroll jump
 	document.addEventListener("closeSessionModal", () => {
+		document.title = originalTitle;
+
 		const basePathWithSlash = `${basePath}/`;
 		if (window.location.pathname !== basePathWithSlash) {
 			const scrollX = window.scrollX;
@@ -630,8 +639,12 @@ const posters = Array.isArray(postersData) ? postersData : [];
 	// Back/forward support
 	window.addEventListener("popstate", () => {
 		const id = getAgendaIdFromPathname(window.location.pathname);
-		if (id) openSessionById(id);
-		else closeModalSilently();
+		if (id) {
+			openSessionById(id);
+		} else {
+			closeModalSilently();
+			document.title = originalTitle;
+		}
 	});
 </script>
 
