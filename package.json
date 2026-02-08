@@ -1,12 +1,13 @@
 {
-	"name": "project",
+	"name": "sitcon2026",
 	"type": "module",
 	"scripts": {
 		"astro": "astro",
-		"build": "astro build",
+		"build": "pnpm generate && astro build",
 		"dev": "astro dev",
 		"fetch-team": "node src/utils/fetch-team.js",
 		"format": "prettier --write .",
+		"generate": "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES && node src/session-images/generate.js",
 		"preinstall": "npx only-allow pnpm",
 		"prepare": "husky",
 		"preview": "astro preview",
@@ -19,6 +20,7 @@
 		"astro": "^5.16.12",
 		"cannon": "^0.6.2",
 		"cannon-es": "^0.20.0",
+		"canvas": "^3.2.1",
 		"gsap": "^3.14.2",
 		"lenis": "^1.3.17",
 		"marked": "^17.0.1",
