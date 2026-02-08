@@ -20,7 +20,15 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'sitcon-tw/2026'
     steps:
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
       - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
       - name: Set timezone to Asia/Taipei
         uses: szenius/set-timezone@v1.2
         with:
