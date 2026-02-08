@@ -14,13 +14,17 @@ import type { AgendaDataFile } from "@/types/agenda";
 
 const lang = (Astro.props.lang ?? "zh") as Lang;
 const agendaID = Astro.props.agendaID ?? "";
+const title = Astro.props.title ?? (lang === "en" ? "Agenda - SITCON 2026" : "議程表 - SITCON 2026");
+const description = Astro.props.description;
+const ogImage = Astro.props.ogImage;
+const seoUrl = Astro.props.seoUrl;
 const t = useTranslations(lang).agenda;
 
 const agendaItems = normalizeAgendaSessionsFromFile(agendaData as AgendaDataFile, lang);
 const posters = Array.isArray(postersData) ? postersData : [];
 ---
 
-<Layout title={lang === "en" ? "Agenda - SITCON 2026" : "議程表 - SITCON 2026"} lang={lang}>
+<Layout title={title} description={description} ogImage={ogImage} seoUrl={seoUrl} lang={lang}>
 	<main>
 		<div class="agenda-header">
 			<h1 class="agenda-title" id="agenda-title">{lang === "en" ? "Agenda" : "議程表"}</h1>
