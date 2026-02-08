@@ -48,7 +48,7 @@ jobs:
             else .
             end
           )
-          ' sessions-web.json > sessions.json
+          ' ./public/sessions-web.json > ./public/sessions.json
 
       - name: Commit and Push Schedule Json
         run: |
