@@ -1,2 +1,3 @@
 pnpm-lock.yaml
 public/sessions.json
+public/sessions-web.json
