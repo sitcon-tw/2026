@@ -150,6 +150,19 @@ definitions:
       user_id:
         type: string
     type: object
+  models.Staff:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      token:
+        type: string
+      updated_at:
+        type: string
+    type: object
   models.User:
     properties:
       coupon_token:
@@ -186,29 +199,6 @@ info:
   title: SITGAME API
   version: "1.0"
 paths:
-  /activities/:
-    get:
-      description: 取得活動列表跟使用者在每個攤位、打卡、挑戰的狀態。需要登入才會回傳使用者的打卡狀態。
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/activities.activityWithStatus'
-            type: array
-        "401":
-          description: unauthorized
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-      summary: 取得活動列表與使用者打卡狀態
-      tags:
-      - activities
   /activities/{activityQRCode}:
     post:
       description: 使用者使用自己的 QR code 掃描器掃描活動的 QR code，幫自己在活動打卡。需要已登入的使用者 cookie。
@@ -240,60 +230,7 @@ paths:
       summary: 使用者掃描活動 QR code 打卡
       tags:
       - activities
-  /activities/booth/{userQRCode}:
-    post:
-      description: 攤位工作人員使用攤位專用的 QR code 掃描器掃描使用者的 QR code，幫使用者在該攤位打卡。需要攤位的 token
-        cookie。使用者每到一個攤位打卡，自己的 unlock_level 就會增加 1。
-      parameters:
-      - description: User QR code token
-        in: path
-        name: userQRCode
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/activities.checkinResponse'
-        "400":
-          description: bad request
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "401":
-          description: unauthorized booth
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-      summary: 攤位掃描使用者 QR code 打卡
-      tags:
-      - activities
-  /activities/booth/count:
-    get:
-      description: 取得目前攤位的打卡人數，需要攤位的 token cookie。
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/activities.countResponse'
-        "401":
-          description: unauthorized booth
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-      summary: 取得攤位打卡人數
-      tags:
-      - activities
-  /activities/booth/login:
+  /activities/booth/session:
     post:
       description: 攤位使用此 API 登入系統，成功後會在 cookie 設定 booth_token，之後攤位就可以使用此 cookie 來辨識自己身份。來使用
         /activities/booth/ 底下的功能。
@@ -325,7 +262,83 @@ paths:
       summary: 攤位登入
       tags:
       - activities
-  /discount:
+  /activities/booth/stats:
+    get:
+      description: 取得目前攤位的打卡人數，需要攤位的 token cookie。
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/activities.countResponse'
+        "401":
+          description: unauthorized booth
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 取得攤位打卡人數
+      tags:
+      - activities
+  /activities/booth/user/{userQRCode}:
+    post:
+      description: 攤位工作人員使用攤位專用的 QR code 掃描器掃描使用者的 QR code，幫使用者在該攤位打卡。需要攤位的 token
+        cookie。使用者每到一個攤位打卡，自己的 unlock_level 就會增加 1。
+      parameters:
+      - description: User QR code token
+        in: path
+        name: userQRCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/activities.checkinResponse'
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "401":
+          description: unauthorized booth
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 攤位掃描使用者 QR code 打卡
+      tags:
+      - activities
+  /activities/stats:
+    get:
+      description: 取得活動列表跟使用者在每個攤位、打卡、挑戰的狀態。需要登入才會回傳使用者的打卡狀態。
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/activities.activityWithStatus'
+            type: array
+        "401":
+          description: unauthorized
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 取得活動列表與使用者打卡狀態
+      tags:
+      - activities
+  /discount-coupons:
     get:
       description: 需要登入 cookie，回傳自己名下的折扣券清單與使用狀態
       produces:
@@ -348,14 +361,84 @@ paths:
       summary: 取得自己的折扣券
       tags:
       - discount
-  /discount/staff/history:
-    get:
-      description: 需要 staff token，回傳該 staff 操作的折扣券使用紀錄
+  /discount-coupons/staff/{userCouponToken}/redemptions:
+    post:
+      description: 用 QR Code 掃描器掃會眾的折價券，然後折價券就會被標記為已使用，同時返回這個折價券的詳細資訊。需已登入並持有 staff_token
+        cookie。
       parameters:
-      - description: Bearer {token}
+      - description: Discount coupon token
+        in: path
+        name: userCouponToken
+        required: true
+        type: string
+      - description: Bearer {token} (deprecated; use staff_token cookie)
         in: header
         name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/discount.discountUsedResponse'
+        "400":
+          description: missing token | invalid coupon
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "401":
+          description: unauthorized staff
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 工作人員掃 QR Code 來使用折扣券
+      tags:
+      - discount
+  /discount-coupons/staff/coupon-tokens/{userCouponToken}:
+    get:
+      description: 需要 staff_token cookie，帶 userCouponToken 查詢該使用者尚未使用的折扣券與總額
+      parameters:
+      - description: User coupon token
+        in: path
+        name: userCouponToken
         required: true
+        type: string
+      - description: Bearer {token} (deprecated; use staff_token cookie)
+        in: header
+        name: Authorization
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/discount.getUserCouponsResponse'
+        "400":
+          description: missing token | invalid coupon token
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "401":
+          description: unauthorized staff
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 工作人員查詢某使用者可用折扣券
+      tags:
+      - discount
+  /discount-coupons/staff/current/redemptions:
+    get:
+      description: 需要 staff_token cookie，回傳該 staff 操作的折扣券使用紀錄
+      parameters:
+      - description: Bearer {token} (deprecated; use staff_token cookie)
+        in: header
+        name: Authorization
         type: string
       produces:
       - application/json
@@ -381,51 +464,11 @@ paths:
       summary: 取得工作人員使用的折扣紀錄
       tags:
       - discount
-  /discount/staff/user/{userCouponToken}:
-    get:
-      description: 需要 staff token，帶 userCouponToken 查詢該使用者尚未使用的折扣券與總額
-      parameters:
-      - description: User coupon token
-        in: path
-        name: userCouponToken
-        required: true
-        type: string
-      - description: Bearer {token}
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/discount.getUserCouponsResponse'
-        "400":
-          description: missing token | invalid coupon token
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "401":
-          description: unauthorized staff
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-      summary: 工作人員查詢某使用者可用折扣券
-      tags:
-      - discount
+  /discount-coupons/staff/session:
     post:
-      description: 用 QR Code 掃描器掃會眾的折價券，然後折價券就會被標記為已使用，同時返回這個折價券的詳細資訊。你要傳送 staff 的
-        api key 在 header 裡面才能使用這個 endpoint。
+      description: 工作人員使用此 API 登入系統，成功後會在 cookie 設定 staff_token，之後就可以使用 cookie 來呼叫需要
+        staff 身分的 endpoint。
       parameters:
-      - description: Discount coupon token
-        in: path
-        name: userCouponToken
-        required: true
-        type: string
       - description: Bearer {token}
         in: header
         name: Authorization
@@ -437,9 +480,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/discount.discountUsedResponse'
+            $ref: '#/definitions/models.Staff'
         "400":
-          description: missing token | invalid coupon
+          description: missing token
           schema:
             $ref: '#/definitions/res.ErrorResponse'
         "401":
@@ -450,10 +493,10 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/res.ErrorResponse'
-      summary: 工作人員掃 QR Code 來使用折扣券
+      summary: 工作人員登入
       tags:
       - discount
-  /friends:
+  /friendships/{userQRCode}:
     post:
       consumes:
       - application/json
@@ -487,7 +530,7 @@ paths:
       summary: 建立好友關係
       tags:
       - friends
-  /friends/count:
+  /friendships/stats:
     get:
       description: 取得目前使用者的好友數量以及好友上限，好友上限會根據使用者參加過的活動數量而增加。
       produces:
@@ -508,7 +551,29 @@ paths:
       summary: 取得好友數量及上限
       tags:
       - friends
-  /game:
+  /games/leaderboards:
+    get:
+      description: 排行資料會包含三個部分：1. 全站的分頁排行 (每頁30名) 2. 以目前使用者為中心，前後各5名玩家的暱稱、等級與排名 3.
+        目前使用者的暱稱、等級與排名。需要登入後才能取得排行資料。支援 page 查詢參數來分頁瀏覽全站排行，每頁30名玩家，預設為第1頁。
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/game.RankResponse'
+        "401":
+          description: unauthorized
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+      summary: 取得遊戲的排行資料
+      tags:
+      - game
+  /games/submissions:
     post:
       description: 提交你的遊戲紀錄，會幫你把你目前的 level 提升 1 級。一樣需要 cookie 登入，需要注意的點是，當前等級不能超過解鎖等級。以及這整個是沒有任何驗證的，代表別人可以狂
         call API，未來需要修個。
@@ -534,29 +599,29 @@ paths:
       summary: 提交遊戲紀錄
       tags:
       - game
-  /game/rank:
+  /users/me:
     get:
-      description: 排行資料會包含三個部分：1. 全站的分頁排行 (每頁30名) 2. 以目前使用者為中心，前後各5名玩家的暱稱、等級與排名 3.
-        目前使用者的暱稱、等級與排名。需要登入後才能取得排行資料。支援 page 查詢參數來分頁瀏覽全站排行，每頁30名玩家，預設為第1頁。
+      description: 取得目前登入使用者的資料，需要登入後才能取得。會取得包括目前的 level、解鎖多少 level、QR code token
+        等等資訊。備註：要取得 QR code token 就是用這邊。
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/game.RankResponse'
+            $ref: '#/definitions/models.User'
         "401":
-          description: unauthorized
+          description: Unauthorized
           schema:
             $ref: '#/definitions/res.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/res.ErrorResponse'
-      summary: 取得遊戲的排行資料
+      summary: 取得使用者資料
       tags:
-      - game
-  /users/login:
+      - users
+  /users/session:
     post:
       description: 這邊在做的事情基本上就是幫你把 token 驗證，然後把使用者丟進資料庫，接著在把這個 token 丟到 cookie 讓你不用每次都要手動帶。
       parameters:
@@ -585,28 +650,6 @@ paths:
           schema:
             $ref: '#/definitions/res.ErrorResponse'
       summary: 使用者登入
-      tags:
-      - users
-  /users/me:
-    get:
-      description: 取得目前登入使用者的資料，需要登入後才能取得。會取得包括目前的 level、解鎖多少 level、QR code token
-        等等資訊。備註：要取得 QR code token 就是用這邊。
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.User'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/res.ErrorResponse'
-      summary: 取得使用者資料
       tags:
       - users
 schemes:
