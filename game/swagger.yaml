@@ -75,6 +75,11 @@ definitions:
       user_id:
         type: string
     type: object
+  friend.addFriendRequest:
+    properties:
+      user_qr_code:
+        type: string
+    type: object
   friend.countResponse:
     properties:
       count:
@@ -448,16 +453,18 @@ paths:
       summary: 工作人員掃 QR Code 來使用折扣券
       tags:
       - discount
-  /friends/{userQRCode}:
+  /friends:
     post:
-      description: 用 QR code 掃別人，別人就會變成你的好友，你也會變成他的好友。雙方好友數量都會增加 1，並且雙方的 unlock_level
-        都會增加 1。若已經是好友則不會重複加入。每個人最多只能有一定數量的好友，這個數量會隨著你參加過的活動數量（攤位、打卡...）而增加。
+      consumes:
+      - application/json
+      description: 透過對方的 QR code 建立好友關係，雙方好友數量與 unlock_level 會在首次建立時各自增加。
       parameters:
-      - description: User QR code token
-        in: path
-        name: userQRCode
+      - description: Friend request payload
+        in: body
+        name: body
         required: true
-        type: string
+        schema:
+          $ref: '#/definitions/friend.addFriendRequest'
       produces:
       - application/json
       responses:
@@ -465,11 +472,19 @@ paths:
           description: OK
           schema:
             type: string
+        "400":
+          description: missing or invalid qr code
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
+        "401":
+          description: unauthorized
+          schema:
+            $ref: '#/definitions/res.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/res.ErrorResponse'
-      summary: 用 QR code 加好友
+      summary: 建立好友關係
       tags:
       - friends
   /friends/count:
