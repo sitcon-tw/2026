@@ -19,21 +19,23 @@ jobs:
     name: Update Sessions Json
     runs-on: ubuntu-latest
     if: github.repository == 'sitcon-tw/2026'
+
     steps:
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SESSION_UPDATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-      - uses: actions/checkout@v4
+      - name: Checkout with Deploy Key
+        uses: actions/checkout@v4
         with:
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          ssh-key: ${{ secrets.SESSION_UPDATE_KEY }}
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Debug git remote
+        run: git remote -v
+
       - name: Set timezone to Asia/Taipei
         uses: szenius/set-timezone@v1.2
         with:
-          timezoneLinux: "Asia/Taipei"
-          timezoneMacos: "Asia/Taipei"
+          timezoneLinux: Asia/Taipei
+          timezoneMacos: Asia/Taipei
 
       - name: Generate Schedule Json
         uses: CCIP-App/schedule-json-generator-action@v2
@@ -58,12 +60,12 @@ jobs:
           )
           ' ./public/sessions-web.json > ./public/sessions.json
 
-      - name: Commit and Push Schedule Json
+      - name: Commit and Push
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "ci-deploy"
+          git config user.email "ci@sitcon.org"
           git add public/sessions.json public/sessions-web.json
-          git commit -m "chore: Update sessions.json" || echo "No changes to commit"
+          git commit -m "chore: Update sessions.json" || exit 0
           git push origin main
 
   build-and-push:
