@@ -161,12 +161,20 @@ async function main() {
 		fs.mkdirSync(path.join(ROOT, "../public", "img", "session"));
 	}
 
-	for (const session of data.sessions) {
-		if (!["K", "P", "E", "PD", "L"].includes(session.type)) continue;
-		if (!session.zh?.title) continue;
+	const sessions = data.sessions.filter(session => ["K", "P", "E", "PD", "L"].includes(session.type)).filter(session => session.zh?.title);
 
-		await generateSessionImage(session, speakerMap, typeMap);
+	const BATCH_SIZE = 10;
+	let completed = 0;
+
+	for (let i = 0; i < sessions.length; i += BATCH_SIZE) {
+		const batch = sessions.slice(i, i + BATCH_SIZE);
+		const tasks = batch.map(session => generateSessionImage(session, speakerMap, typeMap));
+		await Promise.all(tasks);
+		completed += batch.length;
+		console.log(`進度: ${completed}/${sessions.length}`);
 	}
+
+	console.log(`\n✅ 完成！共生成 ${sessions.length} 張圖片`);
 }
 
 await main();
