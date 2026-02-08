@@ -34,13 +34,27 @@ jobs:
           spreadsheet-key: "1dNMq9XnOZPMqo4XPIAuNPBlsO_IACKt6jnUaI7--K4o"
           default-avatar: "https://sitcon.org/2022/imgs/deafult_avatar.jpg"
           avatar-base-url: "https://sitcon.org/2026/img/avatar/speaker/"
-          output-path: ./public/sessions.json
+          output-path: ./public/sessions-web.json
+
+      - name: Create avatar path for OPass
+        run: |
+          jq '
+          walk(
+            if type == "string"
+            then gsub(
+              "https://sitcon.org/2026/img/avatar/speaker/([^/]+\\.webp)";
+              "https://sitcon.org/2026/img/avatar/speaker/large/\\1"
+            )
+            else .
+            end
+          )
+          ' sessions-web.json > sessions.json
 
       - name: Commit and Push Schedule Json
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/sessions.json
+          git add public/sessions.json public/sessions-web.json
           git commit -m "chore: Update sessions.json" || echo "No changes to commit"
           git push origin main
 
