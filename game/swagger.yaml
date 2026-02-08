@@ -75,11 +75,6 @@ definitions:
       user_id:
         type: string
     type: object
-  friend.addFriendRequest:
-    properties:
-      user_qr_code:
-        type: string
-    type: object
   friend.countResponse:
     properties:
       count:
@@ -498,16 +493,13 @@ paths:
       - discount
   /friendships/{userQRCode}:
     post:
-      consumes:
-      - application/json
       description: 透過對方的 QR code 建立好友關係，雙方好友數量與 unlock_level 會在首次建立時各自增加。
       parameters:
-      - description: Friend request payload
-        in: body
-        name: body
+      - description: User QR code token
+        in: path
+        name: userQRCode
         required: true
-        schema:
-          $ref: '#/definitions/friend.addFriendRequest'
+        type: string
       produces:
       - application/json
       responses:
