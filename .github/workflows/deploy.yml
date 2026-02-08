@@ -49,15 +49,14 @@ jobs:
       - name: Create avatar path for OPass
         run: |
           jq '
-          walk(
-            if type == "string"
-            then gsub(
-              "https://sitcon.org/2026/img/avatar/speaker/([^/]+\\.webp)";
-              "https://sitcon.org/2026/img/avatar/speaker/large/\\1"
-            )
-            else .
-            end
-          )
+            (
+              .speakers[] |
+              select(
+                .avatar? and
+                (.avatar | type == "string") and
+                (.avatar | startswith("https://sitcon.org/2026/img/avatar/speaker/"))
+              )
+            ).avatar |= ("https://sitcon.org/2026/img/avatar/speaker/large/" + (split("/")[-1]))
           ' ./public/sessions-web.json > ./public/sessions.json
 
       - name: Commit and Push
