@@ -73,7 +73,7 @@ jobs:
     name: Build and Push to build branch
     runs-on: ubuntu-latest
     if: github.repository == 'sitcon-tw/2026'
-    requires: update-sessions-json
+    needs: update-sessions-json
     steps:
       - uses: actions/checkout@v4
       - name: Set timezone to Asia/Taipei
