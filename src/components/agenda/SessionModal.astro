@@ -387,7 +387,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 									${avatar}
 									<div>
 										<h2>${avatar}<span>${name}</span></h2>
-										<p>${(speaker.description || "").replace(/\n/g, "<br />")}</p>
+										${(speaker.description || "").replace(/\n/g, "<br />")}
 									</div>
 								</article>`;
 				})

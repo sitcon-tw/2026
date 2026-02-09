@@ -225,39 +225,8 @@ const posters = Array.isArray(postersData) ? postersData : [];
 										: "";
 			}
 
-			if (nameEl) {
-				nameEl.textContent = data.name || "";
-			}
-
-			if (descEl) {
-				const raw = String(data.description || "");
-				let html = "";
-				try {
-					const mod = await import("marked");
-					const markedFn = mod.marked ?? mod.default;
-					if (markedFn && typeof markedFn.parse === "function") {
-						html = markedFn.parse(raw);
-					}
-				} catch (_) {}
-				if (!html) {
-					// Fallback: basic markdown (headings, bold, paragraphs)
-					const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-					html = esc(raw)
-						.replace(/^### (.+)$/gm, "\n<h3>$1</h3>\n")
-						.replace(/^## (.+)$/gm, "\n<h2>$1</h2>\n")
-						.replace(/^# (.+)$/gm, "\n<h1>$1</h1>\n")
-						.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-						.replace(/\*(.+?)\*/g, "<em>$1</em>")
-						.replace(/\n\n+/g, "</p><p>")
-						.replace(/\n/g, "<br>");
-					html = (html ? "<p>" + html + "</p>" : "")
-						.replace(/<p><br><(h[1-3])/g, "<$1")
-						.replace(/<\/(h[1-3])><br><\/p>/g, "</$1>")
-						.replace(/<p><(h[1-3])/g, "<$1")
-						.replace(/<\/(h[1-3])><\/p>/g, "</$1>");
-				}
-				descEl.innerHTML = html;
-			}
+			nameEl.textContent = data.name || "";
+			descEl.innerHTML = data.description;
 
 			// Update time (forced to GMT+8 / Asia/Taipei)
 			if (timeEl && data.startTime) {
