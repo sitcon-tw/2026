@@ -546,8 +546,6 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 	</style>
 
 	<script>
-		import { marked } from "marked";
-
 		const initSponsorDialog = () => {
 			const container = document.querySelector(".sponsor-container") as HTMLElement | null;
 			if (!container) return () => {};
@@ -585,9 +583,9 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				if (!dialog) return;
 				const { name, desc, type, img, url, id } = trigger.dataset;
 
-				if (dialogTitle) dialogTitle.textContent = name ?? null;
-				if (dialogDesc) dialogDesc.innerHTML = desc ? await marked.parse(String(desc)) : "";
-				if (dialogType) dialogType.textContent = type ?? null;
+				if (dialogTitle) dialogTitle.textContent = name ?? "";
+				if (dialogDesc) dialogDesc.innerHTML = desc ?? "";
+				if (dialogType) dialogType.textContent = type ?? "";
 				if (dialogImg && img) dialogImg.src = img;
 				if (visitBtn) {
 					visitBtn.href = url || "#";

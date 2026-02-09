@@ -46,18 +46,16 @@ jobs:
           avatar-base-url: "https://sitcon.org/2026/img/avatar/speaker/"
           output-path: ./public/sessions-web.json
 
-      - name: Create avatar path for OPass
-        run: |
-          jq '
-            (
-              .speakers[] |
-              select(
-                .avatar? and
-                (.avatar | type == "string") and
-                (.avatar | startswith("https://sitcon.org/2026/img/avatar/speaker/"))
-              )
-            ).avatar |= ("https://sitcon.org/2026/img/avatar/speaker/large/" + (split("/")[-1]))
-          ' ./public/sessions-web.json > ./public/sessions.json
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install markdown-it
+        run: npm install markdown-it
+
+      - name: Postprocess sessions.json
+        run: node scripts/postprocess-sessions.js
 
       - name: Commit and Push
         run: |

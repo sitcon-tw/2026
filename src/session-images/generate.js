@@ -41,7 +41,8 @@ const BADGE_COLORS = {
 	E: "#5B2D8B", // Espresso
 	PD: "#8A1F3D", // 論壇
 	L: "#2E6B3F", // Lightning Talk
-	S: "#444444"
+	S: "#444444", // 合作議程
+	U: "#444444" // 開放式議程
 };
 
 function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
@@ -64,7 +65,7 @@ function drawBadge(ctx, typeName, typeId) {
 	const bg = BADGE_COLORS[typeId] ?? "#333";
 
 	ctx.fillStyle = bg;
-	ctx.fillRect(80, 80, 180, 48);
+	ctx.fillRect(80, 80, 185, 48);
 
 	ctx.fillStyle = "#fff";
 	ctx.font = "bold 24px GenKiGothic";
@@ -162,7 +163,7 @@ async function main() {
 		fs.mkdirSync(path.join(ROOT, "../public", "img", "session"));
 	}
 
-	const sessions = data.sessions.filter(session => ["K", "P", "E", "PD", "L"].includes(session.type)).filter(session => session.zh?.title);
+	const sessions = data.sessions.filter(session => ["K", "P", "E", "PD", "L", "S", "U"].includes(session.type)).filter(session => session.zh?.title);
 
 	const BATCH_SIZE = 10;
 	let completed = 0;

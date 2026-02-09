@@ -1,5 +1,4 @@
 ---
-import { marked } from "marked";
 import { Share2, Check, X, Clock, MapPin } from "@lucide/astro";
 import adsData from "@/data/ads.json";
 import bookmarkIcon from "@/../public/img/bookmark.svg";
@@ -202,7 +201,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 					</button>
 				</div>
 
-				<div class="session-description" set:html={description ? marked.parse(description) : ""} />
+				<div class="session-description" set:html={description ?? ""} />
 				<div class="session-speaker-detail"></div>
 			</div>
 		</div>
@@ -332,17 +331,8 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		if (titleEl) titleEl.textContent = sessionName;
 
 		const descEl = modal?.querySelector(".session-description");
-		if (descEl) {
-			import("marked")
-				.then(({ marked }) => {
-					descEl.innerHTML = sessionDescription ? (marked.parse(sessionDescription) as string) : "";
-				})
-				.catch(() => {
-					descEl.textContent = sessionDescription;
-				});
-		}
+		if (descEl) descEl.innerHTML = sessionDescription;
 
-		// Update type badge
 		const typeBadgeEl = modal?.querySelector(".session-type-badge");
 		if (typeBadgeEl) {
 			const typeLabels: Record<string, string> = {
@@ -889,7 +879,6 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		color: #333;
 		overflow: auto;
 		width: 100%;
-		padding-right: 1.5rem;
 		/* For Internet Explorer, Edge */
 		-ms-overflow-style: none;
 		/* For Firefox */
@@ -1151,10 +1140,6 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 
 		.session-actions {
 			gap: 0.5rem;
-		}
-
-		.session-content {
-			padding-right: 0.75rem;
 		}
 
 		.session-speaker-detail :global(article > img) {
