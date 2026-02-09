@@ -19,7 +19,7 @@ if (Array.isArray(data.sessions)) {
 	for (const session of data.sessions) {
 		for (const lang of ["zh", "en"]) {
 			if (session[lang]?.description) {
-				session[lang].description_html = render(session[lang].description);
+				session[lang].description = render(session[lang].description);
 			}
 		}
 	}
@@ -30,7 +30,7 @@ if (Array.isArray(data.speakers)) {
 	for (const speaker of data.speakers) {
 		for (const lang of ["zh", "en"]) {
 			if (speaker[lang]?.bio) {
-				speaker[lang].bio_html = render(speaker[lang].bio);
+				speaker[lang].bio = render(speaker[lang].bio);
 			}
 		}
 	}
