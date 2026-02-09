@@ -55,7 +55,7 @@ jobs:
         run: npm install markdown-it
 
       - name: Postprocess sessions.json
-        run: node scripts/postprocess-sessions.js
+        run: node src/session-images/postprocess-sessions.js
 
       - name: Commit and Push
         run: |
