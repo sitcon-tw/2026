@@ -961,6 +961,9 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		aspect-ratio: 1 / 1;
 		object-fit: cover;
 		border-radius: 1rem;
+		overflow: hidden;
+		color: transparent;
+		flex-shrink: 0;
 	}
 
 	.session-speaker-detail :global(h2) {
@@ -1147,7 +1150,7 @@ const adImageMobileSrc = selectedAdName ? `/2026/img/cool_sponsor/${selectedAdNa
 		}
 
 		.session-speaker-detail :global(h2 img) {
-			display: inline-block;
+			display: block;
 		}
 	}
 </style>
