@@ -660,7 +660,7 @@
         "40afba",
         "b25570",
         "15f04c",
-        "495f95"
+        "a966ae"
       ],
       "tags": [
         "ai",
@@ -1467,12 +1467,12 @@
       "id": "a966ae",
       "avatar": "https://sitcon.org/2026/img/avatar/speaker/a966ae.webp",
       "zh": {
-        "name": "Vic",
-        "bio": "<p>現任 NTUAI 技術部，曾任 Google 學生開發者社群 Lead，對技術社群充滿熱情。技術領域涵蓋 Backend / ML / Data，期望將玩具打磨成穩健產品。為 Apache Airflow &amp; Mahout 開源貢獻者。</p>\n"
+        "name": "Vic Wen",
+        "bio": "<p>現任 NTUAI、NTUFC 技術部，曾任 Google 學生開發者社群 Lead，對技術社群充滿熱情。技術領域涵蓋 Backend / ML / Data，期望將玩具打磨成穩健產品。為 Apache Airflow &amp; Mahout 開源貢獻者。</p>\n"
       },
       "en": {
-        "name": "Vic",
-        "bio": "<p>現任 NTUAI 技術部，曾任 Google 學生開發者社群 Lead，對技術社群充滿熱情。技術領域涵蓋 Backend / ML / Data，期望將玩具打磨成穩健產品。為 Apache Airflow &amp; Mahout 開源貢獻者。</p>\n"
+        "name": "Vic Wen",
+        "bio": "<p>現任 NTUAI、NTUFC 技術部，曾任 Google 學生開發者社群 Lead，對技術社群充滿熱情。技術領域涵蓋 Backend / ML / Data，期望將玩具打磨成穩健產品。為 Apache Airflow &amp; Mahout 開源貢獻者。</p>\n"
       }
     },
     {
@@ -1696,11 +1696,11 @@
       "avatar": "https://sitcon.org/2026/img/avatar/speaker/ba06b0.webp",
       "zh": {
         "name": "Jay Chang",
-        "bio": "<p>Apache Mahout Committer</p>\n"
+        "bio": "<p>Apache Mahout Committer，合作主導開發Mahout Quantum Data Plane（QDP）模組。同時活躍於Ray/KubeRay，對 MLSys 以及大型系統開發有興趣。</p>\n"
       },
       "en": {
         "name": "Jay Chang",
-        "bio": "<p>Apache Mahout Committer</p>\n"
+        "bio": "<p>#REF!</p>\n"
       }
     },
     {
@@ -1708,11 +1708,11 @@
       "avatar": "https://sitcon.org/2026/img/avatar/speaker/40afba.webp",
       "zh": {
         "name": "Ryan Huang",
-        "bio": "<p>Apache Mahout Committer</p>\n"
+        "bio": "<p>Apache Mahout Committer，專注於 MLSys 研究。核心參與並推動 Mahout Quantum Data Plane（QDP）模組的設計與實作，同時活躍於 Apache YuniKorn 與 Ray 生態系。</p>\n"
       },
       "en": {
         "name": "Ryan Huang",
-        "bio": "<p>Apache Mahout Committer</p>\n"
+        "bio": "<p>#REF!</p>\n"
       }
     },
     {
@@ -1720,11 +1720,11 @@
       "avatar": "https://sitcon.org/2026/img/avatar/speaker/b25570.webp",
       "zh": {
         "name": "rich7420 黃冠澔 KUAN HAO HUANG",
-        "bio": "<p>OpenSoure4you 源來適你成員, Apache Mahout Committer</p>\n"
+        "bio": "<p>Apache Mahout Committer，研究領域為 Infrastructure 與 Distributed Systems。合作主導開發 Mahout Quantum Data Plane (QDP) 模組，並活躍於 Apache Ozone 、Kai-scheduler。致力探索並解決 LLM 與 Quantum Computing 的系統瓶頸，將頂級會議的研究成果轉化為穩健的開源系統基石。</p>\n"
       },
       "en": {
         "name": "rich7420 黃冠澔 KUAN HAO HUANG",
-        "bio": "<p>OpenSoure4you 源來適你成員, Apache Mahout Committer</p>\n"
+        "bio": "<p>#REF!</p>\n"
       }
     },
     {
@@ -1732,23 +1732,11 @@
       "avatar": "https://sitcon.org/2026/img/avatar/speaker/15f04c.webp",
       "zh": {
         "name": "Guan-Ming",
-        "bio": "<p>Apache Mahout PMC Member</p>\n"
+        "bio": "<p>Apache Mahout PMC Member, Quid Data Intern。畢業於台大資管，目前就讀電機所碩一。對 MLSYS 以及大型系統開發有興趣。</p>\n"
       },
       "en": {
         "name": "Guan-Ming",
-        "bio": "<p>Apache Mahout PMC Member</p>\n"
-      }
-    },
-    {
-      "id": "495f95",
-      "avatar": "https://sitcon.org/2026/img/avatar/speaker/495f95.webp",
-      "zh": {
-        "name": "Vic Wen",
-        "bio": "<p>Google Developer Groups On Campus NTUST ’24-‘25 Lead, Apache Mahout Contributor</p>\n"
-      },
-      "en": {
-        "name": "Vic Wen",
-        "bio": "<p>Google Developer Groups On Campus NTUST ’24-‘25 Lead, Apache Mahout Contributor</p>\n"
+        "bio": "<p>#REF!</p>\n"
       }
     }
   ],
