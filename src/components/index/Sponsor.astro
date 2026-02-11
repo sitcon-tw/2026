@@ -23,7 +23,7 @@ const getTitle = (s: Sponsor) => (lang === "en" && s.title_en ? s.title_en : s.t
 const getDesc = (s: Sponsor) => (lang === "en" && s.description_en ? s.description_en : s.description_zh);
 const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 
-// const supportersList = sponsors.supporters as Sponsor[];
+const supportersList = sponsors.supporters as Sponsor[];
 ---
 
 <section class="sponsor-container">
@@ -74,7 +74,7 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 					</button>
 				))
 			}
-		</div>
+		</div> -->
 
 		<h3 class="tier-title text-reveal-title">{t.sponsorDeepCultivation}</h3>
 		<div class="main-grid">
@@ -85,7 +85,7 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 					</button>
 				))
 			}
-		</div> -->
+		</div>
 
 		<h3 class="tier-title text-reveal-title" id="sponsorVisionary">{t.sponsorVisionary}</h3>
 		<div class="main-grid">
@@ -106,7 +106,7 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 			}
 		</div>
 
-		<!-- <h3 class="tier-title text-reveal-title">{t.sponsorNewSprout}</h3>
+		<h3 class="tier-title text-reveal-title">{t.sponsorNewSprout}</h3>
 		<div class="main-grid">
 			{
 				sponsors.sponsorNewSprout.map(s => (
@@ -115,7 +115,21 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 					</button>
 				))
 			}
-		</div >-->
+		</div>
+
+		<h3 class="tier-title text-reveal-title">{t.supporters}</h3>
+		<div class="main-grid">
+			{
+				supportersList.map(s => (
+					<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.supporters} data-img={getLogo(s)} data-url={s.url}>
+						<img src={getLogo(s)} alt={getTitle(s)} />
+					</button>
+				))
+			}
+			<!-- <button class="logo-box center-box person-sponsor sponsor-trigger" data-name={t.personalSponsor} data-desc={t.personalSponsorThanks} data-type={t.personalSponsor}>
+				<span>{t.personalSponsor}</span>
+			</button> -->
+		</div>
 
 		<h3 class="tier-title text-reveal-title">{t.mediaPartners}</h3>
 		<div class="main-grid">
@@ -127,21 +141,6 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 				))
 			}
 		</div>
-
-		<!-- <h3 class="tier-title text-reveal-title">{t.supporters}</h3>
-		<div class="main-grid">
-			{
-				supportersList.map(s => (
-					<button class="logo-box center-box sponsor-trigger" data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.supporters} data-img={getLogo(s)} data-url={s.url}>
-						<img src={getLogo(s)} alt={getTitle(s)} />
-					</button>
-				))
-			}
-			<button class="logo-box center-box person-sponsor sponsor-trigger" data-name={t.personalSponsor} data-desc={t.personalSponsorThanks} data-type={t.personalSponsor}>
-				<span>{t.personalSponsor}</span>
-			</button>
-		</div>
-	</div> -->
 	</div>
 
 	<!-- Popup -->
@@ -193,7 +192,7 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 		h3 {
 			font-size: 1.1rem;
 			font-weight: bold;
-			margin-bottom: 2rem;
+			margin-top: 2rem;
 			color: #222;
 			scroll-margin-top: 5rem;
 		}
