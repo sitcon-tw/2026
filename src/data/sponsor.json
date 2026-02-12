@@ -91,7 +91,7 @@
 			"url": "https://zuso.ai"
 		},
 		{
-			"logo": "t5.png",
+			"logo": "t5.webp",
 			"title_zh": "TeamT5 杜浦數位安全",
 			"title_en": "",
 			"description_zh": "TeamT5 專注威脅情資與 EDR 研究，具 20 年 APT 與惡意程式分析經驗。並投入人才培育，每年辦理資安培訓營，且提供實習與學生社群支持。",
@@ -127,6 +127,14 @@
 			"description_zh": "臺北市政府資訊局（Department of Information Technology）為臺北市政府資訊業務主管機關，致力於推動市政創新與科技應用，將先進數位科技融入城市治理、公共服務及基礎設施建設，透過各項資訊平台運用，提升民眾良好的市政服務體驗，積極打造更智慧、便捷的臺北城市環境。",
 			"description_en": "",
 			"url": "https://doit.gov.taipei"
+		},
+		{
+			"logo": "hackmd.webp",
+			"title_zh": "HackMD",
+			"title_en": "",
+			"description_zh": "臺北市政府資訊局（Department of Information Technology）為臺北市政府資訊業務主管機關，致力於推動市政創新與科技應用，將先進數位科技融入城市治理、公共服務及基礎設施建設，透過各項資訊平台運用，提升民眾良好的市政服務體驗，積極打造更智慧、便捷的臺北城市環境。",
+			"description_en": "",
+			"url": "https://hackmd.io/"
 		}
 	]
 }
