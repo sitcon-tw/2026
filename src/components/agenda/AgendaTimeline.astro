@@ -730,7 +730,6 @@ activeVenues.forEach(venueId => {
 		scrollContainer.addEventListener("touchmove", drag, { passive: false });
 		scrollContainer.addEventListener("touchend", endDrag);
 
-		// Mouse wheel and touchpad scroll (horizontal)
 		scrollContainer.addEventListener(
 			"wheel",
 			e => {
@@ -758,6 +757,7 @@ activeVenues.forEach(venueId => {
 				} else if (deltaY !== 0 && e.shiftKey) {
 					// Shift + vertical scroll = horizontal scroll
 					e.preventDefault();
+					e.stopPropagation();
 					scrollContainer.scrollBy({
 						left: deltaY,
 						behavior: "auto"
