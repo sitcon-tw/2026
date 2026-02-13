@@ -65,47 +65,15 @@
 	],
 	"sponsorDeepCultivation": [
 		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
+			"logo": "klickklack.svg",
+			"title_zh": "可立可 KlickKlack Communications",
 			"title_en": "",
-			"description_zh": "",
+			"description_zh": "可立可服務涵蓋：連結 Connectivity、協作 Collaboration、合規 Compliance 三大面向，以兼具韌性與彈性的服務賦能企業，協助企業隨著規模擴大而成長，運用新世代的科技工具和管理模式來減輕企業的負擔，使企業不僅可以實現數位轉型，還可達到資安合規的目標，並享受前所未有的服務體驗。",
 			"description_en": "",
-			"url": ""
-		},
-		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
-			"title_en": "",
-			"description_zh": "",
-			"description_en": "",
-			"url": ""
-		},
-		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
-			"title_en": "",
-			"description_zh": "",
-			"description_en": "",
-			"url": ""
+			"url": "https://www.kkco.com.tw/"
 		}
 	],
 	"sponsorVisionary": [
-		{
-			"logo": "zuso.png",
-			"title_zh": "ZUSO Generation 如梭世代",
-			"title_en": "",
-			"description_zh": "ZUSO 如梭世代成立於 2019 年，是深耕臺灣的專業資安服務業者，團隊累積超過十年攻防實戰與威脅分析經驗，長期為多家企業提供高品質資安服務。我們專注於紅隊演練、滲透測試與資安顧問服務，協助企業驗證資安防護能力，並打造專屬的資安解決方案。同時，ZUSO 持續深耕臺灣資安人才培育，透過實習與實戰導向的學習計畫，帶領學生從理論走進真實攻防場域，為臺灣資安產業注入新世代能量，並共同守護臺灣的資訊安全。",
-			"description_en": "",
-			"url": "https://zuso.ai"
-		},
-		{
-			"logo": "t5.png",
-			"title_zh": "TeamT5 杜浦數位安全",
-			"title_en": "",
-			"description_zh": "TeamT5 專注威脅情資與 EDR 研究，具 20 年 APT 與惡意程式分析經驗。並投入人才培育，每年辦理資安培訓營，且提供實習與學生社群支持。",
-			"description_en": "",
-			"url": "https://teamt5.org/"
-		},
 		{
 			"logo": "amd.svg",
 			"title_zh": "AMD",
@@ -113,32 +81,32 @@
 			"description_zh": "AMD 推動高效能運算、繪圖及視覺技術。全球消費者、世界 500 強企業及研究機構透過 AMD 來改善生活、工作及娛樂。AMD 致力研發領先的高效能產品，不斷突破極限。",
 			"description_en": "",
 			"url": "https://www.amd.com/zh-tw.html"
+		},
+		{
+			"logo": "zuso.webp",
+			"title_zh": "ZUSO Generation 如梭世代",
+			"title_en": "",
+			"description_zh": "ZUSO 如梭世代成立於 2019 年，是深耕臺灣的專業資安服務業者，團隊累積超過十年攻防實戰與威脅分析經驗，長期為多家企業提供高品質資安服務。我們專注於紅隊演練、滲透測試與資安顧問服務，協助企業驗證資安防護能力，並打造專屬的資安解決方案。同時，ZUSO 持續深耕臺灣資安人才培育，透過實習與實戰導向的學習計畫，帶領學生從理論走進真實攻防場域，為臺灣資安產業注入新世代能量，並共同守護臺灣的資訊安全。",
+			"description_en": "",
+			"url": "https://zuso.ai"
+		},
+		{
+			"logo": "t5.webp",
+			"title_zh": "TeamT5 杜浦數位安全",
+			"title_en": "",
+			"description_zh": "TeamT5 專注威脅情資與 EDR 研究，具 20 年 APT 與惡意程式分析經驗。並投入人才培育，每年辦理資安培訓營，且提供實習與學生社群支持。",
+			"description_en": "",
+			"url": "https://teamt5.org/"
 		}
 	],
 	"sponsorNewSprout": [
 		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
+			"logo": "HIT.svg",
+			"title_zh": "社團法人台灣駭客協會",
 			"title_en": "",
-			"description_zh": "",
+			"description_zh": "社團法人台灣駭客協會 (HIT) 致力於透過研討會、競賽、教育訓練等各種形式推廣資訊安全。在眾多活動中，最讓人期待的資安年度盛會：HITCON 2026，將於今年 8/21（五）- 8/22（六）舉辦，後續相關消息將持續於 HITCON 粉絲專頁公告。同時，為協助台灣資安社群發展，協會推出「<a href=\"https://bit.ly/4arOEyf\">台灣資安社群補助計畫</a>」，若有相關需求，歡迎至協會官網提出申請。",
 			"description_en": "",
-			"url": ""
-		},
-		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
-			"title_en": "",
-			"description_zh": "",
-			"description_en": "",
-			"url": ""
-		},
-		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
-			"title_en": "",
-			"description_zh": "",
-			"description_en": "",
-			"url": ""
+			"url": "https://hacker.org.tw/"
 		}
 	],
 	"mediaPartners": [
@@ -151,5 +119,22 @@
 			"url": "https://www.youtube.com/@shasha77"
 		}
 	],
-	"supporters": []
+	"supporters": [
+		{
+			"logo": "doip_tp.webp",
+			"title_zh": "臺北市政府資訊局",
+			"title_en": "",
+			"description_zh": "臺北市政府資訊局（Department of Information Technology）為臺北市政府資訊業務主管機關，致力於推動市政創新與科技應用，將先進數位科技融入城市治理、公共服務及基礎設施建設，透過各項資訊平台運用，提升民眾良好的市政服務體驗，積極打造更智慧、便捷的臺北城市環境。",
+			"description_en": "",
+			"url": "https://doit.gov.taipei"
+		},
+		{
+			"logo": "hackmd.webp",
+			"title_zh": "HackMD",
+			"title_en": "",
+			"description_zh": "臺北市政府資訊局（Department of Information Technology）為臺北市政府資訊業務主管機關，致力於推動市政創新與科技應用，將先進數位科技融入城市治理、公共服務及基礎設施建設，透過各項資訊平台運用，提升民眾良好的市政服務體驗，積極打造更智慧、便捷的臺北城市環境。",
+			"description_en": "",
+			"url": "https://hackmd.io/"
+		}
+	]
 }
