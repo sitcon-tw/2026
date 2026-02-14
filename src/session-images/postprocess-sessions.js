@@ -6,17 +6,22 @@ const md = new MarkdownIt({
 	linkify: true
 });
 
-const INPUT = process.argv[2] ?? "public/sessions-web.json";
-const OUTPUT = process.argv[3] ?? "public/sessions.json";
+const INPUT = "public/sessions-web.json";
+const OUTPUT = "public/sessions.json";
 
-const data = JSON.parse(fs.readFileSync(INPUT, "utf-8"));
+/* ---------- Step 1: Copy INPUT to OUTPUT ---------- */
+fs.copyFileSync(INPUT, OUTPUT);
 
 /* ---------- helpers ---------- */
 const render = s => (typeof s === "string" ? md.render(s) : s);
 
-/* ---------- sessions ---------- */
-if (Array.isArray(data.sessions)) {
-	for (const session of data.sessions) {
+/* ---------- Step 2: Process markdown in INPUT ---------- */
+const inputData = JSON.parse(fs.readFileSync(INPUT, "utf-8"));
+const outputData = inputData;
+
+/* sessions */
+if (Array.isArray(inputData.sessions)) {
+	for (const session of inputData.sessions) {
 		for (const lang of ["zh", "en"]) {
 			if (session[lang]?.description) {
 				session[lang].description = render(session[lang].description);
@@ -25,9 +30,9 @@ if (Array.isArray(data.sessions)) {
 	}
 }
 
-/* ---------- speakers ---------- */
-if (Array.isArray(data.speakers)) {
-	for (const speaker of data.speakers) {
+/* speakers */
+if (Array.isArray(inputData.speakers)) {
+	for (const speaker of inputData.speakers) {
 		for (const lang of ["zh", "en"]) {
 			if (speaker[lang]?.bio) {
 				speaker[lang].bio = render(speaker[lang].bio);
@@ -36,11 +41,13 @@ if (Array.isArray(data.speakers)) {
 	}
 }
 
-fs.writeFileSync(INPUT, JSON.stringify(data, null, 2));
+fs.writeFileSync(INPUT, JSON.stringify(inputData, null, 2));
+
+/* ---------- Step 3: Process avatar paths in OUTPUT ---------- */
 
 /* avatar rewrite */
-if (Array.isArray(data.speakers)) {
-	for (const speaker of data.speakers) {
+if (Array.isArray(outputData.speakers)) {
+	for (const speaker of outputData.speakers) {
 		if (typeof speaker.avatar === "string" && speaker.avatar.startsWith("https://sitcon.org/2026/img/avatar/speaker/")) {
 			const filename = speaker.avatar.split("/").pop();
 			speaker.avatar = "https://sitcon.org/2026/img/avatar/speaker/large/" + filename;
@@ -48,4 +55,4 @@ if (Array.isArray(data.speakers)) {
 	}
 }
 
-fs.writeFileSync(OUTPUT, JSON.stringify(data, null, 2));
+fs.writeFileSync(OUTPUT, JSON.stringify(outputData, null, 2));
