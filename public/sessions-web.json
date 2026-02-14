@@ -1700,7 +1700,7 @@
       },
       "en": {
         "name": "Jay Chang",
-        "bio": "<p>#REF!</p>\n"
+        "bio": "<p>Apache Mahout Committer，合作主導開發Mahout Quantum Data Plane（QDP）模組。同時活躍於Ray/KubeRay，對 MLSys 以及大型系統開發有興趣。</p>\n"
       }
     },
     {
@@ -1712,7 +1712,7 @@
       },
       "en": {
         "name": "Ryan Huang",
-        "bio": "<p>#REF!</p>\n"
+        "bio": "<p>Apache Mahout Committer，專注於 MLSys 研究。核心參與並推動 Mahout Quantum Data Plane（QDP）模組的設計與實作，同時活躍於 Apache YuniKorn 與 Ray 生態系。</p>\n"
       }
     },
     {
@@ -1724,7 +1724,7 @@
       },
       "en": {
         "name": "rich7420 黃冠澔 KUAN HAO HUANG",
-        "bio": "<p>#REF!</p>\n"
+        "bio": "<p>Apache Mahout Committer，研究領域為 Infrastructure 與 Distributed Systems。合作主導開發 Mahout Quantum Data Plane (QDP) 模組，並活躍於 Apache Ozone 、Kai-scheduler。致力探索並解決 LLM 與 Quantum Computing 的系統瓶頸，將頂級會議的研究成果轉化為穩健的開源系統基石。</p>\n"
       }
     },
     {
@@ -1736,7 +1736,7 @@
       },
       "en": {
         "name": "Guan-Ming",
-        "bio": "<p>#REF!</p>\n"
+        "bio": "<p>Apache Mahout PMC Member, Quid Data Intern。畢業於台大資管，目前就讀電機所碩一。對 MLSYS 以及大型系統開發有興趣。</p>\n"
       }
     }
   ],
