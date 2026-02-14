@@ -17,7 +17,7 @@ const render = s => (typeof s === "string" ? md.render(s) : s);
 
 /* ---------- Step 2: Process markdown in INPUT ---------- */
 const inputData = JSON.parse(fs.readFileSync(INPUT, "utf-8"));
-const outputData = inputData;
+const outputData = structuredClone(inputData);
 
 /* sessions */
 if (Array.isArray(inputData.sessions)) {
