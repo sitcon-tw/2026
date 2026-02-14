@@ -1738,6 +1738,18 @@
         "name": "Guan-Ming",
         "bio": "Apache Mahout PMC Member, Quid Data Intern。畢業於台大資管，目前就讀電機所碩一。對 MLSYS 以及大型系統開發有興趣。"
       }
+    },
+    {
+      "id": "0c466c",
+      "avatar": "https://sitcon.org/2022/imgs/deafult_avatar.jpg",
+      "zh": {
+        "name": "等你來報名！",
+        "bio": "年會當天 10:00~15:30 來白板區投稿，你也可以站上舞台！"
+      },
+      "en": {
+        "name": "等你來報名！",
+        "bio": "年會當天 10:00~15:30 來白板區投稿，你也可以站上舞台！"
+      }
     }
   ],
   "session_types": [
