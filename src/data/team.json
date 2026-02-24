@@ -795,14 +795,13 @@
 	},
 	{
 		"name": "kiki",
-		"description": "烏薩奇！！！！！ 到！！！！！",
+		"description": "",
 		"teams": [
 			{
 				"name": "design",
 				"role": "deputy"
 			}
 		],
-		"link": "https://www.instagram.com/kaichess/",
 		"mode": "nobg"
 	},
 	{
@@ -870,13 +869,14 @@
 	},
 	{
 		"name": "KIKI PENG",
-		"description": "",
+		"description": "烏薩奇！！！！！ 到！！！！！",
 		"teams": [
 			{
 				"name": "design",
 				"role": "member"
 			}
-		]
+		],
+		"link": "https://www.instagram.com/kaichess/"
 	},
 	{
 		"name": "阿玉",
