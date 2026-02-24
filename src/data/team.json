@@ -783,27 +783,27 @@
 		"mode": "nobg"
 	},
 	{
-		"name": "kiki",
-		"description": "烏薩奇！！！！！ 到！！！！！",
+		"name": "章魚",
+		"description": "很高興認識大家，我是年會前幾天剛滿19歲，來自設計組的章魚～\n然後我在年初已經看到了ZEROBASEONE、CORTIS、BOYNEXTDOOR、TWS、Stray Kids、LE SSERAFIM、IVE、Jennie...，請各位祝福我在今年年末可以去看 BTS 高雄場！！",
 		"teams": [
 			{
 				"name": "design",
 				"role": "head"
 			}
 		],
-		"link": "https://www.instagram.com/kaichess/",
-		"mode": "nobg"
+		"link": "https://www.youtube.com/watch?v=v5_GoNFr5wc"
 	},
 	{
-		"name": "章魚",
-		"description": "很高興認識大家，我是年會前幾天剛滿19歲，來自設計組的章魚～\n然後我在年初已經看到了ZEROBASEONE、CORTIS、BOYNEXTDOOR、TWS、Stray Kids、LE SSERAFIM、IVE、Jennie...，請各位祝福我在今年年末可以去看 BTS 高雄場！！",
+		"name": "kiki",
+		"description": "烏薩奇！！！！！ 到！！！！！",
 		"teams": [
 			{
 				"name": "design",
 				"role": "deputy"
 			}
 		],
-		"link": "https://www.youtube.com/watch?v=v5_GoNFr5wc"
+		"link": "https://www.instagram.com/kaichess/",
+		"mode": "nobg"
 	},
 	{
 		"name": "釋迦",
