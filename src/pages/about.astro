@@ -1,4 +1,5 @@
 ---
+import Footer from "@/components/Footer.astro";
 import Layout from "@/layout/Layout.astro";
 import { type Lang, useTranslations } from "@/utils/i18n";
 
@@ -10,27 +11,27 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 
 <Layout lang={lang} title={title} description={description}>
 	<main>
-		<div class="about-header">
+		<section class="about-header">
 			<img src="/2026/img/about/sitcon-2025.webp" alt="SITCON 2025" class="header-img" />
 			<h1 class="text-3xl font-bold mb-4">{t.title}</h1>
 			<p class="text-lg">{t.description}</p>
-		</div>
+		</section>
 		<div class="wavy-spacer"></div>
-		<div class="community-section">
+		<section class="community-section">
 			<h2 class="section-title">{t.community.title}</h2>
 			<div class="community-data-container">
 				{
 					t.community.data.map(item => (
 						<div class="community-item">
-							<p>{item.count}</p>
-							<h3>{item.label}</h3>
+							<span class="community-count">{item.count}</span>
+							<span class="community-label">{item.label}</span>
 						</div>
 					))
 				}
 			</div>
-		</div>
+		</section>
 		<div class="wavy-spacer"></div>
-		<div class="news-section">
+		<section class="news-section">
 			<h2 class="section-title">{t.news.title}</h2>
 			<div class="news-data-container">
 				{
@@ -45,14 +46,40 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 					))
 				}
 			</div>
-		</div>
+		</section>
+		<div class="wavy-spacer"></div>
+		<section class="recap-section">
+			<h2 class="section-title">{t.recap.title}</h2>
+			<div class="recap-stats">
+				{
+					t.recap.stats.map(stat => (
+						<div class="recap-stat">
+							<span class="recap-number">{stat.number}</span>
+							<span class="recap-label">{stat.label}</span>
+						</div>
+					))
+				}
+			</div>
+			<div class="recap-charts">
+				<div class="recap-chart-item">
+					<h3 class="chart-title">{t.recap.charts[0].title}</h3>
+					<div id="attender-role-chart" class="chart-canvas" data-chart={JSON.stringify(t.recap.charts[0].data)}></div>
+				</div>
+				<div class="recap-chart-item">
+					<h3 class="chart-title">{t.recap.charts[1].title}</h3>
+					<div id="programming-level-chart" class="chart-canvas" data-chart={JSON.stringify(t.recap.charts[1].data)}></div>
+				</div>
+			</div>
+		</section>
 	</main>
+	<Footer />
 </Layout>
 
 <style>
 	main {
 		max-width: 60rem;
 		margin: 0 auto;
+		margin-bottom: 3rem;
 		padding: 0 2rem;
 	}
 
@@ -78,22 +105,30 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		height: 20rem;
 	}
 
+	/* Community Section */
 	.community-section {
 		text-align: center;
-		margin-top: 3rem;
 	}
 
 	.section-title {
 		font-weight: bold;
 		text-align: center;
 		font-size: 2rem;
-		margin: 2rem 0;
+		margin-bottom: 2rem;
 	}
 
 	.community-data-container {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 		gap: 1rem;
+	}
+
+	.community-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
 	}
 
 	.community-item:last-child {
@@ -108,16 +143,88 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		color: #3c2d0e;
 	}
 
-	.community-item p {
-		font-size: 2rem;
+	.community-item .community-count {
+		font-size: 2.5rem;
 		font-weight: bold;
-		margin-bottom: 0.2rem;
+		margin-bottom: 0;
+		color: #d1a348;
 	}
 
-	.community-item h3 {
+	.community-item .community-label {
 		font-size: 1rem;
 	}
 
+	/* Review Section */
+	.recap-section {
+		text-align: center;
+		margin: 2rem 0;
+	}
+
+	.recap-stats {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1rem;
+	}
+
+	@media (max-width: 60rem) {
+		.recap-stats {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 30rem) {
+		.recap-stats {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.recap-stat {
+		background-color: #3c2d0e;
+		border-radius: 1rem;
+		padding: 1.5rem 1rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.recap-number {
+		font-size: 2.5rem;
+		font-weight: bold;
+		color: #e8bb5f;
+		line-height: 1;
+	}
+
+	/* Review Chart */
+	.recap-charts {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+
+	@media (max-width: 50rem) {
+		.recap-charts {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.recap-chart-item {
+		background-color: #3c2d0e;
+		border-radius: 1rem;
+		padding: 1.5rem;
+	}
+
+	.chart-title {
+		margin-bottom: 1rem;
+	}
+
+	.chart-canvas {
+		width: 100%;
+		height: 280px;
+	}
+
+	/* News Section */
 	.news-data-container {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
@@ -166,3 +273,108 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		opacity: 0.9;
 	}
 </style>
+
+<script>
+	// @ts-ignore
+	import * as echarts from "echarts";
+
+	// Initialize charts after DOM is ready
+	let attenderRoleChart: any = null;
+	let programmingLevelChart: any = null;
+
+	function initCharts() {
+		const attenderElement = document.getElementById("attender-role-chart");
+		const programmingElement = document.getElementById("programming-level-chart");
+
+		if (!attenderElement || !programmingElement) return;
+
+		const attenderRoleData = JSON.parse(attenderElement.dataset.chart ?? "[]");
+		const programmingLevelData = JSON.parse(programmingElement.dataset.chart ?? "[]");
+
+		attenderRoleChart = echarts.init(attenderElement);
+		programmingLevelChart = echarts.init(programmingElement);
+
+		const isMobile = window.innerWidth <= 768;
+
+		const chartOption: any = {
+			tooltip: {
+				trigger: "item",
+				backgroundColor: "rgba(60, 45, 14, 0.95)",
+				borderColor: "#e8bb5f",
+				borderWidth: 1,
+				textStyle: {
+					color: "#fff8e7"
+				},
+				formatter: "{b}: {c} ({d}%)"
+			},
+			legend: {
+				orient: isMobile ? "horizontal" : "vertical",
+				left: isMobile ? "center" : "auto",
+				right: isMobile ? "auto" : "5%",
+				top: isMobile ? "bottom" : "center",
+				textStyle: {
+					color: "#f5dfa0",
+					fontSize: isMobile ? 10 : 12
+				},
+				itemWidth: isMobile ? 15 : 25,
+				itemHeight: isMobile ? 10 : 14
+			},
+			series: [
+				{
+					type: "pie",
+					radius: ["40%", "70%"],
+					center: isMobile ? ["50%", "35%"] : ["35%", "50%"],
+					avoidLabelOverlap: true,
+					itemStyle: {
+						borderRadius: 10,
+						borderColor: "#3c2d0e",
+						borderWidth: 2
+					},
+					label: {
+						show: false
+					},
+					emphasis: {
+						label: {
+							show: false
+						}
+					},
+					labelLine: {
+						show: false
+					},
+					data: []
+				}
+			],
+			color: ["#e8bb5f", "#d1a348", "#c47c1a", "#a85e10", "#f5dfa0", "#f0ce7a", "#b8943c", "#8c6a1e", "#614a0e"]
+		};
+
+		// Attender Role Chart
+		const attenderOption = { ...chartOption };
+		attenderOption.series[0].data = attenderRoleData;
+		attenderRoleChart.setOption(attenderOption);
+
+		// Programming Level Chart
+		const programmingOption = { ...chartOption };
+		programmingOption.series[0].data = programmingLevelData;
+		programmingLevelChart.setOption(programmingOption);
+	}
+
+	// Initialize on load
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initCharts);
+	} else {
+		initCharts();
+	}
+
+	// Responsive resize with debounce
+	let resizeTimeout: ReturnType<typeof setTimeout>;
+	window.addEventListener("resize", () => {
+		clearTimeout(resizeTimeout);
+		resizeTimeout = setTimeout(() => {
+			if (attenderRoleChart && programmingLevelChart) {
+				attenderRoleChart.dispose();
+				programmingLevelChart.dispose();
+				initCharts();
+			}
+		}, 250);
+	});
+</script>

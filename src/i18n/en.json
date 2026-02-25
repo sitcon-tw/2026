@@ -615,6 +615,42 @@
 				}
 			]
 		},
+		"recap": {
+			"title": "SITCON 2025 in Review",
+			"stats": [
+				{ "number": "1300", "label": "in-person attendees" },
+				{ "number": "200", "label": "schools from home and abroad" },
+				{ "number": "70%", "label": "college or graduate students" },
+				{ "number": "1/3", "label": "active in tech communities" }
+			],
+			"charts": [
+				{
+					"title": "Attendee Identity Distribution",
+					"data": [
+						{ "value": 679, "name": "University Students" },
+						{ "value": 291, "name": "High School Students" },
+						{ "value": 117, "name": "Graduate Students" },
+						{ "value": 87, "name": "Working Professionals" },
+						{ "value": 25, "name": "Middle School Students" },
+						{ "value": 15, "name": "5-Year College Students" },
+						{ "value": 6, "name": "Others" },
+						{ "value": 3, "name": "Teachers / Professors" },
+						{ "value": 1, "name": "Elementary Students" }
+					]
+				},
+				{
+					"title": "Software Development Level Distribution",
+					"data": [
+						{ "value": 476, "name": "Intermediate" },
+						{ "value": 276, "name": "Beginner" },
+						{ "value": 185, "name": "Proficient" },
+						{ "value": 182, "name": "Entry-level" },
+						{ "value": 54, "name": "No programming experience" },
+						{ "value": 51, "name": "Advanced" }
+					]
+				}
+			]
+		},
 		"news": {
 			"title": "What We've Done",
 			"things": [

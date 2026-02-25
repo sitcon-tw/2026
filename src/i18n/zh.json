@@ -594,6 +594,42 @@
 				}
 			]
 		},
+		"recap": {
+			"title": "回顧 2025 年",
+			"stats": [
+				{ "number": "1300", "label": "人次會場參與" },
+				{ "number": "200", "label": "所海內外學校" },
+				{ "number": "70%", "label": "大專院校或研究所背景" },
+				{ "number": "1/3", "label": "活躍於資訊社群" }
+			],
+			"charts": [
+				{
+					"title": "與會者身份分佈",
+					"data": [
+						{ "value": 679, "name": "大學生" },
+						{ "value": 291, "name": "高中 / 職生" },
+						{ "value": 117, "name": "研究生" },
+						{ "value": 87, "name": "社會人士" },
+						{ "value": 25, "name": "國中生" },
+						{ "value": 15, "name": "五專生" },
+						{ "value": 6, "name": "其他" },
+						{ "value": 3, "name": "老師 / 教授" },
+						{ "value": 1, "name": "國小生" }
+					]
+				},
+				{
+					"title": "軟體開發程度分佈",
+					"data": [
+						{ "value": 476, "name": "中等" },
+						{ "value": 276, "name": "初學" },
+						{ "value": 185, "name": "熟練" },
+						{ "value": 182, "name": "入門" },
+						{ "value": 54, "name": "我沒有接觸過程式" },
+						{ "value": 51, "name": "進階" }
+					]
+				}
+			]
+		},
 		"news": {
 			"title": "我們做過的事",
 			"things": [
