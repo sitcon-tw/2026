@@ -12,11 +12,9 @@
 
 > ![](/2026/img/mcp/S2.webp)
 
-## 4. Fill in the MCP Server information
+## 4. Fill in the MCP Server information and create the application
 
 > ![](/2026/img/mcp/S3.webp)
-
-## 5. Create the application
 
 - Name: SITCON MCP (or any name you prefer)
 

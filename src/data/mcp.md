@@ -12,11 +12,9 @@
 
 > ![](/2026/img/mcp/S2.webp)
 
-## 4. 填入 MCP Server 的資訊
+## 4. 填入 MCP Server 的資訊並建立應用程式
 
 > ![](/2026/img/mcp/S3.webp)
-
-## 5. 建立應用程式
 
 - 名稱：SITCON MCP（隨便填）
 
