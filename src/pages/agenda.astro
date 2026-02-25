@@ -59,7 +59,7 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 		<!-- MCP Connection Section -->
 		<section class="mcp-section">
 			<div class="mcp-container">
-				<h1 class="mcp-title" id="mcp-title">{lang === "en" ? "Agenda MCP Server" : "議程 MCP Server"}</h1>
+				<h1 class="mcp-title" id="mcp-title">{lang === "en" ? "SITCON MCP Server" : "SITCON MCP Server"}</h1>
 				<p class="mcp-desc">
 					{
 						lang === "en"
@@ -76,11 +76,20 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 						<span class="mcp-icon">🔗</span>
 						<span>{lang === "en" ? "Share Link" : "分享連結"}</span>
 					</div>
+					<div class="mcp-feature-item">
+						<span class="mcp-icon">ℹ️</span>
+						<span>{lang === "en" ? "Conference Info" : "年會資訊"}</span>
+					</div>
 				</div>
-				<button id="mcp-copy-btn" class="mcp-btn action-btn" type="button" data-url={mcpServerUrl}>
-					<div class="hover-bg"></div>
-					<span class="btn-text">{lang === "en" ? "Copy Server Link" : "複製 Server 連結"}</span>
-				</button>
+				<div class="mcp-actions">
+					<a href={lang === "en" ? "/2026/en/mcp/" : "/2026/mcp/"} target="_blank" rel="noopener noreferrer" class="mcp-link">
+						{lang === "en" ? "How to use MCP via ChatGPT" : "如何透過 ChatGPT 使用 MCP"}
+					</a>
+					<button id="mcp-copy-btn" class="mcp-btn action-btn" type="button" data-url={mcpServerUrl}>
+						<div class="hover-bg"></div>
+						<span class="btn-text">{lang === "en" ? "Copy Server Link" : "複製 Server 連結"}</span>
+					</button>
+				</div>
 			</div>
 		</section>
 		<section class="gallery-section">
@@ -803,6 +812,26 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 
 	.mcp-icon {
 		font-size: 1.4rem;
+	}
+
+	.mcp-actions {
+		display: flex;
+		gap: 1.5rem;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+		flex-wrap: wrap;
+	}
+
+	.mcp-link {
+		color: #e0e0e0;
+		text-decoration: underline;
+		font-size: 1.1rem;
+		transition: color 0.2s ease;
+	}
+
+	.mcp-link:hover {
+		color: #fff;
 	}
 
 	.mcp-btn {
