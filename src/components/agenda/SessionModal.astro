@@ -62,34 +62,18 @@ function formatTime(isoString: string): string {
 // Weighted random ad from ads.json array: [{ name, weight, link }]
 const ads = adsData as Array<{ name: string; weight: number; link: string }>;
 const weightedAds = ads.filter(ad => typeof ad.weight === "number" && ad.weight > 0 && !!ad.name);
-const totalWeight = weightedAds.reduce((sum, ad) => sum + ad.weight, 0);
-
-let selectedAd: (typeof weightedAds)[number] | null = null;
-if (totalWeight > 0) {
-	let r = Math.random() * totalWeight;
-	for (const ad of weightedAds) {
-		r -= ad.weight;
-		if (r <= 0) {
-			selectedAd = ad;
-			break;
-		}
-	}
-	selectedAd ??= weightedAds[weightedAds.length - 1] ?? null;
-}
-
-const adImageDesktopSrc = selectedAd ? `/2026/img/cool_sponsor/${selectedAd.name}.webp` : null;
-const adImageMobileSrc = selectedAd ? `/2026/img/cool_sponsor/${selectedAd.name}-mobile.webp` : null;
+const initialAd = weightedAds[0] ?? null;
 ---
 
-<div class="session-modal" id="session-modal">
+<div class="session-modal" id="session-modal" data-ads={JSON.stringify(weightedAds)}>
 	<div class="modal-overlay" id="modal-overlay"></div>
 	<div class="modal-container" id="modal-container">
 		{
-			selectedAd && (
-				<a href={selectedAd.link} target="_blank" rel="noopener noreferrer">
+			initialAd && (
+				<a href={initialAd.link} target="_blank" rel="noopener noreferrer" id="modal-ad-link">
 					<div class="ad-image-content">
-						<img src={adImageMobileSrc} alt={`${selectedAd.name} 橫式廣告`} class="ad-image" />
-						<img src={adImageDesktopSrc} alt={`${selectedAd.name} 直式廣告`} class="ad-image-desktop" />
+						<img src={`/2026/img/cool_sponsor/${initialAd.name}-mobile.webp`} alt={`${initialAd.name} 橫式廣告`} class="ad-image" id="modal-ad-image-mobile" />
+						<img src={`/2026/img/cool_sponsor/${initialAd.name}.webp`} alt={`${initialAd.name} 直式廣告`} class="ad-image-desktop" id="modal-ad-image-desktop" />
 					</div>
 				</a>
 			)
@@ -217,6 +201,48 @@ const adImageMobileSrc = selectedAd ? `/2026/img/cool_sponsor/${selectedAd.name}
 	const closeBtn = document.getElementById("modal-close");
 	const closeBtnMobile = document.getElementById("modal-close-mobile");
 	const shareBtn = document.getElementById("share-btn");
+	const adLink = document.getElementById("modal-ad-link") as HTMLAnchorElement | null;
+	const adImageMobile = document.getElementById("modal-ad-image-mobile") as HTMLImageElement | null;
+	const adImageDesktop = document.getElementById("modal-ad-image-desktop") as HTMLImageElement | null;
+	type ModalAd = { name: string; weight: number; link: string };
+	const modalAds: ModalAd[] = (() => {
+		if (!modal) return [];
+		try {
+			const raw = modal.getAttribute("data-ads");
+			const parsed = raw ? JSON.parse(raw) : [];
+			if (!Array.isArray(parsed)) return [];
+			return parsed.filter(ad => ad && typeof ad.name === "string" && typeof ad.link === "string" && typeof ad.weight === "number" && ad.weight > 0);
+		} catch {
+			return [];
+		}
+	})();
+
+	function pickWeightedAd(ads: ModalAd[]): ModalAd | null {
+		if (!ads.length) return null;
+		const totalWeight = ads.reduce((sum, ad) => sum + ad.weight, 0);
+		if (totalWeight <= 0) return null;
+		let r = Math.random() * totalWeight;
+		for (const ad of ads) {
+			r -= ad.weight;
+			if (r <= 0) return ad;
+		}
+		return ads[ads.length - 1] ?? null;
+	}
+
+	function refreshModalAd() {
+		if (!adLink || !adImageMobile || !adImageDesktop) return;
+		const selectedAd = pickWeightedAd(modalAds);
+		if (!selectedAd) {
+			adLink.style.display = "none";
+			return;
+		}
+		adLink.style.display = "";
+		adLink.href = selectedAd.link;
+		adImageMobile.src = `/2026/img/cool_sponsor/${selectedAd.name}-mobile.webp`;
+		adImageMobile.alt = `${selectedAd.name} 橫式廣告`;
+		adImageDesktop.src = `/2026/img/cool_sponsor/${selectedAd.name}.webp`;
+		adImageDesktop.alt = `${selectedAd.name} 直式廣告`;
+	}
 
 	function closeModal() {
 		if (!modal) return;
@@ -423,6 +449,8 @@ const adImageMobileSrc = selectedAd ? `/2026/img/cool_sponsor/${selectedAd.name}
 			});
 		}
 
+		refreshModalAd();
+
 		// Show modal
 		modal?.classList.add("active");
 		// Stop Lenis scrolling when modal opens (prevents body scroll interference)
@@ -584,6 +612,7 @@ const adImageMobileSrc = selectedAd ? `/2026/img/cool_sponsor/${selectedAd.name}
 
 	window.openSessionModal = () => {
 		if (modal) {
+			refreshModalAd();
 			modal.classList.add("active");
 		}
 	};
