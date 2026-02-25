@@ -15,7 +15,8 @@ const navItems = [
 	{ label: t.nav.info, href: `${prefix}/info/` },
 	{ label: t.nav.agenda, href: `${prefix}/agenda/` },
 	...(!isProd ? [{ label: t.nav.venue, href: `${prefix}/venue/` }] : []),
-	{ label: t.nav.team, href: `${prefix}/team/` }
+	{ label: t.nav.team, href: `${prefix}/team/` },
+	{ label: t.nav.about, href: `${prefix}/about/` }
 ];
 
 const alternatePrefix = lang === "en" ? "/2026" : "/2026/en";
