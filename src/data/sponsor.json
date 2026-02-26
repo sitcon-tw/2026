@@ -97,6 +97,14 @@
 			"description_zh": "TeamT5 專注威脅情資與 EDR 研究，具 20 年 APT 與惡意程式分析經驗。並投入人才培育，每年辦理資安培訓營，且提供實習與學生社群支持。",
 			"description_en": "",
 			"url": "https://teamt5.org/"
+		},
+		{
+			"logo": "aia.svg",
+			"title_zh": "AIA 台灣人工智慧學校",
+			"title_en": "",
+			"description_zh": "台灣人工智慧學校深耕 8 年，培訓 1.3 萬名 AI 人才、服務逾千家企業。近年推動 AI 認證與產業人才指引，並發起「公民 AI 素養計畫」落實普惠 AI。",
+			"description_en": "",
+			"url": "https://aiacademy.tw/"
 		}
 	],
 	"sponsorNewSprout": [
