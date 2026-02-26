@@ -676,6 +676,7 @@ const initialAd = weightedAds[0] ?? null;
 	.modal-container {
 		position: relative;
 		display: flex;
+		width: 90%;
 		max-width: 1200px;
 		height: 90vh;
 		max-height: 90vh;
@@ -749,19 +750,13 @@ const initialAd = weightedAds[0] ?? null;
 		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
 	}
 
-	#modal-ad-link {
-		flex: 0 0 auto;
-		display: flex;
-		height: 100%;
-	}
-
 	.ad-image {
 		display: none;
 	}
 
 	.ad-image-content {
 		display: flex;
-		align-items: center;
+		align-items: stretch;
 		height: 100%;
 	}
 
@@ -769,6 +764,7 @@ const initialAd = weightedAds[0] ?? null;
 		border-radius: 2rem;
 		height: 100%;
 		width: auto;
+		object-fit: cover;
 	}
 
 	.modal-right-panel {
