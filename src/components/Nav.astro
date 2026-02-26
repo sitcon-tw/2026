@@ -49,6 +49,13 @@ const alternateHref = `${alternatePrefix}${currentPath || "/"}`;
 </nav>
 
 <script>
+	// Hide navigation in app mode
+	const params = new URLSearchParams(window.location.search);
+	if (params.get("mode") === "app") {
+		const nav = document.querySelector("nav");
+		if (nav) nav.style.display = "none";
+	}
+
 	import gsap from "gsap";
 
 	const menu = document.querySelector(".hamburger") as HTMLButtonElement;
