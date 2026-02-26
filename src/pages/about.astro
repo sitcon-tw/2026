@@ -29,14 +29,14 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 				}
 			</div>
 		</section>
-		<section class="things-section">
-			<h2 class="section-title text-reveal-title">{t.things.title}</h2>
-			<div class="things-container">
+		<section class="history-section">
+			<h2 class="section-title text-reveal-title">{t.history.title}</h2>
+			<div class="history-container">
 				{
-					t.things.data.map(item => (
-						<div class="things-item">
-							<img src={`/2026/img/about/${item.image}.webp`} alt={item.title} class="things-image" />
-							<div class="things-overlay">
+					t.history.data.map(item => (
+						<div class="history-item">
+							<img src={`/2026/img/about/${item.image}.webp`} alt={item.title} class="history-image" />
+							<div class="history-overlay">
 								<h3>{item.title}</h3>
 								<p>{item.description}</p>
 							</div>
@@ -190,6 +190,7 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.recap-number {
@@ -199,7 +200,7 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		line-height: 1;
 	}
 
-	/* Review Chart */
+	/* Recap Chart */
 	.recap-charts {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
@@ -217,6 +218,7 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		background-color: #3c2d0e;
 		border-radius: 1rem;
 		padding: 1.5rem;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.chart-title {
@@ -228,25 +230,26 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		height: 280px;
 	}
 
-	/* News Section */
-	.things-container {
+	/* Things Section */
+	.history-container {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 		gap: 1rem;
 	}
 
-	.things-item:last-child {
+	.history-item:last-child {
 		grid-column: 1 / -1;
 	}
 
-	.things-item {
+	.history-item {
 		position: relative;
 		border-radius: 1rem;
 		overflow: hidden;
 		height: 15rem;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
-	.things-image {
+	.history-image {
 		position: absolute;
 		inset: 0;
 		width: 100%;
@@ -254,7 +257,7 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		object-fit: cover;
 	}
 
-	.things-overlay {
+	.history-overlay {
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.3) 60%, transparent 100%);
@@ -265,14 +268,14 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		color: #ffffff;
 	}
 
-	.things-overlay h3 {
+	.history-overlay h3 {
 		font-size: 1.25rem;
 		font-weight: bold;
 		margin-bottom: 0.5rem;
 	}
 
-	.things-overlay p {
-		font-size: 0.8rem;
+	.history-overlay p {
+		font-size: 0.85rem;
 		line-height: 1.5;
 		opacity: 0.9;
 	}
@@ -308,6 +311,7 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		transition:
 			box-shadow 0.3s ease,
 			transform 0.3s ease;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.media-item:hover {
