@@ -103,7 +103,18 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 4" fill="none" stroke="%23E8BB5F" stroke-width="1"><path d="M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3"/></svg>');
 		background-repeat: repeat-x;
 		background-size: 40px 10px;
+		background-position: 0 0;
 		margin-bottom: 2rem;
+		animation: wave-scroll 4s linear infinite;
+	}
+
+	@keyframes wave-scroll {
+		0% {
+			background-position: 0 0;
+		}
+		100% {
+			background-position: 40px 0;
+		}
 	}
 
 	.about-header {
