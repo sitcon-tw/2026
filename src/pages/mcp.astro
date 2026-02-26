@@ -1,0 +1,129 @@
+---
+import Layout from "@/layout/Layout.astro";
+import { Content } from "@/data/mcp.md";
+---
+
+<Layout title="如何透過 ChatGPT 使用 MCP" lang="zh">
+	<main>
+		<article class="markdown-body">
+			<Content />
+		</article>
+	</main>
+</Layout>
+
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const copyUrls = document.querySelectorAll(".copy-mcp-url") as NodeListOf<HTMLElement>;
+		copyUrls.forEach(el => {
+			const aTag = el.querySelector("a");
+			if (aTag) {
+				aTag.removeAttribute("href");
+				aTag.style.pointerEvents = "none";
+				aTag.style.color = "inherit";
+			}
+
+			el.addEventListener("click", async e => {
+				e.preventDefault();
+				const url = "https://mcp.sitcon.org/mcp";
+				try {
+					await navigator.clipboard.writeText(url);
+					const isEn = el.dataset.lang === "en";
+					const originalText = el.innerText;
+					el.innerText = isEn ? "Copied!" : "已複製！";
+					setTimeout(() => {
+						el.innerText = originalText;
+					}, 2000);
+				} catch (err) {
+					console.error("Failed to copy:", err);
+				}
+			});
+		});
+	});
+</script>
+
+<style>
+	main {
+		min-height: 100vh;
+		padding: 8rem 2rem 4rem;
+		display: flex;
+		justify-content: center;
+		background-color: #a97c21;
+	}
+
+	.markdown-body {
+		width: 100%;
+		max-width: 800px;
+		color: #fff;
+		line-height: 1.6;
+	}
+
+	.markdown-body :global(h1) {
+		font-size: 2.5rem;
+		margin-bottom: 2rem;
+		border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+		padding-bottom: 0.5rem;
+		font-family: "GenKiMinTW", serif;
+	}
+
+	.markdown-body :global(h2) {
+		font-size: 1.8rem;
+		margin: 2.5rem 0 1.2rem;
+		color: #ffe4b5;
+		font-family: "GenKiMinTW", serif;
+	}
+
+	.markdown-body :global(p) {
+		margin-bottom: 1.2rem;
+	}
+
+	.markdown-body :global(ul),
+	.markdown-body :global(ol) {
+		margin-bottom: 1.2rem;
+		padding-left: 1.5rem;
+	}
+
+	.markdown-body :global(li) {
+		margin-bottom: 0.5rem;
+	}
+
+	.markdown-body :global(blockquote) {
+		border-left: 4px solid #ffe4b5;
+		padding: 0.5rem 1rem;
+		background: rgba(255, 255, 181, 0.1);
+		margin: 2rem 0;
+		font-style: italic;
+	}
+
+	.markdown-body :global(hr) {
+		border: 0;
+		border-top: 1px solid rgba(255, 255, 255, 0.2);
+		margin: 3rem 0;
+	}
+
+	.markdown-body :global(img) {
+		max-width: 100%;
+		width: 600px;
+		height: auto;
+		border-radius: 0.5rem;
+		display: block;
+		margin: 1rem 0;
+	}
+
+	.markdown-body :global(img[src*="S3"]) {
+		width: 300px;
+	}
+
+	@media (max-width: 600px) {
+		main {
+			padding: 6rem 1.5rem 3rem;
+		}
+
+		.markdown-body :global(h1) {
+			font-size: 2rem;
+		}
+
+		.markdown-body :global(h2) {
+			font-size: 1.5rem;
+		}
+	}
+</style>

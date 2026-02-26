@@ -22,6 +22,8 @@ const t = useTranslations(lang).agenda;
 
 const agendaItems = normalizeAgendaSessionsFromFile(agendaData as AgendaDataFile, lang);
 const posters = Array.isArray(postersData) ? postersData : [];
+
+const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 ---
 
 <Layout title={title} description={description} ogImage={ogImage} seoUrl={seoUrl} lang={lang}>
@@ -53,6 +55,43 @@ const posters = Array.isArray(postersData) ? postersData : [];
 		</div>
 
 		<AgendaTimeline items={agendaItems} lang={lang} />
+
+		<!-- MCP Connection Section -->
+		<section class="mcp-section">
+			<div class="mcp-container">
+				<h1 class="mcp-title" id="mcp-title">{lang === "en" ? "SITCON MCP Server" : "SITCON MCP Server"}</h1>
+				<p class="mcp-desc">
+					{
+						lang === "en"
+							? "Connect to our MCP server to customize your agenda, manage schedule, and share it with others effortlessly."
+							: "連線至 MCP Server，安排您的專屬議程、管理行程並與他人分享。"
+					}
+				</p>
+				<div class="mcp-features">
+					<div class="mcp-feature-item">
+						<span class="mcp-icon">📅</span>
+						<span>{lang === "en" ? "Agenda Arrangement" : "議程安排"}</span>
+					</div>
+					<div class="mcp-feature-item">
+						<span class="mcp-icon">🔗</span>
+						<span>{lang === "en" ? "Share Link" : "分享連結"}</span>
+					</div>
+					<div class="mcp-feature-item">
+						<span class="mcp-icon">ℹ️</span>
+						<span>{lang === "en" ? "Conference Info" : "年會資訊"}</span>
+					</div>
+				</div>
+				<div class="mcp-actions">
+					<a href={lang === "en" ? "/2026/en/mcp/" : "/2026/mcp/"} target="_blank" rel="noopener noreferrer" class="mcp-link">
+						{lang === "en" ? "How to use MCP via ChatGPT" : "如何透過 ChatGPT 使用 MCP"}
+					</a>
+					<button id="mcp-copy-btn" class="mcp-btn action-btn" type="button" data-url={mcpServerUrl}>
+						<div class="hover-bg"></div>
+						<span class="btn-text">{lang === "en" ? "Copy Server Link" : "複製 Server 連結"}</span>
+					</button>
+				</div>
+			</div>
+		</section>
 		<section class="gallery-section">
 			<h1 class="gallery-title" id="gallery-title">{lang === "en" ? "Demo Gallery" : "Demo 展"}</h1>
 			<CircularGallery items={posters} lang={lang} />
@@ -69,7 +108,7 @@ const posters = Array.isArray(postersData) ? postersData : [];
 	<Footer />
 </Layout>
 
-<script define:vars={{ agendaID }}>
+<script define:vars={{ agendaID, mcpServerUrl }}>
 	const isEn = window.location.pathname.startsWith("/2026/en/");
 	const basePath = isEn ? "/2026/en/agenda" : "/2026/agenda";
 
@@ -595,12 +634,40 @@ const posters = Array.isArray(postersData) ? postersData : [];
 		window.localStorage.setItem("sitcon2026:agendaBookmarks", JSON.stringify(bookmarks));
 	}
 
+	function initMcpCopyBtn() {
+		const btn = document.getElementById("mcp-copy-btn");
+		if (!btn) return;
+
+		btn.addEventListener("click", async () => {
+			const url = btn.getAttribute("data-url");
+			if (!url) return;
+
+			try {
+				await navigator.clipboard.writeText(url);
+				const span = btn.querySelector(".btn-text");
+				if (span) {
+					const originalText = span.textContent;
+					span.textContent = isEn ? "Copied!" : "已複製！";
+
+					// Reset text after 2 seconds
+					setTimeout(() => {
+						span.textContent = originalText;
+					}, 2000);
+				}
+			} catch (err) {
+				console.error("Failed to copy:", err);
+			}
+		});
+	}
+
 	document.addEventListener("clearUrlCuratedState", clearUrlCuratedState);
 
 	// Deep link on first load
 	document.addEventListener("DOMContentLoaded", () => {
 		applyUrlCuratedState();
 		cleanNonExistBookmarks();
+		initActionBtnEffects(document.querySelector(".mcp-section"));
+		initMcpCopyBtn();
 		const idFromPath = getAgendaIdFromPathname(window.location.pathname);
 		const ssrAgendaId = agendaID || null;
 		const id = idFromPath || ssrAgendaId;
@@ -688,5 +755,122 @@ const posters = Array.isArray(postersData) ? postersData : [];
 
 	.legend-color.generic {
 		background-color: #1d1d1d;
+	}
+
+	.mcp-section {
+		display: flex;
+		justify-content: center;
+		padding: 0 1.5rem;
+		margin-top: 6rem;
+	}
+
+	.mcp-container {
+		max-width: 56.25rem;
+		width: 100%;
+		text-align: center;
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		background-color: rgba(0, 0, 0, 0.2);
+		padding: 4rem 2rem;
+		border-radius: 2rem;
+	}
+
+	.mcp-title {
+		margin-top: 0;
+		text-align: center;
+		font-size: 4rem;
+		color: white;
+		font-weight: bold;
+		margin-bottom: 1.5rem;
+		line-height: 1.2;
+	}
+
+	.mcp-desc {
+		font-size: 1.2rem;
+		color: #e0e0e0;
+		margin-bottom: 2.5rem;
+		max-width: 56.25rem;
+		line-height: 1.6;
+	}
+
+	.mcp-features {
+		display: flex;
+		gap: 2rem;
+		margin-bottom: 3rem;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.mcp-feature-item {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		font-size: 1.1rem;
+		color: #fff;
+	}
+
+	.mcp-icon {
+		font-size: 1.4rem;
+	}
+
+	.mcp-actions {
+		display: flex;
+		gap: 1.5rem;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+		flex-wrap: wrap;
+	}
+
+	.mcp-link {
+		color: #e0e0e0;
+		text-decoration: underline;
+		font-size: 1.1rem;
+		transition: color 0.2s ease;
+	}
+
+	.mcp-link:hover {
+		color: #fff;
+	}
+
+	.mcp-btn {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem 3rem;
+		background-color: #fff;
+		color: #000;
+		font-size: 1.2rem;
+		font-weight: bold;
+		border-radius: 3rem;
+		text-decoration: none;
+		overflow: hidden;
+		transition: transform 0.2s ease;
+		cursor: pointer;
+		border: none;
+		gap: 0.8rem;
+	}
+
+	.mcp-btn:hover {
+		transform: scale(1.05);
+	}
+
+	.mcp-btn span,
+	.mcp-btn .mcp-btn-icon {
+		position: relative;
+		z-index: 2;
+	}
+
+	.mcp-btn .hover-bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #d4d4d4;
+		z-index: 1;
+		transform: translateX(-100%);
 	}
 </style>
