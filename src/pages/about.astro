@@ -22,7 +22,7 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 				{
 					t.community.data.map(item => (
 						<div class="community-item">
-							<span class="community-count">{item.count}</span>
+							<span class="community-count text-reveal-title">{item.count}</span>
 							<span class="community-label">{item.label}</span>
 						</div>
 					))
@@ -37,8 +37,8 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 						<div class="history-item">
 							<img src={`/2026/img/about/${item.image}.webp`} alt={item.title} class="history-image" />
 							<div class="history-overlay">
-								<h3>{item.title}</h3>
-								<p>{item.description}</p>
+								<h3 class="text-reveal-title">{item.title}</h3>
+								<p class="text-reveal-paragraph">{item.description}</p>
 							</div>
 						</div>
 					))
@@ -52,7 +52,7 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 					t.media.items.map(item => (
 						<a href={item.url} target="_blank" rel="noopener noreferrer" class="media-item">
 							<img src={`/2026/img/about/${item.image}.webp`} alt={item.alt} />
-							<span class="media-overlay">{item.alt}</span>
+							<span class="media-overlay text-reveal-paragraph">{item.alt}</span>
 						</a>
 					))
 				}
@@ -64,7 +64,7 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 				{
 					t.recap.stats.map(stat => (
 						<div class="recap-stat">
-							<span class="recap-number">{stat.number}</span>
+							<span class="recap-number text-reveal-title">{stat.number}</span>
 							<span class="recap-label">{stat.label}</span>
 						</div>
 					))
@@ -246,7 +246,6 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		border-radius: 1rem;
 		overflow: hidden;
 		height: 15rem;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.history-image {
@@ -268,16 +267,32 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		color: #ffffff;
 	}
 
+	.history-overlay::before {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.3) 60%, transparent 100%);
+		color: #ffffff;
+		transition: opacity 0.3s ease;
+		opacity: 0;
+		content: "";
+	}
+
+	.history-item:hover .history-overlay::before {
+		opacity: 1;
+	}
+
 	.history-overlay h3 {
-		font-size: 1.25rem;
+		font-size: 1.3rem;
 		font-weight: bold;
 		margin-bottom: 0.5rem;
+		z-index: 2;
 	}
 
 	.history-overlay p {
 		font-size: 0.85rem;
 		line-height: 1.5;
-		opacity: 0.9;
+		opacity: 0.8;
+		z-index: 2;
 	}
 
 	/* Media Section */
