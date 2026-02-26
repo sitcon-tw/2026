@@ -59,9 +59,10 @@ function formatTime(isoString: string): string {
 	});
 }
 
-// Weighted random ad from ads.json array: [{ name, weight, link }]
-const ads = adsData as Array<{ name: string; weight: number; link: string }>;
-const weightedAds = ads.filter(ad => typeof ad.weight === "number" && ad.weight > 0 && !!ad.name);
+// Weighted random ad from ads.json array
+type ModalAdConfig = { name: string; weight: number; link: string; mobile?: boolean; desktop?: boolean };
+const ads = adsData as ModalAdConfig[];
+const weightedAds = ads.filter(ad => typeof ad.weight === "number" && ad.weight > 0 && !!ad.name && !!ad.link);
 const initialAd = weightedAds[0] ?? null;
 ---
 
@@ -204,18 +205,31 @@ const initialAd = weightedAds[0] ?? null;
 	const adLink = document.getElementById("modal-ad-link") as HTMLAnchorElement | null;
 	const adImageMobile = document.getElementById("modal-ad-image-mobile") as HTMLImageElement | null;
 	const adImageDesktop = document.getElementById("modal-ad-image-desktop") as HTMLImageElement | null;
-	type ModalAd = { name: string; weight: number; link: string };
+	type ModalAd = { name: string; weight: number; link: string; mobile?: boolean; desktop?: boolean };
 	const modalAds: ModalAd[] = (() => {
 		if (!modal) return [];
 		try {
 			const raw = modal.getAttribute("data-ads");
 			const parsed = raw ? JSON.parse(raw) : [];
 			if (!Array.isArray(parsed)) return [];
-			return parsed.filter(ad => ad && typeof ad.name === "string" && typeof ad.link === "string" && typeof ad.weight === "number" && ad.weight > 0);
+			return parsed.filter(
+				ad =>
+					ad &&
+					typeof ad.name === "string" &&
+					typeof ad.link === "string" &&
+					typeof ad.weight === "number" &&
+					ad.weight > 0 &&
+					(typeof ad.mobile === "undefined" || typeof ad.mobile === "boolean") &&
+					(typeof ad.desktop === "undefined" || typeof ad.desktop === "boolean")
+			);
 		} catch {
 			return [];
 		}
 	})();
+
+	function adMatchesDevice(ad: ModalAd, isPhone: boolean): boolean {
+		return isPhone ? ad.mobile === true : ad.desktop === true;
+	}
 
 	function pickWeightedAd(ads: ModalAd[]): ModalAd | null {
 		if (!ads.length) return null;
@@ -231,7 +245,9 @@ const initialAd = weightedAds[0] ?? null;
 
 	function refreshModalAd() {
 		if (!adLink || !adImageMobile || !adImageDesktop) return;
-		const selectedAd = pickWeightedAd(modalAds);
+		const isPhone = window.matchMedia("(max-width: 968px)").matches;
+		const availableAds = modalAds.filter(ad => adMatchesDevice(ad, isPhone));
+		const selectedAd = pickWeightedAd(availableAds);
 		if (!selectedAd) {
 			adLink.style.display = "none";
 			return;
