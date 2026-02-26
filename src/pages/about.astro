@@ -13,12 +13,11 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 	<main>
 		<section class="about-header">
 			<img src="/2026/img/about/sitcon-2025.webp" alt="SITCON 2025" class="header-img" />
-			<h1 class="text-3xl font-bold mb-4">{t.title}</h1>
-			<p class="text-lg">{t.description}</p>
+			<h1 class="text-3xl font-bold mb-4 text-reveal-title">{t.title}</h1>
+			<p class="text-lg text-reveal-paragraph">{t.description}</p>
 		</section>
-		<div class="wavy-spacer"></div>
 		<section class="community-section">
-			<h2 class="section-title">{t.community.title}</h2>
+			<h2 class="section-title text-reveal-title">{t.community.title}</h2>
 			<div class="community-data-container">
 				{
 					t.community.data.map(item => (
@@ -30,15 +29,14 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 				}
 			</div>
 		</section>
-		<div class="wavy-spacer"></div>
-		<section class="news-section">
-			<h2 class="section-title">{t.news.title}</h2>
-			<div class="news-data-container">
+		<section class="things-section">
+			<h2 class="section-title text-reveal-title">{t.things.title}</h2>
+			<div class="things-container">
 				{
-					t.news.things.map(item => (
-						<div class="news-item">
-							<img src={`/2026/img/about/${item.image}.webp`} alt={item.title} class="news-image" />
-							<div class="news-overlay">
+					t.things.data.map(item => (
+						<div class="things-item">
+							<img src={`/2026/img/about/${item.image}.webp`} alt={item.title} class="things-image" />
+							<div class="things-overlay">
 								<h3>{item.title}</h3>
 								<p>{item.description}</p>
 							</div>
@@ -47,9 +45,21 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 				}
 			</div>
 		</section>
-		<div class="wavy-spacer"></div>
+		<section class="media-section">
+			<h2 class="section-title text-reveal-title">{t.media.title}</h2>
+			<div class="media-container">
+				{
+					t.media.items.map(item => (
+						<a href={item.url} target="_blank" rel="noopener noreferrer" class="media-item">
+							<img src={`/2026/img/about/${item.image}.webp`} alt={item.alt} />
+							<span class="media-overlay">{item.alt}</span>
+						</a>
+					))
+				}
+			</div>
+		</section>
 		<section class="recap-section">
-			<h2 class="section-title">{t.recap.title}</h2>
+			<h2 class="section-title text-reveal-title">{t.recap.title}</h2>
 			<div class="recap-stats">
 				{
 					t.recap.stats.map(stat => (
@@ -62,11 +72,11 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 			</div>
 			<div class="recap-charts">
 				<div class="recap-chart-item">
-					<h3 class="chart-title">{t.recap.charts[0].title}</h3>
+					<h3 class="chart-title text-reveal-title">{t.recap.charts[0].title}</h3>
 					<div id="attender-role-chart" class="chart-canvas" data-chart={JSON.stringify(t.recap.charts[0].data)}></div>
 				</div>
 				<div class="recap-chart-item">
-					<h3 class="chart-title">{t.recap.charts[1].title}</h3>
+					<h3 class="chart-title text-reveal-title">{t.recap.charts[1].title}</h3>
 					<div id="programming-level-chart" class="chart-canvas" data-chart={JSON.stringify(t.recap.charts[1].data)}></div>
 				</div>
 			</div>
@@ -81,15 +91,9 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		margin: 0 auto;
 		margin-bottom: 3rem;
 		padding: 0 2rem;
-	}
-
-	.wavy-spacer {
-		height: 20px;
-		width: 100%;
-		background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 4" fill="none" stroke="%23E8BB5F" stroke-width="1"><path d="M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3"/></svg>');
-		background-repeat: repeat-x;
-		background-size: 40px 10px;
-		margin: 2rem 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4rem;
 	}
 
 	.about-header {
@@ -225,24 +229,24 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 	}
 
 	/* News Section */
-	.news-data-container {
+	.things-container {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 		gap: 1rem;
 	}
 
-	.news-item:last-child {
+	.things-item:last-child {
 		grid-column: 1 / -1;
 	}
 
-	.news-item {
+	.things-item {
 		position: relative;
 		border-radius: 1rem;
 		overflow: hidden;
 		height: 15rem;
 	}
 
-	.news-image {
+	.things-image {
 		position: absolute;
 		inset: 0;
 		width: 100%;
@@ -250,7 +254,7 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		object-fit: cover;
 	}
 
-	.news-overlay {
+	.things-overlay {
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.3) 60%, transparent 100%);
@@ -261,16 +265,83 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		color: #ffffff;
 	}
 
-	.news-overlay h3 {
+	.things-overlay h3 {
 		font-size: 1.25rem;
 		font-weight: bold;
 		margin-bottom: 0.5rem;
 	}
 
-	.news-overlay p {
+	.things-overlay p {
 		font-size: 0.8rem;
 		line-height: 1.5;
 		opacity: 0.9;
+	}
+
+	/* Media Section */
+	.media-section {
+		text-align: center;
+	}
+
+	.media-container {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1rem;
+	}
+
+	@media (max-width: 45rem) {
+		.media-container {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 30rem) {
+		.media-container {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.media-item {
+		position: relative;
+		display: block;
+		border-radius: 1rem;
+		overflow: hidden;
+		transition:
+			box-shadow 0.3s ease,
+			transform 0.3s ease;
+	}
+
+	.media-item:hover {
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+		transform: translateY(-2px);
+	}
+
+	.media-item img {
+		height: 10rem;
+		width: 100%;
+		object-position: top;
+		object-fit: cover;
+		display: block;
+		transition: filter 0.5s ease;
+	}
+
+	.media-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.1) 60%, transparent 100%);
+		display: flex;
+		align-items: flex-end;
+		text-align: left;
+		padding: 1rem;
+		color: #ffffff;
+		font-size: 0.85rem;
+		line-height: 1.5;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+	}
+
+	.media-item:hover .media-overlay {
+		opacity: 1;
 	}
 </style>
 

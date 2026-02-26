@@ -597,42 +597,99 @@
 		"recap": {
 			"title": "回顧 2025 年",
 			"stats": [
-				{ "number": "1300", "label": "人次會場參與" },
-				{ "number": "200", "label": "所海內外學校" },
-				{ "number": "70%", "label": "大專院校或研究所背景" },
-				{ "number": "1/3", "label": "活躍於資訊社群" }
+				{
+					"number": "1300",
+					"label": "人次會場參與"
+				},
+				{
+					"number": "200",
+					"label": "所海內外學校"
+				},
+				{
+					"number": "70%",
+					"label": "大專院校或研究所背景"
+				},
+				{
+					"number": "1/3",
+					"label": "活躍於資訊社群"
+				}
 			],
 			"charts": [
 				{
 					"title": "與會者身份分佈",
 					"data": [
-						{ "value": 679, "name": "大學生" },
-						{ "value": 291, "name": "高中 / 職生" },
-						{ "value": 117, "name": "研究生" },
-						{ "value": 87, "name": "社會人士" },
-						{ "value": 25, "name": "國中生" },
-						{ "value": 15, "name": "五專生" },
-						{ "value": 6, "name": "其他" },
-						{ "value": 3, "name": "老師 / 教授" },
-						{ "value": 1, "name": "國小生" }
+						{
+							"value": 679,
+							"name": "大學生"
+						},
+						{
+							"value": 291,
+							"name": "高中 / 職生"
+						},
+						{
+							"value": 117,
+							"name": "研究生"
+						},
+						{
+							"value": 87,
+							"name": "社會人士"
+						},
+						{
+							"value": 25,
+							"name": "國中生"
+						},
+						{
+							"value": 15,
+							"name": "五專生"
+						},
+						{
+							"value": 6,
+							"name": "其他"
+						},
+						{
+							"value": 3,
+							"name": "老師 / 教授"
+						},
+						{
+							"value": 1,
+							"name": "國小生"
+						}
 					]
 				},
 				{
 					"title": "軟體開發程度分佈",
 					"data": [
-						{ "value": 476, "name": "中等" },
-						{ "value": 276, "name": "初學" },
-						{ "value": 185, "name": "熟練" },
-						{ "value": 182, "name": "入門" },
-						{ "value": 54, "name": "我沒有接觸過程式" },
-						{ "value": 51, "name": "進階" }
+						{
+							"value": 476,
+							"name": "中等"
+						},
+						{
+							"value": 276,
+							"name": "初學"
+						},
+						{
+							"value": 185,
+							"name": "熟練"
+						},
+						{
+							"value": 182,
+							"name": "入門"
+						},
+						{
+							"value": 54,
+							"name": "我沒有接觸過程式"
+						},
+						{
+							"value": 51,
+							"name": "進階"
+						}
 					]
 				}
 			]
 		},
-		"news": {
+		"things": {
 			"title": "我們做過的事",
-			"things": [
+			"data": [
 				{
 					"image": "sitcon_hk",
 					"title": "東亞最大學生資訊年會",
@@ -657,6 +714,31 @@
 					"image": "camp",
 					"title": "SITCON 夏令營",
 					"description": "自 2014 年開始，SITCON 每年 7 月皆會舉辦夏令營，讓有志於資訊領域的學生能夠輕鬆入門並激發對開源精神的熱情。學員與志工皆由學生組成，不僅僅是主線課程，還有開源演講、社群博覽會以及視界咖啡館，讓學生不只是學習，更有許多交流、激盪想法的機會。"
+				}
+			]
+		},
+		"media": {
+			"title": "媒體報導",
+			"items": [
+				{
+					"image": "yahooNews",
+					"alt": "Yahoo 新聞報導：大談AI與科技教育發展 SITCON 2024年會圓滿落幕",
+					"url": "https://tw.news.yahoo.com/%E5%A4%A7%E8%AB%87ai%E8%88%87%E7%A7%91%E6%8A%80%E6%95%99%E8%82%B2%E7%99%BC%E5%B1%95-sitcon-2024%E5%B9%B4%E6%9C%83%E5%9C%93%E6%BB%BF%E8%90%BD%E5%B9%95-134127533.html"
+				},
+				{
+					"image": "youratorNews",
+					"alt": "Yourator 報導：SITCON 學生計算機年會",
+					"url": "https://www.yourator.co/articles/215"
+				},
+				{
+					"image": "moneyUdnNews",
+					"alt": "經濟日報報導：SITCON 2025",
+					"url": "https://money.udn.com/money/story/5723/9018057"
+				},
+				{
+					"image": "ettodayNews",
+					"alt": "新頭殼報導：SITCON 學生計算機年會",
+					"url": "https://newstaiwan.net/2024/03/09/155739/"
 				}
 			]
 		}
