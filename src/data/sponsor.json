@@ -135,6 +135,14 @@
 			"description_zh": "",
 			"description_en": "",
 			"url": "https://hackmd.io/"
+		},
+		{
+			"logo": "individual.webp",
+			"title_zh": "Individual Sponsors",
+			"title_en": "",
+			"description_zh": "感謝個人贊助者，因為有你們的支持，SITCON 得以持續推動資訊教育與開源精神：<br/><br/>lcngtoi.site、William、中壞、周秉宇、cras4202tw、帥章魚、黃＊哲、蔡旻均、鑽石託管 DiamondHost、Pan、小弘、脆瓜、Mike、C. Y.、Mouse Kuo、陳＊志、Martin、張士宏 Kevinowo、PoHan、房志剛、Terry Chan、康康 HHK、崔殷豪、無敵神奇小馬勇闖SITCON",
+			"description_en": "",
+			"url": "https://sitcon.org/donate"
 		}
 	]
 }
