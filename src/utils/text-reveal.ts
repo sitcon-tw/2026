@@ -213,13 +213,17 @@ export const cleanupTextReveal = (): void => {
 // 自動初始化
 if (typeof window !== "undefined") {
 	// 頁面首次載入
-	document.addEventListener("DOMContentLoaded", () => {
-		initTextReveal();
-	});
+	window.addEventListener(
+		"load",
+		() => {
+			requestAnimationFrame(() => initTextReveal());
+		},
+		{ once: true }
+	);
 
 	// Astro 頁面切換後重新初始化
 	document.addEventListener("astro:page-load", () => {
-		initTextReveal();
+		requestAnimationFrame(() => initTextReveal());
 	});
 
 	// 視窗大小改變時重新計算
