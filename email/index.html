@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant-TW">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,7 +10,371 @@
 				padding: 0;
 				box-sizing: border-box;
 			}
+
+			body {
+				background-color: #ebebeb;
+				color: #101010;
+				font-family:
+					system-ui,
+					-apple-system,
+					BlinkMacSystemFont,
+					"Segoe UI",
+					Roboto,
+					Oxygen,
+					Ubuntu,
+					Cantarell,
+					"Open Sans",
+					"Helvetica Neue",
+					sans-serif;
+			}
+
+			b,
+			a {
+				color: #b43600;
+				font-weight: bold;
+			}
+
+			p {
+				margin-bottom: 16px;
+				line-height: 160%;
+			}
+
+			img {
+				max-width: 100%;
+			}
+
+			.cover-container {
+				margin-bottom: 32px;
+			}
+
+			.cover {
+				width: 100%;
+				max-width: 1000px;
+				display: block;
+				margin: 0 auto;
+			}
+
+			.main {
+				max-width: 750px;
+				margin: 0 auto;
+				padding: 0 20px;
+			}
+
+			.online {
+				border-radius: 8px;
+				border: 2px solid #734b3a;
+				padding: 8px 10px;
+				margin-bottom: 48px;
+			}
+
+			h2 {
+				font-size: 32px;
+				line-height: 100%;
+				display: flex;
+				align-items: center;
+			}
+
+			h2 img {
+				height: 48px;
+				margin-right: 12px;
+			}
+
+			h3 {
+				font-size: 24px;
+				line-height: 100%;
+				margin: 32px 0 16px;
+			}
+
+			.box {
+				border-radius: 8px;
+				border: 1px solid #734b3a;
+				padding: 28px 24px;
+				margin: 16px 0 32px;
+			}
+
+			.info {
+				border-radius: 8px;
+				border: 1px solid #734b3a;
+				background: #f2f2f2;
+				box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25) inset;
+				padding: 24px 24px 8px;
+				margin: 24px 0;
+			}
+
+			ul {
+				padding-left: 20px;
+				margin-bottom: 16px;
+				line-height: 200%;
+			}
+
+			.social {
+				background-color: #734b3a;
+				display: flex;
+				justify-content: center;
+				padding: 16px 0;
+				border-radius: 8px;
+				margin: 48px 0;
+			}
+
+			.social a {
+				margin: 0 12px;
+			}
+
+			.social img {
+				width: 24px;
+			}
+
+			.footer-logo {
+				width: 400px;
+				display: block;
+				margin: 0 auto 24px;
+			}
 		</style>
 	</head>
-	<body></body>
+	<body>
+		<div class="cover-container"><img src="https://sitcon.org/2026/img/email/cover.webp" class="cover" /></div>
+		<div class="main">
+			<div class="online">
+				若您無法順利閱讀此信件，請參閱
+				<a href="https://sitcon.org/2026/email/">線上版本</a>
+				。
+			</div>
+			<div class="intro">
+				<p>Hi {{ nickname }}，</p>
+				<p>
+					很高興能在 SITCON 2026 看到您！年會即將在下週六（03/28）揭開序幕，若您臨時有事無法來到現場一起共襄盛舉，請至
+					<a href="">官方換票樓</a>
+					將您的票券釋出，讓其他有興趣參與但沒有票的朋友也能有機會一起參加活動。
+				</p>
+				<p>我們整理了一些實用的資訊，還請花 5 分鐘詳細閱讀：</p>
+			</div>
+			<h2>
+				<img src="https://sitcon.org/2026/img/email/icon-1.webp" />
+				交通
+			</h2>
+			<div class="box">
+				<h3>1. 活動地點</h3>
+				<p>
+					年會地點位於
+					<b>中央研究院 人文社會科學館</b>
+					（台北市南港區研究院路二段 128 號），詳細位置可以參考
+					<a href="">SITCON 2026 官方網站</a>
+					或中央研究院
+					<a href="院區導覽圖"></a>
+					。
+				</p>
+				<h3>2. 接駁車</h3>
+				<p>今年提供了自捷運南港展覽館站往返中研院人文社會科學館的免費接駁車，搭乘資訊如下：</p>
+				<ul>
+					<li>發車時間：7:45～10:00，班距約 15～20 分鐘</li>
+					<li>上車地點：捷運南港展覽館站 2A 出口公車停靠區（當天會有人舉牌引導！）</li>
+				</ul>
+			</div>
+			<h2>
+				<img src="https://sitcon.org/2026/img/email/icon-2.webp" />
+				報到
+			</h2>
+			<div class="box">
+				<h3>報到時間及方式</h3>
+				<p>
+					年會將於
+					<b>早上 8:30</b>
+					開始領取迎賓袋，活動於
+					<b>9:00</b>
+					準時開始。在到達會場後，連上年會現場的 Wi-Fi，即可用「
+					<a href="">OPass</a>
+					」App 報到，並到會場四樓依工作人員指示排隊領取迎賓袋。
+					<b>10:30</b>
+					後請到三樓服務台領取迎賓袋。
+				</p>
+				<p>請透過以下專屬連結下載、啟動 OPass：</p>
+				<p>{{ App Link }}</p>
+				<p>若無法使用 App 報到，請向服務台的工作人員出示 KKTIX 提供的 QR code 完成手動報到。</p>
+				<div class="info">
+					<p>請注意：</p>
+					<ul>
+						<li>請務必在領取迎賓袋前再依工作人員指示按下領取按鈕。</li>
+						<li>迎賓袋內有您的識別證，必須領取並且配戴後才能進入會議廳內。</li>
+						<li>若您於 09:30 後才完成報到，恕不提供便當。</li>
+					</ul>
+				</div>
+				<h3>2. 持學生票者，請出示相關證件</h3>
+				<p>
+					持有學生票的朋友，也請於
+					<b>報到前</b>
+					備妥學生證或相關證明（在學證明、繳費完成之繳費單等），以節省您寶貴的時間。
+				</p>
+			</div>
+			<h2>
+				<img src="https://sitcon.org/2026/img/email/icon-3.webp" />
+				年會活動
+			</h2>
+			<div class="box">
+				<p>
+					除了一整天
+					<a href="">精彩的議程</a>
+					，今年的 SITCON 也有許多有趣的活動可以參加！不論是抓緊機會表現自己，或是想在年會認識新朋友，都千萬別錯過囉！
+				</p>
+				<h3>1. 紀念品販售</h3>
+				<p>
+					在今年的年會中，我們推出了獨一無二的紀念品，有融合主視覺圖案的
+					<b>悠遊卡</b>
+					和
+					<b>吊飾</b>
+					、精心設計的
+					<b>鍵帽</b>
+					和紀念 T-shirt。別忘了來逛逛紀念品攤位，挑選屬於您的特別回憶！
+				</p>
+				<h3>2. 大地遊戲</h3>
+				<p>沒有議程的時候不知道要做什麼嗎？想跟現場攤位互動卻又不知道從什麼話題開始？別擔心！快點打開 OPass 參加大地遊戲吧！</p>
+				<p>
+					今年的大地遊戲結合 SITCON 2026 年會主題「Jam The Chaos」。在遊戲中，你將透過收集「板塊碎片」，建構專屬於你的逃逸路線，破解關卡，贏取積分，並有機會帶回
+					<b>SITCON 2026 精心準備的超讚紀念品</b>
+					！
+				</p>
+				<p>完成越多任務、中獎機率越高！快點開始遊戲吧 💪🏿</p>
+				<h3>3. 指南針計畫</h3>
+				<p>期待在年會中結交更多志趣相投的夥伴嗎？歡迎參與指南針計畫！</p>
+				<p>指南針計畫為大家提供彼此交流的機會，旨在幫助你找到志同道合的夥伴，一同探討共同感興趣的主題。不論你是擁有豐富經驗的老手，還是對科技充滿好奇心的新手，都能在這裡找到共鳴。</p>
+				<p>在年會期間，你可以和小組成員一起參加現場多樣化的活動，也能在午餐時進行一場輕鬆的聚會，無論是分享彼此經驗、交流不同觀點，還是圍繞年會中的議程深入討論，都將是一段充滿收穫的經歷。</p>
+				<h3>4. SITCON 導遊團</h3>
+				<p>在這個人潮洶湧的 SITCON 年會中，是否感到有些迷茫呢？你是否還在猶豫該往哪個方向前進呢？別擔心，就讓資深導遊 aka 歷屆總召帶領你探索 SITCON 年會現場！</p>
+				<p>在導遊團集合地可以看到拿著 SITCON 旗子的導遊，跟著 SITCON 導遊的腳步，帶領你前往社群攤位、走訪靜態海報展、咖啡廳，讓您更瞭解 SITCON 的各個面向以及運作模式。</p>
+				<div class="info">
+					<p>導遊團共有上午兩團及下午兩團，時長約 40 分鐘，詳細資訊如下：</p>
+					<ul>
+						<li>11:00 和 14:40 在 3F 白板區旁</li>
+						<li>11:10 和 14:50 在 4F 紀念品攤旁</li>
+					</ul>
+				</div>
+				<h3>5. Lightning Talk 閃電秀</h3>
+				<p>有自己的精彩內容想和大家分享，卻來不及投稿嗎？那麼，歡迎參加 SITCON 2026 閃電講！閃電講將提供八位手腳最快的會眾五分鐘的時間與與會者們暢所欲言的分享你的專案或想法！</p>
+				<div class="info">
+					<p>
+						Lightning Talk 安排於年會閉幕前，於
+						<b>國際會議廳（R0）</b>
+						進行。當天
+						<b>10:00</b>
+						後會在
+						<b>3F 白板區</b>
+						開放報名，名額有限、先搶先贏。
+					</p>
+				</div>
+				<p>邀請你透過這個難得的機會，讓你在 SITCON 年會上與更多人交流與分享！</p>
+				<h3>6. 白板大戰</h3>
+				<p>在多元觀點交織的時代，是時候點燃靈感的火花了。</p>
+				<p>我們誠摯邀請你前往三樓白板區，用你的創意和觀點加入這場精彩絕倫的對話之戰。我們以「白板大戰」做為號召，圍繞多個有趣話題展開討論。</p>
+				<p>在輕鬆愉快的氛圍中，用文字交流思想、分享觀點，創造更多的火花。快來白板上揮灑你的想法，向不同的觀點提出友善的挑戰，共同完成這場思想的盛宴吧！</p>
+				<h3>7. 咖啡廳</h3>
+				<p>剛剛的精彩議程讓你意猶未盡？想與來自各地的會眾交流卻不知如何開始？還是需要一個地方讓自己放鬆片刻？歡迎來到 SITCON 2026 咖啡廳！</p>
+				<p>這裡不僅是一杯好咖啡的歸屬地，更是滿足多樣需求的多功能空間。你可以在二樓北側電梯廳找到這個溫馨的角落，無論你是討論創新點子、拓展人脈，還是簡單地想喘口氣，咖啡廳都能滿足你的需求。</p>
+				<p>無論你是討論、交流、放鬆，還是開啟新的計畫，咖啡廳都歡迎你的蒞臨！快來一杯咖啡，享受屬於你的美好時光吧！</p>
+			</div>
+			<h2>
+				<img src="https://sitcon.org/2026/img/email/icon-4.webp" />
+				會前資料
+			</h2>
+			<div class="box">
+				<h3>1. 共筆及線上討論區</h3>
+				<p>
+					今年年會延續往年傳統，為各議程開設
+					<b>共筆（HackMD）</b>
+					與
+					<b>議程線上討論區（Sli.do）</b>
+					。共筆供聽眾一起編輯議程筆記，議程線上討論區則供講者與各位聽眾進行即時交流。各連結將公告於
+					<a href="">年會官方網站</a>
+					議程表與 OPass。您可以在議程中隨時使用議程線上討論區匿名提問，講者能自由選擇時間解答及互動。籌辦團隊雖開設此平台，但並非強制所有與會者及講者必須使用，僅供各位利用參考。
+				</p>
+				<p>
+					連結：
+					<a href="https://hackmd.io/@SITCON/2026/">https://hackmd.io/@SITCON/2026/</a>
+				</p>
+				<h3>2. 持學生票者，請出示相關證件</h3>
+				<p>持有學生票的朋友，也請於報到前備妥學生證或相關證明（在學證明、繳費完成之繳費單等），以節省您寶貴的時間。</p>
+			</div>
+			<h2>
+				<img src="https://sitcon.org/2026/img/email/icon-5.webp" />
+				食物
+			</h2>
+			<div class="box">
+				<p>
+					為了讓大家能愉快地交流，年會為各位準備了午餐與各式點心。場地內除了用餐區以外，皆禁止飲食，只能帶
+					<b>有蓋水瓶</b>
+					進出，還請各位多多配合了。
+				</p>
+				<h3>1. 午餐</h3>
+				<p>
+					美味的午餐將從
+					<b>11:15</b>
+					開始，於 4F 國際會議廳（R0）後方兩側的轉角處發放；
+					<b>素食</b>
+					則在 4F 北側領取，請各位不要跑錯囉！
+				</p>
+				<p>領餐時，請準備好您的 OPass App，等待工作人員指示後，按下按鈕領取午餐。（若您報到時未使用 App，請出示手動報到時取得的午餐券）領取完午餐可至 4F 走廊旁的戶外用餐區用餐 🤭</p>
+				<h3>2. 點心</h3>
+				<p>
+					<b>15:25</b>
+					開始，4F 兩側的社群攤位走廊上將提供精緻茶點，您可以在享用下午茶的同時，與現場的會眾及攤位交流。
+				</p>
+				<p>如果您有環保餐具，也請別忘記隨身攜帶，為地球盡一份心力。</p>
+			</div>
+			<h2>
+				<img src="https://sitcon.org/2026/img/email/icon-6.webp" />
+				網路
+			</h2>
+			<div class="box">
+				<p>
+					現場可使用年會提供的無線網路，SSID 為「SITCON_via KlickKlack」，密碼為「
+					<b>20250308</b>
+					」，也可以透過 OPass 的會場 WiFi 功能加入。
+				</p>
+				<div class="info">
+					<p>請勿於會場私自架設無線基地台（AP），或進行任何干擾公眾網路之行為。若您需要使用個人行動網路熱點，請使用 USB 分享網路連線。</p>
+				</div>
+			</div>
+			<h2>
+				<img src="https://sitcon.org/2026/img/email/icon-7.webp" />
+				遺失物
+			</h2>
+			<div class="box">
+				<p>若您在現場遺失物品或拾獲遺失物，請填寫下方表單並前往大會服務台諮詢服務台人員： </p>
+				<ul>
+					<li>
+						我遺失 / 撿到東西了，填寫表單：
+						<a href="https://forms.gle/TJBn7khjn93amnWQ9" target="_blank">forms.gle/TJBn7khjn93amnWQ9</a>
+					</li>
+					<li>
+						公開檢索表格：
+						<a href="https://reurl.cc/Q5k4Rp" target="_blank">reurl.cc/Q5k4Rp</a>
+					</li>
+				</ul>
+			</div>
+			<h2>
+				<img src="https://sitcon.org/2026/img/email/icon-8.webp" />
+				其他
+			</h2>
+			<div class="box">
+				<p>
+					年會當天的線上聊天室十分精彩，您可以和其他與會者抬槓、甚至找到志同道合的夥伴！除了加入
+					<a href="https://t.me/SITCONgeneral" target="_blank">Telegram @SITCONgeneral</a>
+					群組 以外，也可以到
+					<a href="https://discord.com/invite/KFWnPbQ2K4" target="_blank">SITCON Discord 伺服器</a>
+					和大家互相切磋。
+				</p>
+				<p>最後，也請您務必閱讀並一同遵守 SITCON 行為準則，讓大家都能開心的在 SITCON 齊聚一堂，彼此激盪、傳承、啟發。</p>
+			</div>
+			<p>感謝您讀完這份行前簡介，期待在 SITCON 2026 與您見面～</p>
+			<p>SITCON 2026 籌備團隊</p>
+			<div class="social">
+				<a href=""><img src="https://sitcon.org/2026/img/email/twitter.webp" alt="" /></a>
+				<a href=""><img src="https://sitcon.org/2026/img/email/facebook.webp" alt="" /></a>
+				<a href=""><img src="https://sitcon.org/2026/img/email/flickr.webp" alt="" /></a>
+				<a href=""><img src="https://sitcon.org/2026/img/email/instagram.webp" alt="" /></a>
+				<a href=""><img src="https://sitcon.org/2026/img/email/telegram.webp" alt="" /></a>
+				<a href=""><img src="https://sitcon.org/2026/img/email/youtube.webp" alt="" /></a>
+			</div>
+			<img src="https://sitcon.org/2026/img/email/footer-text.webp" alt="" class="footer-logo" />
+		</div>
+		<img src="https://sitcon.org/2026/img/email/wave.webp" alt="footer-wave" class="cover" />
+	</body>
 </html>
