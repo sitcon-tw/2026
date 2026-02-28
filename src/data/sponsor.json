@@ -39,23 +39,7 @@
 	],
 	"sponsorNavigator": [
 		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
-			"title_en": "",
-			"description_zh": "",
-			"description_en": "",
-			"url": ""
-		},
-		{
-			"logo": "SITCON.svg",
-			"title_zh": "",
-			"title_en": "",
-			"description_zh": "",
-			"description_en": "",
-			"url": ""
-		},
-		{
-			"logo": "SITCON.svg",
+			"logo": "line.webp",
 			"title_zh": "",
 			"title_en": "",
 			"description_zh": "",
@@ -97,6 +81,14 @@
 			"description_zh": "TeamT5 專注威脅情資與 EDR 研究，具 20 年 APT 與惡意程式分析經驗。並投入人才培育，每年辦理資安培訓營，且提供實習與學生社群支持。",
 			"description_en": "",
 			"url": "https://teamt5.org/"
+		},
+		{
+			"logo": "aia.svg",
+			"title_zh": "AIA 台灣人工智慧學校",
+			"title_en": "",
+			"description_zh": "台灣人工智慧學校深耕 8 年，培訓 1.3 萬名 AI 人才、服務逾千家企業。近年推動 AI 認證與產業人才指引，並發起「公民 AI 素養計畫」落實普惠 AI。",
+			"description_en": "",
+			"url": "https://aiacademy.tw/"
 		}
 	],
 	"sponsorNewSprout": [
@@ -107,6 +99,30 @@
 			"description_zh": "社團法人台灣駭客協會 (HIT) 致力於透過研討會、競賽、教育訓練等各種形式推廣資訊安全。在眾多活動中，最讓人期待的資安年度盛會：HITCON 2026，將於今年 8/21（五）- 8/22（六）舉辦，後續相關消息將持續於 HITCON 粉絲專頁公告。同時，為協助台灣資安社群發展，協會推出「<a href=\"https://bit.ly/4arOEyf\">台灣資安社群補助計畫</a>」，若有相關需求，歡迎至協會官網提出申請。",
 			"description_en": "",
 			"url": "https://hacker.org.tw/"
+		},
+		{
+			"logo": "zyxel.svg",
+			"title_zh": "財團法人合勤基金會",
+			"title_en": "",
+			"description_zh": "合勤基金會以發揚合勤投控及合勤科技、兆勤科技、盟創科技等子公司之共同信念：力行社會公益及推動創新創業為出發點，並以鼓勵創新、支持創業、培育優秀人才與善盡社會責任四大面向為主軸，推展相關活動，期望成為火種，拋磚引玉的展現回饋社會的企業精神。",
+			"description_en": "",
+			"url": "https://www.facebook.com/zyxelfoundation/"
+		},
+		{
+			"logo": "archilife.svg",
+			"title_zh": "祐生研究基金會",
+			"title_en": "",
+			"description_zh": "祐生研究基金會長期推動建築與環境領域的知識密度提升與人才培養，亦贊助國內開源論壇及獨立遊戲開發者之資訊分享聚會，期能促進國內相關社群之發展。",
+			"description_en": "",
+			"url": "https://www.archilife.org/"
+		},
+		{
+			"logo": "gonokami.webp",
+			"title_zh": "五之神製作所、麵屋雞金",
+			"title_en": "",
+			"description_zh": "五之神製作所、麵屋雞金長期受到各位好朋友的照顧，我們非常感激，大家以後繼續支持喔。",
+			"description_en": "",
+			"url": "https://menya-torikin.com/"
 		}
 	],
 	"mediaPartners": [
@@ -127,6 +143,14 @@
 			"description_zh": "",
 			"description_en": "",
 			"url": "https://hackmd.io/"
+		},
+		{
+			"logo": "individual.webp",
+			"title_zh": "個人贊助",
+			"title_en": "Individual Sponsors",
+			"description_zh": "感謝個人贊助者，因為有你們的支持，SITCON 得以持續推動資訊教育與開源精神：<br/><br/>lcngtoi.site、William、中壞、周秉宇、cras4202tw、帥章魚、黃＊哲、蔡旻均、鑽石託管 DiamondHost、Pan、小弘、脆瓜、Mike、C. Y.、Mouse Kuo、陳＊志、Martin、張士宏 Kevinowo、PoHan、房志剛、Terry Chan、康康 HHK、崔殷豪、無敵神奇小馬勇闖SITCON",
+			"description_en": "",
+			"url": "https://sitcon.org/donate"
 		}
 	]
 }
