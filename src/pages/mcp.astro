@@ -3,11 +3,23 @@ import Layout from "@/layout/Layout.astro";
 import { Content } from "@/data/mcp.md";
 ---
 
-<Layout title="如何透過 ChatGPT 使用 MCP" lang="zh">
+<Layout title="MCP伺服器" lang="zh">
 	<main>
-		<article class="markdown-body">
-			<Content />
-		</article>
+		<div class="mcp-header">
+			<h1>MCP伺服器</h1>
+			<p>連線至 MCP Server，安排您的專屬議程、管理行程並與他人分享。</p>
+		</div>
+		<div class="layout-container">
+			<aside class="platform-switch">
+				<a href="#chatgpt" class="switch-btn active">ChatGPT</a>
+				<a href="#claude" class="switch-btn">Claude</a>
+			</aside>
+			<div class="content-area">
+				<article class="markdown-body">
+					<Content />
+				</article>
+			</div>
+		</div>
 	</main>
 </Layout>
 
@@ -46,34 +58,104 @@ import { Content } from "@/data/mcp.md";
 		min-height: 100vh;
 		padding: 8rem 2rem 4rem;
 		display: flex;
-		justify-content: center;
+		flex-direction: column;
+		align-items: center;
 		background-color: #a97c21;
+	}
+
+	.mcp-header {
+		text-align: center;
+		margin-bottom: 4rem;
+		width: 100%;
+		max-width: 1200px;
+		color: #fff;
+	}
+
+	.mcp-header h1 {
+		font-size: 3rem;
+		font-family: "GenKiMinTW", serif;
+		margin-bottom: 1rem;
+	}
+
+	.mcp-header p {
+		font-size: 1rem;
+		opacity: 0.9;
+	}
+
+	.layout-container {
+		display: flex;
+		width: 100%;
+		max-width: 1200px;
+		gap: 2rem;
+	}
+
+	.platform-switch {
+		width: 20%;
+		display: flex;
+		flex-direction: column;
+		background-color: #ffffff;
+		padding: 1.5rem;
+		border-radius: 1rem;
+		overflow: hidden;
+	}
+
+	.switch-btn {
+		padding: 0.7rem;
+		border: none;
+		border-bottom: 1px solid #000;
+		color: #333;
+		text-decoration: none;
+		font-size: 1rem;
+		font-weight: bold;
+		text-align: start;
+		transition: all 0.3s ease;
+	}
+
+	.switch-btn:last-child {
+		border-bottom: none;
+	}
+
+	.switch-btn:hover {
+		background: #f0f0f0;
+	}
+
+	.switch-btn.active {
+		background: #e0e0e0; /* Grey for active */
+		color: #000;
+	}
+
+	.content-area {
+		width: 66.666%;
+		background-color: #ffffff;
+		padding: 2rem;
+		border-radius: 1rem;
 	}
 
 	.markdown-body {
 		width: 100%;
-		max-width: 800px;
-		color: #fff;
-		line-height: 1.6;
+		color: #333;
 	}
 
 	.markdown-body :global(h1) {
 		font-size: 2.5rem;
 		margin-bottom: 2rem;
-		border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+		border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 		padding-bottom: 0.5rem;
-		font-family: "GenKiMinTW", serif;
+		line-height: 1.6;
 	}
 
 	.markdown-body :global(h2) {
 		font-size: 1.8rem;
-		margin: 2.5rem 0 1.2rem;
-		color: #ffe4b5;
-		font-family: "GenKiMinTW", serif;
+		color: #000000;
+		line-height: 1.6;
+	}
+
+	.markdown-body :global(h3) {
+		margin-bottom: 1rem;
 	}
 
 	.markdown-body :global(p) {
-		margin-bottom: 1.2rem;
+		margin-bottom: 0;
 	}
 
 	.markdown-body :global(ul),
@@ -87,16 +169,16 @@ import { Content } from "@/data/mcp.md";
 	}
 
 	.markdown-body :global(blockquote) {
-		border-left: 4px solid #ffe4b5;
+		border-left: 4px solid #a97c21;
 		padding: 0.5rem 1rem;
-		background: rgba(255, 255, 181, 0.1);
+		background: rgba(169, 124, 33, 0.1);
 		margin: 2rem 0;
 		font-style: italic;
 	}
 
 	.markdown-body :global(hr) {
 		border: 0;
-		border-top: 1px solid rgba(255, 255, 255, 0.2);
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
 		margin: 3rem 0;
 	}
 
@@ -113,9 +195,32 @@ import { Content } from "@/data/mcp.md";
 		width: 300px;
 	}
 
+	@media (max-width: 768px) {
+		.layout-container {
+			flex-direction: column;
+		}
+
+		.platform-switch {
+			width: 100%;
+			flex-direction: row;
+		}
+
+		.switch-btn {
+			flex: 1;
+		}
+
+		.content-area {
+			width: 100%;
+		}
+	}
+
 	@media (max-width: 600px) {
 		main {
 			padding: 6rem 1.5rem 3rem;
+		}
+
+		.mcp-header h1 {
+			font-size: 2.5rem;
 		}
 
 		.markdown-body :global(h1) {
