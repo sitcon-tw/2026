@@ -59,7 +59,7 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 		<!-- MCP Connection Section -->
 		<section class="mcp-section">
 			<div class="mcp-container">
-				<h1 class="mcp-title" id="mcp-title">{lang === "en" ? "SITCON MCP Server" : "SITCON MCP Server"}</h1>
+				<h3 class="mcp-title" id="mcp-title">{lang === "en" ? "SITCON MCP Server" : "SITCON MCP Server"}</h3>
 				<p class="mcp-desc">
 					{
 						lang === "en"
@@ -82,13 +82,18 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 					</div>
 				</div>
 				<div class="mcp-actions">
-					<a href={lang === "en" ? "/2026/en/mcp/" : "/2026/mcp/"} target="_blank" rel="noopener noreferrer" class="mcp-link">
-						{lang === "en" ? "How to use MCP via ChatGPT" : "如何透過 ChatGPT 使用 MCP"}
+					<a href={lang === "en" ? "/2026/en/mcp/" : "/2026/mcp/"} target="_blank" rel="noopener noreferrer" class="mcp-btn action-btn">
+						<div class="hover-bg"></div>
+						<span class="btn-text">{lang === "en" ? "Tutorial" : "使用教學"}</span>
 					</a>
 					<button id="mcp-copy-btn" class="mcp-btn action-btn" type="button" data-url={mcpServerUrl}>
 						<div class="hover-bg"></div>
-						<span class="btn-text">{lang === "en" ? "Copy Server Link" : "複製 Server 連結"}</span>
+						<span class="btn-text">{lang === "en" ? "Copy Server URL" : "複製 Server 網址"}</span>
 					</button>
+					<a href="https://github.com/sitcon-tw/2026-mcp" target="_blank" rel="noopener noreferrer" class="mcp-btn action-btn">
+						<div class="hover-bg"></div>
+						<span class="btn-text">GitHub Repo</span>
+					</a>
 				</div>
 			</div>
 		</section>
@@ -768,35 +773,35 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 		max-width: 56.25rem;
 		width: 100%;
 		text-align: center;
-		align-items: center;
+		align-items: start;
 		display: flex;
 		flex-direction: column;
-		background-color: rgba(0, 0, 0, 0.2);
-		padding: 4rem 2rem;
+		background-color: rgba(231, 216, 172, 0.53);
+		padding: 2.5rem 4rem;
 		border-radius: 2rem;
 	}
 
 	.mcp-title {
 		margin-top: 0;
 		text-align: center;
-		font-size: 4rem;
-		color: white;
+		font-size: 2rem;
+		color: rgb(0, 0, 0);
 		font-weight: bold;
-		margin-bottom: 1.5rem;
+		margin-bottom: 1rem;
 		line-height: 1.2;
 	}
 
 	.mcp-desc {
 		font-size: 1.2rem;
-		color: #e0e0e0;
-		margin-bottom: 2.5rem;
+		color: #000000;
+		margin-bottom: 1rem;
 		max-width: 56.25rem;
 		line-height: 1.6;
 	}
 
 	.mcp-features {
 		display: flex;
-		gap: 2rem;
+		gap: 0.5rem;
 		margin-bottom: 3rem;
 		flex-wrap: wrap;
 		justify-content: center;
@@ -805,13 +810,16 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 	.mcp-feature-item {
 		display: flex;
 		align-items: center;
-		gap: 0.8rem;
-		font-size: 1.1rem;
-		color: #fff;
+		gap: 0.1rem;
+		font-size: 1rem;
+		color: #000000;
+		background-color: rgba(255, 255, 255, 0.6);
+		padding: 0.3rem 0.6rem;
+		border-radius: 2rem;
 	}
 
 	.mcp-icon {
-		font-size: 1.4rem;
+		font-size: 1rem;
 	}
 
 	.mcp-actions {
@@ -839,9 +847,9 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding: 1rem 3rem;
-		background-color: #fff;
-		color: #000;
+		padding: 1rem 2.5rem;
+		background-color: #3a2300;
+		color: #ffffff;
 		font-size: 1.2rem;
 		font-weight: bold;
 		border-radius: 3rem;
