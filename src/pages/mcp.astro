@@ -1,13 +1,20 @@
 ---
 import Layout from "@/layout/Layout.astro";
-import { Content } from "@/data/mcp.md";
+import { Content as ContentZh } from "@/data/mcp.md";
+import { Content as ContentEn } from "@/data/mcp-en.md";
+
+const lang = Astro.props.lang ?? "zh";
+const isEn = lang === "en";
+
+const pageTitle = isEn ? "MCP Server" : "MCP伺服器";
+const description = isEn ? "Connect to the MCP Server, arrange your personal agenda, manage your itinerary, and share with others." : "連線至 MCP Server，安排您的專屬議程、管理行程並與他人分享。";
 ---
 
-<Layout title="MCP伺服器" lang="zh">
-	<main>
+<Layout title={pageTitle} lang={lang}>
+	<main class={isEn ? "en" : ""}>
 		<div class="mcp-header">
-			<h1>MCP伺服器</h1>
-			<p>連線至 MCP Server，安排您的專屬議程、管理行程並與他人分享。</p>
+			<h1>{pageTitle}</h1>
+			<p>{description}</p>
 		</div>
 		<div class="layout-container">
 			<aside class="platform-switch">
@@ -16,7 +23,7 @@ import { Content } from "@/data/mcp.md";
 			</aside>
 			<div class="content-area">
 				<article class="markdown-body">
-					<Content />
+					{isEn ? <ContentEn /> : <ContentZh />}
 				</article>
 			</div>
 		</div>
@@ -87,6 +94,7 @@ import { Content } from "@/data/mcp.md";
 		width: 100%;
 		max-width: 1200px;
 		gap: 2rem;
+		justify-content: center;
 	}
 
 	.platform-switch {
@@ -97,6 +105,7 @@ import { Content } from "@/data/mcp.md";
 		padding: 1.5rem;
 		border-radius: 1rem;
 		overflow: hidden;
+		height: fit-content;
 	}
 
 	.switch-btn {
