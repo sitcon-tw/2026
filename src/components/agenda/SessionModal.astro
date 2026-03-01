@@ -38,16 +38,6 @@ interface SessionModalProps {
 
 const { type, name, description = "", speakers, tags, venue, startTime, endTime, slidoLink, slidesLink, notesLink, lang = "zh" } = Astro.props;
 
-// Helper function to get speaker name
-function getSpeakerName(speaker: string | Speaker): string {
-	return typeof speaker === "string" ? speaker : speaker.name;
-}
-
-// Helper function to get speaker avatar
-function getSpeakerAvatar(speaker: string | Speaker): string | undefined {
-	return typeof speaker === "string" ? undefined : speaker.avatar;
-}
-
 // Format time for display (forced to GMT+8 / Asia/Taipei)
 function formatTime(isoString: string): string {
 	const date = new Date(isoString);
@@ -179,6 +169,7 @@ const initialAd = weightedAds[0] ?? null;
 	const closeBtn = document.getElementById("modal-close");
 	const closeBtnMobile = document.getElementById("modal-close-mobile");
 	const adLink = document.getElementById("modal-ad-link") as HTMLAnchorElement | null;
+	const adClickHandlers = new WeakMap<HTMLAnchorElement, () => void>();
 	const adImageMobile = document.getElementById("modal-ad-image-mobile") as HTMLImageElement | null;
 	const adImageDesktop = document.getElementById("modal-ad-image-desktop") as HTMLImageElement | null;
 	type ModalAd = { name: string; weight: number; link: string; mobile?: boolean; desktop?: boolean };
@@ -209,14 +200,24 @@ const initialAd = weightedAds[0] ?? null;
 
 	function pickWeightedAd(ads: ModalAd[]): ModalAd | null {
 		if (!ads.length) return null;
-		const totalWeight = ads.reduce((sum, ad) => sum + ad.weight, 0);
-		if (totalWeight <= 0) return null;
-		let r = Math.random() * totalWeight;
+		const shuffled = [];
 		for (const ad of ads) {
-			r -= ad.weight;
-			if (r <= 0) return ad;
+			for (let i = 0; i < ad.weight; i++) {
+				shuffled.push(ad);
+			}
 		}
-		return ads[ads.length - 1] ?? null;
+
+		for (let i = shuffled.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+		}
+
+		return shuffled[Math.floor(Math.random() * shuffled.length)] ?? null;
+	}
+
+	function handleAdClick(selectedAd: ModalAd) {
+		console.log("ad clicked", selectedAd.name);
+		if (import.meta.env.PROD) gtmPush("ad_click", { ad_sponsor: selectedAd.name });
 	}
 
 	function refreshModalAd() {
@@ -229,7 +230,17 @@ const initialAd = weightedAds[0] ?? null;
 			return;
 		}
 
-		gtmPush("ad_impression", { ad_sponsor: selectedAd.name });
+		// Remove previous ad listener to prevent duplicating
+		const prevHandler = adClickHandlers.get(adLink);
+		if (prevHandler) {
+			adLink.removeEventListener("click", prevHandler);
+		}
+		const _adClickHandler = () => {
+			handleAdClick(selectedAd);
+		};
+		adClickHandlers.set(adLink, _adClickHandler);
+
+		if (import.meta.env.PROD) gtmPush("ad_impression", { ad_sponsor: selectedAd.name });
 		adLink.style.display = "";
 		adLink.href = selectedAd.link;
 		adImageMobile.src = `/2026/img/cool_sponsor/${selectedAd.name}-mobile.webp`;
@@ -237,9 +248,7 @@ const initialAd = weightedAds[0] ?? null;
 		adImageDesktop.src = `/2026/img/cool_sponsor/${selectedAd.name}.webp`;
 		adImageDesktop.alt = `${selectedAd.name} 直式廣告`;
 
-		adLink.addEventListener("click", () => {
-			gtmPush("ad_click", { ad_sponsor: selectedAd.name });
-		});
+		adLink.addEventListener("click", _adClickHandler);
 	}
 
 	function closeModal() {
@@ -1179,7 +1188,7 @@ const initialAd = weightedAds[0] ?? null;
 		}
 
 		.modal-bookmark-ribbon {
-			top: -0.5rem;
+			top: 0rem;
 			left: 1rem;
 			width: 5rem;
 			height: 5rem;
@@ -1193,7 +1202,6 @@ const initialAd = weightedAds[0] ?? null;
 			right: auto;
 			align-items: center;
 			justify-content: center;
-			background: #faf9f6;
 			border-radius: 1rem 1rem 0 0;
 			margin-bottom: -2.75rem;
 			z-index: 20;
