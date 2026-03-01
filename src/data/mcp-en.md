@@ -1,20 +1,20 @@
-# How to use MCP via ChatGPT
+## ChatGPT
 
 > MCP is currently in testing on ChatGPT. Please enable "Developer mode" first before using.
 
-## 1. Open ChatGPT, click on your profile icon at the bottom left, and select "Settings"
+### 1. Open ChatGPT, click on your profile icon at the bottom left, and select "Settings"
 
-## 2. Go to "Apps" from the settings menu, and click on "Advanced settings"
+### 2. Go to "Apps" from the settings menu, and click on "Advanced settings"
 
-> ![](/2026/img/mcp/S1.webp)
+![](/2026/img/mcp/S1.webp)
 
-## 3. Enable "Developer mode", then click "Create application"
+### 3. Enable "Developer mode", then click "Create application"
 
-> ![](/2026/img/mcp/S2.webp)
+![](/2026/img/mcp/S2.webp)
 
-## 4. Fill in the MCP Server information and create the application
+### 4. Fill in the MCP Server information and create the application
 
-> ![](/2026/img/mcp/S3.webp)
+![](/2026/img/mcp/S3.webp)
 
 - Name: SITCON MCP (or any name you prefer)
 
