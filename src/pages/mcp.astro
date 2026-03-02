@@ -33,6 +33,42 @@ const description = isEn ? "Connect to the MCP Server, arrange your personal age
 
 <script>
 	document.addEventListener("DOMContentLoaded", () => {
+		// Handle switch-btn active status
+		const switchBtns = document.querySelectorAll(".switch-btn");
+		const headings = document.querySelectorAll(".markdown-body h2");
+
+		if (headings.length > 0) {
+			const observerOptions = {
+				root: null,
+				rootMargin: "-20% 0px -60% 0px",
+				threshold: 0
+			};
+
+			const observer = new IntersectionObserver(entries => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						const id = entry.target.id;
+						switchBtns.forEach(btn => {
+							if (btn.getAttribute("href") === `#${id}`) {
+								btn.classList.add("active");
+							} else {
+								btn.classList.remove("active");
+							}
+						});
+					}
+				});
+			}, observerOptions);
+
+			headings.forEach(h2 => observer.observe(h2));
+		}
+
+		switchBtns.forEach(btn => {
+			btn.addEventListener("click", () => {
+				switchBtns.forEach(b => b.classList.remove("active"));
+				btn.classList.add("active");
+			});
+		});
+
 		const copyUrls = document.querySelectorAll(".copy-mcp-url") as NodeListOf<HTMLElement>;
 		copyUrls.forEach(el => {
 			const aTag = el.querySelector("a");
