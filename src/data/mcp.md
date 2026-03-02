@@ -28,9 +28,9 @@
 
 - 勾選我了解並想繼續（此 MCP 為開源，沒有搜集任何資訊，SITCON 也不會知道你使用過）
 
-## VScode
+## VSCode
 
-### 1. 開啟VScode，按「Ctrl+Shift+P」開啟指令面板，輸入「MCP」，選擇「MCP: Add server」
+### 1. 開啟VSCode，按「Ctrl+Shift+P」開啟指令面板，輸入「MCP」，選擇「MCP: Add server」
 
 ![](/2026/img/mcp/V1.webp)
 
