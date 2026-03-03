@@ -3,5 +3,5 @@
 	{ "name": "AMD", "weight": 1, "link": "https://www.amd.com/zh-tw.html", "mobile": true, "desktop": true },
 	{ "name": "ZUSO", "weight": 1, "link": "https://zuso.ai", "mobile": true, "desktop": true },
 	{ "name": "AIA", "weight": 1, "link": "https://aiacademy.tw/", "mobile": true, "desktop": true },
-	{ "name": "LINE", "weight": 1, "link": " ", "mobile": true, "desktop": false }
+	{ "name": "LINE", "weight": 1, "link": "https://techblog.lycorp.co.jp/zh-hant/line-tech-fresh-2026-summer", "mobile": true, "desktop": false }
 ]
