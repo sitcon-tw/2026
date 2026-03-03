@@ -15,7 +15,8 @@ const navItems = [
 	{ label: t.nav.info, href: `${prefix}/info/` },
 	{ label: t.nav.agenda, href: `${prefix}/agenda/` },
 	...(!isProd ? [{ label: t.nav.venue, href: `${prefix}/venue/` }] : []),
-	{ label: t.nav.team, href: `${prefix}/team/` }
+	{ label: t.nav.team, href: `${prefix}/team/` },
+	{ label: t.nav.about, href: `${prefix}/about/` }
 ];
 
 const alternatePrefix = lang === "en" ? "/2026" : "/2026/en";
@@ -49,6 +50,13 @@ const alternateHref = `${alternatePrefix}${currentPath || "/"}`;
 </nav>
 
 <script>
+	// Hide navigation in app mode
+	const params = new URLSearchParams(window.location.search);
+	if (params.get("mode") === "app") {
+		const nav = document.querySelector("nav");
+		if (nav) nav.style.display = "none";
+	}
+
 	import gsap from "gsap";
 
 	const menu = document.querySelector(".hamburger") as HTMLButtonElement;
@@ -247,7 +255,7 @@ const alternateHref = `${alternatePrefix}${currentPath || "/"}`;
 		opacity: 1;
 	}
 
-	@media (max-width: 60rem) {
+	@media (max-width: 65rem) {
 		.nav-container {
 			background: #e8bb5f;
 			padding: 1rem 2rem;

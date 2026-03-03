@@ -38,16 +38,6 @@ interface SessionModalProps {
 
 const { type, name, description = "", speakers, tags, venue, startTime, endTime, slidoLink, slidesLink, notesLink, lang = "zh" } = Astro.props;
 
-// Helper function to get speaker name
-function getSpeakerName(speaker: string | Speaker): string {
-	return typeof speaker === "string" ? speaker : speaker.name;
-}
-
-// Helper function to get speaker avatar
-function getSpeakerAvatar(speaker: string | Speaker): string | undefined {
-	return typeof speaker === "string" ? undefined : speaker.avatar;
-}
-
 // Format time for display (forced to GMT+8 / Asia/Taipei)
 function formatTime(isoString: string): string {
 	const date = new Date(isoString);
@@ -68,7 +58,7 @@ const initialAd = weightedAds[0] ?? null;
 
 <div class="session-modal" id="session-modal" data-ads={JSON.stringify(weightedAds)}>
 	<div class="modal-overlay" id="modal-overlay"></div>
-	<div class="modal-container" id="modal-container">
+	<div class="modal-container" id="modal-container" data-lenis-prevent>
 		{
 			initialAd && (
 				<a href={initialAd.link} target="_blank" rel="noopener noreferrer" id="modal-ad-link">
@@ -152,57 +142,34 @@ const initialAd = weightedAds[0] ?? null;
 				</div>
 
 				<div class="session-actions">
-					{
-						slidoLink && (
-							<a href={slidoLink} target="_blank" rel="noopener noreferrer" class="action-btn">
-								<span>{lang === "en" ? "Ask Question" : "提問"}</span>
-							</a>
-						)
-					}
-					{
-						notesLink && (
-							<a href={notesLink} target="_blank" rel="noopener noreferrer" class="action-btn">
-								<span>{lang === "en" ? "Collaborative Notes" : "共筆"}</span>
-							</a>
-						)
-					}
-					{
-						slidesLink && (
-							<a href={slidesLink} target="_blank" rel="noopener noreferrer" class="action-btn">
-								<span>{lang === "en" ? "Presentation" : "簡報"}</span>
-							</a>
-						)
-					}
-					<button type="button" class="action-btn" id="share-btn" aria-label={lang === "en" ? "Share" : "分享"}>
-						<span>
-							<span class="share-icon share-icon--share" aria-hidden="true">
-								<Share2 size={24} />
-							</span>
-							<span class="share-icon share-icon--check" aria-hidden="true">
-								<Check size={24} />
-							</span>
-						</span>
-					</button>
+					<!-- Action buttons will be populated dynamically -->
 				</div>
 
 				<div class="session-description" set:html={description ?? ""} />
 				<div class="session-speaker-detail"></div>
 			</div>
 		</div>
-		<button class="modal-close-mobile" id="modal-close-mobile" aria-label="Close">
-			<X size={24} />
-			<span>{lang === "en" ? "Close" : "關閉"}</span>
-		</button>
 	</div>
+	<button class="modal-close-mobile" id="modal-close-mobile" aria-label="Close">
+		<X size={24} />
+		<span>{lang === "en" ? "Close" : "關閉"}</span>
+	</button>
 </div>
 
 <script>
+	function gtmPush(eventName: string, payload?: Record<string, unknown>) {
+		const dl = (window as unknown as { dataLayer?: Record<string, unknown>[] }).dataLayer;
+		if (dl && Array.isArray(dl)) {
+			dl.push({ event: eventName, ...payload });
+		}
+	}
+
 	const modal = document.getElementById("session-modal");
 	const overlay = document.getElementById("modal-overlay");
 	const closeBtn = document.getElementById("modal-close");
 	const closeBtnMobile = document.getElementById("modal-close-mobile");
-	const shareBtn = document.getElementById("share-btn");
 	const adLink = document.getElementById("modal-ad-link") as HTMLAnchorElement | null;
+	const adClickHandlers = new WeakMap<HTMLAnchorElement, () => void>();
 	const adImageMobile = document.getElementById("modal-ad-image-mobile") as HTMLImageElement | null;
 	const adImageDesktop = document.getElementById("modal-ad-image-desktop") as HTMLImageElement | null;
 	type ModalAd = { name: string; weight: number; link: string; mobile?: boolean; desktop?: boolean };
@@ -233,14 +200,23 @@ const initialAd = weightedAds[0] ?? null;
 
 	function pickWeightedAd(ads: ModalAd[]): ModalAd | null {
 		if (!ads.length) return null;
-		const totalWeight = ads.reduce((sum, ad) => sum + ad.weight, 0);
-		if (totalWeight <= 0) return null;
-		let r = Math.random() * totalWeight;
+		const shuffled = [];
 		for (const ad of ads) {
-			r -= ad.weight;
-			if (r <= 0) return ad;
+			for (let i = 0; i < ad.weight; i++) {
+				shuffled.push(ad);
+			}
 		}
-		return ads[ads.length - 1] ?? null;
+
+		for (let i = shuffled.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+		}
+
+		return shuffled[Math.floor(Math.random() * shuffled.length)] ?? null;
+	}
+
+	function handleAdClick(selectedAd: ModalAd) {
+		if (import.meta.env.PROD) gtmPush("ad_click", { ad_sponsor: selectedAd.name });
 	}
 
 	function refreshModalAd() {
@@ -252,12 +228,26 @@ const initialAd = weightedAds[0] ?? null;
 			adLink.style.display = "none";
 			return;
 		}
+
+		// Remove previous ad listener to prevent duplicating
+		const prevHandler = adClickHandlers.get(adLink);
+		if (prevHandler) {
+			adLink.removeEventListener("click", prevHandler);
+		}
+		const _adClickHandler = () => {
+			handleAdClick(selectedAd);
+		};
+		adClickHandlers.set(adLink, _adClickHandler);
+
+		if (import.meta.env.PROD) gtmPush("ad_impression", { ad_sponsor: selectedAd.name });
 		adLink.style.display = "";
 		adLink.href = selectedAd.link;
 		adImageMobile.src = `/2026/img/cool_sponsor/${selectedAd.name}-mobile.webp`;
 		adImageMobile.alt = `${selectedAd.name} 橫式廣告`;
 		adImageDesktop.src = `/2026/img/cool_sponsor/${selectedAd.name}.webp`;
 		adImageDesktop.alt = `${selectedAd.name} 直式廣告`;
+
+		adLink.addEventListener("click", _adClickHandler);
 	}
 
 	function closeModal() {
@@ -279,6 +269,9 @@ const initialAd = weightedAds[0] ?? null;
 			if (sessionContent) {
 				sessionContent.scrollTop = 0;
 			}
+			if (containerEl) {
+				containerEl.scrollTop = 0;
+			}
 			document.dispatchEvent(new CustomEvent("closeSessionModal"));
 		}, duration);
 	}
@@ -294,42 +287,6 @@ const initialAd = weightedAds[0] ?? null;
 	if (overlay) {
 		overlay.addEventListener("click", closeModal);
 	}
-
-	let shareSuccessTimer = 0;
-	function showShareSuccess() {
-		if (!shareBtn) return;
-		shareBtn.classList.add("is-success");
-		if (shareSuccessTimer) window.clearTimeout(shareSuccessTimer);
-		shareSuccessTimer = window.setTimeout(() => {
-			shareBtn?.classList.remove("is-success");
-		}, 2000);
-	}
-
-	if (shareBtn) {
-		shareBtn.addEventListener("click", async () => {
-			if (navigator.share) {
-				try {
-					await navigator.share({
-						title: document.querySelector(".session-title")?.textContent || "",
-						text: document.querySelector(".session-description")?.textContent || "",
-						url: window.location.href
-					});
-					showShareSuccess();
-				} catch (err) {
-					console.log("Error sharing:", err);
-				}
-			} else {
-				// Fallback: copy to clipboard
-				try {
-					await navigator.clipboard.writeText(window.location.href);
-					showShareSuccess();
-				} catch (err) {
-					console.log("Error copying:", err);
-				}
-			}
-		});
-	}
-
 	const BOOKMARKS_STORAGE_KEY = "sitcon2026:agendaBookmarks";
 	const ribbonEl = document.getElementById("modal-bookmark-ribbon");
 
@@ -467,8 +424,15 @@ const initialAd = weightedAds[0] ?? null;
 
 		refreshModalAd();
 
+		// Reset container scroll to top (mobile full-height mode)
+		if (containerEl) {
+			containerEl.scrollTop = 0;
+			containerEl.classList.remove("ad-scrolled");
+		}
+
 		// Show modal
 		modal?.classList.add("active");
+
 		// Stop Lenis scrolling when modal opens (prevents body scroll interference)
 		const lenis = (window as any).lenis;
 		if (lenis && typeof lenis.stop === "function") {
@@ -571,6 +535,7 @@ const initialAd = weightedAds[0] ?? null;
 				if (sessionContent) {
 					sessionContent.scrollTop = 0;
 				}
+				container.scrollTop = 0;
 				gsapLib.to(container, {
 					y: height,
 					duration: 0.25,
@@ -619,6 +584,21 @@ const initialAd = weightedAds[0] ?? null;
 
 	if (handleEl && containerEl) setupPhoneDrag();
 
+	// Toggle container background when ad scrolls out of view (mobile)
+	if (containerEl) {
+		if (adLink) {
+			const adObserver = new IntersectionObserver(
+				([entry]) => {
+					containerEl.classList.toggle("ad-scrolled", !entry.isIntersecting);
+				},
+				{ root: containerEl, threshold: 0 }
+			);
+			adObserver.observe(adLink);
+		} else {
+			containerEl.classList.add("ad-scrolled");
+		}
+	}
+
 	// Expose function to open modal (for external use if needed)
 	declare global {
 		interface Window {
@@ -640,6 +620,7 @@ const initialAd = weightedAds[0] ?? null;
 		top: 0;
 		left: 0;
 		width: 100%;
+		max-width: 100vw;
 		height: 100%;
 		z-index: 1000;
 		display: flex;
@@ -651,6 +632,8 @@ const initialAd = weightedAds[0] ?? null;
 			visibility 0s linear 0.22s,
 			opacity 0.22s ease;
 		pointer-events: none;
+		box-sizing: border-box;
+		padding: 0 1rem;
 	}
 
 	.session-modal.active {
@@ -693,7 +676,7 @@ const initialAd = weightedAds[0] ?? null;
 		position: relative;
 		display: flex;
 		width: 90%;
-		max-width: 1200px;
+		max-width: min(1200px, calc(100vw - 2rem));
 		height: 90vh;
 		max-height: 90vh;
 		border-radius: 1rem;
@@ -707,6 +690,7 @@ const initialAd = weightedAds[0] ?? null;
 			opacity 0.25s ease;
 		gap: 1rem;
 		align-items: stretch;
+		box-sizing: border-box;
 	}
 
 	.session-modal.active .modal-container {
@@ -766,21 +750,35 @@ const initialAd = weightedAds[0] ?? null;
 		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
 	}
 
+	/* Ad link: avoid WebKit gap when height is stretched (line-height + block img) */
+	.modal-container > a {
+		display: block;
+		align-self: stretch;
+		height: 100%;
+		min-height: 0;
+		line-height: 0;
+		font-size: 0;
+	}
+
 	.ad-image {
 		display: none;
 	}
 
 	.ad-image-content {
-		display: flex;
-		align-items: stretch;
+		display: block;
 		height: 100%;
+		min-height: 0;
+		line-height: 0;
+		font-size: 0;
 	}
 
 	.ad-image-desktop {
+		display: block;
 		border-radius: 2rem;
 		height: 100%;
 		width: auto;
 		object-fit: cover;
+		vertical-align: top;
 	}
 
 	.modal-right-panel {
@@ -1002,7 +1000,7 @@ const initialAd = weightedAds[0] ?? null;
 
 	.session-speaker-detail :global(img) {
 		width: 16rem;
-		aspect-ratio: 1 / 1;
+		height: 16rem;
 		object-fit: cover;
 		border-radius: 1rem;
 		overflow: hidden;
@@ -1024,6 +1022,14 @@ const initialAd = weightedAds[0] ?? null;
 		width: 4.5rem;
 		border-radius: 50%;
 		display: none;
+	}
+
+	.session-speaker-detail :global(h4) {
+		font-family: inherit;
+		font-weight: normal;
+		font-style: italic;
+		font-size: 0.75rem;
+		margin-bottom: 0.5rem;
 	}
 
 	.session-description :global(p) {
@@ -1096,7 +1102,7 @@ const initialAd = weightedAds[0] ?? null;
 		.ad-image {
 			display: block;
 			width: 100%;
-			border-radius: 2rem;
+			border-radius: 1rem;
 		}
 
 		.ad-image-desktop {
@@ -1109,10 +1115,16 @@ const initialAd = weightedAds[0] ?? null;
 
 		.modal-close-mobile {
 			display: flex;
+			position: fixed;
+			left: 2rem;
+			right: 2rem;
+			width: auto;
+			z-index: 1002;
 		}
 
 		.session-modal {
 			align-items: flex-end;
+			padding: 0;
 		}
 
 		.session-modal.active .modal-overlay {
@@ -1127,14 +1139,38 @@ const initialAd = weightedAds[0] ?? null;
 			flex-direction: column;
 			width: 100%;
 			max-width: none;
-			max-height: 100%;
-			border-radius: 1rem 1rem 0 0;
-			box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.15);
+			height: 100dvh;
+			max-height: 100dvh;
+			border-radius: 0;
+			box-shadow: none;
 			transform: translateY(100%);
 			opacity: 1;
 			transition:
 				transform 0.35s cubic-bezier(0.32, 0.72, 0, 1),
 				opacity 0.2s ease;
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			-webkit-overflow-scrolling: touch;
+			-ms-overflow-style: none;
+			scrollbar-width: none;
+		}
+
+		.modal-container::-webkit-scrollbar {
+			display: none;
+		}
+
+		.modal-container.ad-scrolled {
+			background: #faf9f6;
+		}
+
+		.modal-container > a {
+			height: auto;
+			flex-shrink: 0;
+			padding: 0.5rem 0.5rem 0;
+		}
+
+		.ad-image-content {
+			height: auto;
 		}
 
 		.session-modal.active .modal-container {
@@ -1151,7 +1187,7 @@ const initialAd = weightedAds[0] ?? null;
 		}
 
 		.modal-bookmark-ribbon {
-			top: -0.5rem;
+			top: 0rem;
 			left: 1rem;
 			width: 5rem;
 			height: 5rem;
@@ -1159,10 +1195,19 @@ const initialAd = weightedAds[0] ?? null;
 
 		.modal-drag-handle {
 			display: flex;
-			position: absolute;
+			position: sticky;
 			top: 0;
+			left: auto;
+			right: auto;
 			align-items: center;
 			justify-content: center;
+			border-radius: 1rem 1rem 0 0;
+			margin-bottom: -2.75rem;
+			z-index: 20;
+		}
+
+		.modal-container.ad-scrolled .modal-drag-handle {
+			border-radius: 0;
 		}
 
 		.modal-drag-handle::before {
@@ -1170,10 +1215,14 @@ const initialAd = weightedAds[0] ?? null;
 		}
 
 		.modal-right-panel {
-			padding: 2rem 1.5rem calc(6rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
+			padding: 0.5rem 1.5rem calc(6rem + env(safe-area-inset-bottom, 0px)) 1.5rem;
 			border-radius: 1rem 1rem 0 0;
-			overflow-x: hidden;
-			-webkit-overflow-scrolling: touch;
+			min-height: 100dvh;
+			overflow: visible;
+		}
+
+		.session-content {
+			overflow: visible;
 		}
 
 		.session-title {
@@ -1189,12 +1238,18 @@ const initialAd = weightedAds[0] ?? null;
 			gap: 0.5rem;
 		}
 
+		.session-speaker-detail {
+			padding-bottom: 2rem;
+		}
+
 		.session-speaker-detail :global(article > img) {
 			display: none;
 		}
 
 		.session-speaker-detail :global(h2 img) {
 			display: block;
+			height: 6rem;
+			width: 6rem;
 		}
 	}
 </style>

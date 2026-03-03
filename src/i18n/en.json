@@ -4,6 +4,7 @@
 		"agenda": "Agenda",
 		"venue": "Venue Map",
 		"team": "Team",
+		"about": "About SITCON",
 		"openMenu": "Open Menu"
 	},
 	"landing": {
@@ -584,6 +585,183 @@
 				"All referral and lottery records are based on system data"
 			],
 			"disclaimer": "The organizer reserves the right of final interpretation and adjustment of event content, prizes, and rules."
+		}
+	},
+	"about": {
+		"title": "About SITCON",
+		"description": "SITCON is a student-driven community dedicated to IT education and promoting the open source spirit. It is a student-organized conference that provides a stage for students to present and exchange technical knowledge.",
+		"community": {
+			"title": "The Largest Student Community in East Asia for 13 Years",
+			"data": [
+				{
+					"label": "student speakers",
+					"count": 500
+				},
+				{
+					"label": "meetups and talks",
+					"count": 500
+				},
+				{
+					"label": "summer camps",
+					"count": 10
+				},
+				{
+					"label": "conference attendees",
+					"count": 14000
+				},
+				{
+					"label": "passionate volunteers",
+					"count": 1400
+				}
+			]
+		},
+		"recap": {
+			"title": "SITCON 2025 in Review",
+			"stats": [
+				{
+					"number": "1300",
+					"label": "in-person attendees"
+				},
+				{
+					"number": "200",
+					"label": "schools from home and abroad"
+				},
+				{
+					"number": "70%",
+					"label": "college or graduate students"
+				},
+				{
+					"number": "1/3",
+					"label": "active in tech communities"
+				}
+			],
+			"charts": [
+				{
+					"title": "Attendee Identity Distribution",
+					"data": [
+						{
+							"value": 679,
+							"name": "University Students"
+						},
+						{
+							"value": 291,
+							"name": "High School Students"
+						},
+						{
+							"value": 117,
+							"name": "Graduate Students"
+						},
+						{
+							"value": 87,
+							"name": "Working Professionals"
+						},
+						{
+							"value": 25,
+							"name": "Middle School Students"
+						},
+						{
+							"value": 15,
+							"name": "5-Year College Students"
+						},
+						{
+							"value": 6,
+							"name": "Others"
+						},
+						{
+							"value": 3,
+							"name": "Teachers / Professors"
+						},
+						{
+							"value": 1,
+							"name": "Elementary Students"
+						}
+					]
+				},
+				{
+					"title": "Software Development Level Distribution",
+					"data": [
+						{
+							"value": 476,
+							"name": "Intermediate"
+						},
+						{
+							"value": 276,
+							"name": "Beginner"
+						},
+						{
+							"value": 185,
+							"name": "Proficient"
+						},
+						{
+							"value": 182,
+							"name": "Entry-level"
+						},
+						{
+							"value": 54,
+							"name": "No programming experience"
+						},
+						{
+							"value": 51,
+							"name": "Advanced"
+						}
+					]
+				}
+			]
+		},
+		"media": {
+			"title": "Media Coverage",
+			"items": [
+				{
+					"image": "yahooNews",
+					"alt": "Yahoo News: SITCON 2024 Conference Concludes Successfully",
+					"url": "https://tw.news.yahoo.com/%E5%A4%A7%E8%AB%87ai%E8%88%87%E7%A7%91%E6%8A%80%E6%95%99%E8%82%B2%E7%99%BC%E5%B1%95-sitcon-2024%E5%B9%B4%E6%9C%83%E5%9C%93%E6%BB%BF%E8%90%BD%E5%B9%95-134127533.html"
+				},
+				{
+					"image": "youratorNews",
+					"alt": "Yourator: SITCON Student Computing Conference",
+					"url": "https://www.yourator.co/articles/215"
+				},
+				{
+					"image": "moneyUdnNews",
+					"alt": "Economic Daily News: SITCON 2025",
+					"url": "https://money.udn.com/money/story/5723/9018057"
+				},
+				{
+					"image": "ettodayNews",
+					"alt": "Newtalk News: SITCON Student Computing Conference",
+					"url": "https://newstaiwan.net/2024/03/09/155739/"
+				}
+			]
+		},
+		"history": {
+			"title": "What We've Done",
+			"data": [
+				{
+					"image": "sitcon_hk",
+					"title": "Largest Student IT Conference in East Asia",
+					"description": "Inspired the founding of SITCON x HK in Hong Kong and the Student Open Source Conference in Chongqing, and provides support to student groups and IT communities worldwide. More than half of new participants join each year, and alumni now work across the IT industry in Taiwan, the US, Japan, and the Netherlands, with many returning to support the community."
+				},
+				{
+					"image": "groups",
+					"title": "Meetups Across Taiwan",
+					"description": "Continuously co-hosting meetups with local communities across Taiwan to provide channels for students to exchange knowledge. These events have partnered with universities such as National Taiwan University and Tamkang University, bringing together outstanding talents from the IT field."
+				},
+				{
+					"image": "edu",
+					"title": "SITCON Hour of Code",
+					"description": "Since 2014, in collaboration with the Ministry of Education, we have regularly held Hour of Code events across Taiwan, sparking curiosity about the IT field in hundreds of children and students aged 4 to 16."
+				},
+				{
+					"image": "hackathon",
+					"title": "SITCON Hackathon",
+					"description": "We held HackGen in 2014 and 2015, and in 2024 upgraded the event to the SITCON Hackathon. We aim for participants to learn ideation, planning, and implementation, helping society and businesses discover talented student teams."
+				},
+				{
+					"image": "camp",
+					"title": "SITCON Summer Camp",
+					"description": "Since 2014, SITCON has held a summer camp every July, making it easy for students interested in IT to get started and ignite their passion for open source. Both campers and volunteers are students. In addition to the main curriculum, there are open source talks, a community expo, and a World Café, giving students opportunities to not only learn but also exchange ideas and spark inspiration."
+				}
+			]
 		}
 	}
 }

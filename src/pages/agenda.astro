@@ -416,9 +416,29 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 					shareBtn.addEventListener("click", async () => {
 						if (navigator.share) {
 							try {
+								const speakers = data.speakers.map(speaker => speaker.name).join(", ");
+								const date = new Date(Number(data.startTime)).toLocaleDateString("zh-TW", {
+									year: "numeric",
+									month: "2-digit",
+									day: "2-digit",
+									timeZone: "Asia/Taipei"
+								});
+								const startTime = new Date(Number(data.startTime)).toLocaleTimeString("en-US", {
+									hour: "2-digit",
+									minute: "2-digit",
+									hour12: false,
+									timeZone: "Asia/Taipei"
+								});
+								const endTime = new Date(Number(data.endTime)).toLocaleTimeString("en-US", {
+									hour: "2-digit",
+									minute: "2-digit",
+									hour12: false,
+									timeZone: "Asia/Taipei"
+								});
+								const text = `${String(data.type).charAt(0).toUpperCase() + String(data.type).slice(1)} - ${data.name} | ${speakers}\n${date} ${startTime} - ${endTime} @ 中央研究院人文社會科學館 ${data.venue}\n\n${data.description.replace(/<[^>]*>?/g, "")}`;
 								await navigator.share({
 									title: data.name || "",
-									text: data.description || "",
+									text: text || "",
 									url: window.location.href
 								});
 								showShareSuccess();
@@ -469,32 +489,11 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 					if (adImageEl) adImageEl.style.display = "none";
 					// Update advertisement content
 					const adTitle = leftPanel.querySelector(".ad-title");
-					const adCompany = leftPanel.querySelector(".ad-company-title");
-					const adPositions = leftPanel.querySelector(".ad-positions");
 					const adDesc = leftPanel.querySelector(".ad-description");
 
 					if (adTitle) {
 						adTitle.textContent = data.advertisement.title || "";
 						adTitle.style.display = data.advertisement.title ? "block" : "none";
-					}
-
-					if (adCompany && data.advertisement.company) {
-						adCompany.textContent = `${data.lang === "en" ? "Join" : "加入"} ${data.advertisement.company}`;
-					}
-
-					if (adPositions && data.advertisement.positions) {
-						adPositions.innerHTML = "";
-						data.advertisement.positions.forEach(pos => {
-							const card = document.createElement("a");
-							card.href = pos.link || "#";
-							if (pos.link) {
-								card.target = "_blank";
-								card.rel = "noopener noreferrer";
-							}
-							card.className = "ad-position-card";
-							card.textContent = pos.title;
-							adPositions.appendChild(card);
-						});
 					}
 
 					if (adDesc && data.advertisement.description) {
