@@ -62,7 +62,7 @@ const initialAd = weightedAds[0] ?? null;
 		{
 			initialAd && (
 				<a href={initialAd.link} target="_blank" rel="noopener noreferrer" id="modal-ad-link">
-					<div class="ad-image-content">
+					<div class="cool-sponsor-image-content">
 						<img src={`/2026/img/cool_sponsor/${initialAd.name}-mobile.webp`} alt={`${initialAd.name} 橫式廣告`} class="ad-image" id="modal-ad-image-mobile" />
 						<img src={`/2026/img/cool_sponsor/${initialAd.name}.webp`} alt={`${initialAd.name} 直式廣告`} class="ad-image-desktop" id="modal-ad-image-desktop" />
 					</div>
@@ -216,7 +216,7 @@ const initialAd = weightedAds[0] ?? null;
 	}
 
 	function handleAdClick(selectedAd: ModalAd) {
-		if (import.meta.env.PROD) gtmPush("ad_click", { ad_sponsor: selectedAd.name });
+		if (import.meta.env.PROD) gtmPush("session_ad_click", { ad_sponsor: selectedAd.name });
 	}
 
 	function refreshModalAd() {
@@ -239,7 +239,6 @@ const initialAd = weightedAds[0] ?? null;
 		};
 		adClickHandlers.set(adLink, _adClickHandler);
 
-		if (import.meta.env.PROD) gtmPush("ad_impression", { ad_sponsor: selectedAd.name });
 		adLink.style.display = "";
 		adLink.href = selectedAd.link;
 		adImageMobile.src = `/2026/img/cool_sponsor/${selectedAd.name}-mobile.webp`;
@@ -247,6 +246,7 @@ const initialAd = weightedAds[0] ?? null;
 		adImageDesktop.src = `/2026/img/cool_sponsor/${selectedAd.name}.webp`;
 		adImageDesktop.alt = `${selectedAd.name} 直式廣告`;
 
+		if (import.meta.env.PROD) gtmPush("session_ad_impression", { ad_sponsor: selectedAd.name });
 		adLink.addEventListener("click", _adClickHandler);
 	}
 
@@ -764,7 +764,7 @@ const initialAd = weightedAds[0] ?? null;
 		display: none;
 	}
 
-	.ad-image-content {
+	.cool-sponsor-image-content {
 		display: block;
 		height: 100%;
 		min-height: 0;
@@ -1169,7 +1169,7 @@ const initialAd = weightedAds[0] ?? null;
 			padding: 0.5rem 0.5rem 0;
 		}
 
-		.ad-image-content {
+		.cool-sponsor-image-content {
 			height: auto;
 		}
 
