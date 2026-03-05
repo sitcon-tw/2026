@@ -601,6 +601,9 @@ const supportersList = sponsors.supporters as Sponsor[];
 
 			const closeDialogAnim = () => {
 				if (!dialog) return;
+				// Prevent multiple close triggers
+				if (dialog.classList.contains("closing")) return;
+
 				dialog.classList.add("closing");
 
 				// Clear URL hash
@@ -608,14 +611,22 @@ const supportersList = sponsors.supporters as Sponsor[];
 					history.pushState(null, "", window.location.pathname + window.location.search);
 				}
 
-				dialog.addEventListener(
-					"animationend",
-					() => {
-						dialog.close();
-						dialog.classList.remove("closing");
-					},
-					{ once: true }
-				);
+				const finishClose = () => {
+					if (dialog.open) dialog.close();
+					dialog.classList.remove("closing");
+					dialog.removeEventListener("animationend", onAnimationEnd);
+				};
+
+				const onAnimationEnd = (e: Event) => {
+					if (e.target === dialog) {
+						finishClose();
+					}
+				};
+
+				dialog.addEventListener("animationend", onAnimationEnd);
+
+				// Fallback to ensure it closes even if animationend fails
+				setTimeout(finishClose, 300);
 			};
 
 			const openSponsorDialog = async (trigger: HTMLElement) => {
