@@ -551,6 +551,33 @@
       ]
     },
     {
+      "id": "997d6b",
+      "type": "S",
+      "room": "R3",
+      "broadcast": null,
+      "start": "2026-03-28T12:45:00+08:00",
+      "end": "2026-03-28T13:25:00+08:00",
+      "qa": null,
+      "slide": null,
+      "co_write": null,
+      "record": null,
+      "live": null,
+      "language": null,
+      "uri": null,
+      "zh": {
+        "title": "TBA",
+        "description": "TBA"
+      },
+      "en": {
+        "title": "TBA",
+        "description": "TBA"
+      },
+      "speakers": [
+        "6baed2"
+      ],
+      "tags": []
+    },
+    {
       "id": "aef34b",
       "type": "PD",
       "room": "S",
@@ -1795,6 +1822,18 @@
       },
       "en": {
         "name": "主持人 - RSChiang",
+        "bio": ""
+      }
+    },
+    {
+      "id": "6baed2",
+      "avatar": "https://sitcon.org/2022/imgs/deafult_avatar.jpg",
+      "zh": {
+        "name": "TBA",
+        "bio": ""
+      },
+      "en": {
+        "name": "TBA",
         "bio": ""
       }
     }
