@@ -22,11 +22,14 @@ function getDurationMinutes(): number | null {
 }
 
 const durationMinutes = getDurationMinutes();
+const hasDescription = description && description !== "";
+const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${sessionId}/` : `/2026/agenda/${sessionId}/`) : undefined;
 ---
 
-<div
-	class={`session-block ${type} ${!description || description === "" ? "no-description" : ""}`}
+<a
+	class={`session-block ${type} ${!hasDescription ? "no-description" : ""}`}
 	style={`left: calc(${leftPercent}% + 0.25rem); width: calc(${widthPercent}% - 0.1rem)`}
+	href={sessionHref}
 	data-session-id={sessionId}
 	data-session-type={type}
 	data-session-name={name}
@@ -77,7 +80,7 @@ const durationMinutes = getDurationMinutes();
 			}
 		</div>
 	</div>
-</div>
+</a>
 
 <style>
 	.session-block {
@@ -87,6 +90,8 @@ const durationMinutes = getDurationMinutes();
 		padding: 1rem;
 		overflow-x: hidden;
 		cursor: pointer;
+		text-decoration: none;
+		color: inherit;
 		transition:
 			transform 0.2s,
 			filter 0.2s,
@@ -392,8 +397,9 @@ const durationMinutes = getDurationMinutes();
 			}
 
 			block.addEventListener("click", e => {
-				// Don't trigger if clicking on a link
-				if ((e.target as HTMLElement).closest("a")) {
+				// Don't trigger if clicking an inner link (not the block itself)
+				const closestAnchor = (e.target as HTMLElement).closest("a");
+				if (closestAnchor && closestAnchor !== block) {
 					return;
 				}
 
@@ -410,6 +416,8 @@ const durationMinutes = getDurationMinutes();
 				if (!description || description === "") {
 					return;
 				}
+
+				e.preventDefault();
 
 				const venue = block.getAttribute("data-session-venue") || "";
 				const startTime = block.getAttribute("data-session-start-time") || "";
