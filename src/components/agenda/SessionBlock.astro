@@ -417,6 +417,13 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 					return;
 				}
 
+				// Only intercept unmodified primary-button clicks so modifier-clicks
+				// (Ctrl/Cmd/Shift/Alt or middle-click) keep default link behavior.
+				const mouseEvent = e as MouseEvent;
+				if (mouseEvent.defaultPrevented || mouseEvent.button !== 0 || mouseEvent.metaKey || mouseEvent.ctrlKey || mouseEvent.shiftKey || mouseEvent.altKey) {
+					return;
+				}
+
 				e.preventDefault();
 
 				const venue = block.getAttribute("data-session-venue") || "";
