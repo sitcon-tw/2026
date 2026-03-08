@@ -163,6 +163,14 @@
 			"url": "https://hackmd.io/"
 		},
 		{
+			"logo": "its.svg",
+			"title_zh": "中央研究院資訊服務處",
+			"title_en": "",
+			"description_zh": "中央研究院資訊服務處支援院內研究與行政數位化，兼顧便利與安全，積極引入 AI 技術建構前瞻研究基礎設施，為全院打造安全、便利與前瞻的資訊服務環境。",
+			"description_en": "",
+			"url": "https://its.sinica.edu.tw/"
+		},
+		{
 			"logo": "kotech.svg",
 			"title_zh": "康喔科技 / KangOTech",
 			"title_en": "",
