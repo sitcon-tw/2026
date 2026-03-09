@@ -55,3 +55,32 @@
 ### 6. 從視窗右上角打開聊天視窗，開始使用吧！
 
 ![](/2026/img/mcp/V6.webp)
+
+## OpenCode
+
+### 1. 在專案目錄中建立或編輯 `opencode.json` 設定檔
+
+在你的專案根目錄（或 `~/.config/opencode/opencode.json` 作為全域設定）中加入以下內容：
+
+```json
+{
+	"$schema": "https://opencode.ai/config.json",
+	"mcp": {
+		"sitcon": {
+			"type": "remote",
+			"url": "https://mcp.sitcon.org/mcp",
+			"enabled": true
+		}
+	}
+}
+```
+
+### 2. 啟動 OpenCode，即可開始使用！
+
+```
+opencode
+```
+
+OpenCode 會自動載入設定並連線至 SITCON MCP Server，你可以在對話中直接使用相關工具。
+
+![](/2026/img/mcp/opencode.png)

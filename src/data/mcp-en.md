@@ -55,3 +55,30 @@
 ### 6. Open the chat window from the top right corner and start using it!
 
 ![](/2026/img/mcp/V6.webp)
+
+## OpenCode
+
+### 1. Create or edit `opencode.json` in your project directory
+
+Add the following to your project root (or `~/.config/opencode/opencode.json` for global config):
+
+```json
+{
+	"$schema": "https://opencode.ai/config.json",
+	"mcp": {
+		"sitcon": {
+			"type": "remote",
+			"url": "https://mcp.sitcon.org/mcp",
+			"enabled": true
+		}
+	}
+}
+```
+
+### 2. Start OpenCode and you're ready to go!
+
+```
+opencode
+```
+
+OpenCode will automatically load the config and connect to the SITCON MCP Server. You can use the tools directly in your conversation.
