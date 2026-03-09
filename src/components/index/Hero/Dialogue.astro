@@ -1,4 +1,5 @@
 ---
+import { X } from "@lucide/astro";
 import { useTranslations, type Lang } from "@/utils/i18n";
 
 interface Props {
@@ -13,8 +14,70 @@ const t = useTranslations(lang).dialogue;
 	<h2 set:html={t.headline} />
 	<p class="text-reveal-paragraph">{t.paragraph1}</p>
 	<p class="text-reveal-paragraph">{t.paragraph2}</p>
+	<button id="dialogTrigger">{t.dialogTrigger}</button>
 	<p class="text-reveal-paragraph intro">{t.paragraph3}</p>
 </div>
+<div class="dialog-wrapper">
+	<div class="dialog">
+		<button class="dialog-close"><X /></button>
+		<h2 class="dialog-title" set:html={t.headline} />
+		<p set:html={t.dialog.fullParagraph} />
+		<h3 class="dialog-subtitle">{t.dialog.title}</h3>
+		<div class="featured-list">
+			{
+				t.dialog.featured.map(item => (
+					<a class="featured-item" href={`/2026/agenda/${item.id}/`}>
+						{item.name}
+						<span>- {item.type}</span>
+					</a>
+				))
+			}
+		</div>
+	</div>
+</div>
+
+<script>
+	import gsap from "gsap";
+
+	const dialogTrigger = document.getElementById("dialogTrigger") as HTMLButtonElement;
+	const dialogWrapper = document.querySelector(".dialog-wrapper") as HTMLDivElement;
+	const dialogClose = document.querySelector(".dialog-close") as HTMLButtonElement;
+
+	gsap.set(dialogWrapper, { autoAlpha: 0, pointerEvents: "none" });
+
+	dialogTrigger.addEventListener("click", () => {
+		dialogWrapper.classList.remove("hidden");
+		document.body.style.overflow = "hidden";
+		gsap.fromTo(dialogWrapper, { autoAlpha: 0, y: -50 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.out", pointerEvents: "all" });
+	});
+
+	function closeDialog() {
+		gsap.to(dialogWrapper, {
+			autoAlpha: 0,
+			y: -50,
+			duration: 0.25,
+			ease: "power2.in",
+			pointerEvents: "none"
+		});
+	}
+
+	dialogClose.addEventListener("click", closeDialog);
+
+	dialogWrapper.addEventListener("click", e => {
+		if (e.target === dialogWrapper) closeDialog();
+	});
+
+	document.addEventListener("keydown", e => {
+		if (e.key === "Escape" && !dialogWrapper.classList.contains("hidden")) {
+			closeDialog();
+		}
+	});
+
+	dialogWrapper.addEventListener("wheel", e => {
+		e.stopPropagation();
+		dialogWrapper.scrollTop += e.deltaY;
+	});
+</script>
 
 <style>
 	.dialogue-section {
@@ -46,5 +109,112 @@ const t = useTranslations(lang).dialogue;
 	.intro {
 		margin-left: auto;
 		margin-top: 5rem;
+	}
+
+	#dialogTrigger {
+		display: block;
+		margin: 3rem auto;
+		padding: 0.75rem 1.5rem;
+		font-size: 1rem;
+		background-color: rgba(255, 255, 255, 0.2);
+		color: #fff;
+		border: 0.1rem solid rgba(232, 187, 95, 0.5);
+		border-radius: 10rem;
+		box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+		cursor: pointer;
+	}
+
+	#dialogTrigger:hover {
+		box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.2);
+		transform: translateY(-0.1rem);
+	}
+
+	.dialog-wrapper {
+		position: fixed;
+		inset: 0;
+		background-color: rgba(0, 0, 0, 0.5);
+		overflow-y: auto;
+		pointer-events: all;
+		overscroll-behavior: contain;
+		display: flex;
+		z-index: 1000;
+		padding: 2rem;
+	}
+	.dialog {
+		position: relative;
+		padding: 4rem 2rem;
+		margin: auto;
+		background: #3c2d0e;
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+		border-radius: 1rem;
+		max-width: 50rem;
+		width: 100%;
+	}
+
+	.dialog-title {
+		color: #e8bb5f;
+		margin-bottom: 1rem;
+		font-size: 2rem;
+	}
+
+	.dialog-subtitle {
+		margin-top: 2rem;
+		font-size: 1.5rem;
+		text-align: center;
+	}
+
+	.featured-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: center;
+		margin-top: 2rem;
+	}
+
+	.featured-item {
+		padding: 1rem;
+		display: block;
+		margin: 0 auto;
+		font-size: 1rem;
+		background-color: rgba(255, 255, 255, 0.2);
+		color: #fff;
+		border: 0.1rem solid rgba(232, 187, 95, 0.5);
+		border-radius: 10rem;
+		box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+		span {
+			opacity: 0.5;
+			margin-left: 0.5rem;
+		}
+	}
+
+	.featured-item:hover {
+		box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.2);
+		transform: translateY(-0.1rem);
+	}
+
+	.dialog-close {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		background: none;
+		border: none;
+		color: #fff;
+		cursor: pointer;
+		padding: 0.5rem;
+		line-height: 1rem;
+		font-size: 1rem;
+		border-radius: 50%;
+		transition: background-color 0.3s ease;
+		background-color: rgba(255, 255, 255, 0.1);
+		width: 2.5rem;
+		height: 2.5rem;
+	}
+
+	.dialog-close:hover {
+		background-color: rgba(255, 255, 255, 0.2);
 	}
 </style>

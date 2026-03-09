@@ -16,7 +16,29 @@
 		"headline": "The script of our era has been shattered, and the once-unified melody now falls apart.<br />In this age of chaos, can we rediscover balance together?",
 		"paragraph1": "Standing in 2026, as students and practitioners of information technology, we find ourselves at the forefront of a transformative era. The rise of AI challenges traditional development paradigms, and the technical barriers that once defined our value are gradually eroding. As the power of creation becomes democratized and individual technical prowess can no longer serve as a moat, \"collaboration\" emerges as our most critical challenge. We are heading into a grand chaos that seeks balance between AI, peers, and cross-disciplinary partners. But what if disorder is not an obstacle, but the starting point of a new equilibrium?",
 		"paragraph2": "In an improvised music jam session, there is no conductor. When the beats don’t align, we create a new rhythm together. When the harmony is imperfect, that imperfection becomes the voice of our generation—inclusive, bold, unrestrained, and diverse. At SITCON 2026, we invite you to join this jam. Let us navigate chaos, find rhythm amid disorder, and seek resonance through collaboration.",
-		"paragraph3": "The Students’ Information Technology Conference (SITCON), founded in 2012, is a student-centered, student-initiated conference. It has long been dedicated to advancing student IT education and promoting open-source culture. SITCON aims to guide more students into the world of information technology, while also bringing together all students interested in IT to exchange ideas, pass on knowledge, and inspire one another—realizing the spirit of learning by doing and teaching through sharing."
+		"paragraph3": "The Students’ Information Technology Conference (SITCON), founded in 2012, is a student-centered, student-initiated conference. It has long been dedicated to advancing student IT education and promoting open-source culture. SITCON aims to guide more students into the world of information technology, while also bringing together all students interested in IT to exchange ideas, pass on knowledge, and inspire one another—realizing the spirit of learning by doing and teaching through sharing.",
+		"dialogTrigger": "Read Full Theme Statement",
+		"dialog": {
+			"fullParagraph": "Standing in 2026, as students and practitioners of information technology, we find ourselves at the forefront of a transformative era. The rise of AI challenges traditional development paradigms, and the technical barriers that once defined our value are gradually eroding. As the power of creation becomes democratized and individual technical prowess can no longer serve as a moat, \"collaboration\" emerges as our most critical challenge. We are heading into a grand chaos that seeks balance between AI, peers, and cross-disciplinary partners. But what if disorder is not an obstacle, but the starting point of a new equilibrium? In an improvised music jam session, there is no conductor. The tone, beat, and character of the music are entirely composed through the interaction and synergy of the performers. Therefore, the key is no longer playing the most beautiful solo; the key lies in having the musicians who best understand how to listen, to interpret, predict, and respond to the needs of every collaborator, and create value through interaction with various partners. However, when we collaborate with AI, peers, and cross-disciplinary partners—different musicians on the same stage—this jam will face its own variations and challenges. Jamming with AI, we must proactively define the boundaries of collaboration. Over-reliance on AI causes us to lose deep thinking, while completely rejecting AI makes us miss the efficiency revolution. As possibly the last generation to learn programming 'purely by hand,' we seek ways to preserve the soul of developers. Jamming with IT peers, we must redefine what 'value' means. Shift the focus from the depth of individual technical skills to the breadth of integrating collective wisdom. While continuously advancing our own abilities, we must also learn how to guide and listen, and forge stronger consensus amid divergence. Jamming with cross-disciplinary partners, we must proactively serve as translators of cross-boundary symphonies. When information technology is no longer our exclusive domain, we translate our technical language into melodies that resonate with mathematicians, physicists, designers, and artists, co-creating entirely new value. When the beats of the jam don't align, let's create a new rhythm together. When the harmony of the jam is imperfect, it becomes the voice of our generation—inclusive, bold, unrestrained, and diverse. At SITCON 2026, we invite you to join this jam. Let us navigate chaos, find rhythm amid disorder, and seek resonance through collaboration.",
+			"title": "We Invite You to Join",
+			"featured": [
+				{
+					"id": "7d336b",
+					"type": "keynote",
+					"name": "The Value of Being On-Site: How Do We Approach Truth in the AI Era?"
+				},
+				{
+					"id": "e00a05",
+					"type": "keynote",
+					"name": "Taiwan's Unprecedented Open Source Group Fight: How to Shake the World with Code"
+				},
+				{
+					"id": "1ac048",
+					"type": "Panel",
+					"name": "Is Your Brain Being Hosted? After Outsourcing Homework and Thinking to AI"
+				}
+			]
+		}
 	},
 	"speaker": {
 		"title1": "Conference",
