@@ -180,7 +180,12 @@ const { sections } = info;
 			if (typeof dialog.showModal === "function") dialog.showModal();
 			else dialog.setAttribute("open", "");
 
+			document.body.style.overflow = "hidden";
 			activateTab("shuttle");
+		});
+
+		dialog.addEventListener("close", () => {
+			document.body.style.overflow = "";
 		});
 
 		closeButton.addEventListener("click", () => dialog.close());

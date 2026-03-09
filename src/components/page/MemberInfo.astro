@@ -3,6 +3,7 @@ import { X } from "@lucide/astro";
 const { id = "member-info-modal" } = Astro.props;
 ---
 
+<div id={`${id}-overlay`} class="member-info-overlay"></div>
 <div id={id} class="member-info">
 	<div class="header">
 		<button class="close-btn" aria-label="關閉">
@@ -146,7 +147,10 @@ const { id = "member-info-modal" } = Astro.props;
 					socialBtn.setAttribute("aria-label", socialBtn.textContent || "");
 				}
 
+				const overlay = document.getElementById("member-info-modal-overlay");
 				modal.classList.add("show");
+				overlay?.classList.add("show");
+				document.body.style.overflow = "hidden";
 			}
 			return;
 		}
@@ -156,7 +160,22 @@ const { id = "member-info-modal" } = Astro.props;
 		if (closeBtn) {
 			const modal = closeBtn.closest(".member-info") as HTMLElement | null;
 			if (modal) {
+				const overlay = document.getElementById("member-info-modal-overlay");
 				modal.classList.remove("show");
+				overlay?.classList.remove("show");
+				document.body.style.overflow = "";
+			}
+			return;
+		}
+
+		// Overlay click to close modal
+		const overlay = target.closest(".member-info-overlay");
+		if (overlay) {
+			const modal = document.getElementById("member-info-modal");
+			if (modal) {
+				modal.classList.remove("show");
+				overlay.classList.remove("show");
+				document.body.style.overflow = "";
 			}
 			return;
 		}
@@ -175,7 +194,10 @@ const { id = "member-info-modal" } = Astro.props;
 		if (e.key === "Escape") {
 			const modal = document.getElementById("member-info-modal");
 			if (modal && modal.classList.contains("show")) {
+				const overlay = document.getElementById("member-info-modal-overlay");
 				modal.classList.remove("show");
+				overlay?.classList.remove("show");
+				document.body.style.overflow = "";
 			}
 		}
 	});
@@ -256,6 +278,24 @@ const { id = "member-info-modal" } = Astro.props;
 </script>
 
 <style>
+	.member-info-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.5);
+		z-index: 100;
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity 0.3s ease,
+			visibility 0s 0.3s;
+	}
+
+	.member-info-overlay.show {
+		opacity: 1;
+		visibility: visible;
+		transition: opacity 0.3s ease;
+	}
+
 	.member-info {
 		color: black;
 		background-color: white;
