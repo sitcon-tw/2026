@@ -141,6 +141,25 @@ const supportersList = sponsors.supporters as Sponsor[];
 			}
 		</div>
 
+		<h3 class="tier-title text-reveal-title" id="commuteSupporters">{t.commuteSupporters}</h3>
+		<div class="main-grid">
+			{
+				sponsors.commuteSupporters.map((s, idx) => (
+					<button
+						class="logo-box center-box sponsor-trigger"
+						data-id={`commuteSupporters-${idx}`}
+						data-name={getTitle(s)}
+						data-desc={getDesc(s)}
+						data-type={t.commuteSupporters}
+						data-img={getLogo(s)}
+						data-url={s.url}
+					>
+						<img src={getLogo(s)} alt={getTitle(s)} />
+					</button>
+				))
+			}
+		</div>
+
 		<h3 class="tier-title text-reveal-title" id="supporters">{t.supporters}</h3>
 		<div class="main-grid">
 			{
