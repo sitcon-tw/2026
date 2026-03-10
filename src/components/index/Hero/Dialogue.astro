@@ -14,24 +14,27 @@ const t = useTranslations(lang).dialogue;
 	<h2 set:html={t.headline} />
 	<p class="text-reveal-paragraph">{t.paragraph1}</p>
 	<p class="text-reveal-paragraph">{t.paragraph2}</p>
-	<button id="dialogTrigger">{t.dialogTrigger}</button>
+	<button id="dialog-trigger">{t.dialogTrigger}</button>
 	<p class="text-reveal-paragraph intro">{t.paragraph3}</p>
 </div>
+
 <div class="dialog-wrapper">
-	<div class="dialog">
-		<button class="dialog-close"><X /></button>
-		<h2 class="dialog-title" set:html={t.headline} />
-		<p set:html={t.dialog.fullParagraph} />
-		<h3 class="dialog-subtitle">{t.dialog.title}</h3>
-		<div class="featured-list">
-			{
-				t.dialog.featured.map(item => (
-					<a class="featured-item" href={`/2026/agenda/${item.id}/`}>
-						{item.name}
-						<span>- {item.type}</span>
-					</a>
-				))
-			}
+	<div class="dialog-container">
+		<div class="dialog">
+			<button class="dialog-close"><X /></button>
+			<h2 class="dialog-title" set:html={t.headline} />
+			<p set:html={t.dialog.fullParagraph} />
+			<h3 class="dialog-subtitle">{t.dialog.title}</h3>
+			<div class="featured-list">
+				{
+					t.dialog.featured.map(item => (
+						<a class="featured-item" href={`/2026/${lang == "en" ? "en/" : ""}agenda/${item.id}/`} target="_blank" rel="noopener noreferrer">
+							{item.name}
+							<span>{item.type}</span>
+						</a>
+					))
+				}
+			</div>
 		</div>
 	</div>
 </div>
@@ -39,26 +42,24 @@ const t = useTranslations(lang).dialogue;
 <script>
 	import gsap from "gsap";
 
-	const dialogTrigger = document.getElementById("dialogTrigger") as HTMLButtonElement;
+	const dialogTrigger = document.getElementById("dialog-trigger") as HTMLButtonElement;
 	const dialogWrapper = document.querySelector(".dialog-wrapper") as HTMLDivElement;
 	const dialogClose = document.querySelector(".dialog-close") as HTMLButtonElement;
+	const dialog = document.querySelector(".dialog") as HTMLDivElement;
 
-	gsap.set(dialogWrapper, { autoAlpha: 0, pointerEvents: "none" });
+	gsap.set(dialogWrapper, { autoAlpha: 0 });
+	gsap.set(dialog, { y: -50, autoAlpha: 0 });
 
 	dialogTrigger.addEventListener("click", () => {
 		dialogWrapper.classList.remove("hidden");
 		document.body.style.overflow = "hidden";
-		gsap.fromTo(dialogWrapper, { autoAlpha: 0, y: -50 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.out", pointerEvents: "all" });
+		gsap.to(dialogWrapper, { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out" });
+		gsap.to(dialog, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out", delay: 0.1 });
 	});
 
 	function closeDialog() {
-		gsap.to(dialogWrapper, {
-			autoAlpha: 0,
-			y: -50,
-			duration: 0.25,
-			ease: "power2.in",
-			pointerEvents: "none"
-		});
+		gsap.to(dialog, { autoAlpha: 0, y: -50, duration: 0.5, ease: "power2.out" });
+		gsap.to(dialogWrapper, { autoAlpha: 0, duration: 0.2, ease: "power2.out", delay: 0.1 });
 	}
 
 	dialogClose.addEventListener("click", closeDialog);
@@ -111,7 +112,7 @@ const t = useTranslations(lang).dialogue;
 		margin-top: 5rem;
 	}
 
-	#dialogTrigger {
+	#dialog-trigger {
 		display: block;
 		margin: 3rem auto;
 		padding: 0.75rem 1.5rem;
@@ -125,20 +126,24 @@ const t = useTranslations(lang).dialogue;
 		cursor: pointer;
 	}
 
-	#dialogTrigger:hover {
+	#dialog-trigger:hover {
 		box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.2);
-		transform: translateY(-0.1rem);
+		transform: translateY(-0.2rem);
+		border: 0.1rem solid rgba(232, 187, 95, 1);
+		background-color: rgba(255, 255, 255, 0.4);
 	}
 
 	.dialog-wrapper {
-		position: fixed;
 		inset: 0;
+		position: fixed;
 		background-color: rgba(0, 0, 0, 0.5);
-		overflow-y: auto;
-		pointer-events: all;
-		overscroll-behavior: contain;
-		display: flex;
 		z-index: 1000;
+	}
+
+	.dialog-container {
+		overflow-y: scroll;
+		pointer-events: all;
+		height: 100%;
 		padding: 2rem;
 	}
 	.dialog {
@@ -152,6 +157,7 @@ const t = useTranslations(lang).dialogue;
 		border-radius: 1rem;
 		max-width: 50rem;
 		width: 100%;
+		line-height: 1.6;
 	}
 
 	.dialog-title {
@@ -182,18 +188,43 @@ const t = useTranslations(lang).dialogue;
 		background-color: rgba(255, 255, 255, 0.2);
 		color: #fff;
 		border: 0.1rem solid rgba(232, 187, 95, 0.5);
-		border-radius: 10rem;
+		border-radius: 1em;
 		box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
 		transition: all 0.3s ease;
+		line-height: 1.3rem;
 		span {
 			opacity: 0.5;
 			margin-left: 0.5rem;
+			line-height: 1rem;
+			white-space: nowrap;
+		}
+		span::before {
+			content: "-";
+			margin-right: 0.2rem;
 		}
 	}
 
 	.featured-item:hover {
 		box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.2);
-		transform: translateY(-0.1rem);
+		transform: translateY(-0.2rem);
+		border: 0.1rem solid rgba(232, 187, 95, 1);
+		background-color: rgba(255, 255, 255, 0.4);
+	}
+
+	@media (max-width: 50rem) {
+		.featured-item {
+			width: 100%;
+			display: flex;
+			flex-direction: column-reverse;
+			span {
+				margin-bottom: 0.5rem;
+				margin-left: 0;
+			}
+			span::before {
+				content: "";
+				margin: 0;
+			}
+		}
 	}
 
 	.dialog-close {
@@ -205,7 +236,6 @@ const t = useTranslations(lang).dialogue;
 		color: #fff;
 		cursor: pointer;
 		padding: 0.5rem;
-		line-height: 1rem;
 		font-size: 1rem;
 		border-radius: 50%;
 		transition: background-color 0.3s ease;
