@@ -3,7 +3,8 @@ import { X } from "@lucide/astro";
 const { id = "member-info-modal" } = Astro.props;
 ---
 
-<div id={id} class="member-info">
+<div id="member-info-overlay" class="member-info-overlay" aria-hidden="true"></div>
+<div id={id} class="member-info" data-lenis-prevent tabindex="-1">
 	<div class="header">
 		<button class="close-btn" aria-label="關閉">
 			<X size={24} strokeWidth={3} />
@@ -58,6 +59,43 @@ const { id = "member-info-modal" } = Astro.props;
 			return siteName ? `前往 ${siteName}` : `前往 ${hostname.replace(/^www\./, "")}`;
 		} catch (e) {
 			return `前往 ${url}`;
+		}
+	};
+
+	let lastActiveElement: HTMLElement | null = null;
+	const memberOverlay = document.getElementById("member-info-overlay");
+
+	const setBackgroundScrollLock = (locked: boolean) => {
+		document.body.style.overflow = locked ? "hidden" : "";
+		const lenis = (window as any).lenis;
+		if (lenis) {
+			if (locked && typeof lenis.stop === "function") {
+				lenis.stop();
+			}
+			if (!locked && typeof lenis.start === "function") {
+				lenis.start();
+			}
+		}
+	};
+
+	const openMemberModal = (modal: HTMLElement) => {
+		lastActiveElement = document.activeElement as HTMLElement | null;
+		memberOverlay?.classList.add("show");
+		modal.classList.add("show");
+		modal.scrollTop = 0;
+		setBackgroundScrollLock(true);
+		requestAnimationFrame(() => {
+			modal.focus({ preventScroll: true });
+		});
+	};
+
+	const closeMemberModal = (modal: HTMLElement) => {
+		if (!modal.classList.contains("show")) return;
+		memberOverlay?.classList.remove("show");
+		modal.classList.remove("show");
+		setBackgroundScrollLock(false);
+		if (lastActiveElement && typeof lastActiveElement.focus === "function") {
+			lastActiveElement.focus();
 		}
 	};
 
@@ -146,7 +184,7 @@ const { id = "member-info-modal" } = Astro.props;
 					socialBtn.setAttribute("aria-label", socialBtn.textContent || "");
 				}
 
-				modal.classList.add("show");
+				openMemberModal(modal);
 			}
 			return;
 		}
@@ -156,7 +194,7 @@ const { id = "member-info-modal" } = Astro.props;
 		if (closeBtn) {
 			const modal = closeBtn.closest(".member-info") as HTMLElement | null;
 			if (modal) {
-				modal.classList.remove("show");
+				closeMemberModal(modal);
 			}
 			return;
 		}
@@ -168,6 +206,12 @@ const { id = "member-info-modal" } = Astro.props;
 			if (url) window.open(url, "_blank");
 			return;
 		}
+
+		// Click outside sidebar closes it
+		const modal = document.getElementById("member-info-modal") as HTMLElement | null;
+		if (modal && modal.classList.contains("show") && !target.closest(".member-info")) {
+			closeMemberModal(modal);
+		}
 	});
 
 	// ESC key to close modal
@@ -175,7 +219,7 @@ const { id = "member-info-modal" } = Astro.props;
 		if (e.key === "Escape") {
 			const modal = document.getElementById("member-info-modal");
 			if (modal && modal.classList.contains("show")) {
-				modal.classList.remove("show");
+				closeMemberModal(modal as HTMLElement);
 			}
 		}
 	});
@@ -278,6 +322,28 @@ const { id = "member-info-modal" } = Astro.props;
 			transform 0.3s ease,
 			visibility 0s 0.3s;
 		visibility: hidden;
+	}
+
+	.member-info-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.4);
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition:
+			opacity 0.3s ease,
+			visibility 0s 0.3s;
+		z-index: 100;
+	}
+
+	.member-info-overlay.show {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transition:
+			opacity 0.3s ease,
+			visibility 0s 0s;
 	}
 
 	.member-info.show {
@@ -408,6 +474,10 @@ const { id = "member-info-modal" } = Astro.props;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.member-info-overlay {
+			transition: none;
+		}
+
 		.member-info {
 			transition: none;
 		}
