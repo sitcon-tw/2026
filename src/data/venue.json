@@ -1,82 +1,323 @@
 [
 	{
-		"id": "2F",
+		"id": "2f",
 		"label": "2F",
 		"description": "入口、咖啡廳",
 		"items": [
 			{
 				"id": "entrance",
 				"name": "入口",
-				"description": "報到處"
+				"description": "報到處",
+				"meshes": ["floor__outside__front_door_desolver", "floor__outside__front_2f_glass"]
 			},
 			{
-				"id": "cafe",
-				"name": "咖啡廳",
-				"description": "休息空間"
+				"id": "stairs_2f",
+				"name": "樓梯",
+				"description": "往3F",
+				"meshes": ["floor__2f__stairs_2f_r", "floor__2f__stairs_2f_l"]
 			}
 		]
 	},
 	{
-		"id": "3F",
+		"id": "3f",
 		"label": "3F",
 		"description": "報到、攤位、R0~R3",
 		"items": [
 			{
 				"id": "r0",
 				"name": "R0",
-				"description": "演講廳"
+				"description": "演講廳",
+				"meshes": ["floor__3f__room_r0_3f", "floor__3f__room_r0_slope"]
 			},
 			{
 				"id": "r1",
 				"name": "R1",
-				"description": "演講廳"
+				"description": "演講廳",
+				"meshes": ["floor__3f__room_r1"]
 			},
 			{
 				"id": "r2",
 				"name": "R2",
-				"description": "演講廳"
+				"description": "演講廳",
+				"meshes": ["floor__3f__room_r2"]
 			},
 			{
 				"id": "r3",
 				"name": "R3",
-				"description": "演講廳"
+				"description": "演講廳",
+				"meshes": ["floor__3f__room_r3"]
 			},
 			{
-				"id": "r0",
-				"name": "R0",
-				"description": "演講廳"
+				"id": "amd",
+				"name": "AMD",
+				"description": "贊助商攤位",
+				"meshes": ["floor__3f__amd_table", "floor__3f__amd_text"]
 			},
 			{
-				"id": "r1",
-				"name": "R1",
-				"description": "演講廳"
+				"id": "twinkleai",
+				"name": "Twinkle AI",
+				"description": "贊助商攤位",
+				"meshes": ["floor__3f__twinkleai_table", "floor__3f__twinkleai_text"]
 			},
 			{
-				"id": "r2",
-				"name": "R2",
-				"description": "演講廳"
+				"id": "sitcon_3f",
+				"name": "SITCON 學生計算機年會",
+				"description": "主辦單位攤位",
+				"meshes": ["floor__3f__sitcon_table", "floor__3f__sitcon_text"]
 			},
 			{
-				"id": "r3",
-				"name": "R3",
-				"description": "演講廳"
+				"id": "g0v",
+				"name": "g0v Summit 零時政府雙年會",
+				"description": "社群攤位",
+				"meshes": ["floor__3f__g0v_table", "floor__3f__g0v_text"]
+			},
+			{
+				"id": "ocf",
+				"name": "開放文化基金會",
+				"description": "社群攤位",
+				"meshes": ["floor__3f__ocf_table", "floor__3f__ocf_text"]
+			},
+			{
+				"id": "coscup",
+				"name": "COSCUP 開源人年會",
+				"description": "社群攤位",
+				"meshes": ["floor__3f__coscup_table", "floor__3f__coscup_text"]
+			},
+			{
+				"id": "schools_1",
+				"name": "學生社群 (SCINT/SCAICT/SCIST)",
+				"description": "學生資訊社群聯合攤位",
+				"meshes": ["floor__3f__schools_1_table", "floor__3f__schools_1_text", "floor__3f__schools_2_table"]
+			},
+			{
+				"id": "service_table",
+				"name": "服務台",
+				"description": "詢問處",
+				"meshes": ["floor__3f__service_table_table", "floor__3f__service_table_text"]
+			},
+			{
+				"id": "badge_sign",
+				"name": "識別證領取",
+				"description": "報到處",
+				"meshes": ["floor__3f__badge_sign_table", "floor__3f__badge_sign_text", "floor__3f__badge_sign_table001", "floor__3f__badge_sign_text001"]
 			}
 		]
 	},
 	{
-		"id": "4F",
+		"id": "4f",
 		"label": "4F",
 		"description": "攤位、午餐、交誼廳",
 		"items": [
 			{
-				"id": "lounge",
-				"name": "交誼廳",
-				"description": "交流空間"
+				"id": "s0",
+				"name": "S0 交誼廳",
+				"description": "交流空間",
+				"meshes": ["floor__4f__room_s"]
 			},
 			{
 				"id": "lunch",
 				"name": "午餐區",
-				"description": "用餐空間"
+				"description": "用餐空間",
+				"meshes": [
+					"floor__4f__dining_table_left",
+					"floor__4f__dining_table_left001",
+					"floor__4f__dining_table_left002",
+					"floor__4f__dining_table_left003",
+					"floor__4f__dining_table_left004",
+					"floor__4f__dining_table_left005",
+					"floor__4f__dining_table_left006",
+					"floor__4f__dining_table_left007",
+					"floor__4f__dining_table_left008",
+					"floor__4f__dining_table_left009",
+					"floor__4f__dining_table_left010",
+					"floor__4f__dining_table_left011",
+					"floor__4f__dining_table_left012",
+					"floor__4f__dining_table_left013",
+					"floor__4f__dining_table_left014",
+					"floor__4f__dining_table_left015",
+					"floor__4f__dining_table_left016",
+					"floor__4f__dining_table_left017",
+					"floor__4f__dining_table_left018",
+					"floor__4f__dining_table_left019",
+					"floor__4f__dining_table_left020",
+					"floor__4f__dining_table_left021",
+					"floor__4f__dining_table_left022",
+					"floor__4f__dining_table_left023",
+					"floor__4f__dining_table_left024",
+					"floor__4f__dining_table_left025",
+					"floor__4f__dining_table_left026",
+					"floor__4f__dining_table_left027",
+					"floor__4f__dining_table_left028",
+					"floor__4f__dining_table_left029",
+					"floor__4f__dining_table_left030",
+					"floor__4f__dining_table_left031",
+					"floor__4f__dining_table_left032",
+					"floor__4f__dining_table_left033",
+					"floor__4f__dining_table_left034",
+					"floor__4f__dining_table_left035",
+					"floor__4f__dining_table_left036",
+					"floor__4f__dining_table_left037",
+					"floor__4f__dining_table_left038",
+					"floor__4f__dining_table_left039",
+					"floor__4f__dining_table_left040",
+					"floor__4f__dining_table_left041",
+					"floor__4f__dining_table_right",
+					"floor__4f__dining_table_right001",
+					"floor__4f__dining_table_right002",
+					"floor__4f__dining_table_right003",
+					"floor__4f__dining_table_right004",
+					"floor__4f__dining_table_right005",
+					"floor__4f__dining_table_right006",
+					"floor__4f__dining_table_right007",
+					"floor__4f__dining_table_right008",
+					"floor__4f__dining_table_right009",
+					"floor__4f__dining_table_right010",
+					"floor__4f__dining_table_right011",
+					"floor__4f__dining_table_right012",
+					"floor__4f__dining_table_right013",
+					"floor__4f__dining_table_right014",
+					"floor__4f__dining_table_right015",
+					"floor__4f__dining_table_right016",
+					"floor__4f__dining_table_right017",
+					"floor__4f__dining_table_right018",
+					"floor__4f__dining_table_right019",
+					"floor__4f__dining_table_right020",
+					"floor__4f__dining_table_right021",
+					"floor__4f__dining_table_right022",
+					"floor__4f__dining_table_right023",
+					"floor__4f__dining_table_right024",
+					"floor__4f__dining_table_right025",
+					"floor__4f__dining_table_right026",
+					"floor__4f__dining_table_right027",
+					"floor__4f__dining_table_right028",
+					"floor__4f__dining_table_right029",
+					"floor__4f__dining_table_right030",
+					"floor__4f__dining_table_right031",
+					"floor__4f__dining_table_right032",
+					"floor__4f__dining_table_right033",
+					"floor__4f__dining_table_right034",
+					"floor__4f__dining_table_right035",
+					"floor__4f__dining_table_right036",
+					"floor__4f__dining_table_right037",
+					"floor__4f__dining_table_right038",
+					"floor__4f__dining_table_right039",
+					"floor__4f__dining_table_right040",
+					"floor__4f__dining_table_right041"
+				]
+			},
+			{
+				"id": "register",
+				"name": "報名處",
+				"description": "報到入口",
+				"meshes": ["floor__4f__register_left_table", "floor__4f__register_left_text", "floor__4f__register_right_table", "floor__4f__register_right_text"]
+			},
+			{
+				"id": "line",
+				"name": "LINE台灣",
+				"description": "贊助商攤位",
+				"meshes": ["floor__4f__line_table", "floor__4f__line_text"]
+			},
+			{
+				"id": "tsmc",
+				"name": "台積電",
+				"description": "贊助商攤位",
+				"meshes": ["floor__4f__tsmc_table", "floor__4f__tsmc_text"]
+			},
+			{
+				"id": "aia",
+				"name": "AIA 台灣人工智慧學校",
+				"description": "贊助商攤位",
+				"meshes": ["floor__4f__aia_table", "floor__4f__aia_text"]
+			},
+			{
+				"id": "teamt5",
+				"name": "TeamT5 杜浦數位安全",
+				"description": "贊助商攤位",
+				"meshes": ["floor__4f__teamt5_table", "floor__4f__teamt5_text"]
+			},
+			{
+				"id": "zuso",
+				"name": "ZUSO Generation 如梭世代",
+				"description": "贊助商攤位",
+				"meshes": ["floor__4f__zuso_table", "floor__4f__zuso_text"]
+			},
+			{
+				"id": "sjmlanguage",
+				"name": "尚進美日韓語",
+				"description": "贊助商攤位",
+				"meshes": ["floor__4f__sjmlanguage_table", "floor__4f__sjmlanguage_text"]
+			},
+			{
+				"id": "sitcon_shop",
+				"name": "SITCON 周邊販賣",
+				"description": "周邊商品",
+				"meshes": ["floor__4f__sitcon_shop_table", "floor__4f__sitcon_shop_text"]
+			},
+			{
+				"id": "moztw",
+				"name": "MozTW 社群 / 摩茲工寮",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__moztw_table", "floor__4f__moztw_text"]
+			},
+			{
+				"id": "ruby",
+				"name": "Ruby Taiwan",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__ruby_table", "floor__4f__ruby_text"]
+			},
+			{
+				"id": "jsdc",
+				"name": "JSDC",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__jsdc_table", "floor__4f__jsdc_text"]
+			},
+			{
+				"id": "tnda",
+				"name": "TDNA 台灣數位遊牧者協會",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__tnda_table", "floor__4f__tnda_text"]
+			},
+			{
+				"id": "wordpress",
+				"name": "WordPress 台灣社群",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__wordpress_table", "floor__4f__wordpress_text"]
+			},
+			{
+				"id": "tkug",
+				"name": "Taiwan Kotlin User Group",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__tkug_table", "floor__4f__tkug_text"]
+			},
+			{
+				"id": "lzgh",
+				"name": "綠洲計畫 LZGH",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__lzgh_table", "floor__4f__lzgh_text"]
+			},
+			{
+				"id": "ubuntutw",
+				"name": "Ubuntu 台灣社群",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__ubuntutw_table", "floor__4f__ubuntutw_text"]
+			},
+			{
+				"id": "cntug",
+				"name": "Cloud Native Taiwan User Group",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__cntug_table", "floor__4f__cntug_text"]
+			},
+			{
+				"id": "zdc",
+				"name": "ZeroDay C00kie 零日餅乾社",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__zdc_table", "floor__4f__zdc_text"]
+			},
+			{
+				"id": "poster",
+				"name": "海報展",
+				"description": "海報展示區",
+				"meshes": ["floor__4f__poster_table", "floor__4f__poster_text"]
 			}
 		]
 	}

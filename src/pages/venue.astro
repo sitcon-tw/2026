@@ -39,7 +39,7 @@ const t = useTranslations(lang).venue;
 								<div class="room-list" data-lenis-prevent>
 									{floor.items.map(item => (
 										<div class="room-item-wrapper">
-											<RoomItem name={item.name} description={item.description} />
+											<RoomItem name={item.name} description={item.description} meshes={item.meshes} />
 										</div>
 									))}
 								</div>
@@ -344,6 +344,13 @@ const t = useTranslations(lang).venue;
 	let animationId: number;
 	let modelGroup: THREE.Group;
 
+	// Mesh name → Mesh lookup built after model loads
+	const meshByName = new Map<string, THREE.Mesh>();
+	// Track currently highlighted meshes and their original emissive colors
+	const highlightedMeshes = new Map<string, THREE.Color>();
+	const HIGHLIGHT_COLOR = new THREE.Color(0xffdd44);
+	const HIGHLIGHT_EMISSIVE_INTENSITY = 2.0;
+
 	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 	const initThree = () => {
@@ -483,6 +490,7 @@ const t = useTranslations(lang).venue;
 				console.log("Floors:", [...floorPivots.entries()].map(([k, v]) => `${k}(${v.children.length})`).join(", "), "| shared:", sharedPivot.children.length);
 
 				centerAndScaleModel();
+				buildMeshIndex();
 				showAllFloorsCollapsed();
 			},
 			undefined,
@@ -629,6 +637,61 @@ const t = useTranslations(lang).venue;
 		}
 	};
 
+	const buildMeshIndex = () => {
+		modelGroup.traverse(obj => {
+			if (obj instanceof THREE.Mesh) meshByName.set(obj.name.toLowerCase(), obj);
+		});
+	};
+
+	const clearHighlight = () => {
+		highlightedMeshes.forEach((originalColor, meshName) => {
+			const mesh = meshByName.get(meshName);
+			if (!mesh) return;
+			const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+			mats.forEach((mat: THREE.Material) => {
+				if (mat instanceof THREE.MeshStandardMaterial) {
+					gsap.killTweensOf(mat.emissive);
+					gsap.killTweensOf(mat);
+					mat.emissive.copy(originalColor);
+					mat.emissiveIntensity = 0;
+				}
+			});
+		});
+		highlightedMeshes.clear();
+	};
+
+	const highlightMeshes = (names: string[]) => {
+		clearHighlight();
+		names.forEach(rawName => {
+			const name = rawName.toLowerCase();
+			const mesh = meshByName.get(name);
+			if (!mesh) return;
+			const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+			mats.forEach((mat: THREE.Material) => {
+				if (!(mat instanceof THREE.MeshStandardMaterial)) return;
+				// Save original emissive before first highlight
+				if (!highlightedMeshes.has(name)) {
+					highlightedMeshes.set(name, mat.emissive.clone());
+				}
+				mat.emissive.copy(HIGHLIGHT_COLOR);
+				// Pulse emissive intensity
+				gsap.killTweensOf(mat);
+				gsap.fromTo(
+					mat,
+					{ emissiveIntensity: 0 },
+					{
+						emissiveIntensity: HIGHLIGHT_EMISSIVE_INTENSITY,
+						duration: 0.4,
+						ease: "power2.out",
+						yoyo: true,
+						repeat: -1,
+						repeatDelay: 0.3
+					}
+				);
+			});
+		});
+	};
+
 	const onWindowResize = () => {
 		const canvas = document.getElementById("venue-canvas") as HTMLCanvasElement;
 		if (!canvas) return;
@@ -657,6 +720,8 @@ const t = useTranslations(lang).venue;
 		});
 
 		floorPivots.clear();
+		meshByName.clear();
+		highlightedMeshes.clear();
 		renderer?.dispose();
 		controls?.dispose();
 	};
@@ -696,7 +761,30 @@ const t = useTranslations(lang).venue;
 		}
 
 		backBtn.addEventListener("click", () => {
+			clearHighlight();
 			showSelection();
+		});
+
+		// Room item highlight on click
+		document.querySelectorAll(".room-item").forEach(el => {
+			el.addEventListener("click", () => {
+				const raw = el.getAttribute("data-meshes");
+				if (!raw) return;
+				const meshNames: string[] = JSON.parse(raw);
+
+				// Toggle off if already highlighted
+				const firstMesh = meshNames[0]?.toLowerCase();
+				if (firstMesh && highlightedMeshes.has(firstMesh)) {
+					clearHighlight();
+					document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
+					return;
+				}
+
+				clearHighlight();
+				document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
+				el.classList.add("active");
+				highlightMeshes(meshNames);
+			});
 		});
 
 		const showFloor = (floorId: string) => {

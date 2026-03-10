@@ -3,13 +3,14 @@ interface Props {
 	name: string;
 	description: string;
 	badge?: string;
+	meshes?: string[];
 }
 
-const { name, description, badge = "12" } = Astro.props;
+const { name, description, badge, meshes } = Astro.props;
 ---
 
-<div class="room-item">
-	<div class="room-badge">{badge}</div>
+<div class="room-item" data-meshes={meshes ? JSON.stringify(meshes) : undefined}>
+	{badge && <div class="room-badge">{badge}</div>}
 	<div class="room-info">
 		<div class="room-name">{name}</div>
 		<div class="room-desc">{description}</div>
@@ -31,6 +32,11 @@ const { name, description, badge = "12" } = Astro.props;
 
 	.room-item:hover {
 		background: rgba(255, 255, 255, 0.15);
+	}
+
+	.room-item.active {
+		background: rgba(255, 221, 68, 0.2);
+		border-color: #ffdd44;
 	}
 
 	.room-badge {
