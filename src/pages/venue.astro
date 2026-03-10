@@ -78,7 +78,7 @@ const t = useTranslations(lang).venue;
 		position: absolute;
 		top: 0;
 		right: 0;
-		width: 55%;
+		width: 100%;
 		height: 100%;
 		z-index: 0;
 	}
@@ -139,6 +139,7 @@ const t = useTranslations(lang).venue;
 		gap: 1.5rem;
 		overflow-y: auto;
 		flex: 1;
+		scrollbar-width: none;
 	}
 
 	.hint {
@@ -356,7 +357,7 @@ const t = useTranslations(lang).venue;
 		// Camera
 		const canvasRect = canvas.getBoundingClientRect();
 		camera = new THREE.PerspectiveCamera(45, canvasRect.width / canvasRect.height, 0.1, 1000);
-		camera.position.set(-8, 6, 8);
+		camera.position.set(0, 6, 8);
 		camera.lookAt(0, 0, 0);
 
 		// Renderer
@@ -370,9 +371,9 @@ const t = useTranslations(lang).venue;
 		controls = new OrbitControls(camera, renderer.domElement);
 		controls.enableDamping = true;
 		controls.dampingFactor = 0.05;
-		controls.minDistance = 5;
+		controls.minDistance = 0;
 		controls.maxDistance = 20;
-		controls.maxPolarAngle = Math.PI / 2.2;
+		controls.maxPolarAngle = Math.PI / 2;
 		controls.target.set(0, 1, 0);
 
 		// Lighting
@@ -488,7 +489,7 @@ const t = useTranslations(lang).venue;
 		const center = box.getCenter(new THREE.Vector3());
 		const size = box.getSize(new THREE.Vector3());
 
-		modelGroup.position.x = -center.x;
+		modelGroup.position.x = -center.x + 2;
 		modelGroup.position.z = -center.z;
 
 		const maxDim = Math.max(size.x, size.y, size.z);
