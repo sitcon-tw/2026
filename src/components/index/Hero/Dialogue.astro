@@ -45,13 +45,13 @@ const t = useTranslations(lang).dialogue;
 	const dialogTrigger = document.getElementById("dialog-trigger") as HTMLButtonElement;
 	const dialogWrapper = document.querySelector(".dialog-wrapper") as HTMLDivElement;
 	const dialogClose = document.querySelector(".dialog-close") as HTMLButtonElement;
+	const dialogContainer = document.querySelector(".dialog-container") as HTMLDivElement;
 	const dialog = document.querySelector(".dialog") as HTMLDivElement;
 
 	gsap.set(dialogWrapper, { autoAlpha: 0 });
 	gsap.set(dialog, { y: -50, autoAlpha: 0 });
 
 	dialogTrigger.addEventListener("click", () => {
-		dialogWrapper.classList.remove("hidden");
 		document.body.style.overflow = "hidden";
 		gsap.to(dialogWrapper, { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out" });
 		gsap.to(dialog, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out", delay: 0.1 });
@@ -60,23 +60,26 @@ const t = useTranslations(lang).dialogue;
 	function closeDialog() {
 		gsap.to(dialog, { autoAlpha: 0, y: -50, duration: 0.5, ease: "power2.out" });
 		gsap.to(dialogWrapper, { autoAlpha: 0, duration: 0.2, ease: "power2.out", delay: 0.1 });
+		document.body.style.overflow = "";
 	}
 
 	dialogClose.addEventListener("click", closeDialog);
 
-	dialogWrapper.addEventListener("click", e => {
-		if (e.target === dialogWrapper) closeDialog();
-	});
-
-	document.addEventListener("keydown", e => {
-		if (e.key === "Escape" && !dialogWrapper.classList.contains("hidden")) {
+	dialogContainer.addEventListener("click", e => {
+		if (e.target == dialogContainer) {
 			closeDialog();
 		}
 	});
 
-	dialogWrapper.addEventListener("wheel", e => {
+	document.addEventListener("keydown", e => {
+		if (e.key === "Escape" && dialog.style.opacity != "0") {
+			closeDialog();
+		}
+	});
+
+	dialogContainer.addEventListener("wheel", e => {
 		e.stopPropagation();
-		dialogWrapper.scrollTop += e.deltaY;
+		dialogContainer.scrollTop += e.deltaY;
 	});
 </script>
 
@@ -144,11 +147,11 @@ const t = useTranslations(lang).dialogue;
 		overflow-y: scroll;
 		pointer-events: all;
 		height: 100%;
-		padding: 2rem;
+		padding: 2rem 1rem;
 	}
 	.dialog {
 		position: relative;
-		padding: 4rem 2rem;
+		padding: 4rem 1.5rem;
 		margin: auto;
 		background: #3c2d0e;
 		display: flex;
