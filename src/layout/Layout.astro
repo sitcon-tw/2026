@@ -284,6 +284,7 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 					if (lenis) {
 						lenis.destroy();
 						lenis = null;
+						(window as any).lenis = null;
 					}
 				} else {
 					if (!lenis) {
@@ -291,6 +292,7 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 							autoRaf: true,
 							anchors: true
 						});
+						(window as any).lenis = lenis;
 					}
 				}
 			};
