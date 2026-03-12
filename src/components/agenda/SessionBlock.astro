@@ -28,7 +28,7 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 
 <a
 	class={`session-block ${type} ${!hasDescription ? "no-description" : ""}`}
-	style={`left: calc(${leftPercent}% + 0.25rem); width: calc(${widthPercent}% - 0.1rem)`}
+	style={`left: calc(${leftPercent}% + 0.125rem); width: calc(${widthPercent}% - 0.25rem)`}
 	draggable="false"
 	href={sessionHref}
 	data-session-id={sessionId}

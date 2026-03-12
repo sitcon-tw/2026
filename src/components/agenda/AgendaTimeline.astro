@@ -96,21 +96,39 @@ if (sortedTimes.length > 0) {
 // Total number of time slots (for equal-width positioning)
 const totalSlots = timeLabels.length - 1;
 
-// Check if a slot has all sessions without descriptions (for narrower display on desktop)
-function slotHasOnlyNoDescriptionSessions(slotStartTime: number): boolean {
+// Check slot type for width calculation
+function getSlotType(slotStartTime: number): "narrow" | "espresso" | "normal" {
 	const sessionsAtSlot = items.filter(item => parseTime(item.startTime) === slotStartTime);
-	if (sessionsAtSlot.length === 0) return true; // Empty slots are narrow
-	return sessionsAtSlot.every(item => !item.description || item.description.trim() === "");
+	if (sessionsAtSlot.length === 0) return "narrow"; // Empty slots are narrow
+
+	const allNoDescription = sessionsAtSlot.every(item => !item.description || item.description.trim() === "");
+	if (allNoDescription) return "narrow";
+
+	const allEspressoOrNoDesc = sessionsAtSlot.every(item => {
+		const hasNoDescription = !item.description || item.description.trim() === "";
+		const isEspresso = item.type === "espresso";
+		return hasNoDescription || isEspresso;
+	});
+	if (allEspressoOrNoDesc) return "espresso";
+
+	return "normal";
 }
 
-// Calculate weight for each slot (0.5 for no-description slots, 1 for slots with descriptions)
-const NARROW_SLOT_WEIGHT = 0.5;
-const NORMAL_SLOT_WEIGHT = 1;
+const NARROW_SLOT_WEIGHT = 20;
+const ESPRESSO_SLOT_WEIGHT = 40;
 const slotWeights: number[] = [];
 for (let i = 0; i < totalSlots; i++) {
-	const slotStartTime = timeLabels[i];
-	const isNarrow = slotHasOnlyNoDescriptionSessions(slotStartTime);
-	slotWeights.push(isNarrow ? NARROW_SLOT_WEIGHT : NORMAL_SLOT_WEIGHT);
+	const slotStart = timeLabels[i];
+	const slotEnd = timeLabels[i + 1];
+	const slotType = getSlotType(slotStart);
+	if (slotType === "narrow") {
+		slotWeights.push(NARROW_SLOT_WEIGHT);
+	} else if (slotType === "espresso") {
+		slotWeights.push(ESPRESSO_SLOT_WEIGHT);
+	} else {
+		const durationMinutes = (slotEnd - slotStart) / (1000 * 60);
+		slotWeights.push(durationMinutes);
+	}
 }
 const totalWeight = slotWeights.reduce((sum, w) => sum + w, 0) || 1;
 
@@ -1285,7 +1303,7 @@ activeVenues.forEach(venueId => {
 	.time-axis {
 		position: relative;
 		height: 3rem;
-		margin-left: 12.265rem;
+		margin-left: 12rem;
 	}
 
 	.time-marker {
@@ -1344,7 +1362,7 @@ activeVenues.forEach(venueId => {
 	.time-lines-overlay {
 		position: absolute;
 		top: 0;
-		left: 12.265rem;
+		left: 12rem;
 		right: 0;
 		bottom: 0;
 		pointer-events: none;
@@ -1354,8 +1372,8 @@ activeVenues.forEach(venueId => {
 		position: absolute;
 		top: 0;
 		bottom: 0;
-		width: 1px;
-		background-color: rgba(255, 255, 255, 0.3);
+		width: 1.5px;
+		background-color: rgba(255, 255, 255, 0.5);
 		pointer-events: none;
 		transform: translateX(-50%);
 	}
