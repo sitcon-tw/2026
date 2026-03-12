@@ -254,17 +254,24 @@ const supportersList = sponsors.supporters as Sponsor[];
 			width: 100%;
 			max-width: 10rem;
 			height: auto;
-			opacity: 0.4;
-			filter: grayscale(100%);
+			opacity: 0.85;
+			filter: grayscale(100%) brightness(0.75);
 			transition: all 0.3s ease;
 			mix-blend-mode: multiply;
 			display: block;
 		}
 
-		.logo-box:hover img {
+		.logo-box:hover img,
+		.logo-box:focus-visible img {
 			opacity: 1;
 			filter: grayscale(0%);
 			transform: scale(1.05);
+		}
+
+		.logo-box:focus-visible {
+			outline: 2px solid #ac782b;
+			outline-offset: 4px;
+			border-radius: 0.25rem;
 		}
 
 		.top-tier-grid {
@@ -379,10 +386,16 @@ const supportersList = sponsors.supporters as Sponsor[];
 			height: 1.5rem;
 		}
 
-		#close-dialog:hover {
+		#close-dialog:hover,
+		#close-dialog:focus-visible {
 			background: #e5e7eb;
 			color: #000;
 			transform: rotate(90deg);
+		}
+
+		#close-dialog:focus-visible {
+			outline: 2px solid #ac782b;
+			outline-offset: 2px;
 		}
 
 		.badge {
