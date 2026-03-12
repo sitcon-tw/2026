@@ -96,21 +96,39 @@ if (sortedTimes.length > 0) {
 // Total number of time slots (for equal-width positioning)
 const totalSlots = timeLabels.length - 1;
 
-// Check if a slot has all sessions without descriptions (for narrower display on desktop)
-function slotHasOnlyNoDescriptionSessions(slotStartTime: number): boolean {
+// Check slot type for width calculation
+function getSlotType(slotStartTime: number): "narrow" | "espresso" | "normal" {
 	const sessionsAtSlot = items.filter(item => parseTime(item.startTime) === slotStartTime);
-	if (sessionsAtSlot.length === 0) return true; // Empty slots are narrow
-	return sessionsAtSlot.every(item => !item.description || item.description.trim() === "");
+	if (sessionsAtSlot.length === 0) return "narrow"; // Empty slots are narrow
+
+	const allNoDescription = sessionsAtSlot.every(item => !item.description || item.description.trim() === "");
+	if (allNoDescription) return "narrow";
+
+	const allEspressoOrNoDesc = sessionsAtSlot.every(item => {
+		const hasNoDescription = !item.description || item.description.trim() === "";
+		const isEspresso = item.type === "espresso";
+		return hasNoDescription || isEspresso;
+	});
+	if (allEspressoOrNoDesc) return "espresso";
+
+	return "normal";
 }
 
-// Calculate weight for each slot (0.5 for no-description slots, 1 for slots with descriptions)
-const NARROW_SLOT_WEIGHT = 0.5;
-const NORMAL_SLOT_WEIGHT = 1;
+const NARROW_SLOT_WEIGHT = 20;
+const ESPRESSO_SLOT_WEIGHT = 40;
 const slotWeights: number[] = [];
 for (let i = 0; i < totalSlots; i++) {
-	const slotStartTime = timeLabels[i];
-	const isNarrow = slotHasOnlyNoDescriptionSessions(slotStartTime);
-	slotWeights.push(isNarrow ? NARROW_SLOT_WEIGHT : NORMAL_SLOT_WEIGHT);
+	const slotStart = timeLabels[i];
+	const slotEnd = timeLabels[i + 1];
+	const slotType = getSlotType(slotStart);
+	if (slotType === "narrow") {
+		slotWeights.push(NARROW_SLOT_WEIGHT);
+	} else if (slotType === "espresso") {
+		slotWeights.push(ESPRESSO_SLOT_WEIGHT);
+	} else {
+		const durationMinutes = (slotEnd - slotStart) / (1000 * 60);
+		slotWeights.push(durationMinutes);
+	}
 }
 const totalWeight = slotWeights.reduce((sum, w) => sum + w, 0) || 1;
 
@@ -605,12 +623,16 @@ activeVenues.forEach(venueId => {
 
 		// Drag to scroll with inertia using GSAP
 		let isDragging = false;
+		let hasDragged = false; // Track if actual drag movement occurred
 		let startX = 0;
 		let startScrollLeft = 0;
 		let lastX = 0;
 		let lastTime = 0;
 		let velocity = 0;
 		let inertiaTween: gsap.core.Tween | null = null;
+
+		// Expose drag state globally so SessionBlock can check it
+		(window as any).__agendaDragState = { justDragged: false };
 
 		const startDrag = (e: MouseEvent | TouchEvent) => {
 			const target = e.target as HTMLElement;
@@ -622,10 +644,15 @@ activeVenues.forEach(venueId => {
 				return;
 			}
 
-			// Don't enable drag if clicking on venue-label, button, or link
+			// Don't enable drag if clicking on venue-label or button
 			const venueLabel = target.closest(".venue-label");
 			if (venueLabel) return;
-			if (target.tagName === "BUTTON" || target.tagName === "A" || target.closest("button") || target.closest("a")) {
+			if (target.tagName === "BUTTON" || target.closest("button")) {
+				return;
+			}
+			// Don't enable drag if clicking on a link that is NOT a session-block
+			const closestLink = target.closest("a");
+			if (closestLink && !closestLink.classList.contains("session-block")) {
 				return;
 			}
 
@@ -636,6 +663,7 @@ activeVenues.forEach(venueId => {
 			}
 
 			isDragging = true;
+			hasDragged = false;
 			const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
 			startX = clientX;
 			startScrollLeft = scrollContainer.scrollLeft;
@@ -664,6 +692,11 @@ activeVenues.forEach(venueId => {
 			const deltaX = clientX - startX;
 			const timeDelta = currentTime - lastTime;
 
+			// Mark as actually dragged if moved more than 5 pixels
+			if (Math.abs(deltaX) > 5) {
+				hasDragged = true;
+			}
+
 			// Calculate velocity for inertia (pixels per millisecond)
 			if (timeDelta > 0) {
 				velocity = (clientX - lastX) / timeDelta;
@@ -682,6 +715,14 @@ activeVenues.forEach(venueId => {
 			isDragging = false;
 			scrollContainer.style.cursor = "grab";
 			scrollContainer.style.userSelect = "";
+
+			// Set global flag to prevent SessionModal from opening after drag
+			if (hasDragged) {
+				(window as any).__agendaDragState.justDragged = true;
+				setTimeout(() => {
+					(window as any).__agendaDragState.justDragged = false;
+				}, 50);
+			}
 
 			// Apply inertia using GSAP
 			if (Math.abs(velocity) > 0.01) {
@@ -1331,8 +1372,8 @@ activeVenues.forEach(venueId => {
 		position: absolute;
 		top: 0;
 		bottom: 0;
-		width: 1px;
-		background-color: rgba(255, 255, 255, 0.3);
+		width: 1.5px;
+		background-color: rgba(255, 255, 255, 0.5);
 		pointer-events: none;
 		transform: translateX(-50%);
 	}

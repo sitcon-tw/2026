@@ -11,10 +11,10 @@ export const SESSION_TYPE_CODES = {
 	U: "undefined",
 	E: "espresso",
 	S: "sponsored",
-	PD: "generic"
+	PD: "forum"
 } as const satisfies Record<SessionTypeCode, string>;
 
-export type SessionTypeInternal = "generic" | "keynote" | "presentation" | "undefined" | "espresso" | "sponsored";
+export type SessionTypeInternal = "generic" | "keynote" | "presentation" | "undefined" | "espresso" | "sponsored" | "forum";
 
 export function sessionTypeCodeToInternal(code: string): SessionTypeInternal {
 	const mapped = (SESSION_TYPE_CODES as Record<string, string>)[code];
