@@ -362,22 +362,22 @@
 				{
 					"name": "悠遊卡",
 					"price": "NT$ 499",
-					"image": "/2026/img/souvenir-placeholder.webp"
+					"image": ""
 				},
 				{
 					"name": "電腦包",
 					"price": "NT$ 699",
-					"image": "/2026/img/souvenir-placeholder.webp"
+					"image": ""
 				},
 				{
 					"name": "會眾踢",
 					"price": "NT$ 349",
-					"image": "/2026/img/souvenir-placeholder.webp"
+					"image": ""
 				},
 				{
 					"name": "御守",
 					"price": "NT$ 99",
-					"image": "/2026/img/souvenir-placeholder.webp"
+					"image": ""
 				}
 			]
 		}
