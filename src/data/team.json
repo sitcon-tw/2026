@@ -49,6 +49,10 @@
 			{
 				"name": "administration",
 				"role": "head"
+			},
+			{
+				"name": "marketing",
+				"role": "member"
 			}
 		]
 	},
