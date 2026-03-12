@@ -79,6 +79,18 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 		<h3 class="gallery-info__title"></h3>
 		<div class="gallery-info__description"></div>
 	</div>
+
+	<div class="poster-viewer" aria-hidden="true">
+		<div class="poster-viewer__backdrop"></div>
+		<div class="poster-viewer__content">
+			<img class="poster-viewer__image" src="" alt="" draggable="false" />
+		</div>
+		<div class="poster-viewer__controls">
+			<button class="poster-viewer__btn poster-viewer__btn--zoom-in" aria-label={isEn ? "Zoom in" : "放大"}>+</button>
+			<button class="poster-viewer__btn poster-viewer__btn--zoom-out" aria-label={isEn ? "Zoom out" : "縮小"}>−</button>
+			<button class="poster-viewer__btn poster-viewer__btn--close" aria-label={isEn ? "Close" : "關閉"}>✕</button>
+		</div>
+	</div>
 </div>
 
 <style>
@@ -323,6 +335,92 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 		.gallery-info__description :global(p) {
 			font-size: 1.1rem;
 		}
+	}
+
+	/* Poster Viewer / Lightbox */
+	.poster-viewer {
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity 0.3s ease,
+			visibility 0.3s ease;
+	}
+
+	.poster-viewer.is-open {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.poster-viewer__backdrop {
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.85);
+	}
+
+	.poster-viewer__content {
+		position: relative;
+		z-index: 1;
+		max-width: 90vw;
+		max-height: 90vh;
+		overflow: hidden;
+		cursor: grab;
+		touch-action: none;
+	}
+
+	.poster-viewer__content.is-dragging {
+		cursor: grabbing;
+	}
+
+	.poster-viewer__image {
+		display: block;
+		max-width: 90vw;
+		max-height: 90vh;
+		object-fit: contain;
+		transform-origin: center center;
+		transition: transform 0.2s ease;
+		user-select: none;
+		-webkit-user-drag: none;
+		pointer-events: none;
+	}
+
+	.poster-viewer__controls {
+		position: absolute;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 2;
+		display: flex;
+		gap: 0.75rem;
+	}
+
+	.poster-viewer__btn {
+		width: 3rem;
+		height: 3rem;
+		border-radius: 50%;
+		border: 2px solid rgba(255, 255, 255, 0.6);
+		background: rgba(0, 0, 0, 0.5);
+		color: white;
+		font-size: 1.5rem;
+		line-height: 1;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease;
+		backdrop-filter: blur(4px);
+	}
+
+	.poster-viewer__btn:hover {
+		background: rgba(255, 255, 255, 0.2);
+		border-color: white;
 	}
 </style>
 
@@ -599,6 +697,253 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 			window.addEventListener("pointermove", onPointerMove as any);
 			window.addEventListener("pointerup", onPointerUp);
 			window.addEventListener("pointercancel", onPointerUp);
+
+			// ── Poster Viewer (Lightbox) ──
+			const viewer = wrapper?.querySelector<HTMLElement>(".poster-viewer");
+			const viewerImage = viewer?.querySelector<HTMLImageElement>(".poster-viewer__image");
+			const viewerContent = viewer?.querySelector<HTMLElement>(".poster-viewer__content");
+			const btnZoomIn = viewer?.querySelector<HTMLButtonElement>(".poster-viewer__btn--zoom-in");
+			const btnZoomOut = viewer?.querySelector<HTMLButtonElement>(".poster-viewer__btn--zoom-out");
+			const btnClose = viewer?.querySelector<HTMLButtonElement>(".poster-viewer__btn--close");
+			const backdrop = viewer?.querySelector<HTMLElement>(".poster-viewer__backdrop");
+
+			if (viewer && viewerImage && viewerContent) {
+				let viewerScale = 1;
+				let viewerX = 0;
+				let viewerY = 0;
+				let viewerDragging = false;
+				let viewerStartX = 0;
+				let viewerStartY = 0;
+				let viewerStartTransX = 0;
+				let viewerStartTransY = 0;
+				const MIN_SCALE = 1;
+				const MAX_SCALE = 5;
+
+				const clampPosition = () => {
+					if (viewerScale <= 1) {
+						viewerX = 0;
+						viewerY = 0;
+						return;
+					}
+					const rect = viewerContent.getBoundingClientRect();
+					const imgW = viewerImage.naturalWidth || rect.width;
+					const imgH = viewerImage.naturalHeight || rect.height;
+					// Compute displayed size: image is object-fit:contain inside viewerContent
+					const containerW = rect.width;
+					const containerH = rect.height;
+					const fitScale = Math.min(containerW / imgW, containerH / imgH);
+					const displayW = imgW * fitScale * viewerScale;
+					const displayH = imgH * fitScale * viewerScale;
+					// Max pan = how much the scaled image exceeds the container, halved
+					const maxPanX = Math.max(0, (displayW - containerW) / 2);
+					const maxPanY = Math.max(0, (displayH - containerH) / 2);
+					viewerX = Math.min(maxPanX, Math.max(-maxPanX, viewerX));
+					viewerY = Math.min(maxPanY, Math.max(-maxPanY, viewerY));
+				};
+
+				const applyTransform = () => {
+					viewerImage.style.transform = `translate(${viewerX}px, ${viewerY}px) scale(${viewerScale})`;
+				};
+
+				const openViewer = (src: string, alt: string) => {
+					viewerScale = 1;
+					viewerX = 0;
+					viewerY = 0;
+					viewerImage.src = src;
+					viewerImage.alt = alt;
+					viewerImage.style.transition = "transform 0.2s ease";
+					applyTransform();
+					viewer.classList.add("is-open");
+					viewer.setAttribute("aria-hidden", "false");
+					document.body.style.overflow = "hidden";
+				};
+
+				const closeViewer = () => {
+					viewer.classList.remove("is-open");
+					viewer.setAttribute("aria-hidden", "true");
+					document.body.style.overflow = "";
+				};
+
+				const zoom = (delta: number) => {
+					viewerScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, viewerScale + delta));
+					clampPosition();
+					applyTransform();
+				};
+
+				// Click on focused poster to open viewer
+				// Track drag distance to distinguish click from drag
+				let pointerDownX = 0;
+				let pointerDownY = 0;
+
+				gallery.addEventListener("pointerdown", (e: PointerEvent) => {
+					pointerDownX = e.clientX;
+					pointerDownY = e.clientY;
+				});
+
+				gallery.addEventListener("pointerup", (e: PointerEvent) => {
+					const dx = Math.abs(e.clientX - pointerDownX);
+					const dy = Math.abs(e.clientY - pointerDownY);
+					// Only treat as click if pointer barely moved
+					if (dx > 5 || dy > 5) return;
+
+					const target = e.target as HTMLElement;
+					if (target.closest(".gallery-nav")) return;
+
+					const selectedIndex = getSelectedIndex(currentRotation);
+					const items = gallery.querySelectorAll<HTMLElement>(".gallery-item");
+					const selectedItem = items[selectedIndex];
+					if (!selectedItem) return;
+
+					const clickedItem = target.closest(".gallery-item");
+					// Only open if clicking on the focused (selected) poster
+					if (clickedItem !== selectedItem) return;
+
+					const img = selectedItem.querySelector<HTMLImageElement>(".gallery-image");
+					if (img) {
+						openViewer(img.src, img.alt);
+					}
+				});
+
+				// Zoom controls
+				btnZoomIn?.addEventListener("click", () => zoom(0.5));
+				btnZoomOut?.addEventListener("click", () => zoom(-0.5));
+				btnClose?.addEventListener("click", closeViewer);
+				backdrop?.addEventListener("click", closeViewer);
+
+				// Scroll wheel zoom
+				viewer.addEventListener(
+					"wheel",
+					(e: WheelEvent) => {
+						e.preventDefault();
+						const delta = e.deltaY > 0 ? -0.25 : 0.25;
+						zoom(delta);
+					},
+					{ passive: false }
+				);
+
+				// ── Touch gestures: pinch-to-zoom & single-finger pan ──
+				let pinchActive = false;
+				let pinchStartDist = 0;
+				let pinchStartScale = 1;
+				let pinchStartX = 0;
+				let pinchStartY = 0;
+				let pinchStartTransX = 0;
+				let pinchStartTransY = 0;
+				let touchPanActive = false;
+				let touchPanStartX = 0;
+				let touchPanStartY = 0;
+				let touchPanTransX = 0;
+				let touchPanTransY = 0;
+
+				const getTouchDist = (t1: Touch, t2: Touch) => Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+				const getTouchMid = (t1: Touch, t2: Touch) => ({
+					x: (t1.clientX + t2.clientX) / 2,
+					y: (t1.clientY + t2.clientY) / 2
+				});
+
+				viewerContent.addEventListener(
+					"touchstart",
+					(e: TouchEvent) => {
+						if (e.touches.length === 2) {
+							e.preventDefault();
+							pinchActive = true;
+							touchPanActive = false;
+							pinchStartDist = getTouchDist(e.touches[0], e.touches[1]);
+							pinchStartScale = viewerScale;
+							const mid = getTouchMid(e.touches[0], e.touches[1]);
+							pinchStartX = mid.x;
+							pinchStartY = mid.y;
+							pinchStartTransX = viewerX;
+							pinchStartTransY = viewerY;
+							viewerImage.style.transition = "none";
+						} else if (e.touches.length === 1 && viewerScale > 1) {
+							e.preventDefault();
+							touchPanActive = true;
+							touchPanStartX = e.touches[0].clientX;
+							touchPanStartY = e.touches[0].clientY;
+							touchPanTransX = viewerX;
+							touchPanTransY = viewerY;
+							viewerImage.style.transition = "none";
+						}
+					},
+					{ passive: false }
+				);
+
+				viewerContent.addEventListener(
+					"touchmove",
+					(e: TouchEvent) => {
+						if (pinchActive && e.touches.length === 2) {
+							e.preventDefault();
+							const dist = getTouchDist(e.touches[0], e.touches[1]);
+							const ratio = dist / pinchStartDist;
+							viewerScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, pinchStartScale * ratio));
+							const mid = getTouchMid(e.touches[0], e.touches[1]);
+							viewerX = pinchStartTransX + (mid.x - pinchStartX);
+							viewerY = pinchStartTransY + (mid.y - pinchStartY);
+							clampPosition();
+							applyTransform();
+						} else if (touchPanActive && e.touches.length === 1) {
+							e.preventDefault();
+							viewerX = touchPanTransX + (e.touches[0].clientX - touchPanStartX);
+							viewerY = touchPanTransY + (e.touches[0].clientY - touchPanStartY);
+							clampPosition();
+							applyTransform();
+						}
+					},
+					{ passive: false }
+				);
+
+				viewerContent.addEventListener("touchend", (e: TouchEvent) => {
+					if (pinchActive && e.touches.length < 2) {
+						pinchActive = false;
+						viewerImage.style.transition = "transform 0.2s ease";
+						clampPosition();
+						applyTransform();
+					}
+					if (touchPanActive && e.touches.length < 1) {
+						touchPanActive = false;
+						viewerImage.style.transition = "transform 0.2s ease";
+						clampPosition();
+						applyTransform();
+					}
+				});
+
+				// Pan when zoomed (pointer/mouse)
+				viewerContent.addEventListener("pointerdown", (e: PointerEvent) => {
+					if (e.pointerType === "touch") return;
+					if (viewerScale <= 1) return;
+					viewerDragging = true;
+					viewerStartX = e.clientX;
+					viewerStartY = e.clientY;
+					viewerStartTransX = viewerX;
+					viewerStartTransY = viewerY;
+					viewerContent.classList.add("is-dragging");
+					viewerImage.style.transition = "none";
+					e.preventDefault();
+				});
+
+				window.addEventListener("pointermove", (e: PointerEvent) => {
+					if (!viewerDragging) return;
+					viewerX = viewerStartTransX + (e.clientX - viewerStartX);
+					viewerY = viewerStartTransY + (e.clientY - viewerStartY);
+					clampPosition();
+					applyTransform();
+				});
+
+				window.addEventListener("pointerup", () => {
+					if (!viewerDragging) return;
+					viewerDragging = false;
+					viewerContent.classList.remove("is-dragging");
+					viewerImage.style.transition = "transform 0.2s ease";
+				});
+
+				// Escape to close
+				window.addEventListener("keydown", (e: KeyboardEvent) => {
+					if (e.key === "Escape" && viewer.classList.contains("is-open")) {
+						closeViewer();
+					}
+				});
+			}
 		});
 	}
 </script>
