@@ -113,7 +113,11 @@ const initialAd = weightedAds[0] ?? null;
 											? lang === "en"
 												? "Sponsored"
 												: "合作議程"
-											: ""
+											: type === "forum"
+												? lang === "en"
+													? "Forum"
+													: "論壇"
+												: ""
 					}
 				</div>
 
@@ -338,7 +342,8 @@ const initialAd = weightedAds[0] ?? null;
 				presentation: "Presentation",
 				undefined: sessionLang === "en" ? "Undefined" : "開放式議程",
 				espresso: "Espresso",
-				sponsored: sessionLang === "en" ? "Sponsored" : "合作議程"
+				sponsored: sessionLang === "en" ? "Sponsored" : "合作議程",
+				forum: sessionLang === "en" ? "Forum" : "論壇"
 			};
 			typeBadgeEl.textContent = typeLabels[sessionType] || "";
 		}
