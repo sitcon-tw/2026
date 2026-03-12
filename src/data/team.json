@@ -490,17 +490,6 @@
 		"mode": "nobg"
 	},
 	{
-		"name": "Hui",
-		"description": "",
-		"teams": [
-			{
-				"name": "operations",
-				"role": "ops_mobility"
-			}
-		],
-		"mode": "nobg"
-	},
-	{
 		"name": "BC",
 		"description": "日本利用壓電瓷磚將腳步轉化為電能。這些瓷磚捕捉來自你腳步的動能。當你行走時，你的重量和動作會對瓷磚產生壓力。瓷磚會輕微彎曲，從而產生機械應力。瓷磚內部的壓電材料將這種應力轉化為電能。每一步都會產生少量電荷，而數百萬步結合在一起就能產生足夠的電力來驅動LED 燈、數字顯示屏和傳感器。",
 		"teams": [
@@ -805,18 +794,6 @@
 		"mode": "nobg"
 	},
 	{
-		"name": "釋迦",
-		"description": "",
-		"teams": [
-			{
-				"name": "design",
-				"role": "member"
-			}
-		],
-		"mode": "color",
-		"color": "FFF"
-	},
-	{
 		"name": "開根號",
 		"description": "Waiting for the light to change everything.",
 		"teams": [
@@ -837,16 +814,6 @@
 		]
 	},
 	{
-		"name": "柚子",
-		"description": "",
-		"teams": [
-			{
-				"name": "design",
-				"role": "member"
-			}
-		]
-	},
-	{
 		"name": "末夜",
 		"description": "哈嚕",
 		"teams": [
@@ -856,16 +823,6 @@
 			}
 		],
 		"link": "no"
-	},
-	{
-		"name": "塚川",
-		"description": "",
-		"teams": [
-			{
-				"name": "design",
-				"role": "member"
-			}
-		]
 	},
 	{
 		"name": "KIKI PENG",
