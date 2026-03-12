@@ -29,6 +29,7 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 <a
 	class={`session-block ${type} ${!hasDescription ? "no-description" : ""}`}
 	style={`left: calc(${leftPercent}% + 0.25rem); width: calc(${widthPercent}% - 0.1rem)`}
+	draggable="false"
 	href={sessionHref}
 	data-session-id={sessionId}
 	data-session-type={type}
@@ -98,6 +99,13 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 			box-shadow 0.2s;
 		z-index: 1;
 		box-sizing: border-box;
+		-webkit-user-drag: none;
+		user-drag: none;
+	}
+
+	.session-block * {
+		-webkit-user-drag: none;
+		user-drag: none;
 	}
 
 	.session-block:hover {
@@ -397,6 +405,12 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 			}
 
 			block.addEventListener("click", e => {
+				// Don't trigger if just finished dragging the timeline
+				if ((window as any).__agendaDragState?.justDragged) {
+					e.preventDefault();
+					return;
+				}
+
 				// Don't trigger if clicking an inner link (not the block itself)
 				const closestAnchor = (e.target as HTMLElement).closest("a");
 				if (closestAnchor && closestAnchor !== block) {
