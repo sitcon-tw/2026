@@ -1053,6 +1053,25 @@ const initialAd = weightedAds[0] ?? null;
 		color: #1a1a1a;
 	}
 
+	.session-description :global(ol),
+	.session-description :global(ul) {
+		margin: 1rem 0;
+		padding-left: 2rem;
+	}
+
+	.session-description :global(ol) {
+		list-style-type: decimal;
+	}
+
+	.session-description :global(ul) {
+		list-style-type: disc;
+	}
+
+	.session-description :global(li) {
+		margin-bottom: 0.5rem;
+		line-height: 1.6;
+	}
+
 	.session-meta :global(.session-tags) {
 		display: flex;
 		gap: 0.5rem;
