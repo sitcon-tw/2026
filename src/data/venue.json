@@ -2,12 +2,12 @@
 	{
 		"id": "2f",
 		"label": "2F",
-		"description": "入口、咖啡廳",
+		"description": "入口",
 		"items": [
 			{
 				"id": "entrance",
 				"name": "入口",
-				"description": "報到處",
+				"description": "註記: 報到處在四樓哦！",
 				"meshes": ["floor__outside__front_door_desolver", "floor__outside__front_2f_glass"]
 			},
 			{
@@ -21,30 +21,42 @@
 	{
 		"id": "3f",
 		"label": "3F",
-		"description": "報到、攤位、R0~R3",
+		"description": "服務台、議程廳 R0~R3、攤位",
 		"items": [
+			{
+				"id": "service_table",
+				"name": "服務台",
+				"description": "在這裡尋找工作人員協助！",
+				"meshes": ["floor__3f__service_table_table", "floor__3f__service_table_text"]
+			},
+			{
+				"id": "badge_sign",
+				"name": "識別證簽名處",
+				"description": "領到識別證後可以在這簽名！",
+				"meshes": ["floor__3f__badge_sign_table", "floor__3f__badge_sign_text", "floor__3f__badge_sign_table001", "floor__3f__badge_sign_text001"]
+			},
 			{
 				"id": "r0",
 				"name": "R0",
-				"description": "演講廳",
+				"description": "議程廳",
 				"meshes": ["floor__3f__room_r0_3f", "floor__3f__room_r0_slope"]
 			},
 			{
 				"id": "r1",
 				"name": "R1",
-				"description": "演講廳",
+				"description": "議程廳",
 				"meshes": ["floor__3f__room_r1"]
 			},
 			{
 				"id": "r2",
 				"name": "R2",
-				"description": "演講廳",
+				"description": "議程廳",
 				"meshes": ["floor__3f__room_r2"]
 			},
 			{
 				"id": "r3",
 				"name": "R3",
-				"description": "演講廳",
+				"description": "議程廳",
 				"meshes": ["floor__3f__room_r3"]
 			},
 			{
@@ -86,28 +98,22 @@
 			{
 				"id": "schools_1",
 				"name": "學生社群 (SCINT/SCAICT/SCIST)",
-				"description": "學生資訊社群聯合攤位",
+				"description": "社群攤位",
 				"meshes": ["floor__3f__schools_1_table", "floor__3f__schools_1_text", "floor__3f__schools_2_table"]
-			},
-			{
-				"id": "service_table",
-				"name": "服務台",
-				"description": "詢問處",
-				"meshes": ["floor__3f__service_table_table", "floor__3f__service_table_text"]
-			},
-			{
-				"id": "badge_sign",
-				"name": "識別證領取",
-				"description": "報到處",
-				"meshes": ["floor__3f__badge_sign_table", "floor__3f__badge_sign_text", "floor__3f__badge_sign_table001", "floor__3f__badge_sign_text001"]
 			}
 		]
 	},
 	{
 		"id": "4f",
 		"label": "4F",
-		"description": "攤位、午餐、交誼廳",
+		"description": "報到、攤位、午餐、交誼廳",
 		"items": [
+			{
+				"id": "register",
+				"name": "報到處",
+				"description": "在這裡報到！",
+				"meshes": ["floor__4f__register_left_table", "floor__4f__register_left_text", "floor__4f__register_right_table", "floor__4f__register_right_text"]
+			},
 			{
 				"id": "s0",
 				"name": "S0 交誼廳",
@@ -206,10 +212,10 @@
 				]
 			},
 			{
-				"id": "register",
-				"name": "報名處",
-				"description": "報到入口",
-				"meshes": ["floor__4f__register_left_table", "floor__4f__register_left_text", "floor__4f__register_right_table", "floor__4f__register_right_text"]
+				"id": "poster",
+				"name": "海報展",
+				"description": "海報展示區",
+				"meshes": ["floor__4f__poster_table", "floor__4f__poster_text"]
 			},
 			{
 				"id": "line",
@@ -312,12 +318,6 @@
 				"name": "ZeroDay C00kie 零日餅乾社",
 				"description": "社群攤位",
 				"meshes": ["floor__4f__zdc_table", "floor__4f__zdc_text"]
-			},
-			{
-				"id": "poster",
-				"name": "海報展",
-				"description": "海報展示區",
-				"meshes": ["floor__4f__poster_table", "floor__4f__poster_text"]
 			}
 		]
 	}
