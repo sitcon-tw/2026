@@ -351,6 +351,10 @@ const t = useTranslations(lang).venue;
 	const HIGHLIGHT_COLOR = new THREE.Color(0xffdd44);
 	const HIGHLIGHT_EMISSIVE_INTENSITY = 2.0;
 
+	// Raycaster for 3D picking
+	const raycaster = new THREE.Raycaster();
+	const mouse = new THREE.Vector2();
+
 	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 	const initThree = () => {
@@ -379,7 +383,7 @@ const t = useTranslations(lang).venue;
 		controls.enableDamping = true;
 		controls.dampingFactor = 0.05;
 		controls.minDistance = 0;
-		controls.maxDistance = 20;
+		controls.maxDistance = 100;
 		controls.maxPolarAngle = Math.PI / 2;
 		controls.target.set(0, 1, 0);
 
@@ -413,6 +417,9 @@ const t = useTranslations(lang).venue;
 		loadModel();
 
 		window.addEventListener("resize", onWindowResize);
+		renderer.domElement.addEventListener("pointerdown", onCanvasPointerDown);
+		renderer.domElement.addEventListener("click", onCanvasClick);
+		renderer.domElement.addEventListener("pointermove", onCanvasPointerMove);
 		animate();
 	};
 
@@ -643,6 +650,210 @@ const t = useTranslations(lang).venue;
 		});
 	};
 
+	// ── Hover state ──────────────────────────────────────────────────────────
+	let hoveredMesh: THREE.Mesh | null = null;
+	// Meshes currently tinted by hover (may be a whole floor pivot's meshes)
+	const hoveredMeshOriginals = new Map<THREE.Mesh, THREE.Color>();
+	const HOVER_COLOR = new THREE.Color(0xffffff);
+
+	const applyHoverTint = (meshes: THREE.Mesh[]) => {
+		meshes.forEach(mesh => {
+			const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+			mats.forEach((mat: THREE.Material) => {
+				if (mat instanceof THREE.MeshStandardMaterial && !highlightedMeshes.has(mesh.name.toLowerCase())) {
+					hoveredMeshOriginals.set(mesh, mat.emissive.clone());
+					mat.emissive.copy(HOVER_COLOR);
+					mat.emissiveIntensity = 0.15;
+				}
+			});
+		});
+	};
+
+	const clearHoverTint = () => {
+		hoveredMeshOriginals.forEach((originalEmissive, mesh) => {
+			const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+			mats.forEach((mat: THREE.Material) => {
+				if (mat instanceof THREE.MeshStandardMaterial && !highlightedMeshes.has(mesh.name.toLowerCase())) {
+					mat.emissive.copy(originalEmissive);
+					mat.emissiveIntensity = 0;
+				}
+			});
+		});
+		hoveredMeshOriginals.clear();
+	};
+
+	let hoveredFloorId: string | null = null;
+
+	const setMeshHover = (mesh: THREE.Mesh | null, floorId?: string | null) => {
+		const nextFloor = floorId ?? null;
+		// Skip if nothing changed
+		if (mesh === hoveredMesh && nextFloor === hoveredFloorId) return;
+		clearHoverTint();
+		hoveredFloorId = nextFloor;
+		hoveredMesh = mesh;
+
+		if (floorId) {
+			// Highlight all meshes of the floor pivot
+			const pivot = floorPivots.get(floorId);
+			if (pivot) {
+				const meshes: THREE.Mesh[] = [];
+				pivot.traverse(c => {
+					if (c instanceof THREE.Mesh) meshes.push(c);
+				});
+				applyHoverTint(meshes);
+			}
+		} else if (mesh) {
+			applyHoverTint([mesh]);
+		}
+	};
+
+	/** Get the floor ID a mesh belongs to based on its name prefix. */
+	const getFloorIdFromMesh = (mesh: THREE.Mesh): string | null => {
+		const n = mesh.name.toLowerCase();
+		return FLOOR_IDS.find(fid => n.startsWith(`floor__${fid}__`)) ?? null;
+	};
+
+	/** Pick the topmost visible mesh under the pointer. */
+	const pickMesh = (event: MouseEvent | PointerEvent): THREE.Mesh | null => {
+		const canvas = renderer.domElement;
+		const rect = canvas.getBoundingClientRect();
+		mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+		mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+		raycaster.setFromCamera(mouse, camera);
+		const hits = raycaster.intersectObject(modelGroup, true);
+		for (const hit of hits) {
+			if (hit.object instanceof THREE.Mesh) return hit.object;
+		}
+		return null;
+	};
+
+	const zoomToMeshes = (names: string[]) => {
+		const box = new THREE.Box3();
+		names.forEach(rawName => {
+			const mesh = meshByName.get(rawName.toLowerCase());
+			if (mesh) box.expandByObject(mesh);
+		});
+		if (box.isEmpty()) return;
+		const center = box.getCenter(new THREE.Vector3());
+		const size = box.getSize(new THREE.Vector3());
+		const maxDim = Math.max(size.x, size.y, size.z);
+		// Position camera so object fills view nicely
+		const fov = camera.fov * (Math.PI / 180);
+		const dist = (maxDim / 2 / Math.tan(fov / 2)) * 2.2;
+		const offset = new THREE.Vector3(-dist * 0.6, dist * 0.5, dist * 0.8).normalize().multiplyScalar(dist);
+		const rm = prefersReducedMotion();
+		if (rm) {
+			camera.position.copy(center).add(offset);
+			controls.target.copy(center);
+		} else {
+			gsap.to(camera.position, { x: center.x + offset.x, y: center.y + offset.y, z: center.z + offset.z, duration: 0.8, ease: "power2.inOut" });
+			gsap.to(controls.target, { x: center.x, y: center.y, z: center.z, duration: 0.8, ease: "power2.inOut" });
+		}
+	};
+
+	/** Called by the UI's room-item click to also zoom the camera. */
+	const selectRoomItem = (meshNames: string[]) => {
+		highlightMeshes(meshNames);
+		zoomToMeshes(meshNames);
+	};
+
+	// Track pointer-down position to distinguish click from drag
+	let pointerDownX = 0;
+	let pointerDownY = 0;
+	const onCanvasPointerDown = (e: PointerEvent) => {
+		pointerDownX = e.clientX;
+		pointerDownY = e.clientY;
+	};
+
+	/** Fired when the canvas is clicked. */
+	const onCanvasClick = (event: MouseEvent) => {
+		// Ignore if pointer moved more than 5px (orbit drag)
+		if (Math.hypot(event.clientX - pointerDownX, event.clientY - pointerDownY) > 5) return;
+		// No interaction when on the floor-selection overview (not exploded, no floor selected)
+		if (!isExploded && !currentFloor) return;
+
+		const mesh = pickMesh(event);
+		if (!mesh) return;
+
+		if (isExploded && !currentFloor) {
+			// ── Layered view: clicking a floor navigates into it ──
+			const floorId = getFloorIdFromMesh(mesh);
+			if (floorId) {
+				// Mimic clicking the floor button
+				const floorBtn = document.querySelector(`.floor-btn[data-floor="${floorId}"]`) as HTMLElement | null;
+				floorBtn?.click();
+			}
+			return;
+		}
+
+		if (currentFloor) {
+			// ── Single-floor view: clicking a mesh selects it ──
+			const n = mesh.name.toLowerCase();
+			// Find matching room item by checking its data-meshes list
+			const roomItems = document.querySelectorAll(".room-item");
+			let matched: Element | null = null;
+			roomItems.forEach(el => {
+				const raw = el.getAttribute("data-meshes");
+				if (!raw) return;
+				const names: string[] = JSON.parse(raw);
+				if (names.map(s => s.toLowerCase()).includes(n)) matched = el;
+			});
+
+			if (matched) {
+				// Toggle or select
+				const firstMesh = JSON.parse((matched as Element).getAttribute("data-meshes")!)[0]?.toLowerCase();
+				if (firstMesh && highlightedMeshes.has(firstMesh)) {
+					clearHighlight();
+					document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
+					return;
+				}
+				clearHighlight();
+				document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
+				(matched as Element).classList.add("active");
+				const meshNames: string[] = JSON.parse((matched as Element).getAttribute("data-meshes")!);
+				selectRoomItem(meshNames);
+				// Scroll matched item into view in sidebar
+				(matched as HTMLElement).scrollIntoView({ behavior: "smooth", block: "nearest" });
+			}
+		}
+	};
+
+	/** Fired on pointer move for hover effect. */
+	const onCanvasPointerMove = (event: PointerEvent) => {
+		// No interaction when on the floor-selection overview
+		if (!isExploded && !currentFloor) {
+			renderer.domElement.style.cursor = "grab";
+			setMeshHover(null, null);
+			return;
+		}
+
+		const mesh = pickMesh(event as unknown as MouseEvent);
+
+		if (isExploded && !currentFloor) {
+			// Highlight the entire floor on hover
+			const floorId = mesh ? getFloorIdFromMesh(mesh) : null;
+			renderer.domElement.style.cursor = floorId ? "pointer" : "grab";
+			setMeshHover(mesh, floorId);
+			return;
+		}
+
+		if (currentFloor) {
+			// Only highlight meshes that belong to a room item
+			let actionable = false;
+			if (mesh) {
+				const n = mesh.name.toLowerCase();
+				document.querySelectorAll(".room-item").forEach(el => {
+					const raw = el.getAttribute("data-meshes");
+					if (!raw) return;
+					const names: string[] = JSON.parse(raw);
+					if (names.map(s => s.toLowerCase()).includes(n)) actionable = true;
+				});
+			}
+			renderer.domElement.style.cursor = actionable ? "pointer" : "grab";
+			setMeshHover(actionable ? mesh : null, null);
+		}
+	};
+
 	const clearHighlight = () => {
 		highlightedMeshes.forEach((originalColor, meshName) => {
 			const mesh = meshByName.get(meshName);
@@ -710,6 +921,9 @@ const t = useTranslations(lang).venue;
 	const cleanup = () => {
 		if (animationId) cancelAnimationFrame(animationId);
 		window.removeEventListener("resize", onWindowResize);
+		renderer?.domElement.removeEventListener("pointerdown", onCanvasPointerDown);
+		renderer?.domElement.removeEventListener("click", onCanvasClick);
+		renderer?.domElement.removeEventListener("pointermove", onCanvasPointerMove);
 
 		modelGroup?.traverse((child: THREE.Object3D) => {
 			if (child instanceof THREE.Mesh) {
@@ -783,7 +997,7 @@ const t = useTranslations(lang).venue;
 				clearHighlight();
 				document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
 				el.classList.add("active");
-				highlightMeshes(meshNames);
+				selectRoomItem(meshNames);
 			});
 		});
 
