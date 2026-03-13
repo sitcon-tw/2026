@@ -349,7 +349,6 @@ const t = useTranslations(lang).venue;
 	// Track currently highlighted meshes and their original emissive colors
 	const highlightedMeshes = new Map<string, THREE.Color>();
 	const HIGHLIGHT_COLOR = new THREE.Color(0xffdd44);
-	const HIGHLIGHT_EMISSIVE_INTENSITY = 2.0;
 
 	// Raycaster for 3D picking
 	const raycaster = new THREE.Raycaster();
@@ -713,7 +712,17 @@ const t = useTranslations(lang).venue;
 		return FLOOR_IDS.find(fid => n.startsWith(`floor__${fid}__`)) ?? null;
 	};
 
-	/** Pick the topmost visible mesh under the pointer. */
+	/** Returns true if the object and all its ancestors are visible. */
+	const isFullyVisible = (obj: THREE.Object3D): boolean => {
+		let cur: THREE.Object3D | null = obj;
+		while (cur) {
+			if (!cur.visible) return false;
+			cur = cur.parent;
+		}
+		return true;
+	};
+
+	/** Pick the topmost fully-visible mesh under the pointer. */
 	const pickMesh = (event: MouseEvent | PointerEvent): THREE.Mesh | null => {
 		const canvas = renderer.domElement;
 		const rect = canvas.getBoundingClientRect();
@@ -722,7 +731,7 @@ const t = useTranslations(lang).venue;
 		raycaster.setFromCamera(mouse, camera);
 		const hits = raycaster.intersectObject(modelGroup, true);
 		for (const hit of hits) {
-			if (hit.object instanceof THREE.Mesh) return hit.object;
+			if (hit.object instanceof THREE.Mesh && isFullyVisible(hit.object)) return hit.object;
 		}
 		return null;
 	};
@@ -773,7 +782,15 @@ const t = useTranslations(lang).venue;
 		if (!isExploded && !currentFloor) return;
 
 		const mesh = pickMesh(event);
-		if (!mesh) return;
+
+		if (!mesh) {
+			// Clicked empty space in single-floor view — deselect
+			if (currentFloor) {
+				clearHighlight();
+				document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
+			}
+			return;
+		}
 
 		if (isExploded && !currentFloor) {
 			// ── Layered view: clicking a floor navigates into it ──
@@ -798,6 +815,13 @@ const t = useTranslations(lang).venue;
 				const names: string[] = JSON.parse(raw);
 				if (names.map(s => s.toLowerCase()).includes(n)) matched = el;
 			});
+
+			if (!matched) {
+				// Clicked empty area — deselect
+				clearHighlight();
+				document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
+				return;
+			}
 
 			if (matched) {
 				// Toggle or select
@@ -854,6 +878,49 @@ const t = useTranslations(lang).venue;
 		}
 	};
 
+	// ── Outline (inverted-hull) for selected meshes ──────────────────────────
+	const outlineMeshes = new Map<string, THREE.Mesh>();
+	const OUTLINE_COLOR = new THREE.Color(0xffdd44);
+	const OUTLINE_THICKNESS = 0.008;
+
+	const addOutline = (mesh: THREE.Mesh) => {
+		if (outlineMeshes.has(mesh.name)) return;
+		const outlineMat = new THREE.MeshBasicMaterial({
+			color: OUTLINE_COLOR,
+			side: THREE.BackSide,
+			transparent: true,
+			opacity: 0,
+			depthWrite: false,
+			polygonOffset: true,
+			polygonOffsetFactor: -4,
+			polygonOffsetUnits: -4
+		});
+		const outline = new THREE.Mesh(mesh.geometry, outlineMat);
+		// As a child of mesh: identity position/rotation, just scale up uniformly
+		outline.scale.setScalar(1 + OUTLINE_THICKNESS);
+		outline.userData.isOutline = true;
+		outline.raycast = () => {}; // make it non-pickable
+		mesh.add(outline);
+		outlineMeshes.set(mesh.name, outline);
+		gsap.to(outlineMat, { opacity: 1, duration: 0.3, ease: "power2.out" });
+	};
+
+	const removeOutlines = () => {
+		outlineMeshes.forEach((outline, meshName) => {
+			const mat = outline.material as THREE.MeshBasicMaterial;
+			const parentMesh = meshByName.get(meshName.toLowerCase());
+			gsap.to(mat, {
+				opacity: 0,
+				duration: 0.2,
+				onComplete: () => {
+					(parentMesh ?? outline.parent)?.remove(outline);
+					mat.dispose();
+				}
+			});
+		});
+		outlineMeshes.clear();
+	};
+
 	const clearHighlight = () => {
 		highlightedMeshes.forEach((originalColor, meshName) => {
 			const mesh = meshByName.get(meshName);
@@ -869,6 +936,7 @@ const t = useTranslations(lang).venue;
 			});
 		});
 		highlightedMeshes.clear();
+		removeOutlines();
 	};
 
 	const highlightMeshes = (names: string[]) => {
@@ -885,21 +953,10 @@ const t = useTranslations(lang).venue;
 					highlightedMeshes.set(name, mat.emissive.clone());
 				}
 				mat.emissive.copy(HIGHLIGHT_COLOR);
-				// Pulse emissive intensity
 				gsap.killTweensOf(mat);
-				gsap.fromTo(
-					mat,
-					{ emissiveIntensity: 0 },
-					{
-						emissiveIntensity: HIGHLIGHT_EMISSIVE_INTENSITY,
-						duration: 0.4,
-						ease: "power2.out",
-						yoyo: true,
-						repeat: -1,
-						repeatDelay: 0.3
-					}
-				);
+				gsap.fromTo(mat, { emissiveIntensity: 0.2 }, { emissiveIntensity: 0.5, duration: 0.8, ease: "sine.inOut", yoyo: true, repeat: -1 });
 			});
+			addOutline(mesh);
 		});
 	};
 
