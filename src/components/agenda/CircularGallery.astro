@@ -76,8 +76,14 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 	</div>
 
 	<div class="gallery-info">
-		<h3 class="gallery-info__title"></h3>
-		<div class="gallery-info__description"></div>
+		<div class="gallery-info__layer gallery-info__layer--current">
+			<h3 class="gallery-info__title"></h3>
+			<div class="gallery-info__description"></div>
+		</div>
+		<div class="gallery-info__layer gallery-info__layer--next">
+			<h3 class="gallery-info__title"></h3>
+			<div class="gallery-info__description"></div>
+		</div>
 	</div>
 
 	<div class="poster-viewer" aria-hidden="true">
@@ -140,7 +146,28 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 		max-width: 50rem;
 		margin: 0 auto;
 		text-align: center;
+		padding: 0;
+		position: relative;
+	}
+
+	.gallery-info__layer--next {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		padding: 2rem 1rem 4rem;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+	}
+
+	.gallery-info__layer--current {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 2rem 1rem 4rem;
+		opacity: 1;
 	}
 
 	.gallery-info__title {
@@ -167,7 +194,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 	.gallery-info__description :global(h2) {
 		font-size: 2rem;
 		color: white;
-		margin: 0.75rem 0 0.5rem;
+		margin: 1.5rem 0 1rem;
 	}
 
 	.gallery-info__description :global(h3) {
@@ -183,7 +210,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 	}
 
 	.gallery-info__description :global(p) {
-		margin: 0.5rem 0;
+		margin: 0.5rem 0 1rem;
 		font-size: 1.15rem;
 	}
 
@@ -275,8 +302,13 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 		}
 
 		.gallery-info {
-			padding: 0rem 0.75rem 2rem;
+			padding: 0;
 			max-width: 90%;
+		}
+
+		.gallery-info__layer--current,
+		.gallery-info__layer--next {
+			padding: 0rem 0.75rem 2rem;
 		}
 
 		.gallery-info__title {
@@ -447,8 +479,15 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 			let inertiaTween: gsap.core.Tween | null = null;
 
 			const wrapper = gallery.closest(".circular-gallery-wrapper");
-			const titleEl = wrapper?.querySelector<HTMLElement>(".gallery-info__title") ?? null;
-			const descEl = wrapper?.querySelector<HTMLElement>(".gallery-info__description") ?? null;
+			const infoEl = wrapper?.querySelector<HTMLElement>(".gallery-info") ?? null;
+			const layerCurrent = wrapper?.querySelector<HTMLElement>(".gallery-info__layer--current") ?? null;
+			const layerNext = wrapper?.querySelector<HTMLElement>(".gallery-info__layer--next") ?? null;
+
+			// Helpers to get title/desc within a layer
+			const getTitleEl = (layer: HTMLElement | null) => layer?.querySelector<HTMLElement>(".gallery-info__title") ?? null;
+			const getDescEl = (layer: HTMLElement | null) => layer?.querySelector<HTMLElement>(".gallery-info__description") ?? null;
+
+			let isCrossfading = false;
 
 			const getSelectedIndex = (rotation: number): number => {
 				if (count === 0 || angleStep === 0) return 0;
@@ -477,35 +516,98 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				return selectedIndex;
 			};
 
-			const updateSelectedPoster = async () => {
+			// Write poster data into a layer's title + description elements
+			const writePosterToLayer = async (layer: HTMLElement, selectedIndex: number) => {
+				const titleEl = getTitleEl(layer);
+				const descEl = getDescEl(layer);
 				if (!titleEl || !descEl || count === 0) return;
 
-				const selectedIndex = getSelectedIndex(currentRotation);
 				const items = gallery.querySelectorAll<HTMLElement>(".gallery-item");
 				const selectedItem = items[selectedIndex];
+				if (!selectedItem) return;
 
-				if (selectedItem) {
+				const title = selectedItem.dataset.posterTitle || "";
+				const description = selectedItem.dataset.posterDescription || "";
+
+				titleEl.textContent = title;
+
+				try {
+					const { marked: markedModule } = await import("marked");
+					const parsed = markedModule.parse(description);
+					descEl.innerHTML = typeof parsed === "string" ? parsed : "";
+				} catch (err) {
+					descEl.textContent = description;
+				}
+			};
+
+			// Crossfade: fade out current layer while fading in next layer with new content
+			const crossfadeInfo = async (selectedIndex: number, fadeDuration = 0.2) => {
+				if (!layerCurrent || !layerNext || isCrossfading) return;
+				isCrossfading = true;
+
+				// Pre-populate the next layer with new content (invisible)
+				await writePosterToLayer(layerNext, selectedIndex);
+
+				const { gsap } = await import("gsap");
+
+				// Make next layer visible so it can participate in the fade
+				gsap.set(layerNext, { visibility: "visible" });
+
+				await new Promise<void>(resolve => {
+					gsap.to(layerCurrent, { opacity: 0, duration: fadeDuration, ease: "power2.out" });
+					gsap.to(layerNext, {
+						opacity: 1,
+						duration: fadeDuration,
+						ease: "power2.in",
+						onComplete: resolve
+					});
+				});
+
+				// Swap: copy next content into current, reset next to invisible
+				const curTitle = getTitleEl(layerCurrent);
+				const curDesc = getDescEl(layerCurrent);
+				const nxtTitle = getTitleEl(layerNext);
+				const nxtDesc = getDescEl(layerNext);
+				if (curTitle && nxtTitle) curTitle.textContent = nxtTitle.textContent;
+				if (curDesc && nxtDesc) curDesc.innerHTML = nxtDesc.innerHTML;
+
+				gsap.set(layerCurrent, { opacity: 1 });
+				gsap.set(layerNext, { opacity: 0, visibility: "hidden" });
+
+				isCrossfading = false;
+			};
+
+			const updateSelectedPoster = (crossfade = false) => {
+				if (count === 0) return;
+				const selectedIndex = getSelectedIndex(currentRotation);
+				if (crossfade) {
+					crossfadeInfo(selectedIndex);
+				} else {
+					// Instant update (used during drag)
+					const curTitleEl = getTitleEl(layerCurrent);
+					const curDescEl = getDescEl(layerCurrent);
+					if (!curTitleEl || !curDescEl) return;
+					const items = gallery.querySelectorAll<HTMLElement>(".gallery-item");
+					const selectedItem = items[selectedIndex];
+					if (!selectedItem) return;
 					const title = selectedItem.dataset.posterTitle || "";
 					const description = selectedItem.dataset.posterDescription || "";
-
-					titleEl.textContent = title;
-
-					// Parse markdown description
-					try {
-						const { marked: markedModule } = await import("marked");
-						const parsed = markedModule.parse(description);
-						descEl.innerHTML = typeof parsed === "string" ? parsed : "";
-					} catch (err) {
-						// Fallback: display as plain text
-						descEl.textContent = description;
-					}
+					curTitleEl.textContent = title;
+					import("marked")
+						.then(({ marked: markedModule }) => {
+							const parsed = markedModule.parse(description);
+							curDescEl.innerHTML = typeof parsed === "string" ? parsed : "";
+						})
+						.catch(() => {
+							curDescEl.textContent = description;
+						});
 				}
 			};
 
 			const setRotation = (deg: number) => {
 				currentRotation = deg;
 				gallery.style.setProperty("--rotation", `${deg}deg`);
-				updateSelectedPoster();
+				// Don't update text during drag — only update with crossfade on snap completion
 			};
 
 			const getClientX = (e: PointerEvent | MouseEvent | TouchEvent) => {
@@ -586,13 +688,12 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 								onUpdate() {
 									currentRotation = target.value;
 									gallery.style.setProperty("--rotation", `${target.value}deg`);
-									updateSelectedPoster();
 								},
 								onComplete() {
 									currentRotation = snapped;
 									navTargetRotation = snapped;
 									gallery.style.setProperty("--rotation", `${snapped}deg`);
-									updateSelectedPoster();
+									updateSelectedPoster(true);
 									inertiaTween = null;
 								}
 							});
@@ -605,11 +706,12 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 								duration: 0.4,
 								ease: "power3.out",
 								onUpdate() {
-									setRotation(target.value);
+									currentRotation = target.value;
+									gallery.style.setProperty("--rotation", `${target.value}deg`);
 								},
 								onComplete() {
 									navTargetRotation = snapped;
-									updateSelectedPoster();
+									updateSelectedPoster(true);
 								}
 							});
 						}
@@ -654,7 +756,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 								// Ensure we end at the exact target value
 								currentRotation = navTargetRotation;
 								gallery.style.setProperty("--rotation", `${navTargetRotation}deg`);
-								updateSelectedPoster();
+								updateSelectedPoster(true);
 								navTween = null;
 							}
 						});
@@ -663,7 +765,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 						// Fallback without animation
 						currentRotation = navTargetRotation;
 						gallery.style.setProperty("--rotation", `${navTargetRotation}deg`);
-						updateSelectedPoster();
+						updateSelectedPoster(false);
 					});
 			};
 
@@ -690,8 +792,9 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				});
 			}
 
-			// Initialize with first poster
-			updateSelectedPoster();
+			// Initialize with first poster — write to both layers so --next drives correct height
+			updateSelectedPoster(false);
+			writePosterToLayer(layerNext!, getSelectedIndex(currentRotation));
 
 			gallery.addEventListener("pointerdown", onPointerDown as any);
 			window.addEventListener("pointermove", onPointerMove as any);
