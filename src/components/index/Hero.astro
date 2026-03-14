@@ -14,6 +14,7 @@ const lang = Astro.props.lang ?? "zh";
 <section class="hero-container">
 	<div class="bg-fixed">
 		<canvas id="bg-canvas"></canvas>
+		<img class="bg-static" src="/2026/img/Hero/intro.png" alt="" aria-hidden="true" />
 	</div>
 	<Landing lang={lang} />
 	<Dialogue lang={lang} />
@@ -38,10 +39,28 @@ const lang = Astro.props.lang ?? "zh";
 		animation: fadeIn 2s ease-out forwards;
 	}
 
+	.bg-static {
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		pointer-events: none;
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.bg-fixed {
 			animation: none;
 			opacity: 1;
+			height: auto;
+			min-height: 100dvh;
+			position: absolute;
+			overflow: visible;
+		}
+
+		.bg-static {
+			display: block;
 		}
 	}
 
