@@ -33,7 +33,16 @@ const supportersList = sponsors.supporters as Sponsor[];
 				<h3 class="tier-title" id="main">{t.main}</h3>
 				{
 					sponsors.main.map((s, idx) => (
-						<button class="logo-box center-box sponsor-trigger" data-id={`main-${idx}`} data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.main} data-img={getLogo(s)} data-url={s.url}>
+						<button
+							class="logo-box center-box sponsor-trigger"
+							aria-label={getTitle(s)}
+							data-id={`main-${idx}`}
+							data-name={getTitle(s)}
+							data-desc={getDesc(s)}
+							data-type={t.main}
+							data-img={getLogo(s)}
+							data-url={s.url}
+						>
 							<img src={getLogo(s)} alt={getTitle(s)} />
 						</button>
 					))
@@ -45,7 +54,16 @@ const supportersList = sponsors.supporters as Sponsor[];
 				<div class="logo-row-2">
 					{
 						sponsors.cohost.map((s, idx) => (
-							<button class="logo-box sponsor-trigger" data-id={`cohost-${idx}`} data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.cohost} data-img={getLogo(s)} data-url={s.url}>
+							<button
+								class="logo-box sponsor-trigger"
+								aria-label={getTitle(s)}
+								data-id={`cohost-${idx}`}
+								data-name={getTitle(s)}
+								data-desc={getDesc(s)}
+								data-type={t.cohost}
+								data-img={getLogo(s)}
+								data-url={s.url}
+							>
 								<img src={getLogo(s)} alt={getTitle(s)} />
 							</button>
 						))
@@ -57,7 +75,16 @@ const supportersList = sponsors.supporters as Sponsor[];
 				<h3 class="tier-title" id="organizer">{t.organizer}</h3>
 				{
 					sponsors.organizer.map((s, idx) => (
-						<button class="logo-box sponsor-trigger" data-id={`organizer-${idx}`} data-name={getTitle(s)} data-desc={getDesc(s)} data-type={t.organizer} data-img={getLogo(s)} data-url={s.url}>
+						<button
+							class="logo-box sponsor-trigger"
+							aria-label={getTitle(s)}
+							data-id={`organizer-${idx}`}
+							data-name={getTitle(s)}
+							data-desc={getDesc(s)}
+							data-type={t.organizer}
+							data-img={getLogo(s)}
+							data-url={s.url}
+						>
 							<img src={getLogo(s)} alt={getTitle(s)} />
 						</button>
 					))
@@ -71,6 +98,7 @@ const supportersList = sponsors.supporters as Sponsor[];
 				sponsors.sponsorNavigator.map((s, idx) => (
 					<button
 						class="logo-box center-box sponsor-trigger"
+						aria-label={getTitle(s)}
 						data-id={`sponsorNavigator-${idx}`}
 						data-name={getTitle(s)}
 						data-desc={getDesc(s)}
@@ -90,6 +118,7 @@ const supportersList = sponsors.supporters as Sponsor[];
 				sponsors.sponsorDeepCultivation.map((s, idx) => (
 					<button
 						class="logo-box center-box sponsor-trigger"
+						aria-label={getTitle(s)}
 						data-id={`sponsorDeepCultivation-${idx}`}
 						data-name={getTitle(s)}
 						data-desc={getDesc(s)}
@@ -109,6 +138,7 @@ const supportersList = sponsors.supporters as Sponsor[];
 				sponsors.sponsorVisionary.map((s, idx) => (
 					<button
 						class="logo-box center-box sponsor-trigger"
+						aria-label={getTitle(s)}
 						data-id={`sponsorVisionary-${idx}`}
 						data-name={getTitle(s)}
 						data-desc={getDesc(s)}
@@ -128,6 +158,7 @@ const supportersList = sponsors.supporters as Sponsor[];
 				sponsors.sponsorNewSprout.map((s, idx) => (
 					<button
 						class="logo-box center-box sponsor-trigger"
+						aria-label={getTitle(s)}
 						data-id={`sponsorNewSprout-${idx}`}
 						data-name={getTitle(s)}
 						data-desc={getDesc(s)}
@@ -166,6 +197,7 @@ const supportersList = sponsors.supporters as Sponsor[];
 				supportersList.map((s, idx) => (
 					<button
 						class="logo-box center-box sponsor-trigger"
+						aria-label={getTitle(s)}
 						data-id={`supporters-${idx}`}
 						data-name={getTitle(s)}
 						data-desc={getDesc(s)}
@@ -188,6 +220,7 @@ const supportersList = sponsors.supporters as Sponsor[];
 				sponsors.mediaPartners.map((s, idx) => (
 					<button
 						class="logo-box center-box sponsor-trigger"
+						aria-label={getTitle(s)}
 						data-id={`mediaPartners-${idx}`}
 						data-name={getTitle(s)}
 						data-desc={getDesc(s)}
@@ -273,16 +306,12 @@ const supportersList = sponsors.supporters as Sponsor[];
 			width: 100%;
 			max-width: 10rem;
 			height: auto;
-			opacity: 0.4;
-			filter: grayscale(100%);
-			transition: all 0.3s ease;
+			transition: transform 0.3s ease;
 			mix-blend-mode: multiply;
 			display: block;
 		}
 
 		.logo-box:hover img {
-			opacity: 1;
-			filter: grayscale(0%);
 			transform: scale(1.05);
 		}
 
@@ -625,6 +654,13 @@ const supportersList = sponsors.supporters as Sponsor[];
 				// Clear URL hash
 				if (window.location.hash) {
 					history.pushState(null, "", window.location.pathname + window.location.search);
+				}
+
+				const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+				if (prefersReducedMotion) {
+					dialog.close();
+					dialog.classList.remove("closing");
+					return;
 				}
 
 				dialog.addEventListener(

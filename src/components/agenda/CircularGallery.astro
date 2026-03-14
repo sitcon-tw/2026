@@ -46,49 +46,73 @@ const itemCount = expandedItems.length;
 const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 ---
 
-<div class="circular-gallery" aria-label={isEn ? "Poster gallery" : "海報展示牆"} data-count={itemCount} data-original-count={originalCount}>
-	{
-		expandedItems.map((item, index) => {
-			const angle = index * angleStep;
-			const originalIndex = index % originalCount;
-			return (
-				<div
-					class="gallery-item"
-					id={`${item.id}-${index}`}
-					style={`--angle: ${angle}deg;`}
-					data-poster-title={item.title}
-					data-poster-description={item.description || ""}
-					data-original-index={originalIndex}
-				>
-					{item.image && <img src={`/2026/img/poster/${item.image}`} alt={item.title || `Poster ${index + 1}`} class="gallery-image" loading="lazy" draggable="false" />}
-				</div>
-			);
-		})
-	}
-	<div class="gallery-info">
-		<h3 class="gallery-info__title"></h3>
-		<div class="gallery-info__description"></div>
+<div class="circular-gallery-wrapper">
+	<div class="circular-gallery" aria-label={isEn ? "Poster gallery" : "海報展示牆"} data-count={itemCount} data-original-count={originalCount}>
+		{
+			expandedItems.map((item, index) => {
+				const angle = index * angleStep;
+				const originalIndex = index % originalCount;
+				return (
+					<div
+						class="gallery-item"
+						id={`${item.id}-${index}`}
+						style={`--angle: ${angle}deg;`}
+						data-poster-title={item.title}
+						data-poster-description={item.description || ""}
+						data-original-index={originalIndex}
+					>
+						{item.image && <img src={`/2026/img/poster/${item.image}`} alt={item.title || `Poster ${index + 1}`} class="gallery-image" loading="lazy" draggable="false" />}
+					</div>
+				);
+			})
+		}
+
+		<button class="gallery-nav gallery-nav--left" aria-label={isEn ? "Previous poster" : "上一張海報"}>
+			<Triangle size={56} fill="white" stroke="white" class="gallery-nav__icon gallery-nav__icon--left" />
+		</button>
+		<button class="gallery-nav gallery-nav--right" aria-label={isEn ? "Next poster" : "下一張海報"}>
+			<Triangle size={56} fill="white" stroke="white" class="gallery-nav__icon gallery-nav__icon--right" />
+		</button>
 	</div>
 
-	<button class="gallery-nav gallery-nav--left" aria-label={isEn ? "Previous poster" : "上一張海報"}>
-		<Triangle size={56} fill="white" stroke="white" class="gallery-nav__icon gallery-nav__icon--left" />
-	</button>
-	<button class="gallery-nav gallery-nav--right" aria-label={isEn ? "Next poster" : "下一張海報"}>
-		<Triangle size={56} fill="white" stroke="white" class="gallery-nav__icon gallery-nav__icon--right" />
-	</button>
+	<div class="gallery-info">
+		<div class="gallery-info__layer gallery-info__layer--current">
+			<h3 class="gallery-info__title"></h3>
+			<div class="gallery-info__description"></div>
+		</div>
+		<div class="gallery-info__layer gallery-info__layer--next">
+			<h3 class="gallery-info__title"></h3>
+			<div class="gallery-info__description"></div>
+		</div>
+	</div>
+
+	<div class="poster-viewer" aria-hidden="true">
+		<div class="poster-viewer__backdrop"></div>
+		<div class="poster-viewer__content">
+			<img class="poster-viewer__image" src="" alt="" draggable="false" />
+		</div>
+		<div class="poster-viewer__controls">
+			<button class="poster-viewer__btn poster-viewer__btn--zoom-in" aria-label={isEn ? "Zoom in" : "放大"}>+</button>
+			<button class="poster-viewer__btn poster-viewer__btn--zoom-out" aria-label={isEn ? "Zoom out" : "縮小"}>−</button>
+			<button class="poster-viewer__btn poster-viewer__btn--close" aria-label={isEn ? "Close" : "關閉"}>✕</button>
+		</div>
+	</div>
 </div>
 
 <style>
+	.circular-gallery-wrapper {
+		width: 100%;
+		max-width: 100vw;
+		overflow: clip;
+	}
+
 	.circular-gallery {
 		--rotation: 0deg;
 		position: relative;
 		width: 100%;
-		max-width: 100vw;
-		height: 80rem;
-		margin: 0 auto;
+		height: 48rem;
 		cursor: grab;
 		touch-action: pan-y;
-		overflow: hidden;
 	}
 
 	.circular-gallery.is-dragging {
@@ -97,7 +121,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 
 	.gallery-item {
 		position: absolute;
-		top: 75%;
+		top: 120%;
 		left: 50%;
 		transform-origin: bottom center;
 		transform: translate(-50%, -50%) rotate(calc(var(--angle) + var(--rotation)));
@@ -118,14 +142,32 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 	}
 
 	.gallery-info {
-		position: absolute;
-		top: 60%;
-		left: 50%;
-		transform: translateX(-50%);
 		width: 100%;
-		max-width: 40rem;
+		max-width: 50rem;
+		margin: 0 auto;
 		text-align: center;
-		padding: 2rem 1rem 0;
+		padding: 0;
+		position: relative;
+	}
+
+	.gallery-info__layer--next {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 2rem 1rem 4rem;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+	}
+
+	.gallery-info__layer--current {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 2rem 1rem 4rem;
+		opacity: 1;
 	}
 
 	.gallery-info__title {
@@ -143,10 +185,22 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 		min-height: 3rem;
 	}
 
-	.gallery-info__description :global(h1),
-	.gallery-info__description :global(h2),
-	.gallery-info__description :global(h3) {
+	.gallery-info__description :global(h1) {
+		font-size: 1.75rem;
 		color: white;
+		margin: 1rem 0 0.5rem;
+	}
+
+	.gallery-info__description :global(h2) {
+		font-size: 2rem;
+		color: white;
+		margin: 1.5rem 0 1rem;
+	}
+
+	.gallery-info__description :global(h3) {
+		font-size: 1.25rem;
+		color: white;
+		margin: 0.5rem 0 0.25rem;
 	}
 
 	.gallery-info__description :global(h1:first-child),
@@ -156,7 +210,8 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 	}
 
 	.gallery-info__description :global(p) {
-		margin: 0.5rem 0;
+		margin: 0.5rem 0 1rem;
+		font-size: 1.15rem;
 	}
 
 	.gallery-info__description :global(p:first-child) {
@@ -194,29 +249,29 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 	.gallery-nav--left {
 		left: calc(50% - 20rem); /* Position left nav 20rem to the left of center */
 		border-radius: 0 1rem 1rem 0;
-		transform: translateY(-50%) translateX(-100%); /* Anchor to right edge */
+		transform: translateY(50%) translateX(-100%); /* Anchor to right edge */
 	}
 
 	.gallery-nav--right {
 		right: calc(50% - 20rem); /* Position right nav 20rem to the right of center */
 		border-radius: 0.5rem 0 0 0.5rem;
-		transform: translateY(-50%) translateX(100%); /* Anchor to left edge */
+		transform: translateY(50%) translateX(100%); /* Anchor to left edge */
 	}
 
 	.gallery-nav--left:hover {
-		transform: translateY(-50%) translateX(-100%) scale(1.15);
+		transform: translateY(50%) translateX(-100%) scale(1.15);
 	}
 
 	.gallery-nav--right:hover {
-		transform: translateY(-50%) translateX(100%) scale(1.15);
+		transform: translateY(50%) translateX(100%) scale(1.15);
 	}
 
 	.gallery-nav--left:active {
-		transform: translateY(-50%) translateX(-100%) scale(0.95);
+		transform: translateY(50%) translateX(-100%) scale(0.95);
 	}
 
 	.gallery-nav--right:active {
-		transform: translateY(-50%) translateX(100%) scale(0.95);
+		transform: translateY(50%) translateX(100%) scale(0.95);
 	}
 
 	.gallery-nav :global(.gallery-nav__icon) {
@@ -233,11 +288,11 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 
 	@media (max-width: 768px) {
 		.circular-gallery {
-			height: 60rem;
+			height: 32rem;
 		}
 
 		.gallery-item {
-			top: 60%;
+			top: 105%;
 			padding-bottom: 40rem;
 		}
 
@@ -247,13 +302,17 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 		}
 
 		.gallery-info {
-			top: 52%;
-			padding: 1rem 0.75rem 0;
+			padding: 0;
 			max-width: 90%;
 		}
 
+		.gallery-info__layer--current,
+		.gallery-info__layer--next {
+			padding: 0rem 0.75rem 2rem;
+		}
+
 		.gallery-info__title {
-			font-size: 3.5rem;
+			font-size: 2.75rem;
 			margin-bottom: 0.5rem;
 			min-height: 1.5rem;
 		}
@@ -272,20 +331,20 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 
 		.gallery-nav--left {
 			left: 0.5rem;
-			transform: translateY(-50%);
+			transform: translateY(50%);
 		}
 
 		.gallery-nav--right {
 			right: 0.5rem;
-			transform: translateY(-50%);
+			transform: translateY(50%);
 		}
 
 		.gallery-nav:hover {
-			transform: translateY(-50%) scale(1.1);
+			transform: translateY(50%) scale(1.1);
 		}
 
 		.gallery-nav:active {
-			transform: translateY(-50%) scale(0.9);
+			transform: translateY(50%) scale(0.9);
 		}
 
 		.gallery-nav :global(.gallery-nav__icon) {
@@ -293,15 +352,107 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 			height: 32px;
 		}
 
-		.gallery-info__description :global(h1),
+		.gallery-info__description :global(h1) {
+			font-size: 1.5rem;
+		}
+
 		.gallery-info__description :global(h2) {
-			font-size: 2rem;
-			color: white;
+			font-size: 1.75rem;
 		}
 
 		.gallery-info__description :global(h3) {
-			font-size: 1.5rem;
+			font-size: 1.1rem;
 		}
+
+		.gallery-info__description :global(p) {
+			font-size: 1.1rem;
+		}
+	}
+
+	/* Poster Viewer / Lightbox */
+	.poster-viewer {
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity 0.3s ease,
+			visibility 0.3s ease;
+	}
+
+	.poster-viewer.is-open {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.poster-viewer__backdrop {
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.85);
+	}
+
+	.poster-viewer__content {
+		position: relative;
+		z-index: 1;
+		max-width: 90vw;
+		max-height: 90vh;
+		overflow: hidden;
+		cursor: grab;
+		touch-action: none;
+	}
+
+	.poster-viewer__content.is-dragging {
+		cursor: grabbing;
+	}
+
+	.poster-viewer__image {
+		display: block;
+		max-width: 90vw;
+		max-height: 90vh;
+		object-fit: contain;
+		transform-origin: center center;
+		transition: transform 0.2s ease;
+		user-select: none;
+		-webkit-user-drag: none;
+		pointer-events: none;
+	}
+
+	.poster-viewer__controls {
+		position: absolute;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 2;
+		display: flex;
+		gap: 0.75rem;
+	}
+
+	.poster-viewer__btn {
+		width: 3rem;
+		height: 3rem;
+		border-radius: 50%;
+		border: 2px solid rgba(255, 255, 255, 0.6);
+		background: rgba(0, 0, 0, 0.5);
+		color: white;
+		font-size: 1.5rem;
+		line-height: 1;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease;
+		backdrop-filter: blur(4px);
+	}
+
+	.poster-viewer__btn:hover {
+		background: rgba(255, 255, 255, 0.2);
+		border-color: white;
 	}
 </style>
 
@@ -327,8 +478,16 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 			let velocity = 0; // degrees per millisecond
 			let inertiaTween: gsap.core.Tween | null = null;
 
-			const titleEl = gallery.querySelector<HTMLElement>(".gallery-info__title");
-			const descEl = gallery.querySelector<HTMLElement>(".gallery-info__description");
+			const wrapper = gallery.closest(".circular-gallery-wrapper");
+			const infoEl = wrapper?.querySelector<HTMLElement>(".gallery-info") ?? null;
+			const layerCurrent = wrapper?.querySelector<HTMLElement>(".gallery-info__layer--current") ?? null;
+			const layerNext = wrapper?.querySelector<HTMLElement>(".gallery-info__layer--next") ?? null;
+
+			// Helpers to get title/desc within a layer
+			const getTitleEl = (layer: HTMLElement | null) => layer?.querySelector<HTMLElement>(".gallery-info__title") ?? null;
+			const getDescEl = (layer: HTMLElement | null) => layer?.querySelector<HTMLElement>(".gallery-info__description") ?? null;
+
+			let isCrossfading = false;
 
 			const getSelectedIndex = (rotation: number): number => {
 				if (count === 0 || angleStep === 0) return 0;
@@ -344,7 +503,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				for (let i = 0; i < count; i++) {
 					const baseAngle = i * angleStep;
 					// Calculate where this poster ends up after rotation
-					const finalAngle = (baseAngle - normalizedRotation + 360) % 360;
+					const finalAngle = (baseAngle + normalizedRotation) % 360;
 					// Find distance to 0 (bottom position)
 					const diff = Math.min(finalAngle, 360 - finalAngle);
 
@@ -357,35 +516,98 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				return selectedIndex;
 			};
 
-			const updateSelectedPoster = async () => {
+			// Write poster data into a layer's title + description elements
+			const writePosterToLayer = async (layer: HTMLElement, selectedIndex: number) => {
+				const titleEl = getTitleEl(layer);
+				const descEl = getDescEl(layer);
 				if (!titleEl || !descEl || count === 0) return;
 
-				const selectedIndex = getSelectedIndex(currentRotation);
 				const items = gallery.querySelectorAll<HTMLElement>(".gallery-item");
 				const selectedItem = items[selectedIndex];
+				if (!selectedItem) return;
 
-				if (selectedItem) {
+				const title = selectedItem.dataset.posterTitle || "";
+				const description = selectedItem.dataset.posterDescription || "";
+
+				titleEl.textContent = title;
+
+				try {
+					const { marked: markedModule } = await import("marked");
+					const parsed = markedModule.parse(description);
+					descEl.innerHTML = typeof parsed === "string" ? parsed : "";
+				} catch (err) {
+					descEl.textContent = description;
+				}
+			};
+
+			// Crossfade: fade out current layer while fading in next layer with new content
+			const crossfadeInfo = async (selectedIndex: number, fadeDuration = 0.2) => {
+				if (!layerCurrent || !layerNext || isCrossfading) return;
+				isCrossfading = true;
+
+				// Pre-populate the next layer with new content (invisible)
+				await writePosterToLayer(layerNext, selectedIndex);
+
+				const { gsap } = await import("gsap");
+
+				// Make next layer visible so it can participate in the fade
+				gsap.set(layerNext, { visibility: "visible" });
+
+				await new Promise<void>(resolve => {
+					gsap.to(layerCurrent, { opacity: 0, duration: fadeDuration, ease: "power2.out" });
+					gsap.to(layerNext, {
+						opacity: 1,
+						duration: fadeDuration,
+						ease: "power2.in",
+						onComplete: resolve
+					});
+				});
+
+				// Swap: copy next content into current, reset next to invisible
+				const curTitle = getTitleEl(layerCurrent);
+				const curDesc = getDescEl(layerCurrent);
+				const nxtTitle = getTitleEl(layerNext);
+				const nxtDesc = getDescEl(layerNext);
+				if (curTitle && nxtTitle) curTitle.textContent = nxtTitle.textContent;
+				if (curDesc && nxtDesc) curDesc.innerHTML = nxtDesc.innerHTML;
+
+				gsap.set(layerCurrent, { opacity: 1 });
+				gsap.set(layerNext, { opacity: 0, visibility: "hidden" });
+
+				isCrossfading = false;
+			};
+
+			const updateSelectedPoster = (crossfade = false) => {
+				if (count === 0) return;
+				const selectedIndex = getSelectedIndex(currentRotation);
+				if (crossfade) {
+					crossfadeInfo(selectedIndex);
+				} else {
+					// Instant update (used during drag)
+					const curTitleEl = getTitleEl(layerCurrent);
+					const curDescEl = getDescEl(layerCurrent);
+					if (!curTitleEl || !curDescEl) return;
+					const items = gallery.querySelectorAll<HTMLElement>(".gallery-item");
+					const selectedItem = items[selectedIndex];
+					if (!selectedItem) return;
 					const title = selectedItem.dataset.posterTitle || "";
 					const description = selectedItem.dataset.posterDescription || "";
-
-					titleEl.textContent = title;
-
-					// Parse markdown description
-					try {
-						const { marked: markedModule } = await import("marked");
-						const parsed = markedModule.parse(description);
-						descEl.innerHTML = typeof parsed === "string" ? parsed : "";
-					} catch (err) {
-						// Fallback: display as plain text
-						descEl.textContent = description;
-					}
+					curTitleEl.textContent = title;
+					import("marked")
+						.then(({ marked: markedModule }) => {
+							const parsed = markedModule.parse(description);
+							curDescEl.innerHTML = typeof parsed === "string" ? parsed : "";
+						})
+						.catch(() => {
+							curDescEl.textContent = description;
+						});
 				}
 			};
 
 			const setRotation = (deg: number) => {
 				currentRotation = deg;
 				gallery.style.setProperty("--rotation", `${deg}deg`);
-				updateSelectedPoster();
+				// Don't update text during drag — only update with crossfade on snap completion
 			};
 
 			const getClientX = (e: PointerEvent | MouseEvent | TouchEvent) => {
@@ -466,13 +688,12 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 								onUpdate() {
 									currentRotation = target.value;
 									gallery.style.setProperty("--rotation", `${target.value}deg`);
-									updateSelectedPoster();
 								},
 								onComplete() {
 									currentRotation = snapped;
 									navTargetRotation = snapped;
 									gallery.style.setProperty("--rotation", `${snapped}deg`);
-									updateSelectedPoster();
+									updateSelectedPoster(true);
 									inertiaTween = null;
 								}
 							});
@@ -485,11 +706,12 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 								duration: 0.4,
 								ease: "power3.out",
 								onUpdate() {
-									setRotation(target.value);
+									currentRotation = target.value;
+									gallery.style.setProperty("--rotation", `${target.value}deg`);
 								},
 								onComplete() {
 									navTargetRotation = snapped;
-									updateSelectedPoster();
+									updateSelectedPoster(true);
 								}
 							});
 						}
@@ -534,7 +756,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 								// Ensure we end at the exact target value
 								currentRotation = navTargetRotation;
 								gallery.style.setProperty("--rotation", `${navTargetRotation}deg`);
-								updateSelectedPoster();
+								updateSelectedPoster(true);
 								navTween = null;
 							}
 						});
@@ -543,7 +765,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 						// Fallback without animation
 						currentRotation = navTargetRotation;
 						gallery.style.setProperty("--rotation", `${navTargetRotation}deg`);
-						updateSelectedPoster();
+						updateSelectedPoster(false);
 					});
 			};
 
@@ -570,13 +792,261 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				});
 			}
 
-			// Initialize with first poster
-			updateSelectedPoster();
+			// Initialize with first poster — write to both layers so --next drives correct height
+			updateSelectedPoster(false);
+			writePosterToLayer(layerNext!, getSelectedIndex(currentRotation));
 
 			gallery.addEventListener("pointerdown", onPointerDown as any);
 			window.addEventListener("pointermove", onPointerMove as any);
 			window.addEventListener("pointerup", onPointerUp);
 			window.addEventListener("pointercancel", onPointerUp);
+
+			// ── Poster Viewer (Lightbox) ──
+			const viewer = wrapper?.querySelector<HTMLElement>(".poster-viewer");
+			const viewerImage = viewer?.querySelector<HTMLImageElement>(".poster-viewer__image");
+			const viewerContent = viewer?.querySelector<HTMLElement>(".poster-viewer__content");
+			const btnZoomIn = viewer?.querySelector<HTMLButtonElement>(".poster-viewer__btn--zoom-in");
+			const btnZoomOut = viewer?.querySelector<HTMLButtonElement>(".poster-viewer__btn--zoom-out");
+			const btnClose = viewer?.querySelector<HTMLButtonElement>(".poster-viewer__btn--close");
+			const backdrop = viewer?.querySelector<HTMLElement>(".poster-viewer__backdrop");
+
+			if (viewer && viewerImage && viewerContent) {
+				let viewerScale = 1;
+				let viewerX = 0;
+				let viewerY = 0;
+				let viewerDragging = false;
+				let viewerStartX = 0;
+				let viewerStartY = 0;
+				let viewerStartTransX = 0;
+				let viewerStartTransY = 0;
+				const MIN_SCALE = 1;
+				const MAX_SCALE = 5;
+
+				const clampPosition = () => {
+					if (viewerScale <= 1) {
+						viewerX = 0;
+						viewerY = 0;
+						return;
+					}
+					const rect = viewerContent.getBoundingClientRect();
+					const imgW = viewerImage.naturalWidth || rect.width;
+					const imgH = viewerImage.naturalHeight || rect.height;
+					// Compute displayed size: image is object-fit:contain inside viewerContent
+					const containerW = rect.width;
+					const containerH = rect.height;
+					const fitScale = Math.min(containerW / imgW, containerH / imgH);
+					const displayW = imgW * fitScale * viewerScale;
+					const displayH = imgH * fitScale * viewerScale;
+					// Max pan = how much the scaled image exceeds the container, halved
+					const maxPanX = Math.max(0, (displayW - containerW) / 2);
+					const maxPanY = Math.max(0, (displayH - containerH) / 2);
+					viewerX = Math.min(maxPanX, Math.max(-maxPanX, viewerX));
+					viewerY = Math.min(maxPanY, Math.max(-maxPanY, viewerY));
+				};
+
+				const applyTransform = () => {
+					viewerImage.style.transform = `translate(${viewerX}px, ${viewerY}px) scale(${viewerScale})`;
+				};
+
+				const openViewer = (src: string, alt: string) => {
+					viewerScale = 1;
+					viewerX = 0;
+					viewerY = 0;
+					viewerImage.src = src;
+					viewerImage.alt = alt;
+					viewerImage.style.transition = "transform 0.2s ease";
+					applyTransform();
+					viewer.classList.add("is-open");
+					viewer.setAttribute("aria-hidden", "false");
+					document.body.style.overflow = "hidden";
+				};
+
+				const closeViewer = () => {
+					viewer.classList.remove("is-open");
+					viewer.setAttribute("aria-hidden", "true");
+					document.body.style.overflow = "";
+				};
+
+				const zoom = (delta: number) => {
+					viewerScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, viewerScale + delta));
+					clampPosition();
+					applyTransform();
+				};
+
+				// Click on focused poster to open viewer
+				// Track drag distance to distinguish click from drag
+				let pointerDownX = 0;
+				let pointerDownY = 0;
+
+				gallery.addEventListener("pointerdown", (e: PointerEvent) => {
+					pointerDownX = e.clientX;
+					pointerDownY = e.clientY;
+				});
+
+				gallery.addEventListener("pointerup", (e: PointerEvent) => {
+					const dx = Math.abs(e.clientX - pointerDownX);
+					const dy = Math.abs(e.clientY - pointerDownY);
+					// Only treat as click if pointer barely moved
+					if (dx > 5 || dy > 5) return;
+
+					const target = e.target as HTMLElement;
+					if (target.closest(".gallery-nav")) return;
+
+					const selectedIndex = getSelectedIndex(currentRotation);
+					const items = gallery.querySelectorAll<HTMLElement>(".gallery-item");
+					const selectedItem = items[selectedIndex];
+					if (!selectedItem) return;
+
+					const clickedItem = target.closest(".gallery-item");
+					// Only open if clicking on the focused (selected) poster
+					if (clickedItem !== selectedItem) return;
+
+					const img = selectedItem.querySelector<HTMLImageElement>(".gallery-image");
+					if (img) {
+						openViewer(img.src, img.alt);
+					}
+				});
+
+				// Zoom controls
+				btnZoomIn?.addEventListener("click", () => zoom(0.5));
+				btnZoomOut?.addEventListener("click", () => zoom(-0.5));
+				btnClose?.addEventListener("click", closeViewer);
+				backdrop?.addEventListener("click", closeViewer);
+
+				// Scroll wheel zoom
+				viewer.addEventListener(
+					"wheel",
+					(e: WheelEvent) => {
+						e.preventDefault();
+						const delta = e.deltaY > 0 ? -0.25 : 0.25;
+						zoom(delta);
+					},
+					{ passive: false }
+				);
+
+				// ── Touch gestures: pinch-to-zoom & single-finger pan ──
+				let pinchActive = false;
+				let pinchStartDist = 0;
+				let pinchStartScale = 1;
+				let pinchStartX = 0;
+				let pinchStartY = 0;
+				let pinchStartTransX = 0;
+				let pinchStartTransY = 0;
+				let touchPanActive = false;
+				let touchPanStartX = 0;
+				let touchPanStartY = 0;
+				let touchPanTransX = 0;
+				let touchPanTransY = 0;
+
+				const getTouchDist = (t1: Touch, t2: Touch) => Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+				const getTouchMid = (t1: Touch, t2: Touch) => ({
+					x: (t1.clientX + t2.clientX) / 2,
+					y: (t1.clientY + t2.clientY) / 2
+				});
+
+				viewerContent.addEventListener(
+					"touchstart",
+					(e: TouchEvent) => {
+						if (e.touches.length === 2) {
+							e.preventDefault();
+							pinchActive = true;
+							touchPanActive = false;
+							pinchStartDist = getTouchDist(e.touches[0], e.touches[1]);
+							pinchStartScale = viewerScale;
+							const mid = getTouchMid(e.touches[0], e.touches[1]);
+							pinchStartX = mid.x;
+							pinchStartY = mid.y;
+							pinchStartTransX = viewerX;
+							pinchStartTransY = viewerY;
+							viewerImage.style.transition = "none";
+						} else if (e.touches.length === 1 && viewerScale > 1) {
+							e.preventDefault();
+							touchPanActive = true;
+							touchPanStartX = e.touches[0].clientX;
+							touchPanStartY = e.touches[0].clientY;
+							touchPanTransX = viewerX;
+							touchPanTransY = viewerY;
+							viewerImage.style.transition = "none";
+						}
+					},
+					{ passive: false }
+				);
+
+				viewerContent.addEventListener(
+					"touchmove",
+					(e: TouchEvent) => {
+						if (pinchActive && e.touches.length === 2) {
+							e.preventDefault();
+							const dist = getTouchDist(e.touches[0], e.touches[1]);
+							const ratio = dist / pinchStartDist;
+							viewerScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, pinchStartScale * ratio));
+							const mid = getTouchMid(e.touches[0], e.touches[1]);
+							viewerX = pinchStartTransX + (mid.x - pinchStartX);
+							viewerY = pinchStartTransY + (mid.y - pinchStartY);
+							clampPosition();
+							applyTransform();
+						} else if (touchPanActive && e.touches.length === 1) {
+							e.preventDefault();
+							viewerX = touchPanTransX + (e.touches[0].clientX - touchPanStartX);
+							viewerY = touchPanTransY + (e.touches[0].clientY - touchPanStartY);
+							clampPosition();
+							applyTransform();
+						}
+					},
+					{ passive: false }
+				);
+
+				viewerContent.addEventListener("touchend", (e: TouchEvent) => {
+					if (pinchActive && e.touches.length < 2) {
+						pinchActive = false;
+						viewerImage.style.transition = "transform 0.2s ease";
+						clampPosition();
+						applyTransform();
+					}
+					if (touchPanActive && e.touches.length < 1) {
+						touchPanActive = false;
+						viewerImage.style.transition = "transform 0.2s ease";
+						clampPosition();
+						applyTransform();
+					}
+				});
+
+				// Pan when zoomed (pointer/mouse)
+				viewerContent.addEventListener("pointerdown", (e: PointerEvent) => {
+					if (e.pointerType === "touch") return;
+					if (viewerScale <= 1) return;
+					viewerDragging = true;
+					viewerStartX = e.clientX;
+					viewerStartY = e.clientY;
+					viewerStartTransX = viewerX;
+					viewerStartTransY = viewerY;
+					viewerContent.classList.add("is-dragging");
+					viewerImage.style.transition = "none";
+					e.preventDefault();
+				});
+
+				window.addEventListener("pointermove", (e: PointerEvent) => {
+					if (!viewerDragging) return;
+					viewerX = viewerStartTransX + (e.clientX - viewerStartX);
+					viewerY = viewerStartTransY + (e.clientY - viewerStartY);
+					clampPosition();
+					applyTransform();
+				});
+
+				window.addEventListener("pointerup", () => {
+					if (!viewerDragging) return;
+					viewerDragging = false;
+					viewerContent.classList.remove("is-dragging");
+					viewerImage.style.transition = "transform 0.2s ease";
+				});
+
+				// Escape to close
+				window.addEventListener("keydown", (e: KeyboardEvent) => {
+					if (e.key === "Escape" && viewer.classList.contains("is-open")) {
+						closeViewer();
+					}
+				});
+			}
 		});
 	}
 </script>
