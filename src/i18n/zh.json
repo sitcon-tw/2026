@@ -360,9 +360,9 @@
 			"title": "紀念品",
 			"items": [
 				{
-					"name": "悠遊卡",
+					"name": "一卡通",
 					"price": "NT$ 499",
-					"image": "/2026/img/souvenirs/悠遊卡.webp"
+					"image": "/2026/img/souvenirs/一卡通.webp"
 				},
 				{
 					"name": "電腦包",
@@ -371,11 +371,11 @@
 				},
 				{
 					"name": "非磁吸封口電腦包",
-					"price": "",
+					"price": "NT$ 499",
 					"image": "/2026/img/souvenirs/非磁吸封口電腦包.webp"
 				},
 				{
-					"name": "會眾踢",
+					"name": "年會紀念 T",
 					"price": "NT$ 349",
 					"image": "/2026/img/souvenirs/會眾踢.webp"
 				},
@@ -386,12 +386,12 @@
 				},
 				{
 					"name": "明信片",
-					"price": "",
+					"price": "免費送完為止",
 					"image": "/2026/img/souvenirs/明信片.webp"
 				},
 				{
 					"name": "杯墊",
-					"price": "",
+					"price": "NT$ 99",
 					"image": "/2026/img/souvenirs/杯墊.webp"
 				}
 			]
