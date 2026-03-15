@@ -12,6 +12,14 @@ export default defineConfig({
 	base: "/2026",
 	output: "static",
 	trailingSlash: "always",
+	redirects: {
+		"/events": "/2026/info/",
+		"/poster": "/2026/agenda/#gallery",
+		"/traffic": "/2026/info/",
+		"/tickets": "/2026/info/",
+		"/staff": "/2026/team/",
+		"/sponsor": "/2026/#sponsors"
+	},
 	build: {
 		format: "directory"
 	},
