@@ -26,6 +26,7 @@ const getLogo = (s: Sponsor) => (s.logo ? `/2026/img/sponsors/${s.logo}` : "");
 const supportersList = sponsors.supporters as Sponsor[];
 ---
 
+<div id="sponsors" class="sponsors-anchor"></div>
 <section class="sponsor-container">
 	<div class="content-wrapper">
 		<div class="top-tier-grid">
@@ -260,6 +261,11 @@ const supportersList = sponsors.supporters as Sponsor[];
 	</dialog>
 
 	<style>
+		.sponsors-anchor {
+			height: 0;
+			margin-top: -3rem;
+		}
+
 		.sponsor-container {
 			background-color: #f2f2f2;
 			padding: 4rem 1rem;
