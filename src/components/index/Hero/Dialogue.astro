@@ -151,7 +151,7 @@ const t = useTranslations(lang).dialogue;
 	}
 	.dialog {
 		position: relative;
-		padding: 4rem 1.5rem;
+		padding: 4rem 4rem;
 		margin: auto;
 		background: #3c2d0e;
 		display: flex;
@@ -216,6 +216,9 @@ const t = useTranslations(lang).dialogue;
 	}
 
 	@media (max-width: 50rem) {
+		.dialog {
+			padding: 1.5rem;
+		}
 		.featured-item {
 			width: 100%;
 			display: flex;
