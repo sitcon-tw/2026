@@ -11,29 +11,34 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 
 const speakers = [
 	{
-		name: "???",
-		desc: "崴崴孟孟旅行三百天",
-		img: "https://placehold.co/367x492/png?text=???"
+		name: "李雪莉",
+		desc: "《報導者》營運長、臺大新聞所兼任副教授",
+		img: "/2026/img/guest/李雪莉.webp"
 	},
 	{
-		name: "???",
-		desc: "崴崴孟孟旅行三百天",
-		img: "https://placehold.co/367x492/png?text=???"
+		name: "蔡嘉平",
+		desc: "Apache 核心維護者",
+		img: "/2026/img/guest/蔡嘉平.webp"
 	},
 	{
-		name: "???",
-		desc: "崴崴孟孟旅行三百天",
-		img: "https://placehold.co/367x492/png?text=???"
+		name: "蕭上農 fOx",
+		desc: "愛料理 / INSIDE 創辦人",
+		img: "/2026/img/guest/蕭上農.webp"
 	},
 	{
-		name: "???",
-		desc: "崴崴孟孟旅行三百天",
-		img: "https://placehold.co/367x492/png?text=???"
+		name: "趙式隆",
+		desc: "臺北市政府資訊局局長",
+		img: "/2026/img/guest/趙式隆.webp"
 	},
 	{
-		name: "???",
-		desc: "崴崴孟孟旅行三百天",
-		img: "https://placehold.co/367x492/png?text=???"
+		name: "李比鄰",
+		desc: "Cofacts 共同發起人",
+		img: "/2026/img/guest/李比鄰.webp"
+	},
+	{
+		name: "葉浩",
+		desc: "國立政治大學政治學系教授",
+		img: "/2026/img/guest/葉浩.webp"
 	}
 ];
 ---
@@ -50,8 +55,8 @@ const speakers = [
 			{
 				speakers.map((person, index) => (
 					<div class:list={["speaker-item", { active: index === 0 }]} data-img={person.img}>
-						<h2 class="text-reveal-title">{person.name}</h2>
-						<p class="speakerdesc text-reveal-paragraph">{person.desc}</p>
+						<h3 class="text-reveal-title">{person.name}</h3>
+						<p class="speakerdesc">{person.desc}</p>
 					</div>
 				))
 			}
@@ -69,7 +74,7 @@ const speakers = [
 		</div>
 	</div>
 
-	<a href={`${prefix}/agenda`} class="cta-btn">{t.cta}</a>
+	<a href={`${prefix}/agenda/`} class="cta-btn">{t.cta}</a>
 
 	<div class="bg-optimized">
 		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
@@ -136,23 +141,28 @@ const speakers = [
 	.content-wrapper {
 		width: 100%;
 		max-width: 65rem;
-		display: grid;
-		grid-template-columns: 1fr 24rem;
-		gap: 0;
+		display: flex;
+		flex-direction: row;
+		gap: 2rem;
 		align-items: center;
+	}
+
+	.speaker-list {
+		flex: 1;
+		min-width: 0;
 	}
 
 	.speaker-item {
 		width: 100%;
-		font-size: 3rem;
+		font-size: 3.5rem;
 		font-weight: bold;
 		color: rgba(169, 124, 33, 0.3);
 		cursor: pointer;
 		transition: 0.3s;
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		align-items: center;
 		text-align: left;
-		padding-right: 2rem;
 		box-sizing: border-box;
 	}
 
@@ -163,14 +173,26 @@ const speakers = [
 	}
 
 	.speakerdesc {
-		display: none;
+		width: 10rem;
+		flex-shrink: 0;
+		order: -1;
+		font-size: 0.875rem;
+		font-weight: normal;
+		color: transparent;
+		line-height: 1.4;
+		text-align: right;
+		padding-right: 1rem;
+		box-sizing: border-box;
+	}
+
+	.speaker-item.active .speakerdesc {
+		color: #4f4031;
 	}
 
 	.speaker-image {
-		width: 100%;
-		display: block;
+		width: 22rem;
+		flex-shrink: 0;
 		perspective: 62.5rem;
-		margin: 0;
 	}
 
 	.desktop-img {
@@ -285,37 +307,37 @@ const speakers = [
 		}
 
 		.content-wrapper {
-			grid-template-columns: 1fr;
+			flex-direction: column;
 			gap: 2.5rem;
 			max-width: 100%;
 		}
 
-		.speaker-item {
-			font-size: 1.5rem;
-			align-items: flex-start;
+		.speaker-list {
 			width: 100%;
-			text-align: left;
-			padding-right: 0;
 		}
 
-		.speaker-item.active {
-			transform-origin: left center;
+		.speaker-item {
+			font-size: 1.25rem;
+			flex-direction: column;
+			align-items: flex-start;
 		}
 
 		.speakerdesc {
-			display: block;
+			order: 0;
+			width: auto;
+			flex-shrink: 1;
 			font-size: 1rem;
-			font-weight: normal;
-			margin-top: 0.5rem;
+			text-align: left;
+			padding-right: 0;
+			padding-left: 0;
+			margin-top: 0.25rem;
 			color: #4f4031;
-			opacity: 1;
 		}
 
 		.speaker-image {
 			width: calc(100% + 3rem);
 			margin-left: -1.5rem;
 			overflow: hidden;
-			margin-top: 2rem;
 		}
 
 		.desktop-img {
@@ -389,6 +411,7 @@ const speakers = [
 		const items = document.querySelectorAll<HTMLElement>(".speaker-item");
 		const imgelement = document.getElementById("speaker-img") as HTMLImageElement | null;
 		const speakerlist = document.querySelector<HTMLElement>(".speaker-list");
+		const contentwrapper = document.querySelector<HTMLElement>(".content-wrapper");
 		const desktopimg = document.querySelector<HTMLElement>(".desktop-img");
 		let currentindex = 0;
 
@@ -429,7 +452,6 @@ const speakers = [
 		};
 
 		const itemEnterHandlers = new Map<HTMLElement, () => void>();
-		const itemMoveHandlers = new Map<HTMLElement, (e: MouseEvent) => void>();
 
 		items.forEach((item, index) => {
 			const enterHandler = () => {
@@ -438,27 +460,26 @@ const speakers = [
 			};
 			itemEnterHandlers.set(item, enterHandler);
 			item.addEventListener("mouseenter", enterHandler);
-
-			const moveHandler = (e: MouseEvent) => {
-				if (!desktopimg) return;
-				const { clientX, clientY } = e;
-				const { left, width } = item.getBoundingClientRect();
-				const { top: listTop, height: listHeight } = speakerlist.getBoundingClientRect();
-				const x = clientX - left;
-				const y = clientY - listTop;
-				const translatex = gsap.utils.mapRange(0, width, -60, 60, x);
-				const translatey = gsap.utils.mapRange(0, listHeight, -60, 60, y);
-
-				gsap.to(desktopimg, {
-					x: translatex,
-					y: translatey,
-					duration: 0.15,
-					ease: "power2.out"
-				});
-			};
-			itemMoveHandlers.set(item, moveHandler);
-			item.addEventListener("mousemove", moveHandler);
 		});
+
+		const wrapperMoveHandler = (e: MouseEvent) => {
+			if (!desktopimg || !contentwrapper) return;
+			const { clientX, clientY } = e;
+			const { left, width, top, height } = contentwrapper.getBoundingClientRect();
+			const x = clientX - left;
+			const y = clientY - top;
+			const translatex = gsap.utils.mapRange(0, width, -60, 60, x);
+			const translatey = gsap.utils.mapRange(0, height, -60, 60, y);
+
+			gsap.to(desktopimg, {
+				x: translatex,
+				y: translatey,
+				duration: 0.15,
+				ease: "power2.out"
+			});
+		};
+
+		contentwrapper?.addEventListener("mousemove", wrapperMoveHandler);
 
 		const listLeaveHandler = () => {
 			startautoplay();
@@ -471,6 +492,7 @@ const speakers = [
 			});
 		};
 
+		contentwrapper?.addEventListener("mouseleave", listLeaveHandler);
 		speakerlist.addEventListener("mouseleave", listLeaveHandler);
 
 		startautoplay();
@@ -480,9 +502,8 @@ const speakers = [
 			itemEnterHandlers.forEach((handler, item) => {
 				item.removeEventListener("mouseenter", handler);
 			});
-			itemMoveHandlers.forEach((handler, item) => {
-				item.removeEventListener("mousemove", handler);
-			});
+			contentwrapper?.removeEventListener("mousemove", wrapperMoveHandler);
+			contentwrapper?.removeEventListener("mouseleave", listLeaveHandler);
 			speakerlist.removeEventListener("mouseleave", listLeaveHandler);
 			container.dataset.speakerInit = "false";
 		};
