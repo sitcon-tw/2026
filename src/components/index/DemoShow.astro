@@ -24,15 +24,11 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 			<div class="text-reveal-title">{t.subtitle}</div>
 			<div class="text-reveal-title large">{t.title}</div>
 		</h2>
-		{
-			!isProd && (
-				<div class="cta-btn">
-					<a href={`${prefix}/agenda`} class="btn">
-						{t.cta}
-					</a>
-				</div>
-			)
-		}
+		<div class="cta-btn">
+			<a href={`${prefix}/agenda`} class="btn">
+				{t.cta}
+			</a>
+		</div>
 		<p class="text-reveal-paragraph" set:html={t.description} />
 	</div>
 </section>

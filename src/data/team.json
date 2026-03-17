@@ -271,15 +271,14 @@
 		]
 	},
 	{
-		"name": "PT",
-		"description": "早安你好我是PT",
+		"name": "草蝦",
+		"description": "",
 		"teams": [
 			{
 				"name": "operations",
 				"role": "ops_mobility_lead"
 			}
-		],
-		"link": "about.ptchen.tw"
+		]
 	},
 	{
 		"name": "帕尼",
@@ -312,6 +311,17 @@
 			}
 		],
 		"link": "https://www.iach.cc"
+	},
+	{
+		"name": "PT",
+		"description": "早安你好我是PT",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		],
+		"link": "about.ptchen.tw"
 	},
 	{
 		"name": "阿軒",
@@ -565,16 +575,6 @@
 		"color": "FFF"
 	},
 	{
-		"name": "草蝦",
-		"description": "",
-		"teams": [
-			{
-				"name": "operations",
-				"role": "ops_mobility"
-			}
-		]
-	},
-	{
 		"name": "貝坦",
 		"description": "o.0\n看什麼看 好看嗎",
 		"teams": [
@@ -741,17 +741,6 @@
 			}
 		],
 		"link": "https://leo-lee.dev",
-		"mode": "nobg"
-	},
-	{
-		"name": "洛濰",
-		"description": "",
-		"teams": [
-			{
-				"name": "operations",
-				"role": "ops_mobility"
-			}
-		],
 		"mode": "nobg"
 	},
 	{
