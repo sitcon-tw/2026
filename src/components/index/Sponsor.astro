@@ -73,22 +73,24 @@ const supportersList = sponsors.supporters as Sponsor[];
 
 			<div class="tier-item">
 				<h3 class="tier-title" id="organizer">{t.organizer}</h3>
-				{
-					sponsors.organizer.map((s, idx) => (
-						<button
-							class="logo-box sponsor-trigger"
-							aria-label={getTitle(s)}
-							data-id={`organizer-${idx}`}
-							data-name={getTitle(s)}
-							data-desc={getDesc(s)}
-							data-type={t.organizer}
-							data-img={getLogo(s)}
-							data-url={s.url}
-						>
-							<img src={getLogo(s)} alt={getTitle(s)} />
-						</button>
-					))
-				}
+				<div class="logo-row-2">
+					{
+						sponsors.organizer.map((s, idx) => (
+							<button
+								class="logo-box sponsor-trigger"
+								aria-label={getTitle(s)}
+								data-id={`organizer-${idx}`}
+								data-name={getTitle(s)}
+								data-desc={getDesc(s)}
+								data-type={t.organizer}
+								data-img={getLogo(s)}
+								data-url={s.url}
+							>
+								<img src={getLogo(s)} alt={getTitle(s)} />
+							</button>
+						))
+					}
+				</div>
 			</div>
 		</div>
 
@@ -568,10 +570,11 @@ const supportersList = sponsors.supporters as Sponsor[];
 				grid-column: 2 / 4;
 			}
 			.tier-item:nth-child(3) {
-				grid-column: 4;
+				grid-column: 4 / 6;
 			}
 
-			.tier-item:nth-child(2) .logo-row-2 {
+			.tier-item:nth-child(2) .logo-row-2,
+			.tier-item:nth-child(3) .logo-row-2 {
 				display: grid;
 				grid-template-columns: repeat(2, 1fr);
 				gap: 3rem;
