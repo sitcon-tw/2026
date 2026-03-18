@@ -378,7 +378,7 @@ const i18nScript = {
 					shareBtn.addEventListener("click", async () => {
 						if (navigator.share) {
 							try {
-								const speakers = data.speakers.map(speaker => speaker.name).join(", ");
+								const speakers = data.speakers.length > 0 ? ` | ${data.speakers.map(speaker => speaker.name).join(", ")}` : "";
 								const date = new Date(Number(data.startTime)).toLocaleDateString("zh-TW", {
 									year: "numeric",
 									month: "2-digit",
@@ -397,7 +397,8 @@ const i18nScript = {
 									hour12: false,
 									timeZone: "Asia/Taipei"
 								});
-								const text = `${String(data.type).charAt(0).toUpperCase() + String(data.type).slice(1)} - ${data.name} | ${speakers}\n${date} ${startTime} - ${endTime} @ 中央研究院人文社會科學館 ${data.venue}\n\n${data.description.replace(/<[^>]*>?/g, "")}`;
+								const type = data.type === "lightning" ? "" : `${String(data.type).charAt(0).toUpperCase() + String(data.type).slice(1)} - `;
+								const text = `${type}${data.name}${speakers}\n${date} ${startTime} - ${endTime} @ 中央研究院人文社會科學館 ${data.venue}\n\n${data.description.replace(/<[^>]*>?/g, "")}`;
 								await navigator.share({
 									title: data.name || "",
 									text: text || "",
