@@ -39,25 +39,25 @@
 				"id": "r0",
 				"name": "R0",
 				"description": "議程廳",
-				"meshes": ["floor__3f__room_r0_3f", "floor__3f__room_r0_slope"]
+				"meshes": ["floor__3f__room_r0_3f", "floor__3f__room_r0_slope", "floor__3f__room_r0_arrow_1", "floor__3f__room_r0_arrow_2"]
 			},
 			{
 				"id": "r1",
 				"name": "R1",
 				"description": "議程廳",
-				"meshes": ["floor__3f__room_r1"]
+				"meshes": ["floor__3f__room_r1", "floor__3f__room_r1_arrow_1", "floor__3f__room_r1_arrow_2"]
 			},
 			{
 				"id": "r2",
 				"name": "R2",
 				"description": "議程廳",
-				"meshes": ["floor__3f__room_r2"]
+				"meshes": ["floor__3f__room_r2", "floor__3f__room_r2_arrow_1", "floor__3f__room_r2_arrow_2"]
 			},
 			{
 				"id": "r3",
 				"name": "R3",
 				"description": "議程廳",
-				"meshes": ["floor__3f__room_r3"]
+				"meshes": ["floor__3f__room_r3", "floor__3f__room_r3_arrow_1", "floor__3f__room_r3_arrow_2"]
 			},
 			{
 				"id": "amd",
@@ -78,22 +78,22 @@
 				"meshes": ["floor__3f__sitcon_table", "floor__3f__sitcon_text"]
 			},
 			{
-				"id": "g0v",
-				"name": "g0v Summit 零時政府雙年會",
+				"id": "ruby",
+				"name": "Ruby Taiwan",
 				"description": "社群攤位",
-				"meshes": ["floor__3f__g0v_table", "floor__3f__g0v_text"]
+				"meshes": ["floor__3f__ruby_table", "floor__3f__ruby_text"]
 			},
 			{
-				"id": "ocf",
-				"name": "開放文化基金會",
+				"id": "tdna",
+				"name": "TDNA 台灣數位遊牧者協會",
 				"description": "社群攤位",
-				"meshes": ["floor__3f__ocf_table", "floor__3f__ocf_text"]
+				"meshes": ["floor__3f__tdna_table", "floor__3f__tdna_text"]
 			},
 			{
-				"id": "coscup",
-				"name": "COSCUP 開源人年會",
+				"id": "aia",
+				"name": "AIA 台灣人工智慧學校",
 				"description": "社群攤位",
-				"meshes": ["floor__3f__coscup_table", "floor__3f__coscup_text"]
+				"meshes": ["floor__3f__aia_table", "floor__3f__aia_text"]
 			},
 			{
 				"id": "schools_1",
@@ -218,6 +218,12 @@
 				"meshes": ["floor__4f__poster_table", "floor__4f__poster_text"]
 			},
 			{
+				"id": "sitcon_shop",
+				"name": "SITCON 紀念品販賣",
+				"description": "快來這裡買酷酷的 SITCON 紀念品！",
+				"meshes": ["floor__4f__sitcon_shop_table", "floor__4f__sitcon_shop_text"]
+			},
+			{
 				"id": "line",
 				"name": "LINE台灣",
 				"description": "贊助商攤位",
@@ -228,12 +234,6 @@
 				"name": "台積電",
 				"description": "贊助商攤位",
 				"meshes": ["floor__4f__tsmc_table", "floor__4f__tsmc_text"]
-			},
-			{
-				"id": "aia",
-				"name": "AIA 台灣人工智慧學校",
-				"description": "贊助商攤位",
-				"meshes": ["floor__4f__aia_table", "floor__4f__aia_text"]
 			},
 			{
 				"id": "teamt5",
@@ -254,34 +254,34 @@
 				"meshes": ["floor__4f__sjmlanguage_table", "floor__4f__sjmlanguage_text"]
 			},
 			{
-				"id": "sitcon_shop",
-				"name": "SITCON 周邊販賣",
-				"description": "周邊商品",
-				"meshes": ["floor__4f__sitcon_shop_table", "floor__4f__sitcon_shop_text"]
-			},
-			{
 				"id": "moztw",
 				"name": "MozTW 社群 / 摩茲工寮",
 				"description": "社群攤位",
 				"meshes": ["floor__4f__moztw_table", "floor__4f__moztw_text"]
 			},
 			{
-				"id": "ruby",
-				"name": "Ruby Taiwan",
+				"id": "g0v",
+				"name": "g0v 零時政府",
 				"description": "社群攤位",
-				"meshes": ["floor__4f__ruby_table", "floor__4f__ruby_text"]
+				"meshes": ["floor__4f__g0v_table", "floor__4f__g0v_text"]
+			},
+			{
+				"id": "coscup",
+				"name": "COSCUP",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__coscup_table", "floor__4f__coscup_text"]
+			},
+			{
+				"id": "ocf",
+				"name": "OCF 開放文化基金會",
+				"description": "社群攤位",
+				"meshes": ["floor__4f__ocf_table", "floor__4f__ocf_text"]
 			},
 			{
 				"id": "jsdc",
 				"name": "JSDC",
 				"description": "社群攤位",
 				"meshes": ["floor__4f__jsdc_table", "floor__4f__jsdc_text"]
-			},
-			{
-				"id": "tnda",
-				"name": "TDNA 台灣數位遊牧者協會",
-				"description": "社群攤位",
-				"meshes": ["floor__4f__tnda_table", "floor__4f__tnda_text"]
 			},
 			{
 				"id": "wordpress",
