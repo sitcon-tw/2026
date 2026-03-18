@@ -151,6 +151,8 @@
 		"title": "Venue Map",
 		"selectFloor": "Select Floor",
 		"backToFloor": "Back to Floor Selection",
+		"backToList": "Back to List",
+		"visitWebsite": "Visit Website →",
 		"emergency": "Emergency Evacuation Guide"
 	},
 	"agenda": {

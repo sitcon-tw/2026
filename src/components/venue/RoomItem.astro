@@ -4,17 +4,20 @@ interface Props {
 	description: string;
 	badge?: string;
 	meshes?: string[];
+	link?: string;
+	longDescription?: string;
 }
 
-const { name, description, badge, meshes } = Astro.props;
+const { name, description, badge, meshes, link, longDescription } = Astro.props;
 ---
 
-<div class="room-item" data-meshes={meshes ? JSON.stringify(meshes) : undefined}>
+<div class="room-item" data-meshes={meshes ? JSON.stringify(meshes) : undefined} data-link={link ?? ""} data-long-description={longDescription ?? ""}>
 	{badge && <div class="room-badge">{badge}</div>}
 	<div class="room-info">
 		<div class="room-name">{name}</div>
 		<div class="room-desc">{description}</div>
 	</div>
+	{(link || longDescription) && <div class="room-chevron">›</div>}
 </div>
 
 <style>
@@ -56,6 +59,7 @@ const { name, description, badge, meshes } = Astro.props;
 	.room-info {
 		display: flex;
 		flex-direction: column;
+		flex: 1;
 	}
 
 	.room-name {
@@ -66,5 +70,17 @@ const { name, description, badge, meshes } = Astro.props;
 	.room-desc {
 		font-size: 0.9rem;
 		opacity: 0.8;
+	}
+
+	.room-chevron {
+		font-size: 1.6rem;
+		opacity: 0.5;
+		margin-left: 0.5rem;
+		flex-shrink: 0;
+		line-height: 1;
+	}
+
+	.room-item:hover .room-chevron {
+		opacity: 1;
 	}
 </style>

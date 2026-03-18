@@ -16,6 +16,8 @@ const t = useTranslations(lang).venue;
 			<h1 class="title">{t.title}</h1>
 
 			<div class="content-wrapper">
+				<div id="sheet-handle" class="sheet-handle"></div>
+
 				<!-- Floor Selection -->
 				<div id="floor-selection" class="menu-panel">
 					<p class="hint">{t.selectFloor}</p>
@@ -39,13 +41,29 @@ const t = useTranslations(lang).venue;
 								<div class="room-list" data-lenis-prevent>
 									{floor.items.map(item => (
 										<div class="room-item-wrapper">
-											<RoomItem name={item.name} description={item.description} meshes={item.meshes} />
+											<RoomItem name={item.name} description={item.description} meshes={item.meshes} link={item.link} longDescription={item.longDescription} />
 										</div>
 									))}
 								</div>
 							</div>
 						))
 					}
+				</div>
+
+				<!-- Detail Panel -->
+				<div id="detail-panel" class="menu-panel hidden">
+					<div class="back-btn-wrapper">
+						<button id="detail-back-btn" class="back-btn">
+							<span class="arrow">&lt;</span>
+							{t.backToList}
+						</button>
+					</div>
+					<div id="detail-content" class="detail-content" data-lenis-prevent>
+						<h2 id="detail-name" class="detail-name"></h2>
+						<p id="detail-badge" class="detail-badge"></p>
+						<p id="detail-long-desc" class="detail-long-desc"></p>
+						<a id="detail-link-btn" class="detail-link-btn" href="#" target="_blank" rel="noopener noreferrer">{t.visitWebsite}</a>
+					</div>
 				</div>
 			</div>
 
@@ -212,6 +230,78 @@ const t = useTranslations(lang).venue;
 		border-radius: 3px;
 	}
 
+	.detail-content {
+		flex: 1;
+		overflow-y: auto;
+		padding-right: 0.5rem;
+		padding-bottom: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.8rem;
+		scrollbar-width: none;
+	}
+
+	.detail-content::-webkit-scrollbar {
+		width: 6px;
+	}
+	.detail-content::-webkit-scrollbar-track {
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 3px;
+	}
+	.detail-content::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 3px;
+	}
+
+	.detail-name {
+		font-size: 1.6rem;
+		font-weight: 700;
+		line-height: 1.3;
+		font-family: "GenKiMinTW", serif;
+	}
+
+	.detail-badge {
+		font-size: 0.9rem;
+		opacity: 0.7;
+		margin: 0;
+	}
+
+	.detail-long-desc {
+		font-size: 1rem;
+		line-height: 1.7;
+		opacity: 0.9;
+		margin: 0;
+	}
+
+	.detail-link-btn {
+		display: inline-flex;
+		align-items: center;
+		background: rgba(255, 255, 255, 0.15);
+		border: 1px solid rgba(255, 255, 255, 0.5);
+		color: white;
+		padding: 0.6rem 1.2rem;
+		border-radius: 30px;
+		font-size: 1rem;
+		text-decoration: none;
+		cursor: pointer;
+		transition: background 0.2s;
+		width: fit-content;
+		backdrop-filter: blur(4px);
+	}
+
+	.detail-link-btn:hover {
+		background: rgba(255, 255, 255, 0.25);
+	}
+
+	.detail-link-btn.hidden {
+		display: none;
+	}
+
+	/* Sheet drag handle — hidden on desktop, shown on mobile via media query */
+	.sheet-handle {
+		display: none;
+	}
+
 	.emergency-btn-container {
 		margin-top: 2rem;
 		z-index: 10;
@@ -266,48 +356,145 @@ const t = useTranslations(lang).venue;
 	}
 
 	@media (max-width: 1024px) {
-		.venue-container {
-			padding: 5rem 1.5rem 1.5rem;
-		}
-		.menu-panel {
-			width: 100%;
-			max-width: 100%;
-			z-index: 20;
-		}
-		.title {
-			font-size: 2.5rem;
+		/* Canvas covers full screen */
+		#venue-canvas {
+			height: 100%;
+			top: 0;
+			bottom: auto;
 		}
 
+		/* Bottom-sheet layout */
+		.venue-container {
+			padding: 0;
+			justify-content: flex-end;
+		}
+
+		.title {
+			display: none;
+		}
+
+		/*
+		 * Two bugs fixed vs previous attempt:
+		 * 1. z-index: 5 — canvas (z-index:0) is later in DOM, so without
+		 *    an explicit z-index here it paints over the sheet background.
+		 * 2. height: 52vh (not just max-height) — flex children that use
+		 *    flex:1 need a resolved parent height or they collapse to 0.
+		 */
 		.content-wrapper {
+			position: relative;
+			z-index: 5;
+			flex: 0 0 auto;
 			flex-direction: column;
+			align-items: stretch;
+			height: 52vh;
 			min-height: auto;
-			max-height: 40vh;
-		}
-		.floor-buttons {
-			max-height: 30vh;
-		}
-		#venue-canvas {
 			width: 100%;
-			height: 50%;
-			top: auto;
-			bottom: 0;
-			left: 0;
-			right: 0;
+			background: rgba(140, 100, 38, 0.92);
+			backdrop-filter: blur(18px);
+			-webkit-backdrop-filter: blur(18px);
+			border-radius: 18px 18px 0 0;
+			padding: 1.2rem 1.2rem 0;
+			margin-top: 0;
+			overflow: hidden;
+		}
+
+		/* Drag handle */
+		.sheet-handle {
+			display: block;
+			flex-shrink: 0;
+			align-self: center;
+			width: 40px;
+			height: 5px;
+			background: rgba(255, 255, 255, 0.4);
+			border-radius: 3px;
+			margin-bottom: 0.9rem;
+			cursor: ns-resize;
+			touch-action: none;
+		}
+
+		/* Smooth snap animation */
+		.content-wrapper.snapping {
+			transition: height 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		}
+
+		/* Each panel fills the full sheet height */
+		.menu-panel {
+			flex: 1;
+			width: 100%;
+			max-width: 100%;
+			max-height: none;
+			z-index: 20;
+		}
+
+		.hint {
+			font-size: 1.1rem;
+			margin-bottom: 0.4rem;
+		}
+
+		/* Let flex:1 from base styles fill the panel naturally */
+		.floor-buttons {
+			max-height: none;
+		}
+
+		/* Scrollable list areas: smooth touch scroll, contained overscroll.
+		   overscroll-behavior:contain stops the pull-to-refresh propagation
+		   at the list boundary so it never reaches the page level. */
+		.floor-buttons,
+		.room-list,
+		.detail-content {
+			touch-action: pan-y;
+			overscroll-behavior: contain;
+		}
+
+		/* Emergency buttons share the same glass style */
+		.emergency-btn-container {
+			position: relative;
+			z-index: 5;
+			margin-top: 0;
+			padding: 0.5rem 1.2rem;
+			padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+			background: rgba(140, 100, 38, 0.92);
+			backdrop-filter: blur(18px);
+			-webkit-backdrop-filter: blur(18px);
+			gap: 0.5rem;
+			flex-wrap: wrap;
 		}
 	}
 
 	@media (max-width: 640px) {
-		.venue-container {
-			padding: 4.5rem 1rem 1rem;
+		.content-wrapper {
+			height: 56vh;
+			padding: 1rem 1rem 0;
 		}
-		.title {
-			font-size: 2rem;
-		}
+
 		.hint {
-			font-size: 1.1rem;
+			font-size: 1rem;
 		}
+
+		.back-btn-wrapper {
+			height: 3rem;
+		}
+
 		.floor-buttons {
-			gap: 1rem;
+			gap: 0.8rem;
+		}
+
+		.room-list {
+			padding-right: 0.4rem;
+			gap: 0.8rem;
+		}
+
+		.detail-name {
+			font-size: 1.3rem;
+		}
+
+		.detail-long-desc {
+			font-size: 0.95rem;
+		}
+
+		.emergency-btn-container {
+			padding: 0.4rem 1rem;
+			padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0.5rem));
 		}
 	}
 </style>
@@ -354,7 +541,114 @@ const t = useTranslations(lang).venue;
 	const raycaster = new THREE.Raycaster();
 	const mouse = new THREE.Vector2();
 
+	// Set by initVenue so canvas click can trigger detail panel
+	let showDetailFn: ((el: Element) => void) | null = null;
+
+	// Cleanup function returned by initDragSheet
+	let dragSheetCleanup: (() => void) | null = null;
+
 	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+	/**
+	 * On mobile the bottom sheet covers part of the canvas.
+	 * setViewOffset shifts the projection frustum downward so the model
+	 * is visually centred in the visible area above the menu.
+	 * Reads actual DOM height so it stays correct when the sheet is dragged.
+	 */
+	const updateViewOffset = () => {
+		if (!camera || !renderer) return;
+		const W = renderer.domElement.width;
+		const H = renderer.domElement.height;
+		if (window.innerWidth <= 1024) {
+			const wrapper = document.querySelector(".content-wrapper") as HTMLElement | null;
+			const emergencyBtns = document.querySelector(".emergency-btn-container") as HTMLElement | null;
+			const menuHeight = (wrapper?.getBoundingClientRect().height ?? 0) + (emergencyBtns?.getBoundingClientRect().height ?? 0);
+			const menuFraction = menuHeight / window.innerHeight;
+			camera.setViewOffset(W, H, 0, Math.round(H * menuFraction * 0.5), W, H);
+		} else {
+			camera.clearViewOffset();
+		}
+		camera.updateProjectionMatrix();
+	};
+
+	const initDragSheet = (): (() => void) => {
+		const handle = document.getElementById("sheet-handle");
+		const wrapper = document.querySelector(".content-wrapper") as HTMLElement | null;
+		if (!handle || !wrapper || window.innerWidth > 1024) return () => {};
+
+		const SNAP_VH = [20, 50, 72];
+		const MIN_VH = 15;
+		const MAX_VH = 82;
+
+		let startY = 0;
+		let startHeightPx = 0;
+		let dragging = false;
+
+		const getPx = (vh: number) => (vh / 100) * window.innerHeight;
+
+		const snapTo = (vh: number) => {
+			wrapper.classList.add("snapping");
+			wrapper.style.height = `${vh}vh`;
+			updateViewOffset();
+			setTimeout(() => wrapper.classList.remove("snapping"), 360);
+		};
+
+		// ── Handle drag (pointer events) ──────────────────────────────────────
+		const onPointerDown = (e: PointerEvent) => {
+			dragging = true;
+			startY = e.clientY;
+			startHeightPx = wrapper.getBoundingClientRect().height;
+			handle.setPointerCapture(e.pointerId);
+			wrapper.classList.remove("snapping");
+			e.preventDefault();
+		};
+
+		const onPointerMove = (e: PointerEvent) => {
+			if (!dragging) return;
+			const delta = startY - e.clientY;
+			const newPx = Math.max(getPx(MIN_VH), Math.min(getPx(MAX_VH), startHeightPx + delta));
+			wrapper.style.height = `${newPx}px`;
+			updateViewOffset();
+		};
+
+		const onPointerUp = () => {
+			if (!dragging) return;
+			dragging = false;
+			const currentVh = (wrapper.getBoundingClientRect().height / window.innerHeight) * 100;
+			const nearest = SNAP_VH.reduce((prev, curr) => (Math.abs(curr - currentVh) < Math.abs(prev - currentVh) ? curr : prev));
+			snapTo(nearest);
+		};
+
+		// ── Pull-to-refresh / page scroll prevention ──────────────────────────
+		// We intercept every touchmove on the document (non-passive) and call
+		// preventDefault() except when:
+		//   1. The handle drag is active — pointer capture already owns the gesture;
+		//      calling preventDefault here would cancel the pointer events.
+		//   2. The touch is inside a scrollable menu list — those use CSS
+		//      overscroll-behavior:contain to stop propagation at their boundaries,
+		//      so we don't need JS boundary math here.
+		const onDocTouchMove = (e: TouchEvent) => {
+			if (dragging) return;
+			const target = e.target as Element;
+			if (!target.closest("[data-lenis-prevent], .detail-content")) {
+				e.preventDefault();
+			}
+		};
+
+		handle.addEventListener("pointerdown", onPointerDown);
+		handle.addEventListener("pointermove", onPointerMove);
+		handle.addEventListener("pointerup", onPointerUp);
+		handle.addEventListener("pointercancel", onPointerUp);
+		document.addEventListener("touchmove", onDocTouchMove, { passive: false });
+
+		return () => {
+			handle.removeEventListener("pointerdown", onPointerDown);
+			handle.removeEventListener("pointermove", onPointerMove);
+			handle.removeEventListener("pointerup", onPointerUp);
+			handle.removeEventListener("pointercancel", onPointerUp);
+			document.removeEventListener("touchmove", onDocTouchMove);
+		};
+	};
 
 	const initThree = () => {
 		const canvas = document.getElementById("venue-canvas") as HTMLCanvasElement;
@@ -414,6 +708,7 @@ const t = useTranslations(lang).venue;
 		scene.add(modelGroup);
 
 		loadModel();
+		updateViewOffset();
 
 		window.addEventListener("resize", onWindowResize);
 		renderer.domElement.addEventListener("pointerdown", onCanvasPointerDown);
@@ -824,19 +1119,7 @@ const t = useTranslations(lang).venue;
 			}
 
 			if (matched) {
-				// Toggle or select
-				const firstMesh = JSON.parse((matched as Element).getAttribute("data-meshes")!)[0]?.toLowerCase();
-				if (firstMesh && highlightedMeshes.has(firstMesh)) {
-					clearHighlight();
-					document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
-					return;
-				}
-				clearHighlight();
-				document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
-				(matched as Element).classList.add("active");
-				const meshNames: string[] = JSON.parse((matched as Element).getAttribute("data-meshes")!);
-				selectRoomItem(meshNames);
-				// Scroll matched item into view in sidebar
+				showDetailFn?.(matched);
 				(matched as HTMLElement).scrollIntoView({ behavior: "smooth", block: "nearest" });
 			}
 		}
@@ -965,8 +1248,8 @@ const t = useTranslations(lang).venue;
 		if (!canvas) return;
 		const canvasRect = canvas.getBoundingClientRect();
 		camera.aspect = canvasRect.width / canvasRect.height;
-		camera.updateProjectionMatrix();
 		renderer.setSize(canvasRect.width, canvasRect.height);
+		updateViewOffset(); // re-applies offset (also calls updateProjectionMatrix)
 	};
 
 	const animate = () => {
@@ -976,6 +1259,9 @@ const t = useTranslations(lang).venue;
 	};
 
 	const cleanup = () => {
+		showDetailFn = null;
+		dragSheetCleanup?.();
+		dragSheetCleanup = null;
 		if (animationId) cancelAnimationFrame(animationId);
 		window.removeEventListener("resize", onWindowResize);
 		renderer?.domElement.removeEventListener("pointerdown", onCanvasPointerDown);
@@ -1036,25 +1322,103 @@ const t = useTranslations(lang).venue;
 			showSelection();
 		});
 
-		// Room item highlight on click
-		document.querySelectorAll(".room-item").forEach(el => {
-			el.addEventListener("click", () => {
-				const raw = el.getAttribute("data-meshes");
-				if (!raw) return;
-				const meshNames: string[] = JSON.parse(raw);
+		// Detail panel elements
+		const detailPanel = document.getElementById("detail-panel");
+		const detailBackBtn = document.getElementById("detail-back-btn");
 
-				// Toggle off if already highlighted
-				const firstMesh = meshNames[0]?.toLowerCase();
-				if (firstMesh && highlightedMeshes.has(firstMesh)) {
-					clearHighlight();
-					document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
-					return;
+		const showDetail = (itemEl: Element) => {
+			const name = itemEl.querySelector(".room-name")?.textContent ?? "";
+			const badge = itemEl.querySelector(".room-desc")?.textContent ?? "";
+			const longDescription = itemEl.getAttribute("data-long-description") ?? "";
+			const link = itemEl.getAttribute("data-link") ?? "";
+			const meshesRaw = itemEl.getAttribute("data-meshes");
+			const meshNames: string[] = meshesRaw ? JSON.parse(meshesRaw) : [];
+
+			// Mark active
+			document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
+			itemEl.classList.add("active");
+
+			// 3D highlight
+			clearHighlight();
+			selectRoomItem(meshNames);
+
+			// Populate panel
+			const nameEl = document.getElementById("detail-name");
+			const badgeEl = document.getElementById("detail-badge");
+			const longDescEl = document.getElementById("detail-long-desc");
+			const linkBtn = document.getElementById("detail-link-btn") as HTMLAnchorElement | null;
+			if (nameEl) nameEl.textContent = name;
+			if (badgeEl) badgeEl.textContent = badge;
+			if (longDescEl) longDescEl.textContent = longDescription;
+			if (linkBtn) {
+				if (link) {
+					linkBtn.href = link;
+					linkBtn.classList.remove("hidden");
+				} else {
+					linkBtn.classList.add("hidden");
 				}
+			}
 
+			const isDetailVisible = !detailPanel?.classList.contains("hidden");
+			if (isDetailVisible) {
+				// Already in detail panel — just update content with a quick flash
+				const tl = gsap.timeline();
+				tl.to("#detail-content", { opacity: 0, duration: 0.15, ease: "power2.in" });
+				tl.to("#detail-content", { opacity: 1, duration: 0.2, ease: "power2.out" });
+				return;
+			}
+
+			// Animate: room list → detail panel
+			const activeRoomList = document.querySelector(".room-list-container:not(.hidden)");
+			const tl = gsap.timeline();
+			if (activeRoomList) {
+				tl.to(activeRoomList.querySelectorAll(".room-item-wrapper"), {
+					opacity: 0,
+					x: -20,
+					duration: 0.25,
+					stagger: { each: 0.04, from: "end" },
+					ease: "power2.in"
+				});
+				tl.to("#back-btn", { opacity: 0, x: -10, duration: 0.2 }, "<");
+			}
+			tl.add(() => {
+				advancedMenu?.classList.add("hidden");
+				detailPanel?.classList.remove("hidden");
+			});
+			tl.fromTo("#detail-back-btn", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" });
+			tl.fromTo("#detail-content", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, "-=0.1");
+		};
+
+		showDetailFn = showDetail;
+
+		const showRoomList = () => {
+			const targetRoomList = currentFloor ? document.getElementById(`room-list-${currentFloor}`) : null;
+			const tl = gsap.timeline();
+			tl.to("#detail-content", { opacity: 0, y: 16, duration: 0.2, ease: "power2.in" });
+			tl.to("#detail-back-btn", { opacity: 0, x: -10, duration: 0.15 }, "<");
+			tl.add(() => {
+				detailPanel?.classList.add("hidden");
+				advancedMenu?.classList.remove("hidden");
+				if (targetRoomList) targetRoomList.classList.remove("hidden");
+			});
+			tl.fromTo("#back-btn", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" });
+			if (targetRoomList) {
+				tl.fromTo(targetRoomList.querySelectorAll(".room-item-wrapper"), { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.35, stagger: 0.05, ease: "power2.out" }, "-=0.1");
+			}
+		};
+
+		if (detailBackBtn) {
+			detailBackBtn.addEventListener("click", () => {
 				clearHighlight();
 				document.querySelectorAll(".room-item.active").forEach(e => e.classList.remove("active"));
-				el.classList.add("active");
-				selectRoomItem(meshNames);
+				showRoomList();
+			});
+		}
+
+		// Room item click → show detail
+		document.querySelectorAll(".room-item").forEach(el => {
+			el.addEventListener("click", () => {
+				showDetail(el);
 			});
 		});
 
@@ -1148,6 +1512,8 @@ const t = useTranslations(lang).venue;
 				tl.fromTo(hint, { opacity: 0, y: 10 }, { opacity: 0.9, y: 0, duration: 0.3 }, "-=0.2");
 			}
 		};
+
+		dragSheetCleanup = initDragSheet();
 	};
 
 	// Initialize Three.js
