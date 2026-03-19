@@ -1,4 +1,4 @@
-z[
+[
 	{
 		"name": "柴柴",
 		"description": "我網站有點好康的，來我網站看看吧！<img src=x>",
@@ -891,7 +891,8 @@ z[
 				"name": "design",
 				"role": "head"
 			}
-		]
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "Lindy",
