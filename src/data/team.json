@@ -1,4 +1,4 @@
-[
+z[
 	{
 		"name": "柴柴",
 		"description": "我網站有點好康的，來我網站看看吧！<img src=x>",
@@ -19,6 +19,10 @@
 			{
 				"name": "general",
 				"role": "deputy_chief"
+			},
+			{
+				"name": "design",
+				"role": "member"
 			}
 		],
 		"link": "https://windless.me"
@@ -878,6 +882,16 @@
 			}
 		],
 		"link": "？什麼意思"
+	},
+	{
+		"name": "海豹",
+		"description": "seadog007",
+		"teams": [
+			{
+				"name": "design",
+				"role": "head"
+			}
+		]
 	},
 	{
 		"name": "Lindy",
