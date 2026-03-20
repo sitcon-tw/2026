@@ -147,6 +147,14 @@
 			"description_zh": "五之神製作所、麵屋雞金長期受到各位好朋友的照顧，我們非常感激，大家以後繼續支持喔。",
 			"description_en": "",
 			"url": "https://menya-torikin.com/"
+		},
+		{
+			"logo": "micare.svg",
+			"title_zh": "咪卡創意 MicareProduction",
+			"title_en": "",
+			"description_zh": "咪卡創意提供專業影像與直播一站式整合服務，專注線上與線下活動規劃、直播製作、影像紀錄與聲音工程優化，協助客戶解決線上直播與活動現場的技術痛點 。",
+			"description_en": "",
+			"url": "https://micare.tw/"
 		}
 	],
 	"mediaPartners": [
@@ -185,6 +193,14 @@
 			"description_zh": "中央研究院資訊服務處支援院內研究與行政數位化，兼顧便利與安全，積極引入 AI 技術建構前瞻研究基礎設施，為全院打造安全、便利與前瞻的資訊服務環境。",
 			"description_en": "",
 			"url": "https://its.sinica.edu.tw/"
+		},
+		{
+			"logo": "doit_tp.svg",
+			"title_zh": "臺北市政府資訊局",
+			"title_en": "",
+			"description_zh": "臺北市政府資訊局（Department of Information Technology）為臺北市政府資訊業務主管機關，致力於推動市政創新與科技應用，將先進數位科技融入城市治理、公共服務及基礎設施建設，透過各項資訊平台運用，提升民眾良好的市政服務體驗，積極打造更智慧、便捷的臺北城市環境。",
+			"description_en": "",
+			"url": "https://doit.gov.taipei"
 		},
 		{
 			"logo": "kotech.svg",
