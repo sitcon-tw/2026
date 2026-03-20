@@ -603,7 +603,11 @@
         "description": "<p>想要改變社團現狀，卻不知道從何下手？這場論壇準備了滿滿的實戰經營技巧。我們將以 SITCON 自身的運作經驗為例，探討如何將「開源、協作、扁平化」的社群思維，轉化為高中社團也能落實的做事方法。無論是想解決溝通死角、優化行政流程，還是讓學弟妹主動參與，來這裡聽聽我們怎麼做，幫你的社團經營技能點滿！</p>\n<p>但請認清現實：聽懂不等於能做到。要真正點滿這些社團經營技能、獲得千人社群的實戰外掛，只有直接加入 SITCON 成為工人，才是你唯一的捷徑。名額與時間不等人，別再讓你的社團繼續原地踏步，現在就填寫表單加入我們！</p>\n<p>現在就填寫預約跳坑表單：<a href=\"https://forms.gle/5CCnNvFY3n7GqoyV9\">https://forms.gle/5CCnNvFY3n7GqoyV9</a></p>\n"
       },
       "speakers": [
-        "27c6d6"
+        "27c6d6",
+        "17d204",
+        "dd2fc9",
+        "b71a45",
+        "1cc4ce"
       ],
       "tags": []
     },
@@ -1817,13 +1821,61 @@
     },
     {
       "id": "27c6d6",
-      "avatar": "https://sitcon.org/2022/imgs/deafult_avatar.jpg",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/27c6d6.webp",
       "zh": {
         "name": "主持人 - RSChiang",
-        "bio": ""
+        "bio": "<p>RSChiang 是 SITCON 共同發起人之一，國立台灣大學法律學系畢業，在校期間活躍於社團經營與校園參與，也在 SITCON 推廣開源精神多年。目前是台灣零時政府社群 g0v Summit 2026 的總召，研究領域是數位政府、開放資料與網路治理。你可以在 SITCON 的群組、Mastodon、或是 RS 的個人網站上捕捉到他，也可以跟他打聽肉桂捲的獨到見解。</p>\n"
       },
       "en": {
         "name": "主持人 - RSChiang",
+        "bio": "<p>RSChiang 是 SITCON 共同發起人之一，國立台灣大學法律學系畢業，在校期間活躍於社團經營與校園參與，也在 SITCON 推廣開源精神多年。目前是台灣零時政府社群 g0v Summit 2026 的總召，研究領域是數位政府、開放資料與網路治理。你可以在 SITCON 的群組、Mastodon、或是 RS 的個人網站上捕捉到他，也可以跟他打聽肉桂捲的獨到見解。</p>\n"
+      }
+    },
+    {
+      "id": "17d204",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/17d204.webp",
+      "zh": {
+        "name": "Nathan",
+        "bio": "<p>目前就讀臺北市華江高中，還只是位高三生，自 2023 起接觸 SITCON，是今年的議程組組員！</p>\n"
+      },
+      "en": {
+        "name": "Nathan",
+        "bio": "<p>目前就讀臺北市華江高中，還只是位高三生，自 2023 起接觸 SITCON，是今年的議程組組員！</p>\n"
+      }
+    },
+    {
+      "id": "dd2fc9",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/dd2fc9.webp",
+      "zh": {
+        "name": "xiung",
+        "bio": "<p>目前就讀臺北市數位實驗高中 ，是 SITCON 2026 的議程組副組長，也是去年的議程組員，常出沒在不同社群擔任志工</p>\n"
+      },
+      "en": {
+        "name": "xiung",
+        "bio": "<p>目前就讀臺北市數位實驗高中 ，是 SITCON 2026 的議程組副組長，也是去年的議程組員，常出沒在不同社群擔任志工</p>\n"
+      }
+    },
+    {
+      "id": "b71a45",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/b71a45.webp",
+      "zh": {
+        "name": "ffting",
+        "bio": "<p>嗨嗨大家！我是方方\n公館大學資管系大二\n今年是第一次跳 SITCON ！\n在跳 SITCON 之前一直覺得 SITCON 的人都太強了 所以一直不敢跳坑\n但最後還是站在這裡了\n如果你們想的話 明年你們也可以！\n除了 SITCON 以外\n高中有碰一點資安跟超級一咪咪競程\n但現在還是沒有很強\n不過有問題還是可以問我！我會盡力回答的</p>\n"
+      },
+      "en": {
+        "name": "ffting",
+        "bio": "<p>嗨嗨大家！我是方方\n公館大學資管系大二\n今年是第一次跳 SITCON ！\n在跳 SITCON 之前一直覺得 SITCON 的人都太強了 所以一直不敢跳坑\n但最後還是站在這裡了\n如果你們想的話 明年你們也可以！\n除了 SITCON 以外\n高中有碰一點資安跟超級一咪咪競程\n但現在還是沒有很強\n不過有問題還是可以問我！我會盡力回答的</p>\n"
+      }
+    },
+    {
+      "id": "1cc4ce",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/1cc4ce.webp",
+      "zh": {
+        "name": "Yuto",
+        "bio": "<p>過往我都是在台下當快樂聽眾，聽台上的講者講故事，並憧憬著有一天也能成為大佬。\n沒想到這次居然輪到我了，但我還沒成為大佬啊啊啊啊啊～</p>\n<p>嗨嗨！我是 Yuto，曾擔任大同大學科學開源服務社的社長，講過許多社課也參與籌備過好幾場營隊。在去年加入 SITCON Camp 隊輔組後，今年正式參與年會籌備了！\n我熟悉的領域是資訊安全，但因為好奇所以軟體工程、系統程式也都摸一點點（好雜\n除了那些之外，對於社團組織運作感興趣的也歡迎來找我聊天，我會偷偷教你怎麼把 SITCON 的流程搬回社團</p>\n"
+      },
+      "en": {
+        "name": "Yuto",
         "bio": ""
       }
     },
