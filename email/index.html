@@ -1,7 +1,8 @@
 <!doctype html>
-<html>
+<html lang="zh-Hant">
 	<head>
 		<meta charset="UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>SITCON 2026 會眾行前信</title>
 		<style>
@@ -131,29 +132,41 @@
 			.sponsor-title {
 				text-align: center;
 				display: block;
-				font-size: 24px;
+				font-size: 20px;
 				font-weight: bolder;
 				color: #734b3a;
+				margin-bottom: 10px;
+			}
+
+			.sponsor-description {
+				color: #585858;
+				font-size: 14px;
+				margin: 5px;
 			}
 
 			.sponsor {
 				display: flex;
 				color: #585858;
+				align-items: center;
 			}
 
 			.sponsor h3 {
 				margin-bottom: 8px;
 			}
 
+			.sponsor p {
+				font-size: 14px;
+				margin: 0;
+			}
+
 			.sponsor img {
-				width: 120px;
+				width: 90px;
 				object-fit: contain;
-				margin-right: 24px;
 			}
 		</style>
 	</head>
 	<body>
-		<div class="cover-container"><img src="https://sitcon.org/2026/img/email/cover.png" class="cover" /></div>
+		<div class="cover-container"><img src="https://sitcon.org/2026/img/email/cover.png" class="cover" alt="SITCON 2026 年會主視覺" /></div>
 		<div class="main">
 			<div class="online">
 				若您無法順利閱讀此信件，請參閱
@@ -161,7 +174,7 @@
 				。
 			</div>
 			<div class="intro">
-				<p>Hi，</p>
+				<p>Hi *|NAME|*，</p>
 				<p>
 					很高興能在 SITCON 2026 看到您！年會即將在下週六（03/28）揭開序幕，若您臨時有事無法來到現場一起共襄盛舉，請至
 					<a href="https://www.facebook.com/share/p/1GQN8Wtzu8/">官方換票樓</a>
@@ -170,7 +183,7 @@
 				<p>我們整理了一些實用的資訊，還請花 5 分鐘詳細閱讀：</p>
 			</div>
 			<h2>
-				<img src="https://sitcon.org/2026/img/email/icon-1.png" />
+				<img src="https://sitcon.org/2026/img/email/icon-1.png" alt="交通圖示" />
 				交通
 			</h2>
 			<div class="box">
@@ -180,8 +193,8 @@
 					<b>中央研究院 人文社會科學館</b>
 					（台北市南港區研究院路二段 128 號），詳細位置可以參考
 					<a href="https://sitcon.org/2026/">SITCON 2026 官方網站</a>
-					或中央研究院
-					<a href="院區導覽圖"></a>
+					或中央研究院的
+					<a href="https://file.apps.sinica.edu.tw/filepool/asweb/file/2023/2605xVrmDnbrVzHHAKAYtAeZ/asmap-00.pdf">院區導覽圖</a>
 					。
 				</p>
 				<h3>2. 接駁車</h3>
@@ -192,7 +205,7 @@
 				</ul>
 			</div>
 			<h2>
-				<img src="https://sitcon.org/2026/img/email/icon-2.png" />
+				<img src="https://sitcon.org/2026/img/email/icon-2.png" alt="報到圖示" />
 				報到
 			</h2>
 			<div class="box">
@@ -209,7 +222,9 @@
 					後抵達，請改至三樓服務台領取迎賓袋。
 				</p>
 				<p>請透過以下專屬連結下載、啟動 OPass：</p>
-				<p>google.com</p>
+				<p><a href="*|INVITER|*">點我綁定</a></p>
+				<p>若上方專屬連結不起作用，請下載 OPass 並手動輸入驗證碼（Token）：</p>
+				<p>*|TOKEN|*</p>
 				<p>
 					若無法使用 App 報到，請向服務台的工作人員出示
 					<a href="https://tickets.sitcon.org/sitcon2026/success">SITCONTIX</a>
@@ -232,17 +247,28 @@
 				</p>
 			</div>
 			<hr />
-			<h2 class="sponsor-title">贊助商</h2>
+			<h2 class="sponsor-title">合作夥伴資訊</h2>
 			<div class="sponsor">
-				<img src="https://sitcon.org/2026/img/sponsors/tsmc.svg" />
-				<div>
-					<h3>台灣積體電路製造股份有限公司</h3>
-					<p>這是台積電的宣傳文字</p>
-				</div>
+				<img src="https://sitcon.org/2026/img/sponsors/tsmc.svg" alt="TSMC Logo" />
+				<p>
+					<b>
+						台積電 𝗜𝗧 校園徵才 📍 𝟮𝟬𝟮𝟲 唯一專場
+						<br />
+						線上說明會 ＆ 活動專屬招募流程
+					</b>
+				</p>
 			</div>
-			<hr />
+			<p class="sponsor-description">
+				🚀 報名傳送門：
+				<a href="https://reurl.cc/qpgeYp" target="_blank">https://reurl.cc/qpgeYp</a>
+				<br />
+				🎓 徵才對象：資訊學群 2026 畢業生 (一般正職)、暑期實習生
+				<br />
+				⌛報名截止：4/6 (一) 0:00
+			</p>
+			<hr style="margin-top: 32px; margin-bottom: 48px" />
 			<h2>
-				<img src="https://sitcon.org/2026/img/email/icon-3.png" />
+				<img src="https://sitcon.org/2026/img/email/icon-3.png" alt="年會活動圖示" />
 				年會活動
 			</h2>
 			<div class="box">
@@ -340,7 +366,7 @@
 				</p>
 			</div>
 			<h2>
-				<img src="https://sitcon.org/2026/img/email/icon-4.png" />
+				<img src="https://sitcon.org/2026/img/email/icon-4.png" alt="會前資料圖示" />
 				會前資料
 			</h2>
 			<div class="box">
@@ -360,7 +386,7 @@
 				</p>
 			</div>
 			<h2>
-				<img src="https://sitcon.org/2026/img/email/icon-5.png" />
+				<img src="https://sitcon.org/2026/img/email/icon-5.png" alt="食物圖示" />
 				食物
 			</h2>
 			<div class="box">
@@ -388,7 +414,7 @@
 				<p>如果您有環保餐具、環保杯，也請記得隨身攜帶，為地球盡一份心力。</p>
 			</div>
 			<h2>
-				<img src="https://sitcon.org/2026/img/email/icon-6.png" />
+				<img src="https://sitcon.org/2026/img/email/icon-6.png" alt="網路圖示" />
 				網路
 			</h2>
 			<div class="box">
@@ -402,7 +428,7 @@
 				</div>
 			</div>
 			<h2>
-				<img src="https://sitcon.org/2026/img/email/icon-7.png" />
+				<img src="https://sitcon.org/2026/img/email/icon-7.png" alt="遺失物圖示" />
 				遺失物
 			</h2>
 			<div class="box">
@@ -410,7 +436,7 @@
 				<ul>
 					<li>
 						我遺失 / 撿到東西了，填寫表單：
-						<a href="https://forms.gle/ftmqPgwAQnsWXd317 ">forms.gle/ftmqPgwAQnsWXd317</a>
+						<a href="https://forms.gle/ftmqPgwAQnsWXd317">forms.gle/ftmqPgwAQnsWXd317</a>
 					</li>
 					<li>
 						公開檢索表格：
@@ -419,7 +445,7 @@
 				</ul>
 			</div>
 			<h2>
-				<img src="https://sitcon.org/2026/img/email/icon-8.png" />
+				<img src="https://sitcon.org/2026/img/email/icon-8.png" alt="其他圖示" />
 				其他
 			</h2>
 			<div class="box">
@@ -439,14 +465,14 @@
 			<p>感謝您讀完這份行前簡介，期待在 SITCON 2026 與您見面～</p>
 			<p>SITCON 2026 籌備團隊</p>
 			<div class="social">
-				<a href="https://www.threads.com/@sitcon.tw"><img src="https://sitcon.org/2026/img/email/threads.png" alt="" /></a>
-				<a href="https://www.facebook.com/SITCONtw/"><img src="https://sitcon.org/2026/img/email/facebook.png" alt="" /></a>
-				<a href="https://www.flickr.com/photos/sitcon/albums/"><img src="https://sitcon.org/2026/img/email/flickr.png" alt="" /></a>
-				<a href="https://www.instagram.com/sitcon.tw"><img src="https://sitcon.org/2026/img/email/instagram.png" alt="" /></a>
-				<a href="https://telegram.me/SITCONgeneral"><img src="https://sitcon.org/2026/img/email/telegram.png" alt="" /></a>
-				<a href="https://www.youtube.com/c/SITCONArchive"><img src="https://sitcon.org/2026/img/email/youtube.png" alt="" /></a>
+				<a href="https://sitcon.org/fb"><img src="https://sitcon.org/2026/img/email/facebook.png" alt="Facebook" /></a>
+				<a href="https://sitcon.org/flickr"><img src="https://sitcon.org/2026/img/email/flickr.png" alt="Flickr" /></a>
+				<a href="https://sitcon.org/ig"><img src="https://sitcon.org/2026/img/email/instagram.png" alt="Instagram" /></a>
+				<a href="https://sitcon.org/tg"><img src="https://sitcon.org/2026/img/email/telegram.png" alt="Telegram" /></a>
+				<a href="https://sitcon.org/threads"><img src="https://sitcon.org/2026/img/email/threads.png" alt="Threads" /></a>
+				<a href="https://sitcon.org/yt"><img src="https://sitcon.org/2026/img/email/youtube.png" alt="YouTube" /></a>
 			</div>
-			<img src="https://sitcon.org/2026/img/email/footer-text.png" alt="" class="footer-logo" />
+			<img src="https://sitcon.org/2026/img/email/footer-text.png" alt="SITCON 2026" class="footer-logo" />
 		</div>
 		<img src="https://sitcon.org/2026/img/email/wave.png" alt="footer-wave" class="cover" />
 	</body>
