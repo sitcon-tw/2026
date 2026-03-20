@@ -19,6 +19,10 @@
 			{
 				"name": "general",
 				"role": "deputy_chief"
+			},
+			{
+				"name": "design",
+				"role": "member"
 			}
 		],
 		"link": "https://windless.me"
@@ -878,6 +882,17 @@
 			}
 		],
 		"link": "？什麼意思"
+	},
+	{
+		"name": "海豹",
+		"description": "seadog007",
+		"teams": [
+			{
+				"name": "design",
+				"role": "head"
+			}
+		],
+		"mode": "nobg"
 	},
 	{
 		"name": "Lindy",
