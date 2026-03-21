@@ -195,6 +195,14 @@
 			"url": "https://its.sinica.edu.tw/"
 		},
 		{
+			"logo": "moda.webp",
+			"title_zh": "數位發展部/moda",
+			"title_en": "",
+			"description_zh": "數發部於 2022 年 8 月成立，統籌數位治理與基礎建設，推動通訊、資訊與資安發展，協助公私部門轉型，以提升全民數位韌性為核心，從社會共融、產業與應變三面向打造數位國家。 ",
+			"description_en": "",
+			"url": "https://moda.gov.tw/"
+		},
+		{
 			"logo": "doit_tp.svg",
 			"title_zh": "臺北市政府資訊局",
 			"title_en": "",
@@ -225,14 +233,6 @@
 			"description_zh": "NCSE Network 成立於 2019 年，提供企業級 VPS 主機、機房代管及網路基礎設施解決方案，以 99% SLA 保證與專業技術支援，協助企業與開發者打造穩定、高效的網路基礎架構與雲端服務。並長期回饋社會，透過贊助計畫協助開源社群、技術競賽及公益專案。",
 			"description_en": "",
 			"url": "https://ncse.tw/"
-		},
-		{
-			"logo": "moda.webp",
-			"title_zh": "數位發展部/moda",
-			"title_en": "",
-			"description_zh": "數發部於 2022 年 8 月成立，統籌數位治理與基礎建設，推動通訊、資訊與資安發展，協助公私部門轉型，以提升全民數位韌性為核心，從社會共融、產業與應變三面向打造數位國家。 ",
-			"description_en": "",
-			"url": "https://moda.gov.tw/"
 		},
 		{
 			"logo": "individual.webp",
