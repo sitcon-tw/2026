@@ -147,6 +147,8 @@
 		"title": "會場地圖",
 		"selectFloor": "請選擇樓層",
 		"backToFloor": "返回樓層選擇",
+		"backToList": "返回列表",
+		"visitWebsite": "前往官網 →",
 		"emergency": "緊急逃生指引"
 	},
 	"agenda": {
