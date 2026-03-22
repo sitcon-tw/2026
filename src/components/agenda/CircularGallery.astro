@@ -47,7 +47,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 ---
 
 <div class="circular-gallery-wrapper">
-	<div class="circular-gallery" aria-label={isEn ? "Poster gallery" : "海報展示牆"} data-count={itemCount} data-original-count={originalCount}>
+	<div class="circular-gallery" aria-label={isEn ? "Poster gallery" : "Demo 展"} data-count={itemCount} data-original-count={originalCount}>
 		{
 			expandedItems.map((item, index) => {
 				const angle = index * angleStep;

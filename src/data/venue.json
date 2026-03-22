@@ -226,8 +226,8 @@
 			},
 			{
 				"id": "poster",
-				"name": "海報展",
-				"description": "海報展示區",
+				"name": "Demo 展",
+				"description": "Demo 展",
 				"meshes": ["floor__4f__poster_table", "floor__4f__poster_text"]
 			},
 			{
