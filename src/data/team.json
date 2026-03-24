@@ -257,7 +257,7 @@
 		"teams": [
 			{
 				"name": "agenda",
-				"role": "agenda_helper"
+				"role": "member"
 			}
 		]
 	},
