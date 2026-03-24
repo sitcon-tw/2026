@@ -16,7 +16,9 @@ const t = useTranslations(lang).venue;
 			<h1 class="title">{t.title}</h1>
 
 			<div class="content-wrapper">
-				<div id="sheet-handle" class="sheet-handle"></div>
+				<button id="sheet-toggle" class="sheet-toggle" aria-label="展開/收合選單">
+					<span class="sheet-chevron"></span>
+				</button>
 
 				<!-- Floor Selection -->
 				<div id="floor-selection" class="menu-panel">
@@ -297,8 +299,8 @@ const t = useTranslations(lang).venue;
 		display: none;
 	}
 
-	/* Sheet drag handle — hidden on desktop, shown on mobile via media query */
-	.sheet-handle {
+	/* Sheet toggle button — hidden on desktop, shown on mobile */
+	.sheet-toggle {
 		display: none;
 	}
 
@@ -395,31 +397,52 @@ const t = useTranslations(lang).venue;
 			border-radius: 18px 18px 0 0;
 			padding: 1.2rem 1.2rem 0;
 			margin-top: 0;
-			overflow: hidden;
+			/* No overflow:hidden — it blocks touch-scroll on iOS Safari for children */
 		}
 
-		/* Drag handle */
-		.sheet-handle {
-			display: block;
+		/* Smooth height transition for expand/collapse */
+		.content-wrapper {
+			transition: height 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		}
+
+		/* Expand/collapse toggle button */
+		.sheet-toggle {
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			flex-shrink: 0;
 			align-self: center;
-			width: 40px;
-			height: 5px;
-			background: rgba(255, 255, 255, 0.4);
-			border-radius: 3px;
-			margin-bottom: 0.9rem;
-			cursor: ns-resize;
-			touch-action: none;
+			width: 44px;
+			height: 26px;
+			margin-bottom: 0.7rem;
+			background: rgba(255, 255, 255, 0.15);
+			border: none;
+			border-radius: 13px;
+			cursor: pointer;
+			padding: 0;
 		}
 
-		/* Smooth snap animation */
-		.content-wrapper.snapping {
-			transition: height 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		.sheet-chevron {
+			display: block;
+			width: 8px;
+			height: 8px;
+			border-right: 2px solid rgba(255, 255, 255, 0.85);
+			border-bottom: 2px solid rgba(255, 255, 255, 0.85);
+			transform: rotate(45deg) translate(-1px, -1px); /* points ▼ = can collapse */
+			transition: transform 0.3s ease;
 		}
 
-		/* Each panel fills the full sheet height */
+		/* When sheet is collapsed, chevron flips to ▲ = can expand */
+		.sheet-toggle.collapsed .sheet-chevron {
+			transform: rotate(-135deg) translate(-1px, -1px);
+		}
+
+		/* Each panel fills the sheet — min-height:0 is critical: without it the
+		   flex child's min-height defaults to content size, making room-list
+		   unbounded (nothing to scroll). */
 		.menu-panel {
 			flex: 1;
+			min-height: 0;
 			width: 100%;
 			max-width: 100%;
 			max-height: none;
@@ -544,8 +567,8 @@ const t = useTranslations(lang).venue;
 	// Set by initVenue so canvas click can trigger detail panel
 	let showDetailFn: ((el: Element) => void) | null = null;
 
-	// Cleanup function returned by initDragSheet
-	let dragSheetCleanup: (() => void) | null = null;
+	// Cleanup function returned by initSheetToggle
+	let sheetCleanup: (() => void) | null = null;
 
 	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -571,82 +594,35 @@ const t = useTranslations(lang).venue;
 		camera.updateProjectionMatrix();
 	};
 
-	const initDragSheet = (): (() => void) => {
-		const handle = document.getElementById("sheet-handle");
+	const initSheetToggle = (): (() => void) => {
+		if (window.innerWidth > 1024) return () => {};
+
+		const toggle = document.getElementById("sheet-toggle") as HTMLButtonElement | null;
 		const wrapper = document.querySelector(".content-wrapper") as HTMLElement | null;
-		if (!handle || !wrapper || window.innerWidth > 1024) return () => {};
+		if (!toggle || !wrapper) return () => {};
 
-		const SNAP_VH = [20, 50, 72];
-		const MIN_VH = 15;
-		const MAX_VH = 82;
+		const EXPANDED_VH = window.innerWidth <= 640 ? 56 : 52;
+		const COLLAPSED_VH = 25;
+		let expanded = true;
 
-		let startY = 0;
-		let startHeightPx = 0;
-		let dragging = false;
-
-		const getPx = (vh: number) => (vh / 100) * window.innerHeight;
-
-		const snapTo = (vh: number) => {
-			wrapper.classList.add("snapping");
-			wrapper.style.height = `${vh}vh`;
-			updateViewOffset();
-			setTimeout(() => wrapper.classList.remove("snapping"), 360);
-		};
-
-		// ── Handle drag (pointer events) ──────────────────────────────────────
-		const onPointerDown = (e: PointerEvent) => {
-			dragging = true;
-			startY = e.clientY;
-			startHeightPx = wrapper.getBoundingClientRect().height;
-			handle.setPointerCapture(e.pointerId);
-			wrapper.classList.remove("snapping");
-			e.preventDefault();
-		};
-
-		const onPointerMove = (e: PointerEvent) => {
-			if (!dragging) return;
-			const delta = startY - e.clientY;
-			const newPx = Math.max(getPx(MIN_VH), Math.min(getPx(MAX_VH), startHeightPx + delta));
-			wrapper.style.height = `${newPx}px`;
+		const onToggle = () => {
+			expanded = !expanded;
+			wrapper.style.height = `${expanded ? EXPANDED_VH : COLLAPSED_VH}vh`;
+			toggle.classList.toggle("collapsed", !expanded);
 			updateViewOffset();
 		};
 
-		const onPointerUp = () => {
-			if (!dragging) return;
-			dragging = false;
-			const currentVh = (wrapper.getBoundingClientRect().height / window.innerHeight) * 100;
-			const nearest = SNAP_VH.reduce((prev, curr) => (Math.abs(curr - currentVh) < Math.abs(prev - currentVh) ? curr : prev));
-			snapTo(nearest);
-		};
+		// main already has overflow:hidden so the page can't scroll.
+		// overscroll-behavior:none on body kills the rubber-band / pull-to-refresh
+		// without any touchmove listener — which would interfere with menu scroll.
+		const prevOverscroll = document.body.style.overscrollBehavior;
+		document.body.style.overscrollBehavior = "none";
 
-		// ── Pull-to-refresh / page scroll prevention ──────────────────────────
-		// We intercept every touchmove on the document (non-passive) and call
-		// preventDefault() except when:
-		//   1. The handle drag is active — pointer capture already owns the gesture;
-		//      calling preventDefault here would cancel the pointer events.
-		//   2. The touch is inside a scrollable menu list — those use CSS
-		//      overscroll-behavior:contain to stop propagation at their boundaries,
-		//      so we don't need JS boundary math here.
-		const onDocTouchMove = (e: TouchEvent) => {
-			if (dragging) return;
-			const target = e.target as Element;
-			if (!target.closest("[data-lenis-prevent], .detail-content")) {
-				e.preventDefault();
-			}
-		};
-
-		handle.addEventListener("pointerdown", onPointerDown);
-		handle.addEventListener("pointermove", onPointerMove);
-		handle.addEventListener("pointerup", onPointerUp);
-		handle.addEventListener("pointercancel", onPointerUp);
-		document.addEventListener("touchmove", onDocTouchMove, { passive: false });
+		toggle.addEventListener("click", onToggle);
 
 		return () => {
-			handle.removeEventListener("pointerdown", onPointerDown);
-			handle.removeEventListener("pointermove", onPointerMove);
-			handle.removeEventListener("pointerup", onPointerUp);
-			handle.removeEventListener("pointercancel", onPointerUp);
-			document.removeEventListener("touchmove", onDocTouchMove);
+			toggle.removeEventListener("click", onToggle);
+			document.body.style.overscrollBehavior = prevOverscroll;
 		};
 	};
 
@@ -1260,8 +1236,8 @@ const t = useTranslations(lang).venue;
 
 	const cleanup = () => {
 		showDetailFn = null;
-		dragSheetCleanup?.();
-		dragSheetCleanup = null;
+		sheetCleanup?.();
+		sheetCleanup = null;
 		if (animationId) cancelAnimationFrame(animationId);
 		window.removeEventListener("resize", onWindowResize);
 		renderer?.domElement.removeEventListener("pointerdown", onCanvasPointerDown);
@@ -1513,7 +1489,7 @@ const t = useTranslations(lang).venue;
 			}
 		};
 
-		dragSheetCleanup = initDragSheet();
+		sheetCleanup = initSheetToggle();
 	};
 
 	// Initialize Three.js
