@@ -41,9 +41,9 @@ const { sections } = info;
 											?.split("\n\n")
 											.map((paragraph: string) => paragraph.trim())
 											.filter(Boolean)
-											.map((paragraph: string) => (
-												<p class="text-reveal-paragraph" set:html={paragraph} />
-											))}
+											.map((paragraph: string) =>
+												paragraph.trimStart().startsWith("<table") ? <div class="text-reveal-paragraph" set:html={paragraph} /> : <p class="text-reveal-paragraph" set:html={paragraph} />
+											)}
 									</div>
 								</div>
 							);
@@ -426,7 +426,7 @@ const { sections } = info;
 	}
 
 	:global(table) {
-		display: none;
+		display: table;
 		width: 100%;
 		border-collapse: separate;
 		border-spacing: 0;

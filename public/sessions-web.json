@@ -79,7 +79,7 @@
       "end": "2026-03-28T10:10:00+08:00",
       "qa": "https://app.sli.do/event/p6UzQTDtg7RLUPPRn8Uvpc",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FBkAJyZs9Wx",
       "record": null,
       "live": null,
       "language": null,
@@ -143,7 +143,7 @@
       "end": "2026-03-28T11:05:00+08:00",
       "qa": "https://app.sli.do/event/7CgAb8ZF64b7sAepbYr51q",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FryWgJbo9Zx",
       "record": null,
       "live": null,
       "language": null,
@@ -200,8 +200,8 @@
       "start": "2026-03-28T11:10:00+08:00",
       "end": "2026-03-28T11:50:00+08:00",
       "qa": "https://app.sli.do/event/c2355fe1-e8f8-4813-8e56-081e670f35d9",
-      "slide": null,
-      "co_write": null,
+      "slide": "https://drive.google.com/file/d/1s2VE4ZRfWClGCuAcbamV4wSC_d5M5T-I/view",
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FSyQgyWjcbe",
       "record": null,
       "live": null,
       "language": null,
@@ -230,8 +230,8 @@
       "start": "2026-03-28T11:10:00+08:00",
       "end": "2026-03-28T11:50:00+08:00",
       "qa": "https://app.sli.do/event/09e1afe0-a7c5-492c-ac29-d08e33f37b75",
-      "slide": null,
-      "co_write": null,
+      "slide": "https://docs.google.com/presentation/d/1ABJDwi6YSwwDAFfuzZBUgc66tzUqnA5PQdUreZ-WC-M/edit?usp=sharing",
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FSkIlkZscZx",
       "record": null,
       "live": null,
       "language": null,
@@ -261,7 +261,7 @@
       "end": "2026-03-28T11:50:00+08:00",
       "qa": "https://app.sli.do/event/2f0ad545-054f-4105-b74c-1c2436e9f85b",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2Frkugy-i9Wg",
       "record": null,
       "live": null,
       "language": null,
@@ -290,7 +290,7 @@
       "end": "2026-03-28T11:50:00+08:00",
       "qa": "https://app.sli.do/event/d3867980-9324-44d3-a95f-4cee149df396",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FryigyZs9bg",
       "record": null,
       "live": null,
       "language": null,
@@ -321,7 +321,7 @@
       "end": "2026-03-28T11:50:00+08:00",
       "qa": "https://app.sli.do/event/7e5ddf4e-00c9-440a-a1c9-b350d4b629ea",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FBkTxybi5bx",
       "record": null,
       "live": null,
       "language": null,
@@ -382,7 +382,7 @@
       "end": "2026-03-28T12:35:00+08:00",
       "qa": "https://app.sli.do/event/966f0658-c42a-4a76-b418-cd7a0542cd26",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FH1ybkWi9-e",
       "record": null,
       "live": null,
       "language": null,
@@ -470,9 +470,9 @@
       "broadcast": null,
       "start": "2026-03-28T12:45:00+08:00",
       "end": "2026-03-28T14:15:00+08:00",
-      "qa": null,
+      "qa": "https://app.sli.do/event/7efec724-60df-4bc2-93d2-e5b17d963475/live/questions",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FB1bWJZjcZl",
       "record": null,
       "live": null,
       "language": null,
@@ -501,8 +501,8 @@
       "start": "2026-03-28T12:45:00+08:00",
       "end": "2026-03-28T13:25:00+08:00",
       "qa": "https://app.sli.do/event/96207c54-64be-4745-b1c1-0eceee66ec3b",
-      "slide": null,
-      "co_write": null,
+      "slide": "https://docs.google.com/presentation/d/13rtxfvA6MtTrUm8MmFmjSY8C-PCZpWDKiNwH9oN0Vls/edit?usp=sharing",
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FS17Zy-o9bl",
       "record": null,
       "live": null,
       "language": null,
@@ -531,7 +531,7 @@
       "end": "2026-03-28T13:25:00+08:00",
       "qa": "https://app.sli.do/event/02873887-fe1c-4558-a087-66a2bf48c848",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2Fr1rWybsc-x",
       "record": null,
       "live": null,
       "language": null,
@@ -559,9 +559,9 @@
       "broadcast": null,
       "start": "2026-03-28T12:45:00+08:00",
       "end": "2026-03-28T13:25:00+08:00",
-      "qa": null,
+      "qa": "https://app.sli.do/event/e2EGHtc2NV2UVDXg36cQ9H",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FSJCRTLpqbg",
       "record": null,
       "live": null,
       "language": null,
@@ -587,9 +587,9 @@
       "broadcast": null,
       "start": "2026-03-28T12:45:00+08:00",
       "end": "2026-03-28T14:15:00+08:00",
-      "qa": null,
+      "qa": "https://app.sli.do/event/1aoYwPTbNehaEYUyi7gHCd",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FBJDZJWjq-g",
       "record": null,
       "live": null,
       "language": null,
@@ -603,7 +603,11 @@
         "description": "<p>想要改變社團現狀，卻不知道從何下手？這場論壇準備了滿滿的實戰經營技巧。我們將以 SITCON 自身的運作經驗為例，探討如何將「開源、協作、扁平化」的社群思維，轉化為高中社團也能落實的做事方法。無論是想解決溝通死角、優化行政流程，還是讓學弟妹主動參與，來這裡聽聽我們怎麼做，幫你的社團經營技能點滿！</p>\n<p>但請認清現實：聽懂不等於能做到。要真正點滿這些社團經營技能、獲得千人社群的實戰外掛，只有直接加入 SITCON 成為工人，才是你唯一的捷徑。名額與時間不等人，別再讓你的社團繼續原地踏步，現在就填寫表單加入我們！</p>\n<p>現在就填寫預約跳坑表單：<a href=\"https://forms.gle/5CCnNvFY3n7GqoyV9\">https://forms.gle/5CCnNvFY3n7GqoyV9</a></p>\n"
       },
       "speakers": [
-        "27c6d6"
+        "27c6d6",
+        "17d204",
+        "dd2fc9",
+        "b71a45",
+        "1cc4ce"
       ],
       "tags": []
     },
@@ -644,8 +648,8 @@
       "start": "2026-03-28T13:35:00+08:00",
       "end": "2026-03-28T14:15:00+08:00",
       "qa": "https://app.sli.do/event/faa048b3-358f-4c88-936a-2ffb386402fb",
-      "slide": null,
-      "co_write": null,
+      "slide": "https://drive.google.com/file/d/1hTeMJznFDGAkrJvDTxtJobIsiPtAWRqL/view?usp=sharing",
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FSkFbJZjcZl",
       "record": null,
       "live": null,
       "language": null,
@@ -674,7 +678,7 @@
       "end": "2026-03-28T14:15:00+08:00",
       "qa": "https://app.sli.do/event/f8ef3f42-4d8c-4699-ae04-ee2ea3dd9139",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FSy3Wk-s5We",
       "record": null,
       "live": null,
       "language": null,
@@ -704,7 +708,7 @@
       "end": "2026-03-28T14:15:00+08:00",
       "qa": "https://app.sli.do/event/ae387dd9-3f14-4ae5-9b5e-4149c05c198d",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FBypbybsc-x",
       "record": null,
       "live": null,
       "language": null,
@@ -769,7 +773,7 @@
       "end": "2026-03-28T14:35:00+08:00",
       "qa": null,
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2Frk1zkbjqbe",
       "record": null,
       "live": null,
       "language": null,
@@ -798,8 +802,8 @@
       "start": "2026-03-28T14:25:00+08:00",
       "end": "2026-03-28T14:35:00+08:00",
       "qa": "https://app.sli.do/event/193ee317-0392-4913-86fa-e967e5183ebd",
-      "slide": null,
-      "co_write": null,
+      "slide": "https://www.figma.com/deck/UcyhAm8m6lFahKCIs4QClx",
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FBJbM1bs5-x",
       "record": null,
       "live": null,
       "language": null,
@@ -827,8 +831,8 @@
       "start": "2026-03-28T14:25:00+08:00",
       "end": "2026-03-28T14:35:00+08:00",
       "qa": "https://app.sli.do/event/90bc9c8c-dd1a-46e1-ae17-0fb1804a92b7",
-      "slide": null,
-      "co_write": null,
+      "slide": "https://docs.google.com/presentation/d/10bHaXoAabH8uBwBywYXSeLelzCXmHz0B/edit?usp=sharing&ouid=104026563881181541742&rtpof=true&sd=true",
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FBJmf1bs5Wl",
       "record": null,
       "live": null,
       "language": null,
@@ -856,8 +860,8 @@
       "start": "2026-03-28T14:25:00+08:00",
       "end": "2026-03-28T14:35:00+08:00",
       "qa": "https://app.sli.do/event/510a476e-bbb6-40bb-bbfa-37dc51c5aa00",
-      "slide": null,
-      "co_write": null,
+      "slide": "https://www.canva.com/design/DAHAPtSMf5k/HC7tD1Xe9GMc038pj-4VmQ/edit?utm_content=DAHAPtSMf5k&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FHJrzJ-sc-e",
       "record": null,
       "live": null,
       "language": null,
@@ -886,8 +890,8 @@
       "start": "2026-03-28T14:25:00+08:00",
       "end": "2026-03-28T14:35:00+08:00",
       "qa": "https://app.sli.do/event/5918af39-f327-48e1-acf0-68c2370a6dbe",
-      "slide": null,
-      "co_write": null,
+      "slide": "https://docs.google.com/presentation/d/17QvPc73wrl_mAAOm8nzwhBMt7upS6YRZ/edit?usp=sharing&ouid=105943380324121412311&rtpof=true&sd=true",
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FS1PMkWo5-e",
       "record": null,
       "live": null,
       "language": null,
@@ -948,7 +952,7 @@
       "end": "2026-03-28T15:25:00+08:00",
       "qa": "https://app.sli.do/event/fba785c9-4199-4fdc-ace8-1ba45ba21081",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FBy5Gybsq-g",
       "record": null,
       "live": null,
       "language": null,
@@ -978,18 +982,18 @@
       "end": "2026-03-28T15:25:00+08:00",
       "qa": "https://app.sli.do/event/8845543c-1651-4212-8fde-672cf88f87c5",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2Frk2MyZo9-x",
       "record": null,
       "live": null,
       "language": null,
       "uri": "https://sitcon.org/2026/agenda/023219/",
       "zh": {
         "title": "語言模型的認知、認同與對齊",
-        "description": "<p>隨著大眾愈加依賴語言模型獲取資訊，模型如何生成回應顯得日益重要。當我們知道敘事內容的選擇與呈現方式皆能左右讀者的認知，我們不禁得好奇：語言模型是否擁有自身的認同與立場？若有，這又由誰決定？本議程將探討語言模型建立「Alignment（對齊）」的歷程。我們將先從訓練流程切入，介紹語言模型訓練的三個階段；接著深入剖析資料集篩選、RL 策略選擇、安全性與歧視防制等因素，如何在訓練中形塑模型的認同。最終，我們將討論產官學界對監督模型立場的看法，及未來可能的發展走向。期待透過本場議程，讓聽眾更理解語言模型，並洞悉模型回應背後的取捨機制。</p>\n<h2>先備知識</h2>\n<p>無，有一定機器學習背景知識者佳</p>\n"
+        "description": "<p>我們期待語言模型能公正、客觀地回答問題，甚至仰賴它輔助決策，但這份信任的基礎真的穩固嗎？</p>\n<p>本場議程將從「認知、認同與對齊」三個層次，拆解語言模型行為的底層邏輯。首先，我們將剖析預訓練與後訓練的分工，看模型如何從「理解世界」轉化為「學會服務人類」。接著，我們將檢視訓練資料中潛藏的偏見、少數語言與文化的代表性不足，以及粗糙的資料清洗過程，如何導致模型對世界的認知逐漸失真。更進一步，我們將探討語言模型的「認同」與價值觀形塑與人類有什麼不同。我們將解釋提示詞與上下文如何引導模型展現特定立場，並引入一套理論框架，將模型的回應視為從多重人格中提取的結果。</p>\n<p>期待透過這場議程，能為語言模型行為的成因建立更結構化的理解，並邀請聽眾一同反思：在使用與評估這些模型時，有哪些理所當然的假設亟需被重新檢視。</p>\n<h2>先備知識</h2>\n<p>熟悉語言模型的原理即可，知悉機器學習模型的訓練過程者佳</p>\n"
       },
       "en": {
         "title": "語言模型的認知、認同與對齊",
-        "description": "<p>隨著大眾愈加依賴語言模型獲取資訊，模型如何生成回應顯得日益重要。當我們知道敘事內容的選擇與呈現方式皆能左右讀者的認知，我們不禁得好奇：語言模型是否擁有自身的認同與立場？若有，這又由誰決定？本議程將探討語言模型建立「Alignment（對齊）」的歷程。我們將先從訓練流程切入，介紹語言模型訓練的三個階段；接著深入剖析資料集篩選、RL 策略選擇、安全性與歧視防制等因素，如何在訓練中形塑模型的認同。最終，我們將討論產官學界對監督模型立場的看法，及未來可能的發展走向。期待透過本場議程，讓聽眾更理解語言模型，並洞悉模型回應背後的取捨機制。</p>\n<h2>先備知識</h2>\n<p>無，有一定機器學習背景知識者佳</p>\n"
+        "description": "<p>我們期待語言模型能公正、客觀地回答問題，甚至仰賴它輔助決策，但這份信任的基礎真的穩固嗎？</p>\n<p>本場議程將從「認知、認同與對齊」三個層次，拆解語言模型行為的底層邏輯。首先，我們將剖析預訓練與後訓練的分工，看模型如何從「理解世界」轉化為「學會服務人類」。接著，我們將檢視訓練資料中潛藏的偏見、少數語言與文化的代表性不足，以及粗糙的資料清洗過程，如何導致模型對世界的認知逐漸失真。更進一步，我們將探討語言模型的「認同」與價值觀形塑與人類有什麼不同。我們將解釋提示詞與上下文如何引導模型展現特定立場，並引入一套理論框架，將模型的回應視為從多重人格中提取的結果。</p>\n<p>期待透過這場議程，能為語言模型行為的成因建立更結構化的理解，並邀請聽眾一同反思：在使用與評估這些模型時，有哪些理所當然的假設亟需被重新檢視。</p>\n<h2>先備知識</h2>\n<p>熟悉語言模型的原理即可，知悉機器學習模型的訓練過程者佳</p>\n"
       },
       "speakers": [
         "64730a"
@@ -1006,9 +1010,9 @@
       "broadcast": null,
       "start": "2026-03-28T14:45:00+08:00",
       "end": "2026-03-28T15:25:00+08:00",
-      "qa": null,
+      "qa": "https://app.sli.do/event/b3e22de9-c4db-4229-ab27-7a4d9260c687",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FrJRMJZic-x",
       "record": null,
       "live": null,
       "language": null,
@@ -1039,17 +1043,17 @@
       "end": "2026-03-28T15:25:00+08:00",
       "qa": "https://app.sli.do/event/04eebb11-11d9-471c-bf93-349f5b11c667",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FSye7yWoc-x",
       "record": null,
       "live": null,
       "language": null,
       "uri": "https://sitcon.org/2026/agenda/91836d/",
       "zh": {
-        "title": "STM32 DOOM 裸機移植挑戰",
+        "title": "1 MB 的奇蹟：從零打造微型遊戲機",
         "description": "<p>Can it run doom？這是對運算裝置的經典提問。雖然我們看過 DOOM 跑在無數的裝置上，但你是否好奇過這是怎麼做到的？本議程將帶領大家在僅有 1MB SRAM 的 STM32H750 平台上，從零開始進行一場裸機移植挑戰。</p>\n<p>我們將拋開 HAL Library，直接面對硬體，在沒有任何抽象化的前提下，透過純粹的暫存器操作來操縱時鐘、UART 與 QSPI 等硬體週邊，完成基礎建設後使用 LTDC 輸出 VGA 訊號顯示畫面，重現經典。讓我們一起在這場從零開始的實作中，找回親手控制每一個 bit 的樂趣。</p>\n<h2>先備知識</h2>\n<p>懂得 C 語言、知道怎麼編譯與鏈結、對計算機組織有一定的認識</p>\n"
       },
       "en": {
-        "title": "STM32 DOOM 裸機移植挑戰",
+        "title": "1 MB 的奇蹟：從零打造微型遊戲機",
         "description": "<p>Can it run doom？這是對運算裝置的經典提問。雖然我們看過 DOOM 跑在無數的裝置上，但你是否好奇過這是怎麼做到的？本議程將帶領大家在僅有 1MB SRAM 的 STM32H750 平台上，從零開始進行一場裸機移植挑戰。</p>\n<p>我們將拋開 HAL Library，直接面對硬體，在沒有任何抽象化的前提下，透過純粹的暫存器操作來操縱時鐘、UART 與 QSPI 等硬體週邊，完成基礎建設後使用 LTDC 輸出 VGA 訊號顯示畫面，重現經典。讓我們一起在這場從零開始的實作中，找回親手控制每一個 bit 的樂趣。</p>\n<h2>先備知識</h2>\n<p>懂得 C 語言、知道怎麼編譯與鏈結、對計算機組織有一定的認識</p>\n"
       },
       "speakers": [
@@ -1068,18 +1072,18 @@
       "end": "2026-03-28T15:25:00+08:00",
       "qa": "https://app.sli.do/event/136242f9-da94-4fb7-a43c-93eaee41d9a7",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FrJMXJ-i5bg",
       "record": null,
       "live": null,
       "language": null,
       "uri": "https://sitcon.org/2026/agenda/dbd911/",
       "zh": {
         "title": "在書海中的航行指南；打開你對圖書館的全新視野！",
-        "description": "<p>你是否曾經想過，在一間圖書館內有超過數十萬本以上的書籍，圖書館員是如何讓你在幾十萬本書中快速找到你需要的資料嗎？你猜得沒錯，用電腦直接搜尋就好啦！</p>\n<p>那麼，如果是在沒有電腦的遠古時代呢？</p>\n<p>在這場議程中，我想從「圖書資訊學」的角度來帶你揭開圖書館鮮為人知的面紗、帶你了解圖書館中的秘密，並向你介紹一種從「語意相似性」來進行演算的「書籍推薦系統」。</p>\n<h2>先備知識</h2>\n<p>知道什麼是向量（國中程度就好ㄌ）、一點點自然語言處理</p>\n"
+        "description": "<p>你是否曾經想過，在一間圖書館內有超過數十萬本以上的書籍，圖書館員是如何讓你在幾十萬本書中快速找到你需要的資料嗎？你猜得沒錯，用電腦直接搜尋就好啦！</p>\n<p>那麼，如果是在沒有電腦的遠古時代呢？</p>\n<p>在這場議程中，我想從「圖書資訊學」的角度來帶你揭開圖書館鮮為人知的面紗、帶你了解圖書館中的秘密，並向你介紹一種從「語意相似性」來進行演算的「書籍推薦系統」。</p>\n<h2>先備知識</h2>\n<p>無</p>\n"
       },
       "en": {
         "title": "在書海中的航行指南；打開你對圖書館的全新視野！",
-        "description": "<p>你是否曾經想過，在一間圖書館內有超過數十萬本以上的書籍，圖書館員是如何讓你在幾十萬本書中快速找到你需要的資料嗎？你猜得沒錯，用電腦直接搜尋就好啦！</p>\n<p>那麼，如果是在沒有電腦的遠古時代呢？</p>\n<p>在這場議程中，我想從「圖書資訊學」的角度來帶你揭開圖書館鮮為人知的面紗、帶你了解圖書館中的秘密，並向你介紹一種從「語意相似性」來進行演算的「書籍推薦系統」。</p>\n<h2>先備知識</h2>\n<p>知道什麼是向量（國中程度就好ㄌ）、一點點自然語言處理</p>\n"
+        "description": "<p>你是否曾經想過，在一間圖書館內有超過數十萬本以上的書籍，圖書館員是如何讓你在幾十萬本書中快速找到你需要的資料嗎？你猜得沒錯，用電腦直接搜尋就好啦！</p>\n<p>那麼，如果是在沒有電腦的遠古時代呢？</p>\n<p>在這場議程中，我想從「圖書資訊學」的角度來帶你揭開圖書館鮮為人知的面紗、帶你了解圖書館中的秘密，並向你介紹一種從「語意相似性」來進行演算的「書籍推薦系統」。</p>\n<h2>先備知識</h2>\n<p>無</p>\n"
       },
       "speakers": [
         "07a739"
@@ -1153,7 +1157,7 @@
       "end": "2026-03-28T16:45:00+08:00",
       "qa": "https://app.sli.do/event/51711b20-0cb9-4081-ae70-b79e09611873",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FBkLQkbi9Zl",
       "record": null,
       "live": null,
       "language": null,
@@ -1181,8 +1185,8 @@
       "start": "2026-03-28T16:05:00+08:00",
       "end": "2026-03-28T16:45:00+08:00",
       "qa": "https://app.sli.do/event/4918d0c7-a78a-47ff-ac27-7db9c224d67d",
-      "slide": null,
-      "co_write": null,
+      "slide": "https://docs.google.com/presentation/d/1XW9IFMdLmvmT5Cae5VxgExq3nPUPmsqZ/edit?usp=share_link&ouid=111039940099895536166&rtpof=true&sd=true",
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FS1F71bs9Zg",
       "record": null,
       "live": null,
       "language": null,
@@ -1211,7 +1215,7 @@
       "end": "2026-03-28T16:45:00+08:00",
       "qa": "https://app.sli.do/event/b3e22de9-c4db-4229-ab27-7a4d9260c687",
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FrJsXJWicZg",
       "record": null,
       "live": null,
       "language": null,
@@ -1240,8 +1244,8 @@
       "start": "2026-03-28T16:05:00+08:00",
       "end": "2026-03-28T16:45:00+08:00",
       "qa": "https://app.sli.do/event/1380d1c5-e29a-479a-b3c3-8a3d65998a6b",
-      "slide": null,
-      "co_write": null,
+      "slide": "https://docs.google.com/presentation/d/1X6LwD4JZkIhIDl4tsPVmlF2gjrTXmo1-dvfBHvIQWCg/edit?usp=sharing",
+      "co_write": "https://hackmd.io/@SITCON/2026/%2FHJ6m1boqWl",
       "record": null,
       "live": null,
       "language": null,
@@ -1308,7 +1312,7 @@
       "end": "2026-03-28T17:45:00+08:00",
       "qa": null,
       "slide": null,
-      "co_write": null,
+      "co_write": "https://hackmd.io/@SITCON/2026/%2Fryk4JZj5-e",
       "record": null,
       "live": null,
       "language": null,
@@ -1640,11 +1644,11 @@
       "avatar": "https://sitcon.org/2026/img/avatar/speaker/365f0b.webp",
       "zh": {
         "name": "Sky Hong",
-        "bio": "<p>我是蓋蓋，本名洪軾凱，目前在國立陽明交通大學數據科學與工程研究所讀碩一。\n目前研究領域專注於 Human–Computer Interaction、Computational Creativity 與 Personal Informatics。</p>\n<p>喜歡研究複雜抽象的資訊系統，把所有元素拆開研究後，在想像塞進去新的元素後的樣子。\n關心蒐集個人資料、數位足跡、個人資訊管理，以及人與大量資訊互動的工具與技術。\n最近喜歡玩 FINAL FANTASY XIV Online、在路上吹口琴和到各種二手店挖寶。</p>\n<p>我的個人網站： <a href=\"https://skyhong.tw\">https://skyhong.tw</a></p>\n"
+        "bio": "<p>我是蓋蓋，本名洪軾凱，目前在國立陽明交通大學數據科學與工程研究所讀碩一。\n目前研究領域專注於 Human–Computer Interaction、Computational Creativity 與 Personal Informatics。</p>\n<p>喜歡研究複雜抽象的資訊系統，把所有元素拆開研究後，想像塞進去新的元素後的樣子。\n關心蒐集個人資料、數位足跡、個人資訊管理，以及人與大量資訊互動的工具與技術。\n最近喜歡玩 FINAL FANTASY XIV Online、在路上吹口琴和到各種二手店挖寶。</p>\n<p>我的個人網站： <a href=\"https://skyhong.tw/\">https://skyhong.tw/</a></p>\n"
       },
       "en": {
         "name": "Sky Hong",
-        "bio": "<p>我是蓋蓋，本名洪軾凱，目前在國立陽明交通大學數據科學與工程研究所讀碩一。\n目前研究領域專注於 Human–Computer Interaction、Computational Creativity 與 Personal Informatics。</p>\n<p>喜歡研究複雜抽象的資訊系統，把所有元素拆開研究後，在想像塞進去新的元素後的樣子。\n關心蒐集個人資料、數位足跡、個人資訊管理，以及人與大量資訊互動的工具與技術。\n最近喜歡玩 FINAL FANTASY XIV Online、在路上吹口琴和到各種二手店挖寶。</p>\n<p>我的個人網站： <a href=\"https://skyhong.tw\">https://skyhong.tw</a></p>\n"
+        "bio": "<p>我是蓋蓋，本名洪軾凱，目前在國立陽明交通大學數據科學與工程研究所讀碩一。\n目前研究領域專注於 Human–Computer Interaction、Computational Creativity 與 Personal Informatics。</p>\n<p>喜歡研究複雜抽象的資訊系統，把所有元素拆開研究後，想像塞進去新的元素後的樣子。\n關心蒐集個人資料、數位足跡、個人資訊管理，以及人與大量資訊互動的工具與技術。\n最近喜歡玩 FINAL FANTASY XIV Online、在路上吹口琴和到各種二手店挖寶。</p>\n<p>我的個人網站： <a href=\"https://skyhong.tw/\">https://skyhong.tw/</a></p>\n"
       }
     },
     {
@@ -1817,13 +1821,61 @@
     },
     {
       "id": "27c6d6",
-      "avatar": "https://sitcon.org/2022/imgs/deafult_avatar.jpg",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/27c6d6.webp",
       "zh": {
         "name": "主持人 - RSChiang",
-        "bio": ""
+        "bio": "<p>RSChiang 是 SITCON 共同發起人之一，國立台灣大學法律學系畢業，在校期間活躍於社團經營與校園參與，也在 SITCON 推廣開源精神多年。目前是台灣零時政府社群 g0v Summit 2026 的總召，研究領域是數位政府、開放資料與網路治理。你可以在 SITCON 的群組、Mastodon、或是 RS 的個人網站上捕捉到他，也可以跟他打聽肉桂捲的獨到見解。</p>\n"
       },
       "en": {
         "name": "主持人 - RSChiang",
+        "bio": "<p>RSChiang 是 SITCON 共同發起人之一，國立台灣大學法律學系畢業，在校期間活躍於社團經營與校園參與，也在 SITCON 推廣開源精神多年。目前是台灣零時政府社群 g0v Summit 2026 的總召，研究領域是數位政府、開放資料與網路治理。你可以在 SITCON 的群組、Mastodon、或是 RS 的個人網站上捕捉到他，也可以跟他打聽肉桂捲的獨到見解。</p>\n"
+      }
+    },
+    {
+      "id": "17d204",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/17d204.webp",
+      "zh": {
+        "name": "Nathan",
+        "bio": "<p>目前就讀臺北市華江高中，還只是位高三生，自 2023 起接觸 SITCON，是今年的議程組組員！</p>\n"
+      },
+      "en": {
+        "name": "Nathan",
+        "bio": "<p>目前就讀臺北市華江高中，還只是位高三生，自 2023 起接觸 SITCON，是今年的議程組組員！</p>\n"
+      }
+    },
+    {
+      "id": "dd2fc9",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/dd2fc9.webp",
+      "zh": {
+        "name": "xiung",
+        "bio": "<p>目前就讀臺北市數位實驗高中 ，是 SITCON 2026 的議程組副組長，也是去年的議程組員，常出沒在不同社群擔任志工</p>\n"
+      },
+      "en": {
+        "name": "xiung",
+        "bio": "<p>目前就讀臺北市數位實驗高中 ，是 SITCON 2026 的議程組副組長，也是去年的議程組員，常出沒在不同社群擔任志工</p>\n"
+      }
+    },
+    {
+      "id": "b71a45",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/b71a45.webp",
+      "zh": {
+        "name": "ffting",
+        "bio": "<p>嗨嗨大家！我是方方\n公館大學資管系大二\n今年是第一次跳 SITCON ！\n在跳 SITCON 之前一直覺得 SITCON 的人都太強了 所以一直不敢跳坑\n但最後還是站在這裡了\n如果你們想的話 明年你們也可以！\n除了 SITCON 以外\n高中有碰一點資安跟超級一咪咪競程\n但現在還是沒有很強\n不過有問題還是可以問我！我會盡力回答的</p>\n"
+      },
+      "en": {
+        "name": "ffting",
+        "bio": "<p>嗨嗨大家！我是方方\n公館大學資管系大二\n今年是第一次跳 SITCON ！\n在跳 SITCON 之前一直覺得 SITCON 的人都太強了 所以一直不敢跳坑\n但最後還是站在這裡了\n如果你們想的話 明年你們也可以！\n除了 SITCON 以外\n高中有碰一點資安跟超級一咪咪競程\n但現在還是沒有很強\n不過有問題還是可以問我！我會盡力回答的</p>\n"
+      }
+    },
+    {
+      "id": "1cc4ce",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/1cc4ce.webp",
+      "zh": {
+        "name": "Yuto",
+        "bio": "<p>過往我都是在台下當快樂聽眾，聽台上的講者講故事，並憧憬著有一天也能成為大佬。\n沒想到這次居然輪到我了，但我還沒成為大佬啊啊啊啊啊～</p>\n<p>嗨嗨！我是 Yuto，曾擔任大同大學科學開源服務社的社長，講過許多社課也參與籌備過好幾場營隊。在去年加入 SITCON Camp 隊輔組後，今年正式參與年會籌備了！\n我熟悉的領域是資訊安全，但因為好奇所以軟體工程、系統程式也都摸一點點（好雜\n除了那些之外，對於社團組織運作感興趣的也歡迎來找我聊天，我會偷偷教你怎麼把 SITCON 的流程搬回社團</p>\n"
+      },
+      "en": {
+        "name": "Yuto",
         "bio": ""
       }
     },

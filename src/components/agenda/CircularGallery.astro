@@ -47,7 +47,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 ---
 
 <div class="circular-gallery-wrapper">
-	<div class="circular-gallery" aria-label={isEn ? "Poster gallery" : "海報展示牆"} data-count={itemCount} data-original-count={originalCount}>
+	<div class="circular-gallery" aria-label={isEn ? "Poster gallery" : "Demo 展"} data-count={itemCount} data-original-count={originalCount}>
 		{
 			expandedItems.map((item, index) => {
 				const angle = index * angleStep;
@@ -143,7 +143,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 
 	.gallery-info {
 		width: 100%;
-		max-width: 50rem;
+		max-width: 75rem;
 		margin: 0 auto;
 		text-align: center;
 		padding: 0;
@@ -176,6 +176,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 		color: white;
 		margin: 0 0 1rem;
 		min-height: 2rem;
+		max-width: 55rem;
 	}
 
 	.gallery-info__description {
@@ -859,12 +860,20 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 					viewer.classList.add("is-open");
 					viewer.setAttribute("aria-hidden", "false");
 					document.body.style.overflow = "hidden";
+					const lenis = (window as any).lenis;
+					if (lenis && typeof lenis.stop === "function") {
+						lenis.stop();
+					}
 				};
 
 				const closeViewer = () => {
 					viewer.classList.remove("is-open");
 					viewer.setAttribute("aria-hidden", "true");
 					document.body.style.overflow = "";
+					const lenis = (window as any).lenis;
+					if (lenis && typeof lenis.start === "function") {
+						lenis.start();
+					}
 				};
 
 				const zoom = (delta: number) => {

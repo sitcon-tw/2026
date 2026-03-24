@@ -19,6 +19,10 @@
 			{
 				"name": "general",
 				"role": "deputy_chief"
+			},
+			{
+				"name": "design",
+				"role": "member"
 			}
 		],
 		"link": "https://windless.me"
@@ -246,6 +250,16 @@
 			}
 		],
 		"link": "https://github.com/Super1115"
+	},
+	{
+		"name": "RS",
+		"description": "",
+		"teams": [
+			{
+				"name": "agenda",
+				"role": "member"
+			}
+		]
 	},
 	{
 		"name": "Fearnot",
@@ -765,6 +779,16 @@
 		"mode": "nobg"
 	},
 	{
+		"name": "牛奶麻糬",
+		"description": "",
+		"teams": [
+			{
+				"name": "operations",
+				"role": "ops_mobility"
+			}
+		]
+	},
+	{
 		"name": "章魚",
 		"description": "很高興認識大家，我是年會前幾天剛滿19歲，來自設計組的章魚～\n然後我在年初已經看到了ZEROBASEONE、CORTIS、BOYNEXTDOOR、TWS、Stray Kids、LE SSERAFIM、IVE、Jennie...，請各位祝福我在今年年末可以去看 BTS 高雄場！！",
 		"teams": [
@@ -878,6 +902,17 @@
 			}
 		],
 		"link": "？什麼意思"
+	},
+	{
+		"name": "海豹",
+		"description": "seadog007",
+		"teams": [
+			{
+				"name": "design",
+				"role": "member"
+			}
+		],
+		"mode": "color"
 	},
 	{
 		"name": "Lindy",
@@ -997,6 +1032,16 @@
 			}
 		],
 		"link": "https://www.instagram.com/graphy.john_?igsh=dmJncXQya3B6Mzl2"
+	},
+	{
+		"name": "月太",
+		"description": "",
+		"teams": [
+			{
+				"name": "recording",
+				"role": "member"
+			}
+		]
 	},
 	{
 		"name": "Wei",
@@ -1329,7 +1374,8 @@
 				"name": "production",
 				"role": "agenda_lead"
 			}
-		]
+		],
+		"link": "https://skyhong.tw/"
 	},
 	{
 		"name": "brian",
