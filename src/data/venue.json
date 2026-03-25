@@ -108,11 +108,32 @@
 				"meshes": ["floor__3f__aia_table", "floor__3f__aia_text"]
 			},
 			{
-				"id": "schools_1",
-				"name": "學生社群 (SCINT/SCAICT/SCIST)",
+				"id": "scint",
+				"name": "SCINT 北臺灣學生資訊社群",
 				"description": "社群攤位",
-				"longDescription": "北臺灣學生資訊社群 SCINT、中部高中電資社團聯合會議 SCAICT、南臺灣學生資訊社群 SCIST，三大學生資訊社群攜手合作，致力於在北、中、南部推廣程式、資安、專案開發等資訊教育，扶植各地高中職生資訊社群的發展。",
-				"meshes": ["floor__3f__schools_1_table", "floor__3f__schools_1_text", "floor__3f__schools_2_table"]
+				"longDescription": "",
+				"meshes": ["floor__3f__scint_table", "floor__3f__scint_text"]
+			},
+			{
+				"id": "scist",
+				"name": "SCIST 南臺灣學生資訊社群",
+				"description": "社群攤位",
+				"longDescription": "",
+				"meshes": ["floor__3f__scist_table", "floor__3f__scist_text"]
+			},
+			{
+				"id": "scaict",
+				"name": "SCAICT 中電會",
+				"description": "社群攤位",
+				"longDescription": "",
+				"meshes": ["floor__3f__scaict_table", "floor__3f__scaict_text"]
+			},
+			{
+				"id": "tkuitocc",
+				"name": "TKUITOCC 淡江大學資訊科技及開放文化社群",
+				"description": "社群攤位",
+				"longDescription": "",
+				"meshes": ["floor__3f__tkuitocc_table", "floor__3f__tkuitocc_text"]
 			}
 		]
 	},
