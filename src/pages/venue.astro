@@ -725,17 +725,25 @@ const t = useTranslations(lang).venue;
 					obj.receiveShadow = true;
 					// Clone materials so opacity changes on one mesh don't affect others sharing the same material
 					if (obj.material) {
-						if (Array.isArray(obj.material)) {
-							obj.material = obj.material.map(mat => {
-								const m = mat.clone();
-								m.transparent = true;
+						const cloneMat = (mat: THREE.Material) => {
+							const m = mat.clone() as THREE.MeshStandardMaterial;
+							const baseOpacity = (m as THREE.MeshStandardMaterial).opacity ?? 1;
+							m.transparent = true;
+							if (baseOpacity < 0.99) {
+								// Window-like material: preserve original alpha, fix depth/side issues
+								m.depthWrite = false;
+								m.side = THREE.DoubleSide;
+								m.userData = { ...m.userData, baseOpacity };
+							} else {
 								m.opacity = 1;
-								return m;
-							});
+								m.userData = { ...m.userData, baseOpacity: 1 };
+							}
+							return m;
+						};
+						if (Array.isArray(obj.material)) {
+							obj.material = obj.material.map(cloneMat);
 						} else {
-							obj.material = obj.material.clone();
-							obj.material.transparent = true;
-							obj.material.opacity = 1;
+							obj.material = cloneMat(obj.material);
 						}
 					}
 					const n = obj.name.toLowerCase();
@@ -796,18 +804,21 @@ const t = useTranslations(lang).venue;
 	const setPivotOpacity = (pivot: THREE.Object3D, opacity: number, duration: number, onComplete?: () => void) => {
 		const meshes: THREE.Mesh[] = [];
 		pivot.traverse(c => {
-			if (c instanceof THREE.Mesh && c.material) meshes.push(c);
+			if (c instanceof THREE.Mesh && c.material && !c.userData.isOutline) meshes.push(c);
 		});
 		meshes.forEach((mesh, i) => {
 			const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
 			mats.forEach((mat: THREE.Material) => {
 				if (!("opacity" in mat)) return;
+				// Preserve window material's original alpha (e.g. 0.3) — only scale it by the fade factor
+				const baseOpacity = (mat as THREE.MeshStandardMaterial).userData?.baseOpacity ?? 1;
+				const target = opacity * baseOpacity;
 				gsap.killTweensOf(mat);
 				if (duration === 0) {
-					(mat as THREE.MeshStandardMaterial).opacity = opacity;
+					(mat as THREE.MeshStandardMaterial).opacity = target;
 				} else {
 					gsap.to(mat, {
-						opacity,
+						opacity: target,
 						duration,
 						onComplete: onComplete && i === meshes.length - 1 ? onComplete : undefined
 					});
