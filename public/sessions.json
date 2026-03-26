@@ -530,7 +530,7 @@
       "start": "2026-03-28T12:45:00+08:00",
       "end": "2026-03-28T13:25:00+08:00",
       "qa": "https://app.sli.do/event/02873887-fe1c-4558-a087-66a2bf48c848",
-      "slide": null,
+      "slide": "https://www.canva.com/design/DAG8ul7IQYY/x8F_lh0jdhcSEu9496YTLg/edit",
       "co_write": "https://hackmd.io/@SITCON/2026/%2Fr1rWybsc-x",
       "record": null,
       "live": null,
@@ -981,7 +981,7 @@
       "start": "2026-03-28T14:45:00+08:00",
       "end": "2026-03-28T15:25:00+08:00",
       "qa": "https://app.sli.do/event/8845543c-1651-4212-8fde-672cf88f87c5",
-      "slide": null,
+      "slide": "https://drive.google.com/file/d/1v25WCUyD-WSejIMkCxl1JS0_fNJNY1Sb/view?usp=sharing",
       "co_write": "https://hackmd.io/@SITCON/2026/%2Frk2MyZo9-x",
       "record": null,
       "live": null,
@@ -1071,7 +1071,7 @@
       "start": "2026-03-28T14:45:00+08:00",
       "end": "2026-03-28T15:25:00+08:00",
       "qa": "https://app.sli.do/event/136242f9-da94-4fb7-a43c-93eaee41d9a7",
-      "slide": null,
+      "slide": "https://docs.google.com/presentation/d/146TagNvfCdQiCEeq0IHxM6i_c84F4z3vu6mTfo25bag/edit?usp=sharing",
       "co_write": "https://hackmd.io/@SITCON/2026/%2FrJMXJ-i5bg",
       "record": null,
       "live": null,
@@ -1185,7 +1185,7 @@
       "start": "2026-03-28T16:05:00+08:00",
       "end": "2026-03-28T16:45:00+08:00",
       "qa": "https://app.sli.do/event/4918d0c7-a78a-47ff-ac27-7db9c224d67d",
-      "slide": "https://docs.google.com/presentation/d/1XW9IFMdLmvmT5Cae5VxgExq3nPUPmsqZ/edit?usp=share_link&ouid=111039940099895536166&rtpof=true&sd=true",
+      "slide": "https://docs.google.com/presentation/d/1SbhmMwSbNAcp6qn37vXHBRHPz5A2AYWH/edit?usp=sharing&ouid=111039940099895536166&rtpof=true&sd=true",
       "co_write": "https://hackmd.io/@SITCON/2026/%2FS1F71bs9Zg",
       "record": null,
       "live": null,
@@ -1364,6 +1364,18 @@
   ],
   "speakers": [
     {
+      "id": "f877a5",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/large/f877a5.webp",
+      "zh": {
+        "name": "副召 Windless",
+        "bio": ""
+      },
+      "en": {
+        "name": "副召 Windless",
+        "bio": ""
+      }
+    },
+    {
       "id": "848137",
       "avatar": "https://sitcon.org/2026/img/avatar/speaker/large/848137.webp",
       "zh": {
@@ -1373,6 +1385,18 @@
       "en": {
         "name": "總召 柴柴",
         "bio": "柴柴是一個來自宜蘭大學資工系的 SITCON 2026 總召，自稱是位技能點得很散的「數位雜工」，日常遊走在各種技術堆疊之間，比起鑽研單一領域，更熱衷於將不同技術串接起來的樂趣。~~據說正在研究如何讓 Server 警報在半夜自動靜音~~"
+      }
+    },
+    {
+      "id": "3e302e",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/large/3e302e.webp",
+      "zh": {
+        "name": "共同發起人 Denny Huang",
+        "bio": "SITCON 學生計算機年會共同發起人，在正規教育中特立獨行，妄想透過改善教育讓台灣更進步，崇尚開源精神，熱愛使用者界面以外的多項技術。"
+      },
+      "en": {
+        "name": "共同發起人 Denny Huang",
+        "bio": "SITCON 學生計算機年會共同發起人，在正規教育中特立獨行，妄想透過改善教育讓台灣更進步，崇尚開源精神，熱愛使用者界面以外的多項技術。"
       }
     },
     {
