@@ -63,7 +63,7 @@
 				"id": "amd",
 				"name": "AMD",
 				"description": "贊助商攤位",
-				"longDescription": "AMD 推動高效能運算、繪圖及視覺技術。全球消費者、世界 500 強企業及研究機構透過 AMD 來改善生活、工作及娛樂。AMD 致力研發領先的高效能產品，不斷突破極限。",
+				"longDescription": "AMD 推動高效能運算、繪圖及視覺技術。全球消費者、世界500強企業及研究機構透過AMD來改善生活、工作及娛樂。AMD致力研發領先的高效能產品，不斷突破極限。",
 				"link": "https://www.amd.com/zh-tw.html",
 				"meshes": ["floor__3f__amd_table", "floor__3f__amd_text"]
 			},
@@ -71,7 +71,7 @@
 				"id": "twinkleai",
 				"name": "Twinkle AI",
 				"description": "社群攤位",
-				"longDescription": "Twinkle AI 成立於 2024 年底，是一個專注於繁體中文語言模型的開源研究社群。從 LLaMA 模型起步，持續建構專為繁體中文量身打造的實用技術，致力於打造最貼近繁體中文應用需求的大型語言模型。",
+				"longDescription": "Twinkle AI 成立於 2024 年底，是一個專注於繁體中文語言模型的開源研究社群。我們從 LLaMA 模型起步，持續建構專為繁體中文量身打造的實用技術。社群成員來自各行各業，因對模型訓練的熱情而匯聚一堂，從繁體中文語料的收集、整理，到語言模型的訓練與評測。Twinkle AI 致力於打造能力卓越、最貼近繁體中文應用需求的大型語言模型。",
 				"link": "https://twinkleai.tw/",
 				"meshes": ["floor__3f__twinkleai_table", "floor__3f__twinkleai_text"]
 			},
@@ -79,7 +79,7 @@
 				"id": "sitcon_3f",
 				"name": "SITCON 學生計算機年會",
 				"description": "主辦單位攤位",
-				"longDescription": "學生計算機年會（SITCON）自 2012 年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神。是東亞最大的學生資訊社群與研討會，希望引領更多學子踏入資訊的殿堂。",
+				"longDescription": "學生計算機年會（Students’ Information Technology Conference）自 2012 年發起，以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神，希望引領更多學子踏入資訊的殿堂，更冀望所有對資訊有興趣的學生，能夠在年會裏齊聚一堂，彼此激盪、傳承、啟發，達到「學以致用、教學相長」的實際展現。",
 				"link": "https://sitcon.org",
 				"meshes": ["floor__3f__sitcon_table", "floor__3f__sitcon_text"]
 			},
@@ -95,7 +95,7 @@
 				"id": "tdna",
 				"name": "TDNA 台灣數位遊牧者協會",
 				"description": "社群攤位",
-				"longDescription": "TDNA 致力於推動台灣成為亞洲重要的數位遊牧與遠距工作樞紐，串聯政府、地方城市、產業夥伴與國際社群，協助政策推動、示範場域建置與跨國交流，並定期舉辦國際論壇與社群聚會。",
+				"longDescription": "TDNA 致力於推動台灣成為亞洲重要的數位遊牧與遠距工作樞紐，串聯政府、地方城市、產業夥伴與國際社群，協助政策推動、示範場域建置與跨國交流。協會長期於台東、花蓮、台南等地推動示範計畫與駐點行動，打造友善的工作與生活環境，吸引國際遠距人才深入地方，促進地方創生與產業升級。同時，TDNA 積極拓展國際合作網絡，與日本、韓國、東南亞及歐美多個遊牧組織建立長期夥伴關係，定期舉辦國際論壇、社群聚會與年度大型活動，如 Taiwan Digital Fest，打造台灣連結全球遊牧社群的重要平台，讓世界走進台灣，也讓台灣走向世界。",
 				"link": "https://dna.org.tw",
 				"meshes": ["floor__3f__tdna_table", "floor__3f__tdna_text"]
 			},
@@ -108,11 +108,36 @@
 				"meshes": ["floor__3f__aia_table", "floor__3f__aia_text"]
 			},
 			{
-				"id": "schools_1",
-				"name": "學生社群 (SCINT/SCAICT/SCIST)",
+				"id": "scint",
+				"name": "SCINT 北臺灣學生資訊社群",
 				"description": "社群攤位",
-				"longDescription": "北臺灣學生資訊社群 SCINT、中部高中電資社團聯合會議 SCAICT、南臺灣學生資訊社群 SCIST，三大學生資訊社群攜手合作，致力於在北、中、南部推廣程式、資安、專案開發等資訊教育，扶植各地高中職生資訊社群的發展。",
-				"meshes": ["floor__3f__schools_1_table", "floor__3f__schools_1_text", "floor__3f__schools_2_table"]
+				"longDescription": "SCINT 北臺灣學生資訊社群創立於 2023，擁有超過 20 所北、中、南部高中職合作社團，是北部最大的高中職生資訊社群，我們希望成為社團間的膠水，解決北部社團小圈圈問題，並推廣程式、資安、專案開發、硬體開發等不同領域的課程.",
+				"link": "https://scint.org",
+				"meshes": ["floor__3f__scint_table", "floor__3f__scint_text"]
+			},
+			{
+				"id": "scist",
+				"name": "SCIST 南臺灣學生資訊社群",
+				"description": "社群攤位",
+				"longDescription": "SCIST 是一群來自嘉義、台南、高雄和屏東四地的高中學生，經過許多活動以及比賽後深深感受到南北資訊能力以及資源的落差，我們希望透過 SCIST 舉辦的課程、營隊等活動提升南部學生的資訊能力水平，同時也帶來更多資源提供所有人進行學習！",
+				"link": "https://scist.org",
+				"meshes": ["floor__3f__scist_table", "floor__3f__scist_text"]
+			},
+			{
+				"id": "scaict",
+				"name": "SCAICT 中電會",
+				"description": "社群攤位",
+				"longDescription": "中部高中電資社團聯合會議（簡稱中電會）成立於 2021 年，是由一群熱愛資訊科技和社團活動的高中職生所組成，而主要目的在於整合中部資訊科技資源，推廣資訊相關的課程。在這學期我們舉辦了數場免費專業領域課程、國中生課程、每月主題課程、以及聯合寒訓。目前我們正在對社群進行大更新，希望能創造一個活躍的開放討論空間與資源中心。中電會以資訊安全起家，我們目前預計在 SITCON 中展示使用陀螺儀竊取密碼的互動活動，期待能推廣我們的課程及社群。",
+				"link": "https://scaict.org",
+				"meshes": ["floor__3f__scaict_table", "floor__3f__scaict_text"]
+			},
+			{
+				"id": "tkuitocc",
+				"name": "TKUITOCC 淡江大學資訊科技及開放文化社群",
+				"description": "社群攤位",
+				"longDescription": "淡江大學資訊科技及開放文化社群致力於推動淡江大學校內外的資訊科技及開放文化發展，並與其他社群互相合作、交流、學習。資訊科技方面包括專案開發（行動應用程式開發、機器人開發等）、資料結構化、程式語言學習與經驗交流等等。開放文化方面則包含數位共筆（wiki）、開放原始碼、開放資料、數位典藏、多語言翻譯、譯名標準化等。",
+				"link": "https://github.com/tkuitocc",
+				"meshes": ["floor__3f__tkuitocc_table", "floor__3f__tkuitocc_text"]
 			}
 		]
 	},
@@ -227,7 +252,8 @@
 			{
 				"id": "poster",
 				"name": "Demo 展",
-				"description": "Demo 展",
+				"description": "展示學生、研究等的專案！",
+				"longDescription": "繼​去​年​熱​烈​迴​響​的​基​礎​上​，今​年​的​「Demo 展​」華​麗​升​級​！這​是​一​個​議​程​之​外​的​特​別​展​區​，不​僅​提​供​學​生​展​示​專​案​或​研​究​成​果​的​舞​台​，還​能​透​過​現​場​演​示​與​對​談​，讓​與​會​者​能​輕​鬆​探​索​多​元​領​域​的​知​識​，開​啟​更​多​交​流​與​啟​發​的​契​機​。活​動​將​於​ 2026 年​ 3 月​ 28 日​年​會​當​天​，在​ 4 樓​北​側​攤​位​展​出​，呈​現​來​自​全​台​優​秀​學​生​的​作​品​。無​論​你​是​關​注​技​術​創​新​、專​案​分​享​、互​動​設​計​，還​是​新​穎​的​研​究​發​現​，都​可​以​在​這​裡​找​到​讓​你​耳​目​一​新​的​主​題​。此​外​，各​專​案​的​展​出​者​將​於​不​同​時​段​親​臨​現​場​，與​大​家​交​流​討​論​。這​是​個​絕​佳​的​機​會​來​提​問​、學​習​，並​認​識​來​自​各​地​的​厲​害​夥​伴​們​，熱​愛​探​索​新​知​的​你​，千​萬​別​錯​過​。",
 				"meshes": ["floor__4f__poster_table", "floor__4f__poster_text"]
 			},
 			{
@@ -238,15 +264,15 @@
 			},
 			{
 				"id": "line",
-				"name": "LINE台灣",
+				"name": "LINE 台灣",
 				"description": "贊助商攤位",
-				"longDescription": "總部位於日本的 LINE 以「拉近你我的距離」為企業使命，透過多元的行動服務與內容，致力將人們、資訊與社會緊密連結。積極實現「智慧入口」的願景，持續提供用戶享有最即時、便利的行動生活。",
+				"longDescription": "總部位於日本的LINE以「拉近你我的距離」為企業使命，透過多元的行動服務與內容，致力將人們、資訊與社會緊密連結。自2011年6月以通訊軟體的型態推出，現更推展其多元的全球生態系，並將觸角延伸至人工智慧、金融科技等領域，積極實現「智慧入口」的願景，2021年3月，LINE與日本規模最大的網路科技集團之一Z Holdings 正式整併，未來也將持續提供用戶享有最即時、便利的行動生活。",
 				"link": "https://techblog.lycorp.co.jp/zh-hant/line-tech-fresh-2026-summer",
 				"meshes": ["floor__4f__line_table", "floor__4f__line_text"]
 			},
 			{
 				"id": "tsmc",
-				"name": "台積電",
+				"name": "台灣積體電路製造股份有限公司",
 				"description": "贊助商攤位",
 				"longDescription": "台積電是全球領先的晶圓製造服務公司，其 IT 以 AI 驅動及雲端原生服務，支援半導體前瞻製程，實現「FAB RUNS ON CODE」。現在加入 IT 實習，展開你的數位卓越之旅！",
 				"link": "https://www.tsmc.com/chinese",
@@ -256,7 +282,7 @@
 				"id": "teamt5",
 				"name": "TeamT5 杜浦數位安全",
 				"description": "贊助商攤位",
-				"longDescription": "TeamT5 專注威脅情資與 EDR 研究，具 20 年 APT 與惡意程式分析經驗，並投入人才培育，每年辦理資安培訓營，且提供實習與學生社群支持。",
+				"longDescription": "TeamT5 專注威脅情資與 EDR 研究，具 20 年 APT 與惡意程式分析經驗。並投入人才培育，每年辦理資安培訓營，且提供實習與學生社群支持。",
 				"link": "https://teamt5.org/",
 				"meshes": ["floor__4f__teamt5_table", "floor__4f__teamt5_text"]
 			},
@@ -264,7 +290,7 @@
 				"id": "zuso",
 				"name": "ZUSO Generation 如梭世代",
 				"description": "贊助商攤位",
-				"longDescription": "ZUSO 如梭世代成立於 2019 年，是深耕臺灣的專業資安服務業者，專注於紅隊演練、滲透測試與資安顧問服務，協助企業驗證資安防護能力，並持續深耕臺灣資安人才培育。",
+				"longDescription": "ZUSO 如梭世代成立於 2019 年，是深耕臺灣的專業資安服務業者，團隊累積超過十年攻防實戰與威脅分析經驗，長期為多家企業提供高品質資安服務。我們專注於紅隊演練、滲透測試與資安顧問服務，協助企業驗證資安防護能力，並打造專屬的資安解決方案。同時，ZUSO 持續深耕臺灣資安人才培育，透過實習與實戰導向的學習計畫，帶領學生從理論走進真實攻防場域，為臺灣資安產業注入新世代能量，並共同守護臺灣的資訊安全。",
 				"link": "https://zuso.ai",
 				"meshes": ["floor__4f__zuso_table", "floor__4f__zuso_text"]
 			},
@@ -280,7 +306,7 @@
 				"id": "moztw",
 				"name": "MozTW 社群 / 摩茲工寮",
 				"description": "社群攤位",
-				"longDescription": "MozTW 是台灣 Mozilla 愛好者的實體社群，負責維護 Mozilla 大部分軟體的正體中文版本與語言套件的在地化。摩茲工寮是 MozTW 為開放社群與活動所設計、由社群共同管理的空間。",
+				"longDescription": "MozTW 是台灣 Mozilla 愛好者的實體社群，設有網站提供相關軟體下載等服務，並負責維護 Mozilla 大部分軟體的正體中文版本與語言套件的在地化。摩茲工寮是 MozTW 為開放社群與活動所設計，也由社群共同管理的空間。",
 				"link": "https://moztw.org",
 				"meshes": ["floor__4f__moztw_table", "floor__4f__moztw_text"]
 			},
@@ -288,7 +314,7 @@
 				"id": "g0v",
 				"name": "g0v 零時政府",
 				"description": "社群攤位",
-				"longDescription": "g0v 是發源於台灣的公民科技社群，藉由提供更容易閱讀的資訊、更容易使用的數位服務，推進公民參與公共議題。g0v Summit 則是為了與台灣及世界各地公民駭客互相連結所舉辦的雙年會。",
+				"longDescription": "[g0v](https://g0v.tw) 是發源於台灣的公民科技社群，藉由提供更容易閱讀的資訊、更容易使用的數位服務，推進公民參與公共議題。在 g0v 的社群宇宙裡，每個專案自發組成、自主貢獻、公開協作，並將成果以[開源授權](https://g0v.tw/intl/zh-TW/manifesto/zh-TW/)釋出，讓更多的夥伴可以在前人的基礎上接力賽跑。「拆政府原地重建、寫程式改造社會」是 g0v 創立時的響亮口號之一！[g0v Summit](https://summit.g0v.tw) 則是 g0v 社群為了與台灣及世界各地公民駭客 (civic hacker) 互相連結所舉辦的雙年會，搭建一座讓開放社群、政府、學界與公民跨界交流的橋樑。歡迎在 SITCON 社群攤位現場與我們聊聊！也可以在不同的社群平台追蹤 g0v 社群的最新動態：https://linktr.ee/g0vjothon",
 				"link": "https://summit.g0v.tw/2026/",
 				"meshes": ["floor__4f__g0v_table", "floor__4f__g0v_text"]
 			},
@@ -296,7 +322,7 @@
 				"id": "coscup",
 				"name": "COSCUP",
 				"description": "社群攤位",
-				"longDescription": "COSCUP（開源人年會）是由一群自由與開放原始碼軟體愛好者發起，致力於推廣開放原始碼精神與技術，專為開放原始碼的開發者（Coders）、使用者（Users）和推廣者（Promoters）舉辦的年度研討會。",
+				"longDescription": "COSCUP （開源人年會）是由一群自由與開放原始碼軟體愛好者發起，致力於推廣開放原始碼精神與技術，專為開放原始碼的開發者（Coders）、使用者（Users）和推廣者（Promoters）舉辦的年度研討會。",
 				"link": "https://coscup.org",
 				"meshes": ["floor__4f__coscup_table", "floor__4f__coscup_text"]
 			},
@@ -304,7 +330,7 @@
 				"id": "ocf",
 				"name": "OCF 開放文化基金會",
 				"description": "社群攤位",
-				"longDescription": "開放文化基金會（OCF）是一個非營利性的組織，透過推廣開放科技和跨界合作，在臺灣持續的銜繫科技社群與其他公／私領域，促成開放共創保障數位人權、支持透明涵融的數位公民社會。",
+				"longDescription": "開放文化基金會 (OCF)是一個非營利性的組織。透過推廣開放科技和跨界合作，在臺灣持續的銜繫科技社群與其他公／私領域，來促成開放共創保障數位人權、支持透明涵融的數位公民社會。自 2014 年創立以來，我們以法人做為組織形式，支持臺灣 40 多個開放科技社群，在過程中，不僅是持續性的推廣開放科技概念，我們也開始參與政策倡議，為眾人的數位人權發聲，進而創建了一個在臺灣發展開放科技的基地。",
 				"link": "https://ocf.tw/",
 				"meshes": ["floor__4f__ocf_table", "floor__4f__ocf_text"]
 			},
@@ -312,7 +338,7 @@
 				"id": "jsdc",
 				"name": "JSDC",
 				"description": "社群攤位",
-				"longDescription": "JavaScript 開發者年會（JSDC）是台灣最大的 JavaScript 年度性技術研討會，旨在提供台灣中高階 JavaScript 技術人才與世界最新 JavaScript 相關技術討論與分享，整合來自獨立開發者、企業、組織及機構的科技力量。",
+				"longDescription": "JavaScript 開發者年會 (JavaScript Developer Conference，簡稱 JSDC) 是台灣最大的 JavaScript 年度性技術研討會，旨在提供台灣中高階 JavaScript 技術人才與世界最新 JavaScript 相關技術討論與分享。最初從 2011 年底開始，由多個台灣開發者社群共同發起，近年各式開發者社群蓬勃發展 Front-End Developer、 Angular.tw、 ReactJS.tw、Vue.tw、 JavaScript.tw 等新興社群陸續成立，我們期許 JSDC 能成為每年網頁技術開發者的中高階技術交流活動，整合來自獨立開發者、企業、組織及機構的科技力量，並致力於知識全球化，讓參與者重新認識 JavaScript.",
 				"link": "https://www.facebook.com/JSDC.TW",
 				"meshes": ["floor__4f__jsdc_table", "floor__4f__jsdc_text"]
 			},
@@ -320,7 +346,7 @@
 				"id": "wordpress",
 				"name": "WordPress 台灣社群",
 				"description": "社群攤位",
-				"longDescription": "WordPress 台灣社群聚集熱愛網站開發、設計及內容創作的愛好者與專業人士，透過舉辦 WordPress Meetup、工作坊及年會 WordCamp，分享最新技術、交流經驗，並建立緊密的合作網絡。",
+				"longDescription": "WordPress台灣社群是一個聚集熱愛網站開發、設計及內容創作的愛好者與專業人士的活躍社群，致力於推廣WordPress在台灣的使用與應用。我們透過舉辦線上與線下活動，如WordPress Meetup、工作坊及年會WordCamp，分享最新技術、交流經驗，並建立緊密的合作網絡。無論您是剛接觸WordPress的新手，還是資深的開發者，這裡都提供友善且支持性的環境，讓每位成員都能找到學習與成長的機會.",
 				"link": "https://www.facebook.com/groups/wordpresstw",
 				"meshes": ["floor__4f__wordpress_table", "floor__4f__wordpress_text"]
 			},
@@ -328,7 +354,7 @@
 				"id": "tkug",
 				"name": "Taiwan Kotlin User Group",
 				"description": "社群攤位",
-				"longDescription": "Taiwan Kotlin User Group 是一個讓大家可以討論與交流 Kotlin 程式語言各種使用經驗，舉辦相關活動的社群。如果對 Kotlin 有興趣，想要多瞭解一些，歡迎來社群一起聚會！",
+				"longDescription": "Taiwan Kotlin User Group 是一個讓大家可以討論與交流 Kotlin 程式語言各種使用經驗，舉辦相關活動的社群。如果對 Kotlin 有興趣，想要多瞭解一些，歡迎來我們的社群一起聚會！",
 				"link": "https://www.facebook.com/kotlintwn",
 				"meshes": ["floor__4f__tkug_table", "floor__4f__tkug_text"]
 			},
@@ -336,7 +362,7 @@
 				"id": "lzgh",
 				"name": "綠洲計畫 LZGH",
 				"description": "社群攤位",
-				"longDescription": "綠洲計畫透過建立社群平臺的交流分享及實體活動舉辦，幫助尋求特殊選才管道入學的學生，以及在體制或非體制內不易獲取資源的弱勢學生，讓他們能得到更多有利學習的條件，自我肯定與突破。",
+				"longDescription": "綠洲計畫是由 112 學年度的學生們所建立，以此新興管道升學的我們，曾歷經資訊不對等及無人可求問的情況。因此我們認為透過建立社群平臺的交流分享及實體活動舉辦，可以直接幫助尋求特殊選才管道入學的學生，或是擁有部分專業學習能力，在體制或非體制內不易獲取資源的弱勢學生，能在平臺得到更多有利學習的條件，自我肯定與突破。",
 				"link": "https://lzgh.org/",
 				"meshes": ["floor__4f__lzgh_table", "floor__4f__lzgh_text"]
 			},
@@ -344,7 +370,7 @@
 				"id": "ubuntutw",
 				"name": "Ubuntu 台灣社群",
 				"description": "社群攤位",
-				"longDescription": "Ubuntu-TW 成立於 2005 年 6 月，是由數名愛好者發起、以推廣 Ubuntu 為目標的台灣在地社群。定期舉辦 Release Party，並在各大開源社群擺攤展示，歡迎各路新手高手加入！",
+				"longDescription": "Ubuntu-TW 成立於2005年6月，是由數名愛好者發起，以推廣 Ubuntu 為目標的台灣在地社群。除了每年固定舉辦的 Release Party 以及在台灣各開源研討會擺攤展示之外，我們的成員也時常出沒於各大開源社團，而所舉辦的 Release Party 也一直都有其他 Linux 發行版愛好者的參與。除了社群活動之外，我們的成員也有參與 Ubuntu 及其他發行版、開源軟體的 L10N，編篡文件，以及在網上替人解惑。歡迎各路新手高手、舊雨新知，加入 Ubuntu-TW ，跟我們一起推廣 Ubuntu、Linux 及開源文化！",
 				"link": "https://www.facebook.com/ubuntu.tw",
 				"meshes": ["floor__4f__ubuntutw_table", "floor__4f__ubuntutw_text"]
 			},
@@ -352,7 +378,7 @@
 				"id": "cntug",
 				"name": "Cloud Native Taiwan User Group",
 				"description": "社群攤位",
-				"longDescription": "Cloud Native Taiwan User Group（CNTUG）是一個致力於推廣 Cloud Native 雲端原生相關技術的臺灣在地化社群，提供技術交流平台，聚集各行各業的使用者、開發者和傳教者，推動臺灣在雲端原生領域的發展。",
+				"longDescription": "Cloud Native Taiwan User Group (CNTUG) 是一個致力於主要推廣 Cloud Native 雲端原生相關技術並同時涵蓋 OpenInfra Foundation 範疇等技術的臺灣在地化社群。作為臺灣在地的 Kubernetes 和眾多 CNCF 專案使用者，該社群提供了一個技術交流平台，聚集了各行各業的使用者、開發者和傳教者，分享最新的雲端原生技術和實踐經驗，推動臺灣在雲端原生領域的發展。",
 				"link": "https://fb.cloudnative.tw",
 				"meshes": ["floor__4f__cntug_table", "floor__4f__cntug_text"]
 			},
@@ -360,7 +386,7 @@
 				"id": "zdc",
 				"name": "ZeroDay C00kie 零日餅乾社",
 				"description": "社群攤位",
-				"longDescription": "ZeroDay C00kie 社團課程涵蓋網頁安全、數位鑑識以及資安相關證照培訓等主題，本年度規劃讀書會與 Crypto 密碼學系列課程，透過循序漸進的課程安排與互動式討論，協助社員從基礎到進階逐步提升。",
+				"longDescription": "ZeroDay C00kie 成立於 113 年度，社團課程的規劃結合了「教育部高中資安教學資源與推廣中心」的師資與教材資源。過去的課程內容涵蓋網頁安全、數位鑑識以及資安相關證照培訓等主題，以線上為主的教學，協助社員在基礎知識與專業技能上的成長。為了近一步地提升社員的資安技能，本社將於今年度規劃 讀書會 與 Crypto 密碼學系列課程 兩大學習活動。透過循序漸進的課程安排與互動式的討論形式，協助社員從基礎到進階逐步提升，並兼顧理論與實作，確保學習成效與實務能力。",
 				"link": "https://www.instagram.com/zeroday_cookie",
 				"meshes": ["floor__4f__zdc_table", "floor__4f__zdc_text"]
 			}
