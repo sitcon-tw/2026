@@ -1364,6 +1364,18 @@
   ],
   "speakers": [
     {
+      "id": "f877a5",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/large/f877a5.webp",
+      "zh": {
+        "name": "副召 Windless",
+        "bio": ""
+      },
+      "en": {
+        "name": "副召 Windless",
+        "bio": ""
+      }
+    },
+    {
       "id": "848137",
       "avatar": "https://sitcon.org/2026/img/avatar/speaker/large/848137.webp",
       "zh": {
@@ -1373,6 +1385,18 @@
       "en": {
         "name": "總召 柴柴",
         "bio": "柴柴是一個來自宜蘭大學資工系的 SITCON 2026 總召，自稱是位技能點得很散的「數位雜工」，日常遊走在各種技術堆疊之間，比起鑽研單一領域，更熱衷於將不同技術串接起來的樂趣。~~據說正在研究如何讓 Server 警報在半夜自動靜音~~"
+      }
+    },
+    {
+      "id": "3e302e",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/large/3e302e.webp",
+      "zh": {
+        "name": "共同發起人 Denny Huang",
+        "bio": "SITCON 學生計算機年會共同發起人，在正規教育中特立獨行，妄想透過改善教育讓台灣更進步，崇尚開源精神，熱愛使用者界面以外的多項技術。"
+      },
+      "en": {
+        "name": "共同發起人 Denny Huang",
+        "bio": "SITCON 學生計算機年會共同發起人，在正規教育中特立獨行，妄想透過改善教育讓台灣更進步，崇尚開源精神，熱愛使用者界面以外的多項技術。"
       }
     },
     {
