@@ -136,7 +136,7 @@
 				"name": "TKUITOCC 淡江大學資訊科技及開放文化社群",
 				"description": "社群攤位",
 				"longDescription": "淡江大學資訊科技及開放文化社群致力於推動淡江大學校內外的資訊科技及開放文化發展，並與其他社群互相合作、交流、學習。資訊科技方面包括專案開發（行動應用程式開發、機器人開發等）、資料結構化、程式語言學習與經驗交流等等。開放文化方面則包含數位共筆（wiki）、開放原始碼、開放資料、數位典藏、多語言翻譯、譯名標準化等。",
-				"link": "https://github.com/tkuitocc",
+				"link": "https://tkuitocc.github.io/zh-Hant-TW",
 				"meshes": ["floor__3f__tkuitocc_table", "floor__3f__tkuitocc_text"]
 			}
 		]
