@@ -235,6 +235,22 @@
 			"url": "https://ncse.tw/"
 		},
 		{
+			"logo": "ichef.webp",
+			"title_zh": "iCHEF 資廚",
+			"title_en": "",
+			"description_zh": "iCHEF 成立於2012年，為餐飲業雲端POS與管理系統服務商，致力協助餐廳數位轉型。透過整合點餐、營運分析與會員經營功能，提升營運效率與顧客體驗。",
+			"description_en": "",
+			"url": "https://www.ichefpos.com/zh-tw"
+		},
+		{
+			"logo": "91app.svg",
+			"title_zh": "91APP",
+			"title_en": "",
+			"description_zh": "91APP成立於2013年，為台灣首家上櫃SaaS公司，專注D2C與OMO解決方案。提供電商與數位行銷整合服務，協助品牌加速數位轉型與全通路經營。服務客戶包含如 LVMH、L'Oréal、VF、全家、康是美、寶雅等國際品牌與大型通路，並積極拓展海外市場與人才布局。",
+			"description_en": "",
+			"url": "https://91app.com/solutions/?campaignid=22718346692&adgroupid=181863639815&adid=771633961410&gad_source=1&gad_campaignid=22718346692&gbraid=0AAAAAC-gvQChFPlDmgnnALjbw7fHOjhDu"
+		},
+		{
 			"logo": "individual.webp",
 			"title_zh": "個人贊助",
 			"title_en": "Individual Sponsors",
