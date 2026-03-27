@@ -1508,7 +1508,7 @@ const t = useTranslations(lang).venue;
 		const mapFloorBtns = document.querySelectorAll(".map-floor-btn");
 		const map2DImageWrapper = document.querySelector(".map-2d-image-wrapper") as HTMLElement | null;
 
-		if (!floorSelection || !advancedMenu || !backBtn) return;
+		if (!floorSelection || !advancedMenu || !backBtn || !map2DImage || !map2DImageWrapper) return;
 
 		let lastActiveElement: HTMLElement | null = null;
 		const previousBodyOverflow = document.body.style.overflow;
@@ -1633,6 +1633,9 @@ const t = useTranslations(lang).venue;
 
 		const onMapPointerMove = (e: PointerEvent) => {
 			if (!isMobileViewport() || e.pointerType !== "touch") return;
+			const wrapper = map2DImageWrapper;
+			const image = map2DImage;
+			if (!wrapper || !image) return;
 			if (!activePointers.has(e.pointerId)) return;
 			e.preventDefault();
 			activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -1641,22 +1644,22 @@ const t = useTranslations(lang).venue;
 				const nextDistance = getPointerDistance();
 				if (pinchStartDistance > 0) {
 					mapScale = clamp((nextDistance / pinchStartDistance) * pinchStartScale, mapMinScale, mapMaxScale);
-					const beforeW = map2DImage.scrollWidth;
-					const beforeH = map2DImage.scrollHeight;
-					const centerXRatio = beforeW > 0 ? (map2DImageWrapper.scrollLeft + map2DImageWrapper.clientWidth / 2) / beforeW : 0.5;
-					const centerYRatio = beforeH > 0 ? (map2DImageWrapper.scrollTop + map2DImageWrapper.clientHeight / 2) / beforeH : 0.5;
+					const beforeW = image.scrollWidth;
+					const beforeH = image.scrollHeight;
+					const centerXRatio = beforeW > 0 ? (wrapper.scrollLeft + wrapper.clientWidth / 2) / beforeW : 0.5;
+					const centerYRatio = beforeH > 0 ? (wrapper.scrollTop + wrapper.clientHeight / 2) / beforeH : 0.5;
 					applyMapZoom();
-					const afterW = map2DImage.scrollWidth;
-					const afterH = map2DImage.scrollHeight;
-					map2DImageWrapper.scrollLeft = Math.max(0, afterW * centerXRatio - map2DImageWrapper.clientWidth / 2);
-					map2DImageWrapper.scrollTop = Math.max(0, afterH * centerYRatio - map2DImageWrapper.clientHeight / 2);
+					const afterW = image.scrollWidth;
+					const afterH = image.scrollHeight;
+					wrapper.scrollLeft = Math.max(0, afterW * centerXRatio - wrapper.clientWidth / 2);
+					wrapper.scrollTop = Math.max(0, afterH * centerYRatio - wrapper.clientHeight / 2);
 				}
 				return;
 			}
 
 			if (mapScale <= mapMinScale) return;
-			map2DImageWrapper.scrollLeft = panBaseScroll.left - (e.clientX - panStart.x);
-			map2DImageWrapper.scrollTop = panBaseScroll.top - (e.clientY - panStart.y);
+			wrapper.scrollLeft = panBaseScroll.left - (e.clientX - panStart.x);
+			wrapper.scrollTop = panBaseScroll.top - (e.clientY - panStart.y);
 		};
 
 		const onMapPointerUp = (e: PointerEvent) => {
