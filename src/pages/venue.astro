@@ -630,22 +630,20 @@ const t = useTranslations(lang).venue;
 			height: 3rem;
 		}
 
-		.map-2d-overlay {
-			padding: 0;
+		.map-2d-overlay[open] {
+			padding: 3.5rem;
 		}
 
 		.map-2d-popup {
-			top: 0;
-			left: 0;
-			width: 100vw;
-			height: 100vh;
-			border-radius: 0;
-			border: none;
-			transform: none;
+			top: 50%;
+			left: 50%;
+			width: calc(100vw - 7rem);
+			height: calc(100vh - 7rem);
+			transform: translate(-50%, -50%) translateY(0.625rem) scale(0.98);
 		}
 
 		.map-2d-overlay.show .map-2d-popup {
-			transform: none;
+			transform: translate(-50%, -50%) translateY(0) scale(1);
 		}
 	}
 
