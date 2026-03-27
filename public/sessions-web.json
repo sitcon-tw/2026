@@ -60,6 +60,7 @@
         "description": "<p>歡迎來到 SITCON 2026。</p>\n<p>秩序正在鬆動，旋律尚未被寫好，\n而你正站在這場 Jam 的起點。</p>\n<p>跟隨開幕的節拍，\n今年的亮點與旅程將在此揭開。</p>\n<p>準備好了嗎？\n加入這場混沌的合奏，\n下一個被聽見的音符，可能就是你！</p>\n"
       },
       "speakers": [
+        "848137",
         "848137"
       ],
       "tags": []
@@ -1368,7 +1369,7 @@
       "avatar": "https://sitcon.org/2026/img/avatar/speaker/f877a5.webp",
       "zh": {
         "name": "副召 Windless",
-        "bio": ""
+        "bio": "<p>Windless，就讀臺北市內湖高工，是現任 SITCON 2026 副召集人，並長期參與 SITCON 及各社群志工。現在在 <a href=\"http://CheapServer.tw\">CheapServer.tw</a> 打工中，我們提供很便宜的雲端伺服器託管。</p>\n"
       },
       "en": {
         "name": "副召 Windless",
@@ -1397,6 +1398,18 @@
       "en": {
         "name": "共同發起人 Denny Huang",
         "bio": "<p>SITCON 學生計算機年會共同發起人，在正規教育中特立獨行，妄想透過改善教育讓台灣更進步，崇尚開源精神，熱愛使用者界面以外的多項技術。</p>\n"
+      }
+    },
+    {
+      "id": "5f7a4e",
+      "avatar": "https://sitcon.org/2026/img/avatar/speaker/5f7a4e.webp",
+      "zh": {
+        "name": "副總統 蕭美琴",
+        "bio": ""
+      },
+      "en": {
+        "name": "副總統 蕭美琴",
+        "bio": ""
       }
     },
     {
