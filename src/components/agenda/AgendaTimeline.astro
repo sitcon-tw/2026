@@ -114,7 +114,7 @@ function getSlotType(slotStartTime: number): "narrow" | "espresso" | "normal" {
 	return "normal";
 }
 
-const NARROW_SLOT_WEIGHT = 20;
+const NARROW_SLOT_WEIGHT = 30;
 const ESPRESSO_SLOT_WEIGHT = 40;
 const slotWeights: number[] = [];
 for (let i = 0; i < totalSlots; i++) {
@@ -1271,6 +1271,7 @@ activeVenues.forEach(venueId => {
 	.agenda-scroll-container {
 		overflow-x: auto;
 		overflow-y: hidden;
+		padding-bottom: 1rem;
 		scrollbar-width: none;
 		-webkit-overflow-scrolling: touch;
 		cursor: grab;
