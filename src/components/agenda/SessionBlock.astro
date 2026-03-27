@@ -89,7 +89,6 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 		height: calc(100% - 0.1rem);
 		border-radius: 0.5rem;
 		padding: 1rem;
-		overflow-x: hidden;
 		cursor: pointer;
 		text-decoration: none;
 		color: inherit;
@@ -98,6 +97,7 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 			filter 0.2s,
 			box-shadow 0.2s;
 		z-index: 1;
+		overflow-x: hidden;
 		box-sizing: border-box;
 		-webkit-user-drag: none;
 		user-drag: none;
@@ -191,15 +191,14 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 		flex-direction: column;
 		justify-content: center;
 		gap: 0.5rem;
-		min-width: 10rem;
-		overflow-x: hidden;
+		min-width: 5rem;
 	}
 
 	.session-name {
 		font-size: 1rem;
 		font-weight: bold;
 		line-height: 1.3;
-		min-width: 10rem;
+		min-width: 5rem;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
 		overflow-x: hidden;
@@ -211,8 +210,8 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 		align-items: center;
 		gap: 0.25rem;
 		width: 100%;
-		min-width: 10rem;
-		overflow-x: hidden;
+		min-width: 5rem;
+		flex-wrap: wrap;
 		scrollbar-width: none;
 		-ms-overflow-style: none;
 	}
@@ -224,9 +223,10 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 	.session-speaker {
 		font-size: 0.875rem;
 		opacity: 0.9;
-		white-space: nowrap;
-		flex-shrink: 0;
+		flex-shrink: 1;
 		min-width: 0;
+		word-break: keep-all;
+		line-height: 1.25;
 	}
 
 	.session-tags {
@@ -234,7 +234,6 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 		flex-wrap: nowrap;
 		gap: 0.25rem;
 		margin-top: auto;
-		min-width: 0;
 		flex-shrink: 0;
 	}
 
@@ -242,7 +241,6 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 		font-size: 0.75rem;
 		color: #30de56;
 		white-space: nowrap;
-		overflow: hidden;
 		flex-shrink: 0;
 	}
 
