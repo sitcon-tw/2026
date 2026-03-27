@@ -83,8 +83,14 @@ const t = useTranslations(lang).venue;
 			<dialog id="map-2d-overlay" class="map-2d-overlay" aria-label="2D 平面圖">
 				<div class="map-2d-popup" role="dialog" aria-modal="true" aria-label="2D 平面圖">
 					<div class="map-2d-image-wrapper">
-						<button id="map-2d-close-btn" class="map-2d-close-btn" type="button" aria-label="關閉 2D 平面圖">×</button>
-						<img class="map-2d-image" src="/2026/img/venue/2d-map-placeholder.svg" alt="2D 場地平面圖" />
+						<div class="map-2d-top-controls">
+							<div class="map-floor-switch" role="group" aria-label="切換樓層平面圖">
+								<button class="map-floor-btn active" type="button" data-map-floor="3f" aria-pressed="true">3F</button>
+								<button class="map-floor-btn" type="button" data-map-floor="4f" aria-pressed="false">4F</button>
+							</div>
+							<button id="map-2d-close-btn" class="map-2d-close-btn" type="button" aria-label="關閉 2D 平面圖">×</button>
+						</div>
+						<img class="map-2d-image" src="/2026/img/venue/map_3F.svg" alt="3F 場地平面圖" draggable="false" />
 					</div>
 				</div>
 			</dialog>
@@ -457,15 +463,13 @@ const t = useTranslations(lang).venue;
 	}
 
 	.map-2d-close-btn {
-		position: absolute;
-		top: 0.75rem;
-		right: 0.75rem;
-		z-index: 2;
+		position: static;
+		z-index: 3;
 		width: 2.25rem;
 		height: 2.25rem;
 		border: none;
 		border-radius: 50%;
-		background: rgba(0, 0, 0, 0.45);
+		background: rgba(0, 0, 0, 0.52);
 		color: white;
 		font-size: 1.5rem;
 		line-height: 1;
@@ -481,13 +485,62 @@ const t = useTranslations(lang).venue;
 		flex: 1;
 		min-height: 0;
 		background: #0f0f0f;
+		overflow: hidden;
+		display: grid;
+		place-items: center;
+	}
+
+	.map-2d-top-controls {
+		position: absolute;
+		top: 0.75rem;
+		right: 0.75rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		z-index: 3;
+	}
+
+	.map-floor-switch {
+		display: inline-flex;
+		padding: 0.2rem;
+		border-radius: 999px;
+		background: rgba(18, 18, 18, 0.38);
+		border: 1px solid rgba(255, 255, 255, 0.22);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+	}
+
+	.map-floor-btn {
+		border: none;
+		background: transparent;
+		color: rgba(255, 255, 255, 0.82);
+		font-size: 0.85rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		padding: 0.3rem 0.65rem;
+		border-radius: 999px;
+		cursor: pointer;
+		transition:
+			background 0.2s ease,
+			color 0.2s ease;
+	}
+
+	.map-floor-btn:hover {
+		color: #fff;
+	}
+
+	.map-floor-btn.active {
+		background: rgba(255, 255, 255, 0.22);
+		color: #fff;
 	}
 
 	.map-2d-image {
 		width: 100%;
-		height: 100%;
-		object-fit: contain;
+		height: auto;
+		max-height: 100%;
 		display: block;
+		user-select: none;
+		-webkit-user-select: none;
 	}
 
 	@media (max-width: 1024px) {
@@ -625,6 +678,17 @@ const t = useTranslations(lang).venue;
 
 		.map-2d-overlay[open] {
 			padding: 3.5rem;
+		}
+
+		.map-2d-image-wrapper {
+			touch-action: none;
+			overflow: auto;
+			scrollbar-width: none;
+			overscroll-behavior: contain;
+		}
+
+		.map-2d-image-wrapper::-webkit-scrollbar {
+			display: none;
 		}
 
 		.map-2d-popup {
@@ -1440,14 +1504,74 @@ const t = useTranslations(lang).venue;
 		const toggle2DBtn = document.getElementById("toggle-2d-btn") as HTMLButtonElement | null;
 		const map2DOverlay = document.getElementById("map-2d-overlay") as HTMLDialogElement | null;
 		const map2DCloseBtn = document.getElementById("map-2d-close-btn") as HTMLButtonElement | null;
+		const map2DImage = document.querySelector(".map-2d-image") as HTMLImageElement | null;
+		const mapFloorBtns = document.querySelectorAll(".map-floor-btn");
+		const map2DImageWrapper = document.querySelector(".map-2d-image-wrapper") as HTMLElement | null;
 
 		if (!floorSelection || !advancedMenu || !backBtn) return;
 
 		let lastActiveElement: HTMLElement | null = null;
 		const previousBodyOverflow = document.body.style.overflow;
+		const mapPaths: Record<"3f" | "4f", string> = {
+			"3f": "/2026/img/venue/map_3F.svg",
+			"4f": "/2026/img/venue/map_4F.svg"
+		};
+		const mapMinScale = 1;
+		const mapMaxScale = 4;
+		let mapScale = 1;
+		const activePointers = new Map<number, { x: number; y: number }>();
+		let panStart = { x: 0, y: 0 };
+		let panBaseScroll = { left: 0, top: 0 };
+		let pinchStartDistance = 0;
+		let pinchStartScale = 1;
+
+		const isMobileViewport = () => window.innerWidth <= 1024;
+
+		const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+
+		const applyMapZoom = () => {
+			if (!map2DImage) return;
+			const zoomPercent = `${mapScale * 100}%`;
+			map2DImage.style.width = zoomPercent;
+			map2DImage.style.maxHeight = mapScale > 1 ? "none" : "100%";
+		};
+
+		const resetMapTransform = () => {
+			mapScale = 1;
+			activePointers.clear();
+			pinchStartDistance = 0;
+			applyMapZoom();
+			if (map2DImageWrapper) {
+				map2DImageWrapper.scrollLeft = 0;
+				map2DImageWrapper.scrollTop = 0;
+			}
+		};
+
+		const getPointerDistance = () => {
+			const points = Array.from(activePointers.values());
+			if (points.length < 2) return 0;
+			const dx = points[0].x - points[1].x;
+			const dy = points[0].y - points[1].y;
+			return Math.hypot(dx, dy);
+		};
+
+		const setMapFloor = (floorId: string) => {
+			const normalized = floorId.toLowerCase() === "4f" ? "4f" : "3f";
+			if (map2DImage) {
+				map2DImage.src = mapPaths[normalized];
+				map2DImage.alt = `${normalized.toUpperCase()} 場地平面圖`;
+			}
+			resetMapTransform();
+			mapFloorBtns.forEach(btn => {
+				const isActive = btn.getAttribute("data-map-floor") === normalized;
+				btn.classList.toggle("active", isActive);
+				btn.setAttribute("aria-pressed", String(isActive));
+			});
+		};
 
 		const open2DPopup = () => {
 			if (!map2DOverlay) return;
+			setMapFloor(currentFloor === "4f" ? "4f" : "3f");
 			lastActiveElement = document.activeElement as HTMLElement | null;
 			if (typeof map2DOverlay.showModal === "function") {
 				map2DOverlay.showModal();
@@ -1470,6 +1594,7 @@ const t = useTranslations(lang).venue;
 			if (lastActiveElement && typeof lastActiveElement.focus === "function") {
 				lastActiveElement.focus();
 			}
+			resetMapTransform();
 		};
 
 		const onOverlayClick = (e: Event) => {
@@ -1482,10 +1607,92 @@ const t = useTranslations(lang).venue;
 			}
 		};
 
+		const onMapFloorClick = (e: Event) => {
+			const btn = e.currentTarget as HTMLButtonElement;
+			const floorId = btn.getAttribute("data-map-floor");
+			if (!floorId) return;
+			setMapFloor(floorId);
+		};
+
+		const onMapPointerDown = (e: PointerEvent) => {
+			if (!isMobileViewport() || !map2DImageWrapper || e.pointerType !== "touch") return;
+			e.preventDefault();
+			map2DImageWrapper.setPointerCapture(e.pointerId);
+			activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+			if (activePointers.size === 1) {
+				panStart = { x: e.clientX, y: e.clientY };
+				panBaseScroll = { left: map2DImageWrapper.scrollLeft, top: map2DImageWrapper.scrollTop };
+			}
+
+			if (activePointers.size >= 2) {
+				pinchStartDistance = getPointerDistance();
+				pinchStartScale = mapScale;
+			}
+		};
+
+		const onMapPointerMove = (e: PointerEvent) => {
+			if (!isMobileViewport() || e.pointerType !== "touch") return;
+			if (!activePointers.has(e.pointerId)) return;
+			e.preventDefault();
+			activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+			if (activePointers.size >= 2) {
+				const nextDistance = getPointerDistance();
+				if (pinchStartDistance > 0) {
+					mapScale = clamp((nextDistance / pinchStartDistance) * pinchStartScale, mapMinScale, mapMaxScale);
+					const beforeW = map2DImage.scrollWidth;
+					const beforeH = map2DImage.scrollHeight;
+					const centerXRatio = beforeW > 0 ? (map2DImageWrapper.scrollLeft + map2DImageWrapper.clientWidth / 2) / beforeW : 0.5;
+					const centerYRatio = beforeH > 0 ? (map2DImageWrapper.scrollTop + map2DImageWrapper.clientHeight / 2) / beforeH : 0.5;
+					applyMapZoom();
+					const afterW = map2DImage.scrollWidth;
+					const afterH = map2DImage.scrollHeight;
+					map2DImageWrapper.scrollLeft = Math.max(0, afterW * centerXRatio - map2DImageWrapper.clientWidth / 2);
+					map2DImageWrapper.scrollTop = Math.max(0, afterH * centerYRatio - map2DImageWrapper.clientHeight / 2);
+				}
+				return;
+			}
+
+			if (mapScale <= mapMinScale) return;
+			map2DImageWrapper.scrollLeft = panBaseScroll.left - (e.clientX - panStart.x);
+			map2DImageWrapper.scrollTop = panBaseScroll.top - (e.clientY - panStart.y);
+		};
+
+		const onMapPointerUp = (e: PointerEvent) => {
+			if (!isMobileViewport() || !map2DImageWrapper || e.pointerType !== "touch") return;
+			if (!activePointers.has(e.pointerId)) return;
+			e.preventDefault();
+			activePointers.delete(e.pointerId);
+			if (map2DImageWrapper.hasPointerCapture(e.pointerId)) {
+				map2DImageWrapper.releasePointerCapture(e.pointerId);
+			}
+
+			if (activePointers.size === 1) {
+				const [remainingPointer] = Array.from(activePointers.values());
+				panStart = { x: remainingPointer.x, y: remainingPointer.y };
+				panBaseScroll = { left: map2DImageWrapper.scrollLeft, top: map2DImageWrapper.scrollTop };
+			}
+
+			if (activePointers.size < 2) {
+				pinchStartDistance = 0;
+				pinchStartScale = mapScale;
+			}
+		};
+
+		const onMapPointerCancel = (e: PointerEvent) => {
+			onMapPointerUp(e);
+		};
+
 		toggle2DBtn?.addEventListener("click", open2DPopup);
 		map2DCloseBtn?.addEventListener("click", close2DPopup);
 		map2DOverlay?.addEventListener("click", onOverlayClick);
 		document.addEventListener("keydown", onEscapeKey);
+		mapFloorBtns.forEach(btn => btn.addEventListener("click", onMapFloorClick));
+		map2DImageWrapper?.addEventListener("pointerdown", onMapPointerDown, { passive: false });
+		map2DImageWrapper?.addEventListener("pointermove", onMapPointerMove, { passive: false });
+		map2DImageWrapper?.addEventListener("pointerup", onMapPointerUp, { passive: false });
+		map2DImageWrapper?.addEventListener("pointercancel", onMapPointerCancel, { passive: false });
 
 		popupCleanup?.();
 		popupCleanup = () => {
@@ -1493,8 +1700,14 @@ const t = useTranslations(lang).venue;
 			map2DCloseBtn?.removeEventListener("click", close2DPopup);
 			map2DOverlay?.removeEventListener("click", onOverlayClick);
 			document.removeEventListener("keydown", onEscapeKey);
+			mapFloorBtns.forEach(btn => btn.removeEventListener("click", onMapFloorClick));
+			map2DImageWrapper?.removeEventListener("pointerdown", onMapPointerDown);
+			map2DImageWrapper?.removeEventListener("pointermove", onMapPointerMove);
+			map2DImageWrapper?.removeEventListener("pointerup", onMapPointerUp);
+			map2DImageWrapper?.removeEventListener("pointercancel", onMapPointerCancel);
 			if (map2DOverlay?.hasAttribute("open")) map2DOverlay.close();
 			document.body.style.overflow = previousBodyOverflow;
+			resetMapTransform();
 		};
 
 		// Initial state for floor buttons
