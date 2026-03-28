@@ -356,7 +356,7 @@ activeVenues.forEach(venueId => {
 				data-slot-left-percents={JSON.stringify(slotLeftPercents)}
 				data-slot-weights={JSON.stringify(slotWeights)}
 				data-total-weight={totalWeight}
-				style="--time-scale: 1;"
+				style="--time-scale: 2;"
 			>
 				<div class="time-axis">
 					{
@@ -377,7 +377,6 @@ activeVenues.forEach(venueId => {
 						{timeLabels.map((time, idx) => <div class="time-line" style={`left: ${slotLeftPercents[idx]}%`} />)}
 						<div class="current-time-line" style={`left: ${getIndicatorPercent(now)}%`} id="current-time-line">
 							<div class="indicator-line-extended"></div>
-							<div class="indicator-triangle-extended"></div>
 						</div>
 					</div>
 					{
@@ -872,30 +871,15 @@ activeVenues.forEach(venueId => {
 						currentTimeLine.parentNode.removeChild(currentTimeLine);
 					}
 				} else {
-					// Now is within range, update indicator and auto-scroll on first load
-					let hasScrolledToCurrentTime = false;
-					const timeIndicator = currentTimeLine || currentTimeIndicator;
-					if (timeIndicator && !hasScrolledToCurrentTime) {
-						const indicatorLeft = timeIndicator.offsetLeft;
-						const containerWidth = scrollContainer.clientWidth;
-						const scrollPosition = indicatorLeft - containerWidth / 2;
-						scrollContainer.scrollTo({
-							left: Math.max(0, scrollPosition),
-							behavior: "smooth"
-						});
-						hasScrolledToCurrentTime = true;
-					}
-
+					// Update indicator position to reflect real client time
 					const updateTimeIndicator = () => {
 						const nowCur = Date.now();
 						if (nowCur >= minTime && nowCur <= maxTime) {
 							const leftPercent = getIndicatorPercent(nowCur);
 							const leftPercentStr = `${leftPercent}%`;
-							// Update both indicators
 							currentTimeIndicator.style.left = leftPercentStr;
 							currentTimeLine.style.left = leftPercentStr;
 						} else {
-							// Out of range: remove timeline indicator(s)
 							if (currentTimeIndicator.parentNode) {
 								currentTimeIndicator.parentNode.removeChild(currentTimeIndicator);
 							}
@@ -905,8 +889,13 @@ activeVenues.forEach(venueId => {
 						}
 					};
 
-					// Update immediately and then every second
+					// Update indicator position immediately, then auto-scroll to it
 					updateTimeIndicator();
+					requestAnimationFrame(() => {
+						const percent = getIndicatorPercent(Date.now());
+						scrollContainer.scrollLeft = ((percent - 13.5) / 100) * scrollContainer.scrollWidth;
+					});
+
 					setInterval(updateTimeIndicator, 1000);
 				}
 			}
@@ -1138,6 +1127,17 @@ activeVenues.forEach(venueId => {
 	if (phoneViewEl && nowInRangeForListener) {
 		updatePhoneTimeIndicator();
 		setInterval(updatePhoneTimeIndicator, 60 * 1000);
+
+		// Auto-scroll phone view to the current time block, centered on screen
+		requestAnimationFrame(() => {
+			const currentBlock = phoneViewEl.querySelector(".time-block.current") as HTMLElement | null;
+			if (currentBlock) {
+				const blockRect = currentBlock.getBoundingClientRect();
+				const viewportHeight = window.innerHeight;
+				const scrollTarget = window.scrollY + blockRect.top - viewportHeight / 2 + blockRect.height / 2 - 120;
+				window.scrollTo({ top: Math.max(0, scrollTarget), behavior: "smooth" });
+			}
+		});
 	}
 </script>
 
@@ -1391,23 +1391,10 @@ activeVenues.forEach(venueId => {
 
 	.indicator-line-extended {
 		width: 2px;
-		height: 100%;
+		height: 110%;
 		background-color: #fff;
 		margin: 0 auto;
 		z-index: 10;
-	}
-
-	.indicator-triangle-extended {
-		width: 0;
-		height: 0;
-		border-left: 8px solid transparent;
-		border-right: 8px solid transparent;
-		border-top: 12px solid #fff;
-		margin: 0 auto;
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		bottom: -12px;
 	}
 
 	.venue-track {
@@ -1594,7 +1581,7 @@ activeVenues.forEach(venueId => {
 		transform: translateX(-50%);
 		width: 2px;
 		height: calc(100% - 1.3rem);
-		background: rgba(255, 255, 255, 0.2);
+		background: rgba(255, 255, 255, 0.1);
 	}
 
 	/* Hide line on last time block */
@@ -1614,7 +1601,7 @@ activeVenues.forEach(venueId => {
 
 	.agenda-phone-view .time-block.current .time-block-label {
 		color: #fff;
-		font-weight: 600;
+		font-weight: 700;
 	}
 
 	.agenda-phone-view .time-block.current .time-block-label::after {
