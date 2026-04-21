@@ -29,6 +29,7 @@ export interface AgendaItemNormalized {
 	slidoLink?: string;
 	slidesLink?: string;
 	notesLink?: string;
+	recordLink?: string;
 	advertisement?: Advertisement;
 	extended?: boolean;
 }
@@ -84,6 +85,7 @@ export function normalizeAgendaSession(session: AgendaSessionRaw, lang: Lang, op
 		slidoLink: session.qa ?? undefined,
 		slidesLink: session.slide ?? undefined,
 		notesLink: session.co_write ?? undefined,
+		recordLink: session.record ?? undefined,
 		advertisement: undefined
 	};
 }

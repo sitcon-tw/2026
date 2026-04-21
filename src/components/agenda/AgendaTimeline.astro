@@ -25,6 +25,7 @@ interface AgendaItem {
 	slidoLink?: string;
 	slidesLink?: string;
 	notesLink?: string;
+	recordLink?: string;
 }
 
 interface Props {
@@ -407,6 +408,7 @@ activeVenues.forEach(venueId => {
 												slidoLink={item.slidoLink}
 												slidesLink={item.slidesLink}
 												notesLink={item.notesLink}
+												recordLink={item.recordLink}
 												lang={lang}
 											/>
 										</div>
@@ -446,6 +448,7 @@ activeVenues.forEach(venueId => {
 													slidoLink={item.slidoLink}
 													slidesLink={item.slidesLink}
 													notesLink={item.notesLink}
+													recordLink={item.recordLink}
 													lang={lang}
 												/>
 											);
@@ -495,6 +498,7 @@ activeVenues.forEach(venueId => {
 												slidoLink={item.slidoLink}
 												slidesLink={item.slidesLink}
 												notesLink={item.notesLink}
+												recordLink={item.recordLink}
 												lang={lang}
 											/>
 										</div>

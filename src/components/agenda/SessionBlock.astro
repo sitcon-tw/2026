@@ -5,7 +5,7 @@ interface Speaker {
 	description?: string;
 }
 
-const { id: sessionId, type, name, description, speakers, tags, leftPercent, widthPercent, venue, startTime, endTime, slidoLink, slidesLink, notesLink, lang = "zh" } = Astro.props;
+const { id: sessionId, type, name, description, speakers, tags, leftPercent, widthPercent, venue, startTime, endTime, slidoLink, slidesLink, notesLink, recordLink, lang = "zh" } = Astro.props;
 
 // Helper function to get speaker name
 function getSpeakerName(speaker: string | Speaker): string {
@@ -41,6 +41,7 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 	data-session-slido={slidoLink || ""}
 	data-session-slides={slidesLink || ""}
 	data-session-notes={notesLink || ""}
+	data-session-record={recordLink || ""}
 	data-session-lang={lang}
 	data-session-speakers={JSON.stringify(speakers.map((s: string | Speaker) => (typeof s === "string" ? { name: s } : s)))}
 	data-session-tags={JSON.stringify(tags)}
@@ -452,6 +453,7 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 				const slidoLink = block.getAttribute("data-session-slido") || "";
 				const slidesLink = block.getAttribute("data-session-slides") || "";
 				const notesLink = block.getAttribute("data-session-notes") || "";
+				const recordLink = block.getAttribute("data-session-record") || "";
 				const lang = block.getAttribute("data-session-lang") || "zh";
 
 				// Get speakers from data attribute
@@ -502,6 +504,7 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 						slidoLink,
 						slidesLink,
 						notesLink,
+						recordLink,
 						advertisement,
 						lang
 					}

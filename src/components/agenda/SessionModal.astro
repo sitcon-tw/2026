@@ -32,11 +32,12 @@ interface SessionModalProps {
 	slidoLink?: string;
 	slidesLink?: string;
 	notesLink?: string;
+	recordLink?: string;
 	advertisement?: Advertisement;
 	lang?: "zh" | "en";
 }
 
-const { type, name, description = "", speakers, tags, venue, startTime, endTime, slidoLink, slidesLink, notesLink, lang = "zh" } = Astro.props;
+const { type, name, description = "", speakers, tags, venue, startTime, endTime, slidoLink, slidesLink, notesLink, recordLink, lang = "zh" } = Astro.props;
 
 // Format time for display (forced to GMT+8 / Asia/Taipei)
 function formatTime(isoString: string): string {
@@ -75,22 +76,6 @@ const initialAd = weightedAds[0] ?? null;
 			<div class="modal-bookmark-ribbon" id="modal-bookmark-ribbon" aria-hidden="true">
 				<img src={bookmarkIcon.src} alt="Bookmark" class="bookmark-icon" />
 			</div>
-			<!-- <div class="session-video-section" id="session-video-section">
-                <div class="video-container" id="video-container">
-                    <div class="video-wrapper" id="video-wrapper">
-                        <iframe
-                            id="session-video"
-                            width="100%"
-                            height="100%"
-                            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                            title="YouTube video player"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
-                            class="session-video-iframe"
-                        ></iframe>
-                    </div>
-                </div>
-            </div> -->
 			<button class="modal-close" id="modal-close" aria-label="Close">
 				<X size={24} />
 			</button>
@@ -147,6 +132,24 @@ const initialAd = weightedAds[0] ?? null;
 
 				<div class="session-actions">
 					<!-- Action buttons will be populated dynamically -->
+				</div>
+
+				<div class:list={["session-video-section", !recordLink && "is-hidden"]} id="session-video-section">
+					<div class="session-video-frame">
+						<iframe
+							id="session-video"
+							width="100%"
+							height="100%"
+							src=""
+							title={lang === "en" ? `${name} recording` : `${name} 議程錄影`}
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+							allowfullscreen
+							loading="lazy"
+							referrerpolicy="strict-origin-when-cross-origin"
+							class="session-video-iframe"
+						>
+						</iframe>
+					</div>
 				</div>
 
 				<div class="session-description" set:html={description ?? ""} />
@@ -256,6 +259,7 @@ const initialAd = weightedAds[0] ?? null;
 
 	function closeModal() {
 		if (!modal) return;
+		resetSessionVideo();
 		modal.classList.add("closing");
 		const isPhone = window.matchMedia("(max-width: 968px)").matches;
 		const duration = isPhone ? 300 : 220;
@@ -306,6 +310,56 @@ const initialAd = weightedAds[0] ?? null;
 		}
 	}
 
+	function toYouTubeEmbedUrl(url: string): string {
+		if (!url) return "";
+		try {
+			const parsed = new URL(url);
+			const host = parsed.hostname.replace(/^www\./, "");
+			let videoId = "";
+
+			if (host === "youtu.be") {
+				videoId = parsed.pathname.replace(/^\/+/, "").split("/")[0] || "";
+			} else if (host === "youtube.com" || host === "m.youtube.com") {
+				if (parsed.pathname === "/watch") {
+					videoId = parsed.searchParams.get("v") || "";
+				} else if (parsed.pathname.startsWith("/embed/") || parsed.pathname.startsWith("/shorts/")) {
+					videoId = parsed.pathname.split("/")[2] || "";
+				}
+			}
+
+			if (!videoId) return "";
+			return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
+		} catch {
+			return "";
+		}
+	}
+
+	function resetSessionVideo() {
+		const videoSectionEl = modal?.querySelector("#session-video-section") as HTMLElement | null;
+		const videoFrameEl = modal?.querySelector("#session-video") as HTMLIFrameElement | null;
+		if (videoFrameEl) {
+			videoFrameEl.src = "";
+			videoFrameEl.title = "";
+		}
+		videoSectionEl?.classList.add("is-hidden");
+	}
+
+	function updateSessionVideo(recordLinkValue: string, sessionNameValue: string, sessionLangValue: string) {
+		const videoSectionEl = modal?.querySelector("#session-video-section") as HTMLElement | null;
+		const videoFrameEl = modal?.querySelector("#session-video") as HTMLIFrameElement | null;
+		if (!videoSectionEl || !videoFrameEl) return;
+
+		const embedUrl = toYouTubeEmbedUrl(recordLinkValue);
+		if (!embedUrl) {
+			resetSessionVideo();
+			return;
+		}
+
+		videoFrameEl.src = embedUrl;
+		videoFrameEl.title = sessionLangValue === "en" ? `${sessionNameValue} recording` : `${sessionNameValue} 議程錄影`;
+		videoSectionEl.classList.remove("is-hidden");
+	}
+
 	document.addEventListener("openSessionModal", ((e: CustomEvent) => {
 		const detail = e.detail || {};
 		const sessionId = detail.id ?? "";
@@ -320,6 +374,7 @@ const initialAd = weightedAds[0] ?? null;
 		const sessionSlidoLink = detail.slidoLink ?? "";
 		const sessionSlidesLink = detail.slidesLink ?? "";
 		const sessionNotesLink = detail.notesLink ?? "";
+		const sessionRecordLink = detail.recordLink ?? "";
 		const sessionLang = detail.lang ?? "zh";
 
 		if (modal) modal.setAttribute("data-session-id", sessionId);
@@ -334,6 +389,7 @@ const initialAd = weightedAds[0] ?? null;
 
 		const descEl = modal?.querySelector(".session-description");
 		if (descEl) descEl.innerHTML = sessionDescription;
+		updateSessionVideo(sessionRecordLink, sessionName, sessionLang);
 
 		const typeBadgeEl = modal?.querySelector(".session-type-badge");
 		if (typeBadgeEl) {
@@ -541,6 +597,7 @@ const initialAd = weightedAds[0] ?? null;
 					sessionContent.scrollTop = 0;
 				}
 				container.scrollTop = 0;
+				resetSessionVideo();
 				gsapLib.to(container, {
 					y: height,
 					duration: 0.25,
@@ -922,6 +979,30 @@ const initialAd = weightedAds[0] ?? null;
 		flex-wrap: wrap;
 	}
 
+	.session-video-section {
+		margin-bottom: 2rem;
+	}
+
+	.session-video-section.is-hidden {
+		display: none;
+	}
+
+	.session-video-frame {
+		position: relative;
+		width: 100%;
+		border-radius: 1rem;
+		overflow: hidden;
+		background: #000;
+		aspect-ratio: 16 / 9;
+	}
+
+	.session-video-iframe {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+
 	.session-content {
 		color: #333;
 		overflow: auto;
@@ -1261,7 +1342,6 @@ const initialAd = weightedAds[0] ?? null;
 		.session-actions {
 			gap: 0.5rem;
 		}
-
 		.session-speaker-detail {
 			padding-bottom: 2rem;
 		}
