@@ -8,6 +8,7 @@
 		"fetch-team": "node src/utils/fetch-team.js",
 		"format": "prettier --write .",
 		"generate": "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES && node src/session-images/generate.js",
+		"generate-staff-avatars": "node src/utils/generate-staff-avatars.js",
 		"preinstall": "npx only-allow pnpm",
 		"prepare": "husky",
 		"preview": "astro preview",
