@@ -11,6 +11,30 @@ interface Props {
 const lang = Astro.props.lang ?? "zh";
 const i18n = useTranslations(lang);
 const t = i18n.ticket;
+const localizedDanmakuLines =
+	lang === "en"
+		? [
+				"SITCON 2026 Jam the Chaos",
+				"Tickets are free, missing one is costly",
+				"One click stands between you and SITCON",
+				"I am quietly watching you not claim a ticket...",
+				"Thirsty for tickets!",
+				"Come sit with SITCON",
+				"You can miss tonight's snack, but not this ticket",
+				"A ticket is not everything, but lunch needs one",
+				"This ticket is love for the organizing team <3",
+				"Claiming tickets also trains your clicking speed",
+				"We can fix a crashed system, but not an indifferent heart",
+				"Do not underestimate a sage's reaction time",
+				"Your ticket is SITCON's bright future",
+				"Claim now, keep the dream on schedule",
+				"SITCON tickets are not stocks, and they will not hurt you",
+				"People who build ticketing systems are cool",
+				"Anyone claiming tickets from Wuling?",
+				"No raffle win? Never gonna give you up.",
+				"Have you watched the ticketing site intro video?"
+			]
+		: danmakuLines;
 
 const tickets = [
 	{
@@ -147,7 +171,7 @@ const tickets = [
 		</div>
 	</div>
 
-	<Danmaku lines={danmakuLines} />
+	<Danmaku lines={localizedDanmakuLines} />
 </section>
 
 <style>

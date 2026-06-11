@@ -1,5 +1,8 @@
 ---
-const { url } = Astro.props;
+import type { Lang } from "@/utils/i18n";
+
+const { url, lang = "zh" } = Astro.props as { url: string; lang?: Lang };
+const prefix = lang === "en" ? "Go to" : "前往";
 
 const KNOWN_SITES: Record<string, string> = {
 	"instagram.com": "Instagram",
@@ -27,9 +30,9 @@ try {
 		}
 	}
 
-	displayText = siteName ? `前往 ${siteName}` : `前往 ${hostname.replace(/^www\./, "")}`;
+	displayText = siteName ? `${prefix} ${siteName}` : `${prefix} ${hostname.replace(/^www\./, "")}`;
 } catch (e) {
-	displayText = `前往 ${url}`;
+	displayText = `${prefix} ${url}`;
 }
 ---
 

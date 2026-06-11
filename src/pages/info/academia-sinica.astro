@@ -117,7 +117,7 @@ const t = useTranslations(lang).academiaSinica;
 	}
 </style>
 
-<Layout>
+<Layout title={lang === "en" ? "Academia Sinica - SITCON 2026" : "中央研究院 - SITCON 2026"} lang={lang}>
 	<div id="instructions">
 		<span>{t.instruction}</span>
 	</div>

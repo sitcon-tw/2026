@@ -11,33 +11,69 @@ const prefix = lang === "en" ? "/2026/en" : "/2026";
 
 const speakers = [
 	{
-		name: "李雪莉",
-		desc: "《報導者》營運長、臺大新聞所兼任副教授",
+		name: {
+			zh: "李雪莉",
+			en: "Shirley Li"
+		},
+		desc: {
+			zh: "《報導者》營運長、臺大新聞所兼任副教授",
+			en: "COO of The Reporter and adjunct associate professor at NTU"
+		},
 		img: "/2026/img/guest/李雪莉.webp"
 	},
 	{
-		name: "蔡嘉平",
-		desc: "Apache 核心維護者",
+		name: {
+			zh: "蔡嘉平",
+			en: "Chia-Ping Tsai"
+		},
+		desc: {
+			zh: "Apache 核心維護者",
+			en: "Apache core maintainer"
+		},
 		img: "/2026/img/guest/蔡嘉平.webp"
 	},
 	{
-		name: "蕭上農 fOx",
-		desc: "愛料理 / INSIDE 創辦人",
+		name: {
+			zh: "蕭上農 fOx",
+			en: "Fox Hsiao"
+		},
+		desc: {
+			zh: "愛料理 / INSIDE 創辦人",
+			en: "Founder of iCook and INSIDE"
+		},
 		img: "/2026/img/guest/蕭上農.webp"
 	},
 	{
-		name: "趙式隆",
-		desc: "臺北市政府資訊局局長",
+		name: {
+			zh: "趙式隆",
+			en: "Jack Chao"
+		},
+		desc: {
+			zh: "臺北市政府資訊局局長",
+			en: "Commissioner of Taipei City Department of Information Technology"
+		},
 		img: "/2026/img/guest/趙式隆.webp"
 	},
 	{
-		name: "李比鄰",
-		desc: "Cofacts 共同發起人",
+		name: {
+			zh: "李比鄰",
+			en: "Billion Lee"
+		},
+		desc: {
+			zh: "Cofacts 共同發起人",
+			en: "Co-founder of Cofacts"
+		},
 		img: "/2026/img/guest/李比鄰.webp"
 	},
 	{
-		name: "葉浩",
-		desc: "國立政治大學政治學系教授",
+		name: {
+			zh: "葉浩",
+			en: "Hao Yeh"
+		},
+		desc: {
+			zh: "國立政治大學政治學系教授",
+			en: "Professor of Political Science at National Chengchi University"
+		},
 		img: "/2026/img/guest/葉浩.webp"
 	}
 ];
@@ -54,21 +90,21 @@ const speakers = [
 		<div class="speaker-list">
 			{
 				speakers.map((person, index) => (
-					<div class:list={["speaker-item", { active: index === 0 }]} data-img={person.img}>
-						<h3 class="text-reveal-title">{person.name}</h3>
-						<p class="speakerdesc">{person.desc}</p>
+					<div class:list={["speaker-item", { active: index === 0 }]} data-img={person.img} data-alt={person.name[lang]}>
+						<h3 class="text-reveal-title">{person.name[lang]}</h3>
+						<p class="speakerdesc">{person.desc[lang]}</p>
 					</div>
 				))
 			}
 		</div>
 
 		<div class="speaker-image">
-			<img id="speaker-img" class="desktop-img" src={speakers[0].img} alt={speakers[0].name} />
+			<img id="speaker-img" class="desktop-img" src={speakers[0].img} alt={speakers[0].name[lang]} />
 
 			<div class="marquee-container">
 				<div class="marquee-track">
-					{speakers.map(person => <img class="marquee-item" src={person.img} alt={person.name} />)}
-					{speakers.map(person => <img class="marquee-item" src={person.img} alt={person.name} />)}
+					{speakers.map(person => <img class="marquee-item" src={person.img} alt={person.name[lang]} />)}
+					{speakers.map(person => <img class="marquee-item" src={person.img} alt={person.name[lang]} />)}
 				</div>
 			</div>
 		</div>
@@ -429,8 +465,10 @@ const speakers = [
 			targetitem.classList.add("active");
 
 			const newimgsrc = targetitem.getAttribute("data-img");
+			const newalt = targetitem.getAttribute("data-alt");
 			if (imgelement && newimgsrc) {
 				imgelement.src = newimgsrc;
+				imgelement.alt = newalt ?? "";
 			}
 
 			currentindex = index;

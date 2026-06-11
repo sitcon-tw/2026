@@ -1,12 +1,21 @@
 ---
+import type { Lang } from "@/utils/i18n";
 import { X } from "@lucide/astro";
-const { id = "member-info-modal" } = Astro.props;
+
+interface Props {
+	id?: string;
+	lang?: Lang;
+}
+
+const { id = "member-info-modal", lang = "zh" } = Astro.props as Props;
+const closeLabel = lang === "en" ? "Close" : "關閉";
+const socialPrefix = lang === "en" ? "Go to" : "前往";
 ---
 
 <div id="member-info-overlay" class="member-info-overlay" aria-hidden="true"></div>
-<div id={id} class="member-info" data-lenis-prevent tabindex="-1">
+<div id={id} class="member-info" data-lenis-prevent data-social-prefix={socialPrefix} tabindex="-1">
 	<div class="header">
-		<button class="close-btn" aria-label="關閉">
+		<button class="close-btn" aria-label={closeLabel}>
 			<X size={24} strokeWidth={3} />
 		</button>
 	</div>
@@ -56,9 +65,13 @@ const { id = "member-info-modal" } = Astro.props;
 					break;
 				}
 			}
-			return siteName ? `前往 ${siteName}` : `前往 ${hostname.replace(/^www\./, "")}`;
+			const modal = document.getElementById("member-info-modal");
+			const socialPrefix = modal?.dataset.socialPrefix ?? "Go to";
+			return siteName ? `${socialPrefix} ${siteName}` : `${socialPrefix} ${hostname.replace(/^www\./, "")}`;
 		} catch (e) {
-			return `前往 ${url}`;
+			const modal = document.getElementById("member-info-modal");
+			const socialPrefix = modal?.dataset.socialPrefix ?? "Go to";
+			return `${socialPrefix} ${url}`;
 		}
 	};
 

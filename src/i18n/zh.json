@@ -58,7 +58,8 @@
 	"coc": {
 		"title": "行為準則",
 		"paragraph1": "SITCON 非常歡迎<br class=\"mobile-br\" />所有年齡、身分、背景的與會者！",
-		"paragraph2": "為了讓大家都能愉快的參加 SITCON，<br />請所有參與者遵循行為準則<br class=\"mobile-br\" />共創一個友善的環境。"
+		"paragraph2": "為了讓大家都能愉快的參加 SITCON，<br />請所有參與者遵循行為準則<br class=\"mobile-br\" />共創一個友善的環境。",
+		"linkLabel": "前往 SITCON 行為準則"
 	},
 	"discuss": {
 		"title": "參與討論",
@@ -153,7 +154,14 @@
 		"backToFloor": "返回樓層選擇",
 		"backToList": "返回列表",
 		"visitWebsite": "前往官網 →",
-		"emergency": "緊急逃生指引"
+		"emergency": "緊急逃生指引",
+		"sheetToggle": "展開/收合選單",
+		"explodedView": "分層檢視",
+		"toggle2D": "切換 2D 檢視",
+		"map2DTitle": "2D 平面圖",
+		"mapFloorSwitch": "切換樓層平面圖",
+		"close2D": "關閉 2D 平面圖",
+		"mapAlt": "場地平面圖"
 	},
 	"agenda": {
 		"title": "議程表",

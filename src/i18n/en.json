@@ -58,7 +58,8 @@
 	"coc": {
 		"title": "Code of Conduct",
 		"paragraph1": "SITCON warmly welcomes<br class=\"mobile-br\" />participants of all ages, identities, and backgrounds!",
-		"paragraph2": "To ensure everyone can enjoy SITCON,<br />we ask all participants to follow the Code of Conduct<br class=\"mobile-br\" />and help create a friendly and inclusive environment."
+		"paragraph2": "To ensure everyone can enjoy SITCON,<br />we ask all participants to follow the Code of Conduct<br class=\"mobile-br\" />and help create a friendly and inclusive environment.",
+		"linkLabel": "Go to the SITCON Code of Conduct"
 	},
 	"discuss": {
 		"title": "Join the Discussion",
@@ -157,7 +158,14 @@
 		"backToFloor": "Back to Floor Selection",
 		"backToList": "Back to List",
 		"visitWebsite": "Visit Website →",
-		"emergency": "Emergency Evacuation Guide"
+		"emergency": "Emergency Evacuation Guide",
+		"sheetToggle": "Expand or collapse menu",
+		"explodedView": "Floor View",
+		"toggle2D": "Toggle 2D View",
+		"map2DTitle": "2D Floor Plan",
+		"mapFloorSwitch": "Switch floor plan",
+		"close2D": "Close 2D floor plan",
+		"mapAlt": "venue floor plan"
 	},
 	"agenda": {
 		"title": "Agenda",

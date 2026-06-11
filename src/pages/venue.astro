@@ -8,6 +8,16 @@ import { useTranslations } from "@/utils/i18n";
 
 const lang = Astro.props.lang ?? "zh";
 const t = useTranslations(lang).venue;
+const localizedFloors = floors.map(floor => ({
+	...floor,
+	description: lang === "en" ? (floor.description_en ?? floor.description) : floor.description,
+	items: floor.items.map(item => ({
+		...item,
+		name: lang === "en" ? (item.name_en ?? item.name) : item.name,
+		description: lang === "en" ? (item.description_en ?? item.description) : item.description,
+		longDescription: lang === "en" ? (item.longDescription_en ?? item.longDescription) : item.longDescription
+	}))
+}));
 ---
 
 <Layout title={lang === "en" ? "Venue Map - SITCON 2026" : "會場地圖 - SITCON 2026"} lang={lang}>
@@ -16,7 +26,7 @@ const t = useTranslations(lang).venue;
 			<h1 class="title">{t.title}</h1>
 
 			<div class="content-wrapper">
-				<button id="sheet-toggle" class="sheet-toggle" aria-label="展開/收合選單">
+				<button id="sheet-toggle" class="sheet-toggle" aria-label={t.sheetToggle}>
 					<span class="sheet-chevron"></span>
 				</button>
 
@@ -24,7 +34,7 @@ const t = useTranslations(lang).venue;
 				<div id="floor-selection" class="menu-panel">
 					<p class="hint">{t.selectFloor}</p>
 					<div class="floor-buttons" data-lenis-prevent>
-						{floors.map(floor => <FloorButton id={floor.id} label={floor.label} description={floor.description} />)}
+						{localizedFloors.map(floor => <FloorButton id={floor.id} label={floor.label} description={floor.description} />)}
 					</div>
 				</div>
 
@@ -38,7 +48,7 @@ const t = useTranslations(lang).venue;
 					</div>
 
 					{
-						floors.map(floor => (
+						localizedFloors.map(floor => (
 							<div id={`room-list-${floor.id}`} class="room-list-container hidden">
 								<div class="room-list" data-lenis-prevent>
 									{floor.items.map(item => (
@@ -71,26 +81,26 @@ const t = useTranslations(lang).venue;
 
 			<!-- Emergency Exit -->
 			<div class="emergency-btn-container">
-				<button id="explode-toggle-btn" class="explode-btn">&#9776; 分層檢視</button>
+				<button id="explode-toggle-btn" class="explode-btn">&#9776; {t.explodedView}</button>
 				<a class="emergency-btn" href="https://hackmd.io/@SITCON/H1J2-d3y6" target="_blank">
 					<!-- <ShieldAlert size={20} /> -->
 					{t.emergency}
 				</a>
 			</div>
 
-			<button id="toggle-2d-btn" class="toggle-2d-btn" type="button" aria-label="切換 2D 檢視">2D</button>
+			<button id="toggle-2d-btn" class="toggle-2d-btn" type="button" aria-label={t.toggle2D}>2D</button>
 
-			<dialog id="map-2d-overlay" class="map-2d-overlay" aria-label="2D 平面圖">
-				<div class="map-2d-popup" role="dialog" aria-modal="true" aria-label="2D 平面圖">
+			<dialog id="map-2d-overlay" class="map-2d-overlay" aria-label={t.map2DTitle}>
+				<div class="map-2d-popup" role="dialog" aria-modal="true" aria-label={t.map2DTitle}>
 					<div class="map-2d-image-wrapper">
 						<div class="map-2d-top-controls">
-							<div class="map-floor-switch" role="group" aria-label="切換樓層平面圖">
+							<div class="map-floor-switch" role="group" aria-label={t.mapFloorSwitch}>
 								<button class="map-floor-btn active" type="button" data-map-floor="3f" aria-pressed="true">3F</button>
 								<button class="map-floor-btn" type="button" data-map-floor="4f" aria-pressed="false">4F</button>
 							</div>
-							<button id="map-2d-close-btn" class="map-2d-close-btn" type="button" aria-label="關閉 2D 平面圖">×</button>
+							<button id="map-2d-close-btn" class="map-2d-close-btn" type="button" aria-label={t.close2D}>×</button>
 						</div>
-						<img class="map-2d-image" src="/2026/img/venue/map_3F.svg" alt="3F 場地平面圖" draggable="false" />
+						<img class="map-2d-image" src="/2026/img/venue/map_3F.svg" alt={`3F ${t.mapAlt}`} data-map-alt={t.mapAlt} draggable="false" />
 					</div>
 				</div>
 			</dialog>
@@ -1542,6 +1552,7 @@ const t = useTranslations(lang).venue;
 			"3f": "/2026/img/venue/map_3F.svg",
 			"4f": "/2026/img/venue/map_4F.svg"
 		};
+		const mapAltText = map2DImage?.dataset.mapAlt ?? "venue floor plan";
 		const mapMinScale = 1;
 		const mapMaxScale = 4;
 		let mapScale = 1;
@@ -1585,7 +1596,7 @@ const t = useTranslations(lang).venue;
 			const normalized = floorId.toLowerCase() === "4f" ? "4f" : "3f";
 			if (map2DImage) {
 				map2DImage.src = mapPaths[normalized];
-				map2DImage.alt = `${normalized.toUpperCase()} 場地平面圖`;
+				map2DImage.alt = `${normalized.toUpperCase()} ${mapAltText}`;
 			}
 			resetMapTransform();
 			mapFloorBtns.forEach(btn => {
