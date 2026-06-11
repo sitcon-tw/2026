@@ -54,6 +54,7 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 
 <script define:vars={{ lang, shareJamTitle, shareJamPlaceholder, shareJamCopy, shareJamCopied }}>
 	const BOOKMARKS_STORAGE_KEY = "sitcon2026:agendaBookmarks";
+	const BOOKMARKS_CHANGED_EVENT = "agendaBookmarksChanged";
 	const modal = document.getElementById("share-jam-modal");
 	const overlay = document.getElementById("share-jam-overlay");
 	const container = document.getElementById("share-jam-container");
@@ -527,7 +528,7 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 	document.addEventListener("openShareJamModal", () => openShareJamModal());
 
 	// Update content when bookmarks change while modal is open
-	document.addEventListener("bookmarksChanged", () => {
+	document.addEventListener(BOOKMARKS_CHANGED_EVENT, () => {
 		if (modal?.classList.contains("active")) {
 			updateShareJamContent();
 		}

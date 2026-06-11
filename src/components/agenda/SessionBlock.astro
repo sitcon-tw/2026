@@ -409,27 +409,39 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 		bookmarkEl.classList.toggle("is-marked", isBookmarked);
 	}
 
+	function syncBookmarkIcons(sessionId?: string) {
+		const bookmarks = readBookmarks();
+		const selector = sessionId ? `.session-block[data-session-id="${CSS.escape(sessionId)}"] .session-favorite` : ".session-block .session-favorite";
+		document.querySelectorAll(selector).forEach(bookmarkEl => {
+			const id = (bookmarkEl as HTMLElement).dataset.sessionId || bookmarkEl.closest(".session-block")?.getAttribute("data-session-id") || "";
+			if (id) updateBookmarkUI(bookmarkEl, bookmarks.has(id));
+		});
+	}
+
+	function dispatchBookmarksChanged(sessionId: string) {
+		document.dispatchEvent(new CustomEvent(BOOKMARKS_CHANGED_EVENT, { detail: { sessionId } }));
+	}
+
 	// Add click handler to open modal
 	document.addEventListener("DOMContentLoaded", () => {
 		const sessionBlocks = document.querySelectorAll(".session-block");
-		const bookmarks = readBookmarks();
+		syncBookmarkIcons();
 
 		sessionBlocks.forEach(block => {
 			// Init bookmark state
 			const bookmarkEl = block.querySelector(".session-favorite");
 			const sessionId = block.getAttribute("data-session-id") || "";
 			if (bookmarkEl && sessionId) {
-				updateBookmarkUI(bookmarkEl, bookmarks.has(sessionId));
-
 				const toggle = (e: Event) => {
 					e.preventDefault();
 					e.stopPropagation();
 					if (!sessionId) return;
+					const bookmarks = readBookmarks();
 					if (bookmarks.has(sessionId)) bookmarks.delete(sessionId);
 					else bookmarks.add(sessionId);
 					writeBookmarks(bookmarks);
 					updateBookmarkUI(bookmarkEl, bookmarks.has(sessionId));
-					document.dispatchEvent(new CustomEvent("agendaBookmarksChanged"));
+					dispatchBookmarksChanged(sessionId);
 				};
 
 				bookmarkEl.addEventListener("click", toggle);
@@ -482,14 +494,8 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 		});
 	});
 
-	// Sync bookmark icon when toggled from modal ribbon
-	document.addEventListener("bookmarksChanged", ((e: CustomEvent) => {
-		const sessionId = e.detail?.sessionId;
-		if (!sessionId) return;
-		const block = document.querySelector(`.session-block[data-session-id="${CSS.escape(sessionId)}"]`);
-		const bookmarkEl = block?.querySelector(".session-favorite");
-		if (bookmarkEl) {
-			updateBookmarkUI(bookmarkEl, readBookmarks().has(sessionId));
-		}
+	// Sync bookmark icons when toggled from modal ribbon or another duplicate block.
+	document.addEventListener(BOOKMARKS_CHANGED_EVENT, ((e: CustomEvent) => {
+		syncBookmarkIcons(e.detail?.sessionId);
 	}) as EventListener);
 </script>

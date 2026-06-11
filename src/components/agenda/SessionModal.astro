@@ -510,6 +510,7 @@ const initialAd = weightedAds[0] ?? null;
 	}
 
 	const bookmarkAreaEl = document.getElementById("modal-bookmark-area");
+	const BOOKMARKS_CHANGED_EVENT = "agendaBookmarksChanged";
 	if (bookmarkAreaEl && ribbonEl && modal) {
 		bookmarkAreaEl.addEventListener("mouseenter", () => {
 			modal.classList.add("bookmark-area-hovered");
@@ -534,7 +535,7 @@ const initialAd = weightedAds[0] ?? null;
 				ribbonEl.classList.add("is-bookmarked");
 				ribbonEl.setAttribute("aria-hidden", "false");
 			}
-			document.dispatchEvent(new CustomEvent("bookmarksChanged", { detail: { sessionId } }));
+			document.dispatchEvent(new CustomEvent(BOOKMARKS_CHANGED_EVENT, { detail: { sessionId } }));
 		});
 	}
 
