@@ -177,11 +177,16 @@ const t = useTranslations(lang).academiaSinica;
 	const jumpBtn = mustGetEl<HTMLButtonElement>("jump");
 
 	const isTouchDevice: boolean = (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) || navigator.maxTouchPoints > 0;
+	const eventController = new AbortController();
+	const eventSignal = eventController.signal;
+	let animationFrameId = 0;
+	let disposed = false;
+	let isPageVisible = document.visibilityState === "visible";
 
 	// THREE
 	const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-	renderer.shadowMap.enabled = true;
+	renderer.setPixelRatio(Math.min(window.devicePixelRatio, isTouchDevice ? 1.5 : 2));
+	renderer.shadowMap.enabled = !isTouchDevice;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 	const scene = new THREE.Scene();
@@ -202,7 +207,7 @@ const t = useTranslations(lang).academiaSinica;
 
 	const floor = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshStandardMaterial({ color: 0x3c2d0e }));
 	floor.rotation.x = -Math.PI / 2;
-	floor.receiveShadow = true;
+	floor.receiveShadow = renderer.shadowMap.enabled;
 	colliders.add(floor);
 
 	// Debug visuals
@@ -218,7 +223,7 @@ const t = useTranslations(lang).academiaSinica;
 
 	// Player mesh - will be replaced by stone.glb
 	let playerMesh: THREE.Object3D = new THREE.Mesh(new THREE.BoxGeometry(playerWidth, playerHeight, playerDepth), new THREE.MeshStandardMaterial({ color: 0xddddff, wireframe: true }));
-	playerMesh.castShadow = true;
+	playerMesh.castShadow = renderer.shadowMap.enabled;
 	scene.add(playerMesh);
 
 	// Debug box helper for physics visualization (rotatable wireframe box)
@@ -263,8 +268,8 @@ const t = useTranslations(lang).academiaSinica;
 
 			stoneModel.traverse(obj => {
 				if (!isMesh(obj)) return;
-				obj.castShadow = true;
-				obj.receiveShadow = true;
+				obj.castShadow = renderer.shadowMap.enabled;
+				obj.receiveShadow = renderer.shadowMap.enabled;
 
 				const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
 				for (const m of materials) {
@@ -274,22 +279,21 @@ const t = useTranslations(lang).academiaSinica;
 			});
 
 			stoneModel.traverse(obj => {
-				console.log(obj.name);
 				if (obj.name === "Hand_L") {
 					leftArm = obj;
-					console.log("Found left hand:", obj.name);
+					if (import.meta.env.DEV) console.debug("Found left hand:", obj.name);
 				}
 				if (obj.name === "Hand_R") {
 					rightArm = obj;
-					console.log("Found right hand:", obj.name);
+					if (import.meta.env.DEV) console.debug("Found right hand:", obj.name);
 				}
 				if (obj.name === "Leaf_L") {
 					leftLeaf = obj;
-					console.log("Found left leaf:", obj.name);
+					if (import.meta.env.DEV) console.debug("Found left leaf:", obj.name);
 				}
 				if (obj.name === "Leaf_R") {
 					rightLeaf = obj;
-					console.log("Found right leaf:", obj.name);
+					if (import.meta.env.DEV) console.debug("Found right leaf:", obj.name);
 				}
 			});
 
@@ -323,7 +327,7 @@ const t = useTranslations(lang).academiaSinica;
 			playerMesh = wrapper;
 			scene.add(playerMesh);
 
-			console.log("Loaded stone.glb as player model");
+			if (import.meta.env.DEV) console.debug("Loaded stone.glb as player model");
 		},
 		undefined,
 		err => console.error("Failed to load stone.glb", err)
@@ -340,8 +344,8 @@ const t = useTranslations(lang).academiaSinica;
 			model.traverse(obj => {
 				if (!isMesh(obj)) return;
 
-				obj.castShadow = true;
-				obj.receiveShadow = true;
+				obj.castShadow = renderer.shadowMap.enabled;
+				obj.receiveShadow = renderer.shadowMap.enabled;
 
 				// material can be Material or Material[]
 				const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
@@ -463,32 +467,48 @@ const t = useTranslations(lang).academiaSinica;
 	let lastMouseX = 0;
 	let lastMouseY = 0;
 
-	canvas.addEventListener("mousedown", (e: MouseEvent) => {
-		if (isTouchDevice) return;
-		isMouseDragging = true;
-		lastMouseX = e.clientX;
-		lastMouseY = e.clientY;
-	});
+	canvas.addEventListener(
+		"mousedown",
+		(e: MouseEvent) => {
+			if (isTouchDevice) return;
+			isMouseDragging = true;
+			lastMouseX = e.clientX;
+			lastMouseY = e.clientY;
+		},
+		{ signal: eventSignal }
+	);
 
-	canvas.addEventListener("mousemove", (e: MouseEvent) => {
-		if (isTouchDevice || !isMouseDragging) return;
-		const sens = 0.005;
-		const dx = e.clientX - lastMouseX;
-		const dy = e.clientY - lastMouseY;
-		lastMouseX = e.clientX;
-		lastMouseY = e.clientY;
-		yaw -= dx * sens;
-		pitch += dy * sens;
-		pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
-	});
+	canvas.addEventListener(
+		"mousemove",
+		(e: MouseEvent) => {
+			if (isTouchDevice || !isMouseDragging) return;
+			const sens = 0.005;
+			const dx = e.clientX - lastMouseX;
+			const dy = e.clientY - lastMouseY;
+			lastMouseX = e.clientX;
+			lastMouseY = e.clientY;
+			yaw -= dx * sens;
+			pitch += dy * sens;
+			pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
+		},
+		{ signal: eventSignal }
+	);
 
-	canvas.addEventListener("mouseup", () => {
-		isMouseDragging = false;
-	});
+	canvas.addEventListener(
+		"mouseup",
+		() => {
+			isMouseDragging = false;
+		},
+		{ signal: eventSignal }
+	);
 
-	canvas.addEventListener("mouseleave", () => {
-		isMouseDragging = false;
-	});
+	canvas.addEventListener(
+		"mouseleave",
+		() => {
+			isMouseDragging = false;
+		},
+		{ signal: eventSignal }
+	);
 
 	// Touch look
 	let lookPointerId: number | null = null;
@@ -501,43 +521,59 @@ const t = useTranslations(lang).academiaSinica;
 		return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
 	};
 
-	canvas.addEventListener("pointerdown", (e: PointerEvent) => {
-		if (!isTouchDevice) return;
-		if (isInside(joy, e.clientX, e.clientY) || isInside(jumpBtn, e.clientX, e.clientY)) return;
-		lookPointerId = e.pointerId;
-		lastLookX = e.clientX;
-		lastLookY = e.clientY;
-		canvas.setPointerCapture(e.pointerId);
-	});
+	canvas.addEventListener(
+		"pointerdown",
+		(e: PointerEvent) => {
+			if (!isTouchDevice) return;
+			if (isInside(joy, e.clientX, e.clientY) || isInside(jumpBtn, e.clientX, e.clientY)) return;
+			lookPointerId = e.pointerId;
+			lastLookX = e.clientX;
+			lastLookY = e.clientY;
+			canvas.setPointerCapture(e.pointerId);
+		},
+		{ signal: eventSignal }
+	);
 
-	canvas.addEventListener("pointermove", (e: PointerEvent) => {
-		if (!isTouchDevice) return;
-		if (lookPointerId !== e.pointerId) return;
+	canvas.addEventListener(
+		"pointermove",
+		(e: PointerEvent) => {
+			if (!isTouchDevice) return;
+			if (lookPointerId !== e.pointerId) return;
 
-		const dx = e.clientX - lastLookX;
-		const dy = e.clientY - lastLookY;
-		lastLookX = e.clientX;
-		lastLookY = e.clientY;
+			const dx = e.clientX - lastLookX;
+			const dy = e.clientY - lastLookY;
+			lastLookX = e.clientX;
+			lastLookY = e.clientY;
 
-		yaw -= dx * touchLookSens;
-		pitch += dy * touchLookSens;
-		pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
-	});
+			yaw -= dx * touchLookSens;
+			pitch += dy * touchLookSens;
+			pitch = Math.max(-pitchLimit, Math.min(pitchLimit, pitch));
+		},
+		{ signal: eventSignal }
+	);
 
-	canvas.addEventListener("pointerup", (e: PointerEvent) => {
-		if (!isTouchDevice) return;
-		if (lookPointerId !== e.pointerId) return;
-		lookPointerId = null;
-	});
+	canvas.addEventListener(
+		"pointerup",
+		(e: PointerEvent) => {
+			if (!isTouchDevice) return;
+			if (lookPointerId !== e.pointerId) return;
+			lookPointerId = null;
+		},
+		{ signal: eventSignal }
+	);
 
 	// Start game
-	instructions.addEventListener("click", () => {
-		enabled = true;
-		instructions.style.display = "none";
-		if (isTouchDevice) {
-			touchControls.style.display = "block";
-		}
-	});
+	instructions.addEventListener(
+		"click",
+		() => {
+			enabled = true;
+			instructions.style.display = "none";
+			if (isTouchDevice) {
+				touchControls.style.display = "block";
+			}
+		},
+		{ signal: eventSignal }
+	);
 
 	// Keyboard
 	const keys: Record<"w" | "a" | "s" | "d" | "space", boolean> = {
@@ -548,22 +584,30 @@ const t = useTranslations(lang).academiaSinica;
 		space: false
 	};
 
-	window.addEventListener("keydown", (e: KeyboardEvent) => {
-		if (e.code === "KeyW") keys.w = true;
-		if (e.code === "KeyA") keys.a = true;
-		if (e.code === "KeyS") keys.s = true;
-		if (e.code === "KeyD") keys.d = true;
-		if (e.code === "Space") keys.space = true;
-		if (e.code === "KeyB") debugVisible = !debugVisible;
-	});
+	window.addEventListener(
+		"keydown",
+		(e: KeyboardEvent) => {
+			if (e.code === "KeyW") keys.w = true;
+			if (e.code === "KeyA") keys.a = true;
+			if (e.code === "KeyS") keys.s = true;
+			if (e.code === "KeyD") keys.d = true;
+			if (e.code === "Space") keys.space = true;
+			if (e.code === "KeyB") debugVisible = !debugVisible;
+		},
+		{ signal: eventSignal }
+	);
 
-	window.addEventListener("keyup", (e: KeyboardEvent) => {
-		if (e.code === "KeyW") keys.w = false;
-		if (e.code === "KeyA") keys.a = false;
-		if (e.code === "KeyS") keys.s = false;
-		if (e.code === "KeyD") keys.d = false;
-		if (e.code === "Space") keys.space = false;
-	});
+	window.addEventListener(
+		"keyup",
+		(e: KeyboardEvent) => {
+			if (e.code === "KeyW") keys.w = false;
+			if (e.code === "KeyA") keys.a = false;
+			if (e.code === "KeyS") keys.s = false;
+			if (e.code === "KeyD") keys.d = false;
+			if (e.code === "Space") keys.space = false;
+		},
+		{ signal: eventSignal }
+	);
 
 	// Touch joystick
 	let joyActiveId: number | null = null;
@@ -594,46 +638,63 @@ const t = useTranslations(lang).academiaSinica;
 		setKnob(0, 0);
 	};
 
-	joy.addEventListener("pointerdown", (e: PointerEvent) => {
-		if (!isTouchDevice) return;
-		joyActiveId = e.pointerId;
-		const r = joy.getBoundingClientRect();
-		joyCenterX = r.left + r.width / 2;
-		joyCenterY = r.top + r.height / 2;
-		joy.setPointerCapture(e.pointerId);
-		setJoyFromDelta(e.clientX - joyCenterX, e.clientY - joyCenterY);
-	});
+	joy.addEventListener(
+		"pointerdown",
+		(e: PointerEvent) => {
+			if (!isTouchDevice) return;
+			joyActiveId = e.pointerId;
+			const r = joy.getBoundingClientRect();
+			joyCenterX = r.left + r.width / 2;
+			joyCenterY = r.top + r.height / 2;
+			joy.setPointerCapture(e.pointerId);
+			setJoyFromDelta(e.clientX - joyCenterX, e.clientY - joyCenterY);
+		},
+		{ signal: eventSignal }
+	);
 
-	joy.addEventListener("pointermove", (e: PointerEvent) => {
-		if (!isTouchDevice) return;
-		if (joyActiveId !== e.pointerId) return;
-		setJoyFromDelta(e.clientX - joyCenterX, e.clientY - joyCenterY);
-	});
+	joy.addEventListener(
+		"pointermove",
+		(e: PointerEvent) => {
+			if (!isTouchDevice) return;
+			if (joyActiveId !== e.pointerId) return;
+			setJoyFromDelta(e.clientX - joyCenterX, e.clientY - joyCenterY);
+		},
+		{ signal: eventSignal }
+	);
 
-	joy.addEventListener("pointerup", (e: PointerEvent) => {
-		if (!isTouchDevice) return;
-		if (joyActiveId !== e.pointerId) return;
-		resetJoy();
-	});
-	joy.addEventListener("pointercancel", () => resetJoy());
+	joy.addEventListener(
+		"pointerup",
+		(e: PointerEvent) => {
+			if (!isTouchDevice) return;
+			if (joyActiveId !== e.pointerId) return;
+			resetJoy();
+		},
+		{ signal: eventSignal }
+	);
+	joy.addEventListener("pointercancel", () => resetJoy(), { signal: eventSignal });
 
 	// Touch jump
 	let jumpRequested: boolean = false;
-	jumpBtn.addEventListener("pointerdown", (e: PointerEvent) => {
-		if (!isTouchDevice) return;
-		jumpRequested = true;
-		jumpBtn.setPointerCapture(e.pointerId);
-	});
+	jumpBtn.addEventListener(
+		"pointerdown",
+		(e: PointerEvent) => {
+			if (!isTouchDevice) return;
+			jumpRequested = true;
+			jumpBtn.setPointerCapture(e.pointerId);
+		},
+		{ signal: eventSignal }
+	);
 
 	// Resize
 	const resize = (): void => {
 		const w = window.innerWidth;
 		const h = window.innerHeight;
 		renderer.setSize(w, h, false);
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, isTouchDevice ? 1.5 : 2));
 		camera.aspect = w / h;
 		camera.updateProjectionMatrix();
 	};
-	addEventListener("resize", resize);
+	window.addEventListener("resize", resize, { signal: eventSignal });
 	resize();
 
 	// Camera smoothing + collision
@@ -656,7 +717,7 @@ const t = useTranslations(lang).academiaSinica;
 			followDistance += e.deltaY * zoomSpeed;
 			followDistance = Math.max(minZoom, Math.min(maxZoom, followDistance));
 		},
-		{ passive: false }
+		{ passive: false, signal: eventSignal }
 	);
 
 	// Pinch zoom (touch)
@@ -672,7 +733,7 @@ const t = useTranslations(lang).academiaSinica;
 				lastPinchDist = Math.hypot(dx, dy);
 			}
 		},
-		{ passive: false }
+		{ passive: false, signal: eventSignal }
 	);
 
 	canvas.addEventListener(
@@ -689,14 +750,18 @@ const t = useTranslations(lang).academiaSinica;
 				lastPinchDist = dist;
 			}
 		},
-		{ passive: false }
+		{ passive: false, signal: eventSignal }
 	);
 
-	canvas.addEventListener("touchend", (e: TouchEvent) => {
-		if (e.touches.length < 2) {
-			lastPinchDist = null;
-		}
-	});
+	canvas.addEventListener(
+		"touchend",
+		(e: TouchEvent) => {
+			if (e.touches.length < 2) {
+				lastPinchDist = null;
+			}
+		},
+		{ signal: eventSignal }
+	);
 
 	// Prevent default browser zoom (Ctrl+wheel, pinch on document)
 	document.addEventListener(
@@ -704,7 +769,7 @@ const t = useTranslations(lang).academiaSinica;
 		(e: WheelEvent) => {
 			if (e.ctrlKey) e.preventDefault();
 		},
-		{ passive: false }
+		{ passive: false, signal: eventSignal }
 	);
 
 	document.addEventListener(
@@ -712,7 +777,7 @@ const t = useTranslations(lang).academiaSinica;
 		(e: Event) => {
 			e.preventDefault();
 		},
-		{ passive: false }
+		{ passive: false, signal: eventSignal }
 	);
 
 	document.addEventListener(
@@ -720,7 +785,7 @@ const t = useTranslations(lang).academiaSinica;
 		(e: Event) => {
 			e.preventDefault();
 		},
-		{ passive: false }
+		{ passive: false, signal: eventSignal }
 	);
 
 	const updateThirdPersonCamera = (dt: number): void => {
@@ -758,7 +823,12 @@ const t = useTranslations(lang).academiaSinica;
 	const clock = new THREE.Clock();
 
 	const animate = (): void => {
-		requestAnimationFrame(animate);
+		if (disposed || !isPageVisible) {
+			animationFrameId = 0;
+			return;
+		}
+
+		animationFrameId = requestAnimationFrame(animate);
 
 		const dt = Math.min(clock.getDelta(), 0.033);
 
@@ -799,10 +869,10 @@ const t = useTranslations(lang).academiaSinica;
 				// Smoothly return arms to rest position
 				armSwingTime = 0;
 				if (leftArm && Math.abs(leftArm.rotation.y) > 0.01) {
-					leftArm.rotation.z *= 0.85;
+					leftArm.rotation.y *= 0.85;
 				}
 				if (rightArm && Math.abs(rightArm.rotation.y) > 0.01) {
-					rightArm.rotation.z *= 0.85;
+					rightArm.rotation.y *= 0.85;
 				}
 			}
 
@@ -850,5 +920,45 @@ const t = useTranslations(lang).academiaSinica;
 		renderer.render(scene, camera);
 	};
 
-	animate();
+	const disposeMaterial = (material: THREE.Material): void => {
+		const mat = material as THREE.MeshStandardMaterial;
+		Object.values(mat).forEach(value => {
+			if (value instanceof THREE.Texture) value.dispose();
+		});
+		material.dispose();
+	};
+
+	const cleanup = (): void => {
+		if (disposed) return;
+		disposed = true;
+		eventController.abort();
+		if (animationFrameId) cancelAnimationFrame(animationFrameId);
+		animationFrameId = 0;
+		scene.traverse(obj => {
+			if (!isMesh(obj)) return;
+			obj.geometry?.dispose();
+			const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+			materials.forEach(disposeMaterial);
+		});
+		renderer.dispose();
+	};
+
+	const onVisibilityChange = (): void => {
+		isPageVisible = document.visibilityState === "visible";
+		if (!isPageVisible) {
+			if (animationFrameId) cancelAnimationFrame(animationFrameId);
+			animationFrameId = 0;
+			return;
+		}
+		if (!disposed && !animationFrameId) {
+			clock.getDelta();
+			animate();
+		}
+	};
+
+	document.addEventListener("visibilitychange", onVisibilityChange, { signal: eventSignal });
+	document.addEventListener("astro:before-swap", cleanup, { once: true, signal: eventSignal });
+	window.addEventListener("pagehide", cleanup, { once: true, signal: eventSignal });
+
+	if (isPageVisible) animate();
 </script>

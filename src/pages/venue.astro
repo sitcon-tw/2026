@@ -771,8 +771,10 @@ const t = useTranslations(lang).venue;
 	let sharedPivot: THREE.Object3D;
 	let currentFloor: string | null = null;
 	let isExploded = false;
-	let animationId: number;
+	let animationId = 0;
 	let modelGroup: THREE.Group;
+	let isThreeActive = false;
+	let isPageVisible = document.visibilityState === "visible";
 
 	// Mesh name → Mesh lookup built after model loads
 	const meshByName = new Map<string, THREE.Mesh>();
@@ -793,6 +795,7 @@ const t = useTranslations(lang).venue;
 	let popupCleanup: (() => void) | null = null;
 
 	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	const isConstrainedViewport = () => window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
 
 	/**
 	 * On mobile the bottom sheet covers part of the canvas.
@@ -865,8 +868,8 @@ const t = useTranslations(lang).venue;
 		// Renderer
 		renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 		renderer.setSize(canvasRect.width, canvasRect.height);
-		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 3));
-		renderer.shadowMap.enabled = true;
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, isConstrainedViewport() ? 1.5 : 2));
+		renderer.shadowMap.enabled = !isConstrainedViewport();
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 		// Controls
@@ -884,9 +887,9 @@ const t = useTranslations(lang).venue;
 
 		const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
 		directionalLight.position.set(5, 10, 5);
-		directionalLight.castShadow = true;
-		directionalLight.shadow.mapSize.width = 4096;
-		directionalLight.shadow.mapSize.height = 4096;
+		directionalLight.castShadow = renderer.shadowMap.enabled;
+		directionalLight.shadow.mapSize.width = 2048;
+		directionalLight.shadow.mapSize.height = 2048;
 		directionalLight.shadow.camera.near = 0.1;
 		directionalLight.shadow.camera.far = 50;
 		directionalLight.shadow.camera.left = -10;
@@ -908,11 +911,14 @@ const t = useTranslations(lang).venue;
 		loadModel();
 		updateViewOffset();
 
+		isThreeActive = true;
+		isPageVisible = document.visibilityState === "visible";
 		window.addEventListener("resize", onWindowResize);
+		document.addEventListener("visibilitychange", onVisibilityChange);
 		renderer.domElement.addEventListener("pointerdown", onCanvasPointerDown);
 		renderer.domElement.addEventListener("click", onCanvasClick);
 		renderer.domElement.addEventListener("pointermove", onCanvasPointerMove);
-		animate();
+		if (isPageVisible) animate();
 	};
 
 	/** Re-parent a mesh into target, preserving its current world transform. */
@@ -943,8 +949,8 @@ const t = useTranslations(lang).venue;
 
 				gltf.scene.traverse(obj => {
 					if (!(obj instanceof THREE.Mesh)) return;
-					obj.castShadow = true;
-					obj.receiveShadow = true;
+					obj.castShadow = renderer.shadowMap.enabled;
+					obj.receiveShadow = renderer.shadowMap.enabled;
 					// Clone materials so opacity changes on one mesh don't affect others sharing the same material
 					if (obj.material) {
 						const cloneMat = (mat: THREE.Material) => {
@@ -994,7 +1000,9 @@ const t = useTranslations(lang).venue;
 				});
 				sharedBucket.forEach(m => attachWithWorldTransform(m, sharedPivot));
 
-				console.log("Floors:", [...floorPivots.entries()].map(([k, v]) => `${k}(${v.children.length})`).join(", "), "| shared:", sharedPivot.children.length);
+				if (import.meta.env.DEV) {
+					console.debug("Floors:", [...floorPivots.entries()].map(([k, v]) => `${k}(${v.children.length})`).join(", "), "| shared:", sharedPivot.children.length);
+				}
 
 				centerAndScaleModel();
 				buildMeshIndex();
@@ -1458,23 +1466,41 @@ const t = useTranslations(lang).venue;
 		const canvasRect = canvas.getBoundingClientRect();
 		camera.aspect = canvasRect.width / canvasRect.height;
 		renderer.setSize(canvasRect.width, canvasRect.height);
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, isConstrainedViewport() ? 1.5 : 2));
 		updateViewOffset(); // re-applies offset (also calls updateProjectionMatrix)
 	};
 
 	const animate = () => {
-		animationId = requestAnimationFrame(animate);
+		if (!isThreeActive || !isPageVisible) {
+			animationId = 0;
+			return;
+		}
 		controls.update();
 		renderer.render(scene, camera);
+		animationId = requestAnimationFrame(animate);
+	};
+
+	const onVisibilityChange = () => {
+		isPageVisible = document.visibilityState === "visible";
+		if (!isPageVisible) {
+			if (animationId) cancelAnimationFrame(animationId);
+			animationId = 0;
+			return;
+		}
+		if (isThreeActive && !animationId) animate();
 	};
 
 	const cleanup = () => {
+		isThreeActive = false;
 		showDetailFn = null;
 		sheetCleanup?.();
 		sheetCleanup = null;
 		popupCleanup?.();
 		popupCleanup = null;
 		if (animationId) cancelAnimationFrame(animationId);
+		animationId = 0;
 		window.removeEventListener("resize", onWindowResize);
+		document.removeEventListener("visibilitychange", onVisibilityChange);
 		renderer?.domElement.removeEventListener("pointerdown", onCanvasPointerDown);
 		renderer?.domElement.removeEventListener("click", onCanvasClick);
 		renderer?.domElement.removeEventListener("pointermove", onCanvasPointerMove);
