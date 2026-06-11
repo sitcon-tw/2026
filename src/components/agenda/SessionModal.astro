@@ -1,47 +1,22 @@
 ---
-import { Share2, Check, X, Clock, MapPin } from "@lucide/astro";
+import { X, Clock, MapPin } from "@lucide/astro";
 import adsData from "@/data/ads.json";
 import bookmarkIcon from "@/../public/img/bookmark.svg";
+import { useTranslations } from "@/utils/i18n";
 
-interface Speaker {
-	name: string;
-	avatar?: string;
-	description?: string;
-}
-
-interface Advertisement {
-	title?: string;
-	company?: string;
-	positions?: Array<{
-		title: string;
-		link?: string;
-	}>;
-	description?: string;
-	logo?: string;
-}
-
-interface SessionModalProps {
-	type: string;
-	name: string;
-	description?: string;
-	speakers: (string | Speaker)[];
-	tags: string[];
-	venue: string;
-	startTime: string;
-	endTime?: string;
-	slidoLink?: string;
-	slidesLink?: string;
-	notesLink?: string;
-	recordLink?: string;
-	advertisement?: Advertisement;
-	lang?: "zh" | "en";
-}
-
-const { type, name, description = "", speakers, tags, venue, startTime, endTime, slidoLink, slidesLink, notesLink, recordLink, lang = "zh" } = Astro.props;
+const { type, name, description = "", tags, venue, startTime, endTime, recordLink, lang = "zh" } = Astro.props;
+const tAgenda = useTranslations(lang).agenda;
+const actionLabels = {
+	askQuestion: tAgenda.sessionAskQuestion,
+	collabNotes: tAgenda.sessionCollabNotes,
+	presentation: tAgenda.sessionPresentation,
+	share: lang === "en" ? "Share" : "分享"
+};
 
 // Format time for display (forced to GMT+8 / Asia/Taipei)
 function formatTime(isoString: string): string {
 	const date = new Date(isoString);
+	if (isNaN(date.getTime())) return "";
 	return date.toLocaleTimeString("en-US", {
 		hour: "2-digit",
 		minute: "2-digit",
@@ -57,7 +32,7 @@ const weightedAds = ads.filter(ad => typeof ad.weight === "number" && ad.weight 
 const initialAd = weightedAds[0] ?? null;
 ---
 
-<div class="session-modal" id="session-modal" data-ads={JSON.stringify(weightedAds)}>
+<div class="session-modal" id="session-modal" data-ads={JSON.stringify(weightedAds)} data-action-labels={JSON.stringify(actionLabels)}>
 	<div class="modal-overlay" id="modal-overlay"></div>
 	<div class="modal-container" id="modal-container" data-lenis-prevent>
 		{
@@ -198,6 +173,16 @@ const initialAd = weightedAds[0] ?? null;
 			);
 		} catch {
 			return [];
+		}
+	})();
+	const modalActionLabels = (() => {
+		const defaults = { askQuestion: "Ask Question", collabNotes: "Collaborative Notes", presentation: "Presentation", share: "Share" };
+		if (!modal) return defaults;
+		try {
+			const parsed = JSON.parse(modal.getAttribute("data-action-labels") || "{}");
+			return { ...defaults, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+		} catch {
+			return defaults;
 		}
 	})();
 
@@ -376,6 +361,12 @@ const initialAd = weightedAds[0] ?? null;
 		const sessionNotesLink = detail.notesLink ?? "";
 		const sessionRecordLink = detail.recordLink ?? "";
 		const sessionLang = detail.lang ?? "zh";
+		const formatTimestamp = (timestamp: string) => {
+			if (!timestamp) return "";
+			const d = new Date(Number(timestamp));
+			if (isNaN(d.getTime())) return "";
+			return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Taipei" });
+		};
 
 		if (modal) modal.setAttribute("data-session-id", sessionId);
 		if (ribbonEl) {
@@ -407,12 +398,7 @@ const initialAd = weightedAds[0] ?? null;
 		// Update time
 		const timeMetaEl = modal?.querySelector(".meta-item:first-child span");
 		if (timeMetaEl) {
-			const formatTimeStr = (timestamp: string) => {
-				if (!timestamp) return "";
-				const d = new Date(Number(timestamp));
-				return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Taipei" });
-			};
-			timeMetaEl.textContent = `${formatTimeStr(sessionStartTime)}${sessionEndTime ? ` - ${formatTimeStr(sessionEndTime)}` : ""}`;
+			timeMetaEl.textContent = `${formatTimestamp(sessionStartTime)}${sessionEndTime ? ` - ${formatTimestamp(sessionEndTime)}` : ""}`;
 		}
 
 		// Update venue
@@ -453,34 +439,110 @@ const initialAd = weightedAds[0] ?? null;
 				.join("");
 		}
 
-		// Update action buttons visibility
+		// Update action buttons
 		const actionsContainer = modal?.querySelector(".session-actions");
 		if (actionsContainer) {
-			const slidoBtn = actionsContainer.querySelector("a[href*='slido'], a:first-of-type");
-			const notesBtn = actionsContainer.querySelectorAll("a")[1];
-			const slidesBtn = actionsContainer.querySelectorAll("a")[2];
+			actionsContainer.textContent = "";
 
-			// Update or hide slido link
-			actionsContainer.querySelectorAll("a").forEach((a, idx) => {
-				if (idx === 0 && sessionSlidoLink) {
-					(a as HTMLAnchorElement).href = sessionSlidoLink;
-					(a as HTMLElement).style.display = "";
-				} else if (idx === 0) {
-					(a as HTMLElement).style.display = "none";
+			const createActionContent = (labelOrNode: string | Node) => {
+				const hoverBg = document.createElement("div");
+				hoverBg.className = "hover-bg";
+				const span = document.createElement("span");
+				if (typeof labelOrNode === "string") {
+					span.textContent = labelOrNode;
+				} else {
+					span.appendChild(labelOrNode);
 				}
-				if (idx === 1 && sessionNotesLink) {
-					(a as HTMLAnchorElement).href = sessionNotesLink;
-					(a as HTMLElement).style.display = "";
-				} else if (idx === 1) {
-					(a as HTMLElement).style.display = "none";
-				}
-				if (idx === 2 && sessionSlidesLink) {
-					(a as HTMLAnchorElement).href = sessionSlidesLink;
-					(a as HTMLElement).style.display = "";
-				} else if (idx === 2) {
-					(a as HTMLElement).style.display = "none";
+				return { hoverBg, span };
+			};
+
+			const appendLinkAction = (href: string, label: string) => {
+				if (!href) return;
+				const btn = document.createElement("a");
+				btn.href = href;
+				btn.target = "_blank";
+				btn.rel = "noopener noreferrer";
+				btn.className = "action-btn";
+				const { hoverBg, span } = createActionContent(label);
+				btn.append(hoverBg, span);
+				actionsContainer.appendChild(btn);
+			};
+
+			appendLinkAction(sessionSlidoLink, modalActionLabels.askQuestion);
+			appendLinkAction(sessionNotesLink, modalActionLabels.collabNotes);
+			appendLinkAction(sessionSlidesLink, modalActionLabels.presentation);
+
+			const shareBtn = document.createElement("button");
+			shareBtn.type = "button";
+			shareBtn.id = "share-btn";
+			shareBtn.className = "action-btn action-share";
+			shareBtn.setAttribute("aria-label", modalActionLabels.share);
+			const shareIconSize = Number(modal?.getAttribute("data-share-icon-size")) || 24;
+			const shareSvg = document.createElement("div");
+			shareSvg.innerHTML = `<svg class="share-icon share-icon--share" xmlns="http://www.w3.org/2000/svg" width="${shareIconSize}" height="${shareIconSize}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<circle cx="18" cy="5" r="3"></circle>
+				<circle cx="6" cy="12" r="3"></circle>
+				<circle cx="18" cy="19" r="3"></circle>
+				<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+				<line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+			</svg>`;
+			const checkSvg = document.createElement("div");
+			checkSvg.innerHTML = `<svg class="share-icon share-icon--check" xmlns="http://www.w3.org/2000/svg" width="${shareIconSize}" height="${shareIconSize}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M20 6 9 17l-5-5"></path>
+			</svg>`;
+			const iconWrap = document.createElement("span");
+			if (shareSvg.firstElementChild) iconWrap.appendChild(shareSvg.firstElementChild);
+			if (checkSvg.firstElementChild) iconWrap.appendChild(checkSvg.firstElementChild);
+			const { hoverBg, span } = createActionContent(iconWrap);
+			shareBtn.append(hoverBg, span);
+
+			let shareSuccessTimer = 0;
+			const showShareSuccess = () => {
+				shareBtn.classList.add("is-success");
+				if (shareSuccessTimer) window.clearTimeout(shareSuccessTimer);
+				shareSuccessTimer = window.setTimeout(() => {
+					shareBtn.classList.remove("is-success");
+				}, 2000);
+			};
+
+			shareBtn.addEventListener("click", async () => {
+				const speakerNames = Array.isArray(sessionSpeakers) ? sessionSpeakers.map((speaker: any) => (typeof speaker === "string" ? speaker : speaker.name)).filter(Boolean) : [];
+				const date = sessionStartTime
+					? new Date(Number(sessionStartTime)).toLocaleDateString("zh-TW", {
+							year: "numeric",
+							month: "2-digit",
+							day: "2-digit",
+							timeZone: "Asia/Taipei"
+						})
+					: "";
+				const start = sessionStartTime ? formatTimestamp(sessionStartTime) : "";
+				const end = sessionEndTime ? formatTimestamp(sessionEndTime) : "";
+				const speakersText = speakerNames.length > 0 ? ` | ${speakerNames.join(", ")}` : "";
+				const typeText = sessionType === "lightning" ? "" : `${sessionType.charAt(0).toUpperCase() + sessionType.slice(1)} - `;
+				const timeText = [date, [start, end].filter(Boolean).join(" - ")].filter(Boolean).join(" ");
+				const shareText = `${typeText}${sessionName}${speakersText}\n${timeText} @ 中央研究院人文社會科學館 ${sessionVenue}\n\n${sessionDescription.replace(/<[^>]*>?/g, "")}`;
+
+				if (navigator.share) {
+					try {
+						await navigator.share({
+							title: sessionName,
+							text: shareText,
+							url: window.location.href
+						});
+						showShareSuccess();
+					} catch (err) {
+						console.log("Error sharing:", err);
+					}
+				} else {
+					try {
+						await navigator.clipboard.writeText(window.location.href);
+						showShareSuccess();
+					} catch (err) {
+						console.log("Error copying:", err);
+					}
 				}
 			});
+			actionsContainer.appendChild(shareBtn);
 		}
 
 		refreshModalAd();
@@ -493,6 +555,7 @@ const initialAd = weightedAds[0] ?? null;
 
 		// Show modal
 		modal?.classList.add("active");
+		document.body.style.overflow = "hidden";
 
 		// Stop Lenis scrolling when modal opens (prevents body scroll interference)
 		const lenis = (window as any).lenis;
