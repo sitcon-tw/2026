@@ -20,9 +20,6 @@ importers:
       astro:
         specifier: ^5.16.12
         version: 5.16.12(@types/node@24.10.1)(rollup@4.55.3)(typescript@5.9.3)(yaml@2.8.2)
-      cannon:
-        specifier: ^0.6.2
-        version: 0.6.2
       cannon-es:
         specifier: ^0.20.0
         version: 0.20.0
@@ -815,9 +812,6 @@ packages:
 
   cannon-es@0.20.0:
     resolution: {integrity: sha512-eZhWTZIkFOnMAJOgfXJa9+b3kVlvG+FX4mdkpePev/w/rP5V8NRquGyEozcjPfEoXUlb+p7d9SUcmDSn14prOA==}
-
-  cannon@0.6.2:
-    resolution: {integrity: sha512-n/7wWSXr8KOSvjad2x0fJHgpMepKjOKi+NdSnjfYyijoDBZnp4JQKgPcpv28jlXoWM+N9zVYU09J0A6Qxx+Y7w==}
 
   canvas@3.2.1:
     resolution: {integrity: sha512-ej1sPFR5+0YWtaVp6S1N1FVz69TQCqmrkGeRvQxZeAB1nAIcjNTHVwrZtYtWFFBmQsF40/uDLehsW5KuYC99mg==}
@@ -2846,8 +2840,6 @@ snapshots:
   camelcase@8.0.0: {}
 
   cannon-es@0.20.0: {}
-
-  cannon@0.6.2: {}
 
   canvas@3.2.1:
     dependencies:

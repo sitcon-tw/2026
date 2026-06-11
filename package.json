@@ -19,7 +19,6 @@
 		"@astrojs/sitemap": "^3.7.0",
 		"@lucide/astro": "^0.562.0",
 		"astro": "^5.16.12",
-		"cannon": "^0.6.2",
 		"cannon-es": "^0.20.0",
 		"canvas": "^3.2.1",
 		"echarts": "^6.0.0",
