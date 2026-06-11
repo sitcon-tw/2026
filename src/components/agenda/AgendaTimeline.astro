@@ -323,9 +323,54 @@ const phoneCurrentByVenue: Record<string, number | null> = {};
 activeVenues.forEach(venueId => {
 	phoneCurrentByVenue[venueId] = getPhoneCurrentTimeForVenue(venueId);
 });
+
+const agendaSessionData = items.reduce(
+	(acc, item) => {
+		const startTimestamp = parseTime(item.startTime);
+		const endTimestamp = item.endTime ? parseTime(item.endTime) : startTimestamp + getDuration(item) * 60 * 1000;
+		acc[item.id] = {
+			id: item.id,
+			type: item.type,
+			name: item.name,
+			description: item.description,
+			speakers: item.speakers.map((speaker: string | Speaker) => (typeof speaker === "string" ? { name: speaker } : speaker)),
+			tags: item.tags,
+			venue: item.venue,
+			startTime: String(startTimestamp),
+			endTime: String(endTimestamp),
+			slidoLink: item.slidoLink ?? "",
+			slidesLink: item.slidesLink ?? "",
+			notesLink: item.notesLink ?? "",
+			recordLink: item.recordLink ?? "",
+			lang
+		};
+		return acc;
+	},
+	{} as Record<
+		string,
+		{
+			id: string;
+			type: string;
+			name: string;
+			description: string;
+			speakers: Speaker[];
+			tags: string[];
+			venue: string;
+			startTime: string;
+			endTime: string;
+			slidoLink: string;
+			slidesLink: string;
+			notesLink: string;
+			recordLink: string;
+			lang: "zh" | "en";
+		}
+	>
+);
+const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u003c");
 ---
 
 <div class="agenda-timeline-container" id="agenda-timeline">
+	<script type="application/json" id="agenda-session-data" set:html={agendaSessionJson} />
 	<!-- Filter: All / Favorites (sliding tab, same style for desktop and phone) -->
 	<div class="agenda-filter-wrap">
 		<div class="filter-tabs-wrap">

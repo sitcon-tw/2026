@@ -141,43 +141,27 @@ const i18nScript = {
 		return null;
 	}
 
+	let agendaSessionCache = null;
+
+	function readAgendaSessions() {
+		if (agendaSessionCache) return agendaSessionCache;
+		const dataEl = document.getElementById("agenda-session-data");
+		if (!dataEl?.textContent) {
+			agendaSessionCache = {};
+			return agendaSessionCache;
+		}
+		try {
+			const parsed = JSON.parse(dataEl.textContent);
+			agendaSessionCache = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+		} catch {
+			agendaSessionCache = {};
+		}
+		return agendaSessionCache;
+	}
+
 	function openSessionById(id) {
-		const block = document.querySelector(`.session-block[data-session-id="${CSS.escape(id)}"]`);
-		if (!block) return;
-		// Build modal detail from block data (don't rely on click listener - script order may differ)
-		const getAttr = name => block.getAttribute(name) || "";
-		let speakers = [];
-		try {
-			const raw = block.getAttribute("data-session-speakers");
-			if (raw) speakers = JSON.parse(raw);
-		} catch (_) {}
-		let tags = [];
-		try {
-			const raw = block.getAttribute("data-session-tags");
-			if (raw) tags = JSON.parse(raw);
-		} catch (_) {}
-		let advertisement;
-		try {
-			const raw = block.getAttribute("data-session-advertisement");
-			if (raw) advertisement = JSON.parse(raw);
-		} catch (_) {}
-		const detail = {
-			id,
-			type: getAttr("data-session-type"),
-			name: getAttr("data-session-name"),
-			description: getAttr("data-session-description"),
-			speakers,
-			tags,
-			venue: getAttr("data-session-venue"),
-			startTime: getAttr("data-session-start-time"),
-			endTime: getAttr("data-session-end-time"),
-			slidoLink: getAttr("data-session-slido"),
-			slidesLink: getAttr("data-session-slides"),
-			notesLink: getAttr("data-session-notes"),
-			recordLink: getAttr("data-session-record"),
-			advertisement,
-			lang: getAttr("data-session-lang") || "zh"
-		};
+		const detail = readAgendaSessions()[id];
+		if (!detail?.description) return;
 		document.dispatchEvent(new CustomEvent("openSessionModal", { detail }));
 	}
 

@@ -69,6 +69,7 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 	const titleEl = document.getElementById("share-jam-title");
 	const emptyEl = document.getElementById("share-jam-empty");
 	const footerEl = document.getElementById("share-jam-footer");
+	let agendaSessionCache = null;
 
 	function readBookmarks() {
 		try {
@@ -85,25 +86,32 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 	function getBookmarkedSessions() {
 		const bookmarks = readBookmarks();
 		if (bookmarks.size === 0) return [];
-		const blocks = document.querySelectorAll(".session-block");
-		const seenIds = new Set();
+		const sessions = readAgendaSessions();
 		const result = [];
-		blocks.forEach(block => {
-			const bookmarkEl = block.querySelector(".session-favorite.is-marked");
-			if (!bookmarkEl) return;
-			const id = block.getAttribute("data-session-id");
-			const name = block.getAttribute("data-session-name");
-			if (!id || !name || seenIds.has(id)) return;
-			seenIds.add(id);
-			let speakers = [];
-			try {
-				const raw = block.getAttribute("data-session-speakers");
-				if (raw) speakers = JSON.parse(raw);
-			} catch {}
+		bookmarks.forEach(id => {
+			const session = sessions[id];
+			if (!session) return;
+			const speakers = Array.isArray(session.speakers) ? session.speakers : [];
 			const speakerLabel = speakers.map(s => s.name).join(", ");
-			result.push({ id, name, speakerLabel, speakers });
+			result.push({ id, name: session.name, speakerLabel, speakers });
 		});
 		return result;
+	}
+
+	function readAgendaSessions() {
+		if (agendaSessionCache) return agendaSessionCache;
+		const dataEl = document.getElementById("agenda-session-data");
+		if (!dataEl?.textContent) {
+			agendaSessionCache = {};
+			return agendaSessionCache;
+		}
+		try {
+			const parsed = JSON.parse(dataEl.textContent);
+			agendaSessionCache = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+		} catch {
+			agendaSessionCache = {};
+		}
+		return agendaSessionCache;
 	}
 
 	function getBookmarkedAvatars() {

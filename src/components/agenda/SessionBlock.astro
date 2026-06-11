@@ -5,7 +5,7 @@ interface Speaker {
 	description?: string;
 }
 
-const { id: sessionId, type, name, description, speakers, tags, leftPercent, widthPercent, venue, startTime, endTime, slidoLink, slidesLink, notesLink, recordLink, lang = "zh" } = Astro.props;
+const { id: sessionId, type, name, description, speakers, tags, leftPercent, widthPercent, venue, startTime, endTime, lang = "zh" } = Astro.props;
 
 // Helper function to get speaker name
 function getSpeakerName(speaker: string | Speaker): string {
@@ -32,19 +32,6 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 	draggable="false"
 	href={sessionHref}
 	data-session-id={sessionId}
-	data-session-type={type}
-	data-session-name={name}
-	data-session-description={description || ""}
-	data-session-venue={venue || ""}
-	data-session-start-time={startTime ? new Date(startTime).getTime() : ""}
-	data-session-end-time={endTime ? new Date(endTime).getTime() : ""}
-	data-session-slido={slidoLink || ""}
-	data-session-slides={slidesLink || ""}
-	data-session-notes={notesLink || ""}
-	data-session-record={recordLink || ""}
-	data-session-lang={lang}
-	data-session-speakers={JSON.stringify(speakers.map((s: string | Speaker) => (typeof s === "string" ? { name: s } : s)))}
-	data-session-tags={JSON.stringify(tags)}
 >
 	<div class="session-favorite" aria-label="Favorite session" role="button" tabindex="0" data-session-id={sessionId}></div>
 	<div class="session-content">
@@ -357,6 +344,46 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 
 <script>
 	const STORAGE_KEY = "sitcon2026:agendaBookmarks";
+	const BOOKMARKS_CHANGED_EVENT = "agendaBookmarksChanged";
+
+	type AgendaSessionDetail = {
+		id: string;
+		type: string;
+		name: string;
+		description: string;
+		speakers: Array<{ name: string; avatar?: string; description?: string }>;
+		tags: string[];
+		venue: string;
+		startTime: string;
+		endTime?: string;
+		slidoLink?: string;
+		slidesLink?: string;
+		notesLink?: string;
+		recordLink?: string;
+		lang?: "zh" | "en";
+	};
+
+	let agendaSessionCache: Record<string, AgendaSessionDetail> | null = null;
+
+	function readAgendaSessions(): Record<string, AgendaSessionDetail> {
+		if (agendaSessionCache) return agendaSessionCache;
+		const dataEl = document.getElementById("agenda-session-data");
+		if (!dataEl?.textContent) {
+			agendaSessionCache = {};
+			return agendaSessionCache;
+		}
+		try {
+			const parsed = JSON.parse(dataEl.textContent);
+			agendaSessionCache = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+		} catch {
+			agendaSessionCache = {};
+		}
+		return agendaSessionCache ?? {};
+	}
+
+	function getAgendaSession(sessionId: string): AgendaSessionDetail | null {
+		return readAgendaSessions()[sessionId] ?? null;
+	}
 
 	function readBookmarks(): Set<string> {
 		try {
@@ -430,9 +457,8 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 				}
 
 				const id = block.getAttribute("data-session-id") || "";
-				const type = block.getAttribute("data-session-type") || "";
-				const name = block.getAttribute("data-session-name") || "";
-				const description = block.getAttribute("data-session-description") || "";
+				const detail = id ? getAgendaSession(id) : null;
+				const description = detail?.description ?? "";
 
 				if (!description || description === "") {
 					return;
@@ -447,67 +473,9 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 
 				e.preventDefault();
 
-				const venue = block.getAttribute("data-session-venue") || "";
-				const startTime = block.getAttribute("data-session-start-time") || "";
-				const endTime = block.getAttribute("data-session-end-time") || "";
-				const slidoLink = block.getAttribute("data-session-slido") || "";
-				const slidesLink = block.getAttribute("data-session-slides") || "";
-				const notesLink = block.getAttribute("data-session-notes") || "";
-				const recordLink = block.getAttribute("data-session-record") || "";
-				const lang = block.getAttribute("data-session-lang") || "zh";
-
-				// Get speakers from data attribute
-				const speakersData = block.getAttribute("data-session-speakers");
-				let speakers: Array<{ name: string; avatar?: string }> = [];
-				if (speakersData) {
-					try {
-						speakers = JSON.parse(speakersData);
-					} catch (e) {
-						console.error("Failed to parse speakers data:", e);
-					}
-				}
-
-				// Get tags from data attribute
-				const tagsData = block.getAttribute("data-session-tags");
-				let tags: string[] = [];
-				if (tagsData) {
-					try {
-						tags = JSON.parse(tagsData);
-					} catch (e) {
-						console.error("Failed to parse tags data:", e);
-					}
-				}
-
-				// Get advertisement data if available (stored in data attribute as JSON)
-				const adData = block.getAttribute("data-session-advertisement");
-				let advertisement = undefined;
-				if (adData) {
-					try {
-						advertisement = JSON.parse(adData);
-					} catch (e) {
-						console.error("Failed to parse advertisement data:", e);
-					}
-				}
-
 				// Trigger modal update event
 				const event = new CustomEvent("openSessionModal", {
-					detail: {
-						id,
-						type,
-						name,
-						description,
-						speakers,
-						tags,
-						venue,
-						startTime,
-						endTime,
-						slidoLink,
-						slidesLink,
-						notesLink,
-						recordLink,
-						advertisement,
-						lang
-					}
+					detail
 				});
 				document.dispatchEvent(event);
 			});
