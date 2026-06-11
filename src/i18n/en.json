@@ -157,15 +157,15 @@
 	},
 	"agenda": {
 		"title": "Agenda",
-		"filterAll": "All Agenda",
+		"filterAll": "All Sessions",
 		"filterFavorites": "Favorites",
 		"shareJamTitle": "Your Exclusive Jam",
 		"shareJamPlaceholder": "Enter your name",
 		"shareJamCopy": "Copy link",
 		"shareJamCopied": "Copied!",
 		"curatedTitleSuffix": "Picks",
-		"legendUndefined": "Undefined",
-		"legendSponsored": "Sponsored",
+		"legendUndefined": "Open Session",
+		"legendSponsored": "Sponsored Session",
 		"legendPD": "Forum",
 		"mcpDesc": "Connect to our MCP server to customize your agenda, manage schedule, and share it with others effortlessly.",
 		"mcpFeatureAgenda": "Agenda Arrangement",
@@ -175,8 +175,8 @@
 		"mcpCopyUrl": "Copy Server URL",
 		"mcpCopied": "Copied!",
 		"galleryTitle": "Demo Gallery",
-		"sessionTypeUndefined": "Undefined",
-		"sessionTypeSponsored": "Sponsored",
+		"sessionTypeUndefined": "Open Session",
+		"sessionTypeSponsored": "Sponsored Session",
 		"sessionTypePD": "Forum",
 		"sessionAskQuestion": "Ask Question",
 		"sessionCollabNotes": "Collaborative Notes",
@@ -192,7 +192,7 @@
 		"listMode": "List Mode"
 	},
 	"academiaSinica": {
-		"instruction": "Construction in progress. Please stay tuned!"
+		"instruction": "Click anywhere to start exploring, and watch out for traps!"
 	},
 	"info": {
 		"mainHeading": "Information",
@@ -269,8 +269,7 @@
 						"body": "This session takes you straight to the heart of this year’s conference theme! We’ve invited a speaker to break down the key ideas behind the theme in a clear and accessible way. Through the speaker’s perspective, you’ll not only understand what SITCON wants to convey this year, but also follow the rhythm of the talk to brainstorm around interesting ideas and uncover deeper insights together!",
 						"image": {
 							"url": "/2026/img/info/Keynote.webp",
-							"alt": "SITCON Keynote",
-							"position": "right"
+							"alt": "SITCON Keynote"
 						}
 					},
 					{
@@ -278,8 +277,7 @@
 						"body": "This is a deep and engaging discussion featuring one moderator and three panelists! Guided by the moderator’s thoughtful facilitation, guests from diverse backgrounds will explore this year’s theme from different angles. You’ll hear multiple perspectives collide on stage, helping you step outside the box, re-examine the core topics from new viewpoints, and piece together a broader and richer technical vision through shared experiences.",
 						"image": {
 							"url": "/2026/img/info/Forum.webp",
-							"alt": "SITCON Panel",
-							"position": "left"
+							"alt": "SITCON Panel"
 						}
 					},
 					{
@@ -287,17 +285,15 @@
 						"body": "Here you’ll find a collection of excellent talks submitted by students from all over! Whether you prefer in-depth Presentations that thoroughly unpack technical concepts, or fast-paced Espresso sessions that deliver key takeaways in a short time, there’s plenty to discover. On top of that, there are flexible open-format sessions where ideas from different backgrounds can freely interweave. Come experience the hands-on knowledge and creativity brought by student speakers on-site!",
 						"image": {
 							"url": "/2026/img/info/Agenda.webp",
-							"alt": "SITCON Sessions",
-							"position": "right"
+							"alt": "SITCON Sessions"
 						}
 					},
 					{
 						"title": "Demo Showcase",
-						"body": "Building on last year’s enthusiastic response, the Demo Showcase returns with an exciting upgrade! This special exhibition area goes beyond the regular program, providing a stage for students to present their projects and research成果 through live demos and conversations. It’s a great opportunity for attendees to explore diverse topics in a relaxed way and spark new inspiration.\n\nThe showcase will take place on March 28, 2026 (conference day), at the booths on the north side of the 4th floor, featuring outstanding student work from across Taiwan. Whether you’re interested in technical innovation, project sharing, interactive design, or cutting-edge research discoveries, you’re sure to find topics that surprise and inspire you.\n\nIn addition, project exhibitors will be present at different time slots to chat and discuss with attendees. This is a perfect chance to ask questions, learn, and meet amazing peers from around the country—if you love exploring new knowledge, don’t miss it!",
+						"body": "Building on last year’s enthusiastic response, the Demo Showcase returns with an exciting upgrade! This special exhibition area goes beyond the regular program, providing a stage for students to present their projects and research through live demos and conversations. It’s a great opportunity for attendees to explore diverse topics in a relaxed way and spark new inspiration.\n\nThe showcase will take place on March 28, 2026 (conference day), at the booths on the north side of the 4th floor, featuring outstanding student work from across Taiwan. Whether you’re interested in technical innovation, project sharing, interactive design, or cutting-edge research discoveries, you’re sure to find topics that surprise and inspire you.\n\nIn addition, project exhibitors will be present at different time slots to chat and discuss with attendees. This is a perfect chance to ask questions, learn, and meet amazing peers from around the country—if you love exploring new knowledge, don’t miss it!",
 						"image": {
 							"url": "/2026/img/info/Demo.webp",
-							"alt": "SITCON Demo Showcase",
-							"position": "left"
+							"alt": "SITCON Demo Showcase"
 						}
 					}
 				]
@@ -310,8 +306,7 @@
 						"body": "Looking forward to meeting like-minded partners at the conference? We sincerely invite you to join the Compass Project!\n\nThe Compass Project provides an opportunity for exchange, aiming to help you find partners with shared interests to explore topics together. Whether you are an experienced veteran or a curious newcomer, you can find resonance here.\n\nBased on the information you provide, we will match you with suitable partners to form groups and encourage active interaction. To ensure a good experience for everyone, please stay in touch and engage with your group members after signing up, so that every participant expecting interaction can truly meet others. During the conference, you can participate in various activities with your group members or have a relaxed meetup during lunch. Whether sharing experiences, exchanging viewpoints, or discussing conference agenda topics, it will be a rewarding experience.\n\nEveryone, regardless of their level of expertise, can find their place here and work together to create an open environment for mutual exchange and learning. We look forward to your enthusiastic participation, making SITCON 2026 even more wonderful!",
 						"image": {
 							"url": "/2026/img/info/Compass.webp",
-							"alt": "SITCON Compass Project",
-							"position": "right"
+							"alt": "SITCON Compass Project"
 						}
 					},
 					{
@@ -319,8 +314,7 @@
 						"body": "Facing a chaotic scene with intertwined melodies of crowds, perhaps you are still lost. The laughter in the venue is like scattered notes with unset beats. What are you waiting for? Join the Guided Tour! Let the conductors lead you through the unknown of SITCON to find your own melody and belonging.\n\nYou can find guides holding SITCON flags at the meeting point. Follow the SITCON guides to visit community booths and the poster exhibition, helping you understand the various aspects and operations of SITCON.\n\nThere are two tours in the morning and two in the afternoon, each lasting about 40 minutes. Details will be announced later.\n\n<table>\n<tr><th>Tour Name & Guide</th><th>Meeting Point</th><th>Time</th></tr>\n<tr><td>XX Band (Guide: -- )</td><td rowspan=\"2\">North Corridor</td><td>10:00-10:40</td></tr>\n<tr><td>XX Band (Guide: -- )</td><td>10:30-11:00</td></tr>\n<tr><td>XX Band (Guide: -- )</td><td></td><td>14:00-14:10</td></tr>\n</table>\n\nCome and join the guided tour to unveil the excitement of the conference with new friends!",
 						"image": {
 							"url": "/2026/img/info/Guide.webp",
-							"alt": "SITCON Guided Tours",
-							"position": "left"
+							"alt": "SITCON Guided Tours"
 						}
 					}
 				]
@@ -333,8 +327,7 @@
 						"body": "Don't know what to do between sessions? Want to interact with booths but don't know how to start? Don't worry! Open OPass and join the Reality Game!\n\nThis year's Reality Game combines the SITCON 2026 theme 'Jam the Chaos'. In the game, you will unlock levels, challenge memory sequence games, master the rhythm, solve puzzles, accumulate completions, and climb the leaderboard for a chance to win coupons for the SITCON 2026 souvenir booth!\n\n<b>【How to Unlock New Levels?】</b>\n\n<b>🤝 Interact with Sponsors:</b> Communicate with sponsors to unlock new levels, verify higher difficulty challenges, and sprint up the leaderboard! \n\n <b>🎤 Join Activities & Explore Venue:</b> Explore the venue, check in at activity locations, and participate in exciting events. Each activity and new location unlocks a new level~\n\n<b>🔍 Meet New Friends:</b> Interact with other attendees; every new encounter unlocks a new level.\n\nThe more levels you complete and the higher you rank, the greater your chances of winning! Pick up your phone and groove with the rhythm!",
 						"image": {
 							"url": "/2026/img/info/Game.webp",
-							"alt": "SITCON Reality Game",
-							"position": "left"
+							"alt": "SITCON Reality Game"
 						}
 					},
 					{
@@ -342,8 +335,7 @@
 						"body": "In this era of intertwined viewpoints and infinite creativity, pick up a whiteboard marker, add your thoughts to this chaotic world, and start a wonderful battle of ideas!\n\nWe sincerely invite you to the whiteboard area on the 3rd floor to join this smokeless 'Whiteboard War'. Jam the code together, debate and defend the sect you believe in (x). This will be a grand platform for you to showcase creativity and clash viewpoints.\n\nIn a relaxed atmosphere, let's use whiteboards as weapons, unleash infinite creativity, challenge different viewpoints, and create more sparks! Come and splash your ideas to make this whiteboard world even more chaotic!",
 						"image": {
 							"url": "/2026/img/info/Whiteboard.webp",
-							"alt": "SITCON Whiteboard War",
-							"position": "right"
+							"alt": "SITCON Whiteboard War"
 						}
 					}
 				]
@@ -352,12 +344,19 @@
 				"title": "Have Something to Say?",
 				"activities": [
 					{
+						"title": "Meet the Speakers",
+						"body": "Just finished an inspiring session but still have questions you did not get to ask? Want to talk with the speakers about the stories and experiences behind their work? Do not take those thoughts home unanswered!\n\nMeet the Speakers is a chance to have face-to-face conversations with speakers after their talks. Some speakers will move to Hall S after their sessions and wait there for attendees to chat. Whether you want to ask deeper questions about the session, discuss technical details, or simply exchange experiences, you are welcome to join.\n\nThe activity will take place from 15:25 to 16:45 in Hall S. Each speaker is expected to stay for 20 to 30 minutes. No preparation is required. Find the speaker you are interested in and say hello!",
+						"image": {
+							"url": "/2026/img/info/Coffee.webp",
+							"alt": "SITCON Meet the Speakers"
+						}
+					},
+					{
 						"title": "Lightning Talks",
 						"body": "Do you have something exciting to share but missed the submission deadline? Welcome to participate in SITCON 2026 Lightning Talks! Lightning Talks provide eight slots for the quickest attendees to share their projects or ideas in five minutes!\n\nOn the day of the conference from 10:00 AM to 3:30 PM, you are welcome to submit your proposal at the designated whiteboard area. The submission method is simple! Once submission opens, choose an empty slot on the whiteboard and write down your talk title and name (e.g., 'How I Became the Wind by Windful'). There are only eight slots, and each person is limited to one submission, so be quick! After submitting, please scan the form next to the whiteboard to provide more information, such as title, speaker name, and outline. We suggest preparing this content in advance to ensure a smooth process!\n\nIf you successfully become a speaker, please gather at the right side of R0 on the 3rd floor at 4:40 PM sharp with your presentation equipment. Agenda team members will be there to assist you. To maintain diversity and fun, we do not accept overly commercial submissions. If your talk exceeds the time limit or contains commercial content for more than ten seconds, the screen will be cut off directly!\n\nWe invite you to this adrenaline-pumping activity to communicate and share with more people at SITCON!",
 						"image": {
 							"url": "/2026/img/info/Lightning.webp",
-							"alt": "SITCON Lightning Talks",
-							"position": "left"
+							"alt": "SITCON Lightning Talks"
 						}
 					}
 				]
@@ -367,24 +366,39 @@
 			"title": "Souvenirs",
 			"items": [
 				{
-					"name": "悠遊卡",
+					"name": "iPASS Card",
 					"price": "NT$ 499",
-					"image": "/2026/img/souvenir-placeholder.webp"
+					"image": "/2026/img/souvenirs/一卡通.webp"
 				},
 				{
-					"name": "電腦包",
+					"name": "Laptop Sleeve",
 					"price": "NT$ 699",
-					"image": "/2026/img/souvenir-placeholder.webp"
+					"image": "/2026/img/souvenirs/電腦包.webp"
 				},
 				{
-					"name": "年會紀念 T",
+					"name": "Non-Magnetic Laptop Sleeve",
+					"price": "NT$ 499",
+					"image": "/2026/img/souvenirs/非磁吸封口電腦包.webp"
+				},
+				{
+					"name": "Conference T-Shirt",
 					"price": "NT$ 350",
-					"image": "/2026/img/souvenir-placeholder.webp"
+					"image": "/2026/img/souvenirs/會眾踢.webp"
 				},
 				{
-					"name": "御守",
+					"name": "Omamori Charm",
 					"price": "NT$ 99",
-					"image": "/2026/img/souvenir-placeholder.webp"
+					"image": "/2026/img/souvenirs/御守.webp"
+				},
+				{
+					"name": "Postcard",
+					"price": "Free while supplies last",
+					"image": "/2026/img/souvenirs/明信片.webp"
+				},
+				{
+					"name": "Coaster",
+					"price": "NT$ 99",
+					"image": "/2026/img/souvenirs/杯墊.webp"
 				}
 			]
 		}
@@ -399,11 +413,11 @@
 				},
 				{
 					"name": "Agenda",
-					"url": "#"
+					"url": "/2026/en/agenda/"
 				},
 				{
 					"name": "Venue Map",
-					"url": "#"
+					"url": "/2026/en/venue/"
 				},
 				{
 					"name": "Registration",
@@ -415,11 +429,15 @@
 				},
 				{
 					"name": "Partners",
-					"url": "#"
+					"url": "/2026/en/#sponsors"
 				},
 				{
-					"name": "Resources",
-					"url": "#"
+					"name": "MCP Server",
+					"url": "/2026/en/mcp/"
+				},
+				{
+					"name": "Referral Raffle",
+					"url": "/2026/en/referral/"
 				}
 			]
 		},
@@ -622,21 +640,28 @@
 				"title": "One Lottery Entry per Referral",
 				"description": "For every new registrant you successfully refer, you get one entry into the lottery. The more you refer, the higher your chances of winning!",
 				"table": {
-					"headers": ["Prize Category", "Prize", "Quota", "Draw Date"],
+					"headers": ["Prize Category", "Prize", "Quota", "Cut-off Time", "Winners"],
 					"rows": [
-						["Popularity Grand Prize", "SITCON Exclusive Pillow Cover", "2 Winners", "1/30"],
-						["Classic Collection", "Past Conference Souvenir T-Shirt", "3 Winners", "2/28"]
+						["Popularity Grand Prize", "SITCON Exclusive Pillow Cover", "2 Winners", "1/30 23:59", "b11******17@yuntech.edu.tw, all******hih.tw"],
+						["Classic Collection", "Past Conference Souvenir T-Shirt", "3 Winners", "2/28 23:59", "ryd******18@gmail.com, yfp******25@gmail.com, fee******87@gmail.com"]
 					]
 				}
 			},
 			"topReferrers": {
 				"title": "Top Referrer",
-				"description": "The top five referrers with the most successful referrals will receive exclusive honors and SITCON 2026 commemorative gifts, and will be publicly recognized and awarded at the SITCON 2026 conference!",
+				"description": "The referrers with the most successful referrals will receive exclusive honors and SITCON 2026 commemorative gifts, and will be publicly recognized and awarded at the SITCON 2026 conference!",
 				"table": {
-					"headers": ["Prize Category", "Reward Content", "Quota"],
-					"rows": [["Top Referrer Gift", "SITCON 2026 Exquisite Souvenir", "5 Winners"]]
+					"headers": ["Prize Category", "Reward Content", "Quota", "Winners"],
+					"rows": [
+						[
+							"Top Referrer Gift",
+							"SITCON 2026 Souvenirs",
+							"8 Winners",
+							"kds******qwe@gmail.com, aud******8100@gmail.com, jun******0418@gmail.com, luk******10@gmail.com, me@p******.com, s10******58@thu.edu.tw, sen******uro@gmail.com, vin******611@gmail.com"
+						]
+					]
 				},
-				"deadlines": ["Referral Count Cut-off: 3/1", "Winner Announcement: 3/15 (Notified via Email)"],
+				"deadlines": ["Referral Count Cut-off: 3/1 23:59", "Winner Announcement: before 3/15 23:59 (notified via Email)"],
 				"rules": [
 					"Ranked by number of successful referrals, top five will be selected.",
 					"If referral counts are the same, the one with the earlier 'first successful referral time' takes precedence.",
