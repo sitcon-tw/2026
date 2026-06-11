@@ -1,6 +1,6 @@
 {
 	"name": "2026-website-preview",
-	"compatibility_date": "2026-12-26",
+	"compatibility_date": "2026-06-11",
 	"assets": {
 		"directory": "./dist",
 		"html_handling": "force-trailing-slash",
