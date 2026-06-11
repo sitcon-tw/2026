@@ -25,6 +25,11 @@ const t = useTranslations(lang).agenda;
 
 const agendaItems = normalizeAgendaSessionsFromFile(agendaData as AgendaDataFile, lang);
 const posters = Array.isArray(postersData) ? postersData : [];
+const agendaClientText = {
+	title: t.title,
+	curatedLabel: t.curatedLabel,
+	mcpCopied: t.mcpCopied
+};
 
 const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 ---
@@ -110,7 +115,7 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 	<Footer />
 </Layout>
 
-<script define:vars={{ agendaID }}>
+<script define:vars={{ agendaID, agendaClientText }}>
 	const isEn = window.location.pathname.startsWith("/2026/en/");
 	const basePath = isEn ? "/2026/en/agenda" : "/2026/agenda";
 
@@ -210,7 +215,7 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 		if (ids.length === 0) return;
 
 		const name = n ? decodeURIComponent(n).trim() : "";
-		const curatedLabel = isEn ? "Picks" : "的精選議程";
+		const curatedLabel = agendaClientText.curatedLabel;
 		if (agendaTitleEl) {
 			agendaTitleEl.textContent = name ? `${name} ${curatedLabel}` : curatedLabel;
 		}
@@ -251,7 +256,7 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 		timelineContainer.removeAttribute("data-curated-ids");
 		timelineContainer.classList.remove("agenda-filter-favorites");
 		document.querySelectorAll(".session-block.hidden-by-curated").forEach(el => el.classList.remove("hidden-by-curated"));
-		const defaultTitle = isEn ? "Agenda" : "議程表";
+		const defaultTitle = agendaClientText.title;
 		if (agendaTitleEl) agendaTitleEl.textContent = defaultTitle;
 		window.history.replaceState({}, "", window.location.pathname);
 		if (filterTabAll && filterTabFavorites) {
@@ -300,7 +305,7 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 				const span = btn.querySelector(".btn-text");
 				if (span) {
 					const originalText = span.textContent;
-					span.textContent = isEn ? "Copied!" : "已複製！";
+					span.textContent = agendaClientText.mcpCopied;
 
 					// Reset text after 2 seconds
 					setTimeout(() => {

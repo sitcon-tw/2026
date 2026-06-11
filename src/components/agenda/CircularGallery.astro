@@ -4,8 +4,10 @@ import { Triangle } from "@lucide/astro";
 interface PosterItem {
 	id: string;
 	title: string;
+	title_en?: string;
 	image: string;
 	description?: string;
+	description_en?: string;
 	youtubeId?: string;
 }
 
@@ -16,7 +18,12 @@ interface Props {
 
 const { items = [], lang = "zh" } = Astro.props as Props;
 const isEn = lang === "en";
-const originalCount = items.length;
+const localizedItems = items.map(item => ({
+	...item,
+	title: isEn ? (item.title_en ?? item.title) : item.title,
+	description: isEn ? (item.description_en ?? item.description) : item.description
+}));
+const originalCount = localizedItems.length;
 
 // Repeat items until we have at least 12
 const minItems = 12;
@@ -24,7 +31,7 @@ const expandedItems: PosterItem[] = [];
 if (originalCount > 0) {
 	while (expandedItems.length < minItems) {
 		// Create proper copies of items to ensure all properties are preserved
-		items.forEach(item => {
+		localizedItems.forEach(item => {
 			expandedItems.push({
 				id: item.id,
 				title: item.title,
@@ -39,7 +46,7 @@ if (originalCount > 0) {
 		expandedItems.splice(minItems);
 	}
 } else {
-	expandedItems.push(...items);
+	expandedItems.push(...localizedItems);
 }
 
 const itemCount = expandedItems.length;

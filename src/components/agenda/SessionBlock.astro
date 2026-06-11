@@ -1,4 +1,6 @@
 ---
+import { useTranslations } from "@/utils/i18n";
+
 interface Speaker {
 	name: string;
 	avatar?: string;
@@ -24,6 +26,7 @@ function getDurationMinutes(): number | null {
 const durationMinutes = getDurationMinutes();
 const hasDescription = description && description !== "";
 const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${sessionId}/` : `/2026/agenda/${sessionId}/`) : undefined;
+const tAgenda = useTranslations(lang).agenda;
 ---
 
 <a
@@ -33,7 +36,7 @@ const sessionHref = hasDescription ? (lang === "en" ? `/2026/en/agenda/${session
 	href={sessionHref}
 	data-session-id={sessionId}
 >
-	<div class="session-favorite" aria-label="Favorite session" role="button" tabindex="0" data-session-id={sessionId}></div>
+	<div class="session-favorite" aria-label={tAgenda.sessionBookmark} role="button" tabindex="0" data-session-id={sessionId}></div>
 	<div class="session-content">
 		<div class="session-name">{name}</div>
 		<div class="session-info-wrapper">

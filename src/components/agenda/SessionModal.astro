@@ -10,7 +10,25 @@ const actionLabels = {
 	askQuestion: tAgenda.sessionAskQuestion,
 	collabNotes: tAgenda.sessionCollabNotes,
 	presentation: tAgenda.sessionPresentation,
-	share: lang === "en" ? "Share" : "分享"
+	share: tAgenda.sessionShare
+};
+const sessionTypeLabels = {
+	keynote: "Keynote",
+	presentation: "Presentation",
+	undefined: tAgenda.sessionTypeUndefined,
+	espresso: "Espresso",
+	sponsored: tAgenda.sessionTypeSponsored,
+	forum: tAgenda.sessionTypePD
+};
+const sessionTypeLabel = sessionTypeLabels[type as keyof typeof sessionTypeLabels] ?? "";
+const modalText = {
+	adMobile: tAgenda.sessionMobileAd,
+	adDesktop: tAgenda.sessionDesktopAd,
+	bookmark: tAgenda.sessionBookmark,
+	close: tAgenda.sessionClose,
+	recording: tAgenda.sessionRecording,
+	location: tAgenda.sessionLocation,
+	dateLocale: lang === "en" ? "en-US" : "zh-TW"
 };
 
 // Format time for display (forced to GMT+8 / Asia/Taipei)
@@ -32,54 +50,39 @@ const weightedAds = ads.filter(ad => typeof ad.weight === "number" && ad.weight 
 const initialAd = weightedAds[0] ?? null;
 ---
 
-<div class="session-modal" id="session-modal" data-ads={JSON.stringify(weightedAds)} data-action-labels={JSON.stringify(actionLabels)}>
+<div
+	class="session-modal"
+	id="session-modal"
+	data-ads={JSON.stringify(weightedAds)}
+	data-action-labels={JSON.stringify(actionLabels)}
+	data-session-type-labels={JSON.stringify(sessionTypeLabels)}
+	data-modal-text={JSON.stringify(modalText)}
+>
 	<div class="modal-overlay" id="modal-overlay"></div>
 	<div class="modal-container" id="modal-container" data-lenis-prevent>
 		{
 			initialAd && (
 				<a href={initialAd.link} target="_blank" rel="noopener noreferrer" id="modal-ad-link">
 					<div class="cool-sponsor-image-content">
-						<img src={`/2026/img/cool_sponsor/${initialAd.name}-mobile.webp`} alt={`${initialAd.name} 橫式廣告`} class="ad-image" id="modal-ad-image-mobile" />
-						<img src={`/2026/img/cool_sponsor/${initialAd.name}.webp`} alt={`${initialAd.name} 直式廣告`} class="ad-image-desktop" id="modal-ad-image-desktop" />
+						<img src={`/2026/img/cool_sponsor/${initialAd.name}-mobile.webp`} alt={`${initialAd.name} ${modalText.adMobile}`} class="ad-image" id="modal-ad-image-mobile" />
+						<img src={`/2026/img/cool_sponsor/${initialAd.name}.webp`} alt={`${initialAd.name} ${modalText.adDesktop}`} class="ad-image-desktop" id="modal-ad-image-desktop" />
 					</div>
 				</a>
 			)
 		}
 		<div class="modal-right-panel full-width" data-lenis-prevent>
 			<div class="modal-drag-handle" id="modal-drag-handle" aria-hidden="true"></div>
-			<div class="modal-bookmark-area" id="modal-bookmark-area" aria-label="Bookmark session" role="button" tabindex="0"></div>
+			<div class="modal-bookmark-area" id="modal-bookmark-area" aria-label={modalText.bookmark} role="button" tabindex="0"></div>
 			<div class="modal-bookmark-ribbon" id="modal-bookmark-ribbon" aria-hidden="true">
 				<img src={bookmarkIcon.src} alt="Bookmark" class="bookmark-icon" />
 			</div>
-			<button class="modal-close" id="modal-close" aria-label="Close">
+			<button class="modal-close" id="modal-close" aria-label={modalText.close}>
 				<X size={24} />
 			</button>
 			<div class="session-content">
 				<div class="session-header"></div>
 
-				<div class="session-type-badge">
-					{
-						type === "keynote"
-							? "Keynote"
-							: type === "presentation"
-								? "Presentation"
-								: type === "undefined"
-									? lang === "en"
-										? "Undefined"
-										: "開放式議程"
-									: type === "espresso"
-										? "Espresso"
-										: type === "sponsored"
-											? lang === "en"
-												? "Sponsored"
-												: "合作議程"
-											: type === "forum"
-												? lang === "en"
-													? "Forum"
-													: "論壇"
-												: ""
-					}
-				</div>
+				<div class="session-type-badge">{sessionTypeLabel}</div>
 
 				<h1 class="session-title">{name}</h1>
 
@@ -116,7 +119,7 @@ const initialAd = weightedAds[0] ?? null;
 							width="100%"
 							height="100%"
 							src=""
-							title={lang === "en" ? `${name} recording` : `${name} 議程錄影`}
+							title={`${name} ${modalText.recording}`}
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 							allowfullscreen
 							loading="lazy"
@@ -132,9 +135,9 @@ const initialAd = weightedAds[0] ?? null;
 			</div>
 		</div>
 	</div>
-	<button class="modal-close-mobile" id="modal-close-mobile" aria-label="Close">
+	<button class="modal-close-mobile" id="modal-close-mobile" aria-label={modalText.close}>
 		<X size={24} />
-		<span>{lang === "en" ? "Close" : "關閉"}</span>
+		<span>{modalText.close}</span>
 	</button>
 </div>
 
@@ -180,6 +183,34 @@ const initialAd = weightedAds[0] ?? null;
 		if (!modal) return defaults;
 		try {
 			const parsed = JSON.parse(modal.getAttribute("data-action-labels") || "{}");
+			return { ...defaults, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+		} catch {
+			return defaults;
+		}
+	})();
+	const modalTypeLabels = (() => {
+		const defaults = { keynote: "Keynote", presentation: "Presentation", undefined: "Open Session", espresso: "Espresso", sponsored: "Sponsored Session", forum: "Forum" };
+		if (!modal) return defaults;
+		try {
+			const parsed = JSON.parse(modal.getAttribute("data-session-type-labels") || "{}");
+			return { ...defaults, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+		} catch {
+			return defaults;
+		}
+	})();
+	const modalTextConfig = (() => {
+		const defaults = {
+			adMobile: "mobile ad",
+			adDesktop: "desktop ad",
+			bookmark: "Bookmark session",
+			close: "Close",
+			recording: "recording",
+			location: "Humanities and Social Sciences Building, Academia Sinica",
+			dateLocale: "en-US"
+		};
+		if (!modal) return defaults;
+		try {
+			const parsed = JSON.parse(modal.getAttribute("data-modal-text") || "{}");
 			return { ...defaults, ...(parsed && typeof parsed === "object" ? parsed : {}) };
 		} catch {
 			return defaults;
@@ -234,9 +265,9 @@ const initialAd = weightedAds[0] ?? null;
 		adLink.style.display = "";
 		adLink.href = selectedAd.link;
 		adImageMobile.src = `/2026/img/cool_sponsor/${selectedAd.name}-mobile.webp`;
-		adImageMobile.alt = `${selectedAd.name} 橫式廣告`;
+		adImageMobile.alt = `${selectedAd.name} ${modalTextConfig.adMobile}`;
 		adImageDesktop.src = `/2026/img/cool_sponsor/${selectedAd.name}.webp`;
-		adImageDesktop.alt = `${selectedAd.name} 直式廣告`;
+		adImageDesktop.alt = `${selectedAd.name} ${modalTextConfig.adDesktop}`;
 
 		if (import.meta.env.PROD) gtmPush("session_ad_impression", { ad_sponsor: selectedAd.name });
 		adLink.addEventListener("click", _adClickHandler);
@@ -329,7 +360,7 @@ const initialAd = weightedAds[0] ?? null;
 		videoSectionEl?.classList.add("is-hidden");
 	}
 
-	function updateSessionVideo(recordLinkValue: string, sessionNameValue: string, sessionLangValue: string) {
+	function updateSessionVideo(recordLinkValue: string, sessionNameValue: string) {
 		const videoSectionEl = modal?.querySelector("#session-video-section") as HTMLElement | null;
 		const videoFrameEl = modal?.querySelector("#session-video") as HTMLIFrameElement | null;
 		if (!videoSectionEl || !videoFrameEl) return;
@@ -341,7 +372,7 @@ const initialAd = weightedAds[0] ?? null;
 		}
 
 		videoFrameEl.src = embedUrl;
-		videoFrameEl.title = sessionLangValue === "en" ? `${sessionNameValue} recording` : `${sessionNameValue} 議程錄影`;
+		videoFrameEl.title = `${sessionNameValue} ${modalTextConfig.recording}`;
 		videoSectionEl.classList.remove("is-hidden");
 	}
 
@@ -360,7 +391,6 @@ const initialAd = weightedAds[0] ?? null;
 		const sessionSlidesLink = detail.slidesLink ?? "";
 		const sessionNotesLink = detail.notesLink ?? "";
 		const sessionRecordLink = detail.recordLink ?? "";
-		const sessionLang = detail.lang ?? "zh";
 		const formatTimestamp = (timestamp: string) => {
 			if (!timestamp) return "";
 			const d = new Date(Number(timestamp));
@@ -380,19 +410,11 @@ const initialAd = weightedAds[0] ?? null;
 
 		const descEl = modal?.querySelector(".session-description");
 		if (descEl) descEl.innerHTML = sessionDescription;
-		updateSessionVideo(sessionRecordLink, sessionName, sessionLang);
+		updateSessionVideo(sessionRecordLink, sessionName);
 
 		const typeBadgeEl = modal?.querySelector(".session-type-badge");
 		if (typeBadgeEl) {
-			const typeLabels: Record<string, string> = {
-				keynote: "Keynote",
-				presentation: "Presentation",
-				undefined: sessionLang === "en" ? "Undefined" : "開放式議程",
-				espresso: "Espresso",
-				sponsored: sessionLang === "en" ? "Sponsored" : "合作議程",
-				forum: sessionLang === "en" ? "Forum" : "論壇"
-			};
-			typeBadgeEl.textContent = typeLabels[sessionType] || "";
+			typeBadgeEl.textContent = modalTypeLabels[sessionType as keyof typeof modalTypeLabels] || "";
 		}
 
 		// Update time
@@ -508,7 +530,7 @@ const initialAd = weightedAds[0] ?? null;
 			shareBtn.addEventListener("click", async () => {
 				const speakerNames = Array.isArray(sessionSpeakers) ? sessionSpeakers.map((speaker: any) => (typeof speaker === "string" ? speaker : speaker.name)).filter(Boolean) : [];
 				const date = sessionStartTime
-					? new Date(Number(sessionStartTime)).toLocaleDateString("zh-TW", {
+					? new Date(Number(sessionStartTime)).toLocaleDateString(modalTextConfig.dateLocale, {
 							year: "numeric",
 							month: "2-digit",
 							day: "2-digit",
@@ -518,9 +540,10 @@ const initialAd = weightedAds[0] ?? null;
 				const start = sessionStartTime ? formatTimestamp(sessionStartTime) : "";
 				const end = sessionEndTime ? formatTimestamp(sessionEndTime) : "";
 				const speakersText = speakerNames.length > 0 ? ` | ${speakerNames.join(", ")}` : "";
-				const typeText = sessionType === "lightning" ? "" : `${sessionType.charAt(0).toUpperCase() + sessionType.slice(1)} - `;
+				const sessionTypeText = modalTypeLabels[sessionType as keyof typeof modalTypeLabels] || "";
+				const typeText = sessionTypeText ? `${sessionTypeText} - ` : "";
 				const timeText = [date, [start, end].filter(Boolean).join(" - ")].filter(Boolean).join(" ");
-				const shareText = `${typeText}${sessionName}${speakersText}\n${timeText} @ 中央研究院人文社會科學館 ${sessionVenue}\n\n${sessionDescription.replace(/<[^>]*>?/g, "")}`;
+				const shareText = `${typeText}${sessionName}${speakersText}\n${timeText} @ ${modalTextConfig.location} ${sessionVenue}\n\n${sessionDescription.replace(/<[^>]*>?/g, "")}`;
 
 				if (navigator.share) {
 					try {

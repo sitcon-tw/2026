@@ -8,23 +8,25 @@ interface Props {
 }
 
 import { TriangleAlert, X } from "@lucide/astro";
+import { useTranslations } from "@/utils/i18n";
 
 const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "輸入匿名", shareJamCopy = "複製連結", shareJamCopied = "已複製！" } = Astro.props;
+const tAgenda = useTranslations(lang).agenda;
 ---
 
 <div class="share-jam-modal" id="share-jam-modal" aria-hidden="true" data-share-jam-title={shareJamTitle} data-share-jam-copied={shareJamCopied}>
 	<div class="share-jam-overlay" id="share-jam-overlay"></div>
 	<div class="share-jam-container" id="share-jam-container">
 		<div class="share-jam-drag-handle" id="share-jam-drag-handle" aria-hidden="true"></div>
-		<button type="button" class="share-jam-close" id="share-jam-close" aria-label="Close">
+		<button type="button" class="share-jam-close" id="share-jam-close" aria-label={tAgenda.sessionClose}>
 			<X size={24} />
 		</button>
-		<button type="button" class="share-jam-close-mobile" id="share-jam-close-mobile" aria-label="Close">
+		<button type="button" class="share-jam-close-mobile" id="share-jam-close-mobile" aria-label={tAgenda.sessionClose}>
 			<X size={24} />
-			<span>{lang === "en" ? "Close" : "關閉"}</span>
+			<span>{tAgenda.sessionClose}</span>
 		</button>
 		<h2 class="share-jam-title" id="share-jam-title">{shareJamTitle}</h2>
-		<ul class="share-jam-list" id="share-jam-list" aria-label="Bookmarked sessions">
+		<ul class="share-jam-list" id="share-jam-list" aria-label={tAgenda.shareJamList}>
 			<!-- Populated by script from bookmarked sessions -->
 		</ul>
 		<div class="share-jam-physics-wrap" id="share-jam-physics-wrap" aria-hidden="true">
@@ -33,7 +35,7 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 			</div>
 		</div>
 		<div class="share-jam-empty" id="share-jam-empty">
-			{lang === "en" ? "You haven't added any featured sessions yet!" : "你還沒有新增任何精選議程喔！"}
+			{tAgenda.shareJamEmpty}
 		</div>
 		<div class="share-jam-footer" id="share-jam-footer">
 			<div class="share-jam-input-container">
@@ -45,7 +47,7 @@ const { lang = "zh", shareJamTitle = "你的專屬 Jam", shareJamPlaceholder = "
 			<div class="no-name-caution hidden" id="no-name-caution">
 				<TriangleAlert size={24} />
 				<span>
-					{lang === "en" ? "Please enter your name so others know who shared it with them~" : "請輸入你的名字，別人才知道是誰分享的呦～"}
+					{tAgenda.shareJamNameRequired}
 				</span>
 			</div>
 		</div>

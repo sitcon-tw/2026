@@ -37,6 +37,8 @@ const { items, lang = "zh" } = Astro.props;
 const tAgenda = useTranslations(lang).agenda;
 const filterAllLabel = tAgenda.filterAll ?? (lang === "en" ? "All Agenda" : "全部議程");
 const filterFavoritesLabel = tAgenda.filterFavorites ?? (lang === "en" ? "Favorites" : "收藏議程");
+const shareJamAria = tAgenda.shareJamAria;
+const shareJamButton = tAgenda.shareJamButton;
 
 // Parse ISO 8601 string to timestamp (milliseconds)
 function parseTime(isoString: string): number {
@@ -384,8 +386,8 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 				</button>
 			</div>
 		</div>
-		<button type="button" class="share-jam-trigger" id="share-jam-trigger" aria-label={lang === "en" ? "Share your Jam" : "分享你的專屬 Jam"} title={lang === "en" ? "Share your Jam" : "你的專屬 Jam"}>
-			{lang === "en" ? "Share Jam" : "分享我的精選"}
+		<button type="button" class="share-jam-trigger" id="share-jam-trigger" aria-label={shareJamAria} title={shareJamAria}>
+			{shareJamButton}
 		</button>
 	</div>
 
@@ -420,7 +422,7 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 
 				<div class="venue-tracks">
 					<div class="time-lines-overlay">
-						{timeLabels.map((time, idx) => <div class="time-line" style={`left: ${slotLeftPercents[idx]}%`} />)}
+						{timeLabels.map((_time, idx) => <div class="time-line" style={`left: ${slotLeftPercents[idx]}%`} />)}
 						<div class="current-time-line" style={`left: ${getIndicatorPercent(now)}%`} id="current-time-line">
 							<div class="indicator-line-extended"></div>
 						</div>
@@ -510,7 +512,7 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 	<!-- Phone: vertical view showing all sessions grouped by time -->
 	<div class="agenda-phone-view" id="agenda-phone-view" aria-hidden="true">
 		<p class="agenda-phone-empty-favorites" id="agenda-phone-empty-favorites" aria-live="polite" hidden>
-			{lang === "en" ? "You don't have any favorite sessions yet." : "你還沒有任何精選議程喔"}
+			{tAgenda.emptyFavorites}
 		</p>
 		<div class="phone-time-blocks">
 			{
@@ -558,18 +560,18 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 	</div>
 
 	<div class="scroll-controls">
-		<button class="scroll-btn scroll-left" id="scroll-left" aria-label="向左滾動">
+		<button class="scroll-btn scroll-left" id="scroll-left" aria-label={tAgenda.scrollLeft}>
 			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<path d="m15 18-6-6 6-6"></path>
 			</svg>
 		</button>
-		<button class="scroll-btn scroll-right" id="scroll-right" aria-label="向右滾動">
+		<button class="scroll-btn scroll-right" id="scroll-right" aria-label={tAgenda.scrollRight}>
 			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<path d="m9 18 6-6-6-6"></path>
 			</svg>
 		</button>
 		<div class="zoom-controls">
-			<button class="zoom-btn zoom-in" id="zoom-in" aria-label="放大">
+			<button class="zoom-btn zoom-in" id="zoom-in" aria-label={tAgenda.zoomIn}>
 				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<circle cx="11" cy="11" r="8"></circle>
 					<path d="m21 21-4.35-4.35"></path>
@@ -577,7 +579,7 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 					<path d="M8 11h6"></path>
 				</svg>
 			</button>
-			<button class="zoom-btn zoom-out" id="zoom-out" aria-label="縮小">
+			<button class="zoom-btn zoom-out" id="zoom-out" aria-label={tAgenda.zoomOut}>
 				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<circle cx="11" cy="11" r="8"></circle>
 					<path d="m21 21-4.35-4.35"></path>
@@ -602,13 +604,7 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 			</div>
 		</div>
 		<div class="share-jam-trigger-mobile-wrap">
-			<button
-				type="button"
-				class="share-jam-trigger-mobile"
-				id="share-jam-trigger-mobile"
-				aria-label={lang === "en" ? "Share your Jam" : "分享你的專屬 Jam"}
-				title={lang === "en" ? "Share your Jam" : "你的專屬 Jam"}
-			>
+			<button type="button" class="share-jam-trigger-mobile" id="share-jam-trigger-mobile" aria-label={shareJamAria} title={shareJamAria}>
 				<Share2 class="share-icon" />
 			</button>
 		</div>
