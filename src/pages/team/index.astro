@@ -21,14 +21,18 @@ const ROLE_MAP = i18n.role;
 const t = i18n.teamPage;
 const prefix = lang === "en" ? "/2026/en" : "/2026";
 
+const getAnchorName = (name: string) => (lang === "en" ? name.replace(/\s+Team$/, "") : name);
+
 const teamsMap = new Map();
 
 team_data_raw.forEach(person => {
 	person.teams.forEach(team => {
+		const name = (TEAM_METADATA as Record<string, { name: string; description: string }>)[team.name]?.name || team.name;
 		if (!teamsMap.has(team.name)) {
 			teamsMap.set(team.name, {
 				id: team.name,
-				name: (TEAM_METADATA as Record<string, { name: string; description: string }>)[team.name]?.name || team.name,
+				name,
+				anchorName: getAnchorName(name),
 				description: (TEAM_METADATA as Record<string, { name: string; description: string }>)[team.name]?.description || "",
 				member: []
 			});
@@ -132,9 +136,9 @@ const forum_url = "https://groups.google.com/g/sitcon-general/";
 			{
 				team_data.map((team, index) => {
 					return (
-						<a class="anchor-btn anchor-box" href={`#team-${index}`} aria-label={`${lang === "en" ? "Go to" : "前往"} ${team.name}`}>
+						<a class="anchor-btn anchor-box" href={`#team-${index}`} aria-label={`${lang === "en" ? "Go to" : "前往"} ${team.anchorName}`}>
 							<span class="anchor-indicator" />
-							<span class="anchor-text-span">{team.name}</span>
+							<span class="anchor-text-span">{team.anchorName}</span>
 						</a>
 					);
 				})
