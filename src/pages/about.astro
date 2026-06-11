@@ -389,28 +389,30 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 </style>
 
 <script>
-	// @ts-ignore
-	import * as echarts from "echarts";
+	type EChartsApi = typeof import("echarts/core");
+	type EChartsInstance = ReturnType<EChartsApi["init"]>;
 
-	// Initialize charts after DOM is ready
-	let attenderRoleChart: any = null;
-	let programmingLevelChart: any = null;
+	const charts = new Map<string, EChartsInstance>();
+	let chartModulePromise: Promise<EChartsApi> | null = null;
+	let chartObserver: IntersectionObserver | null = null;
 
-	function initCharts() {
-		const attenderElement = document.getElementById("attender-role-chart");
-		const programmingElement = document.getElementById("programming-level-chart");
+	function getChartElements() {
+		return Array.from(document.querySelectorAll<HTMLElement>(".chart-canvas[data-chart]"));
+	}
 
-		if (!attenderElement || !programmingElement) return;
+	function parseChartData(element: HTMLElement) {
+		try {
+			const parsed = JSON.parse(element.dataset.chart ?? "[]");
+			return Array.isArray(parsed) ? parsed : [];
+		} catch {
+			return [];
+		}
+	}
 
-		const attenderRoleData = JSON.parse(attenderElement.dataset.chart ?? "[]");
-		const programmingLevelData = JSON.parse(programmingElement.dataset.chart ?? "[]");
-
-		attenderRoleChart = echarts.init(attenderElement);
-		programmingLevelChart = echarts.init(programmingElement);
-
+	function createChartOption(data: unknown[]) {
 		const isMobile = window.innerWidth <= 768;
 
-		const chartOption: any = {
+		return {
 			tooltip: {
 				trigger: "item",
 				backgroundColor: "rgba(60, 45, 14, 0.95)",
@@ -455,40 +457,100 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 					labelLine: {
 						show: false
 					},
-					data: []
+					data
 				}
 			],
 			color: ["#e8bb5f", "#d1a348", "#c47c1a", "#a85e10", "#f5dfa0", "#f0ce7a", "#b8943c", "#8c6a1e", "#614a0e"]
 		};
-
-		// Attender Role Chart
-		const attenderOption = { ...chartOption };
-		attenderOption.series[0].data = attenderRoleData;
-		attenderRoleChart.setOption(attenderOption);
-
-		// Programming Level Chart
-		const programmingOption = { ...chartOption };
-		programmingOption.series[0].data = programmingLevelData;
-		programmingLevelChart.setOption(programmingOption);
 	}
 
-	// Initialize on load
+	function loadECharts() {
+		if (!chartModulePromise) {
+			chartModulePromise = Promise.all([import("echarts/core"), import("echarts/charts"), import("echarts/components"), import("echarts/renderers")]).then(
+				([echarts, { PieChart }, { TooltipComponent, LegendComponent }, { CanvasRenderer }]) => {
+					echarts.use([PieChart, TooltipComponent, LegendComponent, CanvasRenderer]);
+					return echarts;
+				}
+			);
+		}
+		return chartModulePromise;
+	}
+
+	async function renderChart(element: HTMLElement) {
+		const echarts = await loadECharts();
+		if (!element.isConnected) return;
+
+		let chart = charts.get(element.id);
+		if (!chart) {
+			chart = echarts.init(element);
+			charts.set(element.id, chart);
+		}
+
+		chart.setOption(createChartOption(parseChartData(element)), true);
+	}
+
+	function initCharts() {
+		const chartElements = getChartElements();
+		if (chartElements.length === 0) return;
+
+		if (!("IntersectionObserver" in window)) {
+			chartElements.forEach(element => {
+				void renderChart(element);
+			});
+			return;
+		}
+
+		chartObserver?.disconnect();
+		chartObserver = new IntersectionObserver(
+			entries => {
+				entries.forEach(entry => {
+					if (!entry.isIntersecting) return;
+					chartObserver?.unobserve(entry.target);
+					void renderChart(entry.target as HTMLElement);
+				});
+			},
+			{ rootMargin: "200px" }
+		);
+
+		chartElements.forEach(element => {
+			if (!charts.has(element.id)) {
+				chartObserver?.observe(element);
+			}
+		});
+	}
+
+	function refreshCharts() {
+		getChartElements().forEach(element => {
+			const chart = charts.get(element.id);
+			if (!chart) return;
+			chart.resize();
+			chart.setOption(createChartOption(parseChartData(element)), true);
+		});
+	}
+
+	function disposeCharts() {
+		chartObserver?.disconnect();
+		chartObserver = null;
+		charts.forEach(chart => {
+			chart.dispose();
+		});
+		charts.clear();
+	}
+
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", initCharts);
 	} else {
 		initCharts();
 	}
 
-	// Responsive resize with debounce
 	let resizeTimeout: ReturnType<typeof setTimeout>;
 	window.addEventListener("resize", () => {
 		clearTimeout(resizeTimeout);
 		resizeTimeout = setTimeout(() => {
-			if (attenderRoleChart && programmingLevelChart) {
-				attenderRoleChart.dispose();
-				programmingLevelChart.dispose();
-				initCharts();
-			}
+			refreshCharts();
 		}, 250);
 	});
+	document.addEventListener("astro:page-load", initCharts);
+	document.addEventListener("astro:before-swap", disposeCharts);
+	window.addEventListener("pagehide", disposeCharts);
 </script>
