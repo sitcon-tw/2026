@@ -269,37 +269,69 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		<div id="main-content">
 			<slot />
 		</div>
-		<!-- Google Tag Manager (noscript) -->
-		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPVBCDZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-		<!-- End Google Tag Manager (noscript) -->
-		<script>
-			import Lenis from "lenis";
-			import "@/utils/text-reveal";
+			<!-- Google Tag Manager (noscript) -->
+			<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPVBCDZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+			<!-- End Google Tag Manager (noscript) -->
+			<script>
+				type LenisInstance = {
+					destroy: () => void;
+					start?: () => void;
+					stop?: () => void;
+				};
 
-			let lenis: InstanceType<typeof Lenis> | null = null;
+				let lenis: LenisInstance | null = null;
+				let lenisModulePromise: Promise<typeof import("lenis")> | null = null;
+				let textRevealModulePromise: Promise<typeof import("@/utils/text-reveal")> | null = null;
 
-			const initLenis = () => {
-				const pathname = window.location.pathname;
-				if (/(^|\/)team\/explore(\/|$)/.test(pathname)) {
+				const shouldUseLenis = () => {
+					const pathname = window.location.pathname;
+					const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+					const disabledRoute = /(^|\/)(team\/explore|venue|info\/academia-sinica)(\/|$)/.test(pathname);
+					return !prefersReducedMotion && !disabledRoute;
+				};
+
+				const destroyLenis = () => {
 					if (lenis) {
 						lenis.destroy();
 						lenis = null;
-						(window as any).lenis = null;
 					}
-				} else {
-					if (!lenis) {
-						lenis = new Lenis({
-							autoRaf: true,
-							anchors: true
-						});
-						(window as any).lenis = lenis;
+					(window as any).lenis = null;
+				};
+
+				const initLenis = async () => {
+					if (!shouldUseLenis()) {
+						destroyLenis();
+						return;
 					}
-				}
-			};
+					if (lenis) return;
 
-			initLenis();
+					lenisModulePromise ??= import("lenis");
+					const { default: Lenis } = await lenisModulePromise;
+					if (!shouldUseLenis() || lenis) return;
 
-			document.addEventListener("astro:page-load", initLenis);
-		</script>
-	</body>
-</html>
+					lenis = new Lenis({
+						autoRaf: true,
+						anchors: true
+					});
+					(window as any).lenis = lenis;
+				};
+
+				const initTextRevealIfNeeded = async () => {
+					if (!document.querySelector(".text-reveal-title, .text-reveal-paragraph")) return;
+
+					textRevealModulePromise ??= import("@/utils/text-reveal");
+					const { initTextReveal } = await textRevealModulePromise;
+					initTextReveal();
+				};
+
+				const initAnimations = () => {
+					void initLenis();
+					void initTextRevealIfNeeded();
+				};
+
+				initAnimations();
+
+				document.addEventListener("astro:page-load", initAnimations);
+			</script>
+		</body>
+	</html>
