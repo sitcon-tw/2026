@@ -1,4 +1,4 @@
-import{gsap as t}from"./index.CMq3EfTn.js";import{S as h}from"./ScrollTrigger.Cv03IO65.js";t.registerPlugin(h);const C=()=>{const e=document.getElementById("chatStream");if(!e)return()=>{};if(e.dataset.chatInit==="true")return()=>{};e.dataset.chatInit="true";const m=e.dataset.messages;if(!m)return()=>{};const r=e,f=JSON.parse(m),w=10,L=2e3;let g=0,p=0,s=null;const E=(n,i)=>{const a=document.createElement("div");return a.className=`message-bubble${i?" is-offset":""}`,a.innerHTML=`
+import{gsap as t}from"./index.tUWw1UFN.js";import{S as h}from"./ScrollTrigger.Cv03IO65.js";t.registerPlugin(h);const C=()=>{const e=document.getElementById("chatStream");if(!e)return()=>{};if(e.dataset.chatInit==="true")return()=>{};e.dataset.chatInit="true";const m=e.dataset.messages;if(!m)return()=>{};const r=e,f=JSON.parse(m),w=10,L=2e3;let g=0,p=0,s=null;const E=(n,i)=>{const a=document.createElement("div");return a.className=`message-bubble${i?" is-offset":""}`,a.innerHTML=`
 				<div class="bubble-content">${n}</div>
 				<div class="bubble-tail">
 					<svg viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
