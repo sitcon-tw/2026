@@ -45,8 +45,8 @@
 		}
 	},
 	"speaker": {
-		"title1": "Conference",
-		"title2": "Invited Speakers",
+		"title1": "Invited",
+		"title2": "Speakers",
 		"cta": "View Agenda"
 	},
 	"demoShow": {
@@ -577,7 +577,7 @@
 	],
 	"team": {
 		"general": {
-			"name": "General Coordinator Team",
+			"name": "Coordinator Team",
 			"description": "The core team coordinating the entire conference, responsible for orchestrating operations across all teams and defining the conference's direction and policies. We are the navigators, ensuring the event runs smoothly and achieves its goals."
 		},
 		"administration": {
