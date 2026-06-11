@@ -1,5 +1,6 @@
 ---
 import { Triangle } from "@lucide/astro";
+import { marked } from "marked";
 
 interface PosterItem {
 	id: string;
@@ -16,18 +17,32 @@ interface Props {
 	lang?: "zh" | "en";
 }
 
+interface LocalizedPosterItem extends PosterItem {
+	descriptionHtml: string;
+}
+
 const { items = [], lang = "zh" } = Astro.props as Props;
 const isEn = lang === "en";
-const localizedItems = items.map(item => ({
-	...item,
-	title: isEn ? (item.title_en ?? item.title) : item.title,
-	description: isEn ? (item.description_en ?? item.description) : item.description
-}));
+
+function renderMarkdown(value?: string): string {
+	const rendered = marked.parse(value ?? "", { async: false });
+	return typeof rendered === "string" ? rendered : "";
+}
+
+const localizedItems: LocalizedPosterItem[] = items.map(item => {
+	const description = isEn ? (item.description_en ?? item.description) : item.description;
+	return {
+		...item,
+		title: isEn ? (item.title_en ?? item.title) : item.title,
+		description,
+		descriptionHtml: renderMarkdown(description)
+	};
+});
 const originalCount = localizedItems.length;
 
 // Repeat items until we have at least 12
 const minItems = 12;
-const expandedItems: PosterItem[] = [];
+const expandedItems: LocalizedPosterItem[] = [];
 if (originalCount > 0) {
 	while (expandedItems.length < minItems) {
 		// Create proper copies of items to ensure all properties are preserved
@@ -37,6 +52,7 @@ if (originalCount > 0) {
 				title: item.title,
 				image: item.image,
 				description: item.description,
+				descriptionHtml: item.descriptionHtml,
 				youtubeId: item.youtubeId
 			});
 		});
@@ -66,6 +82,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 						style={`--angle: ${angle}deg;`}
 						data-poster-title={item.title}
 						data-poster-description={item.description || ""}
+						data-poster-description-html={item.descriptionHtml}
 						data-original-index={originalIndex}
 					>
 						{item.image && <img src={`/2026/img/poster/${item.image}`} alt={item.title || `Poster ${index + 1}`} class="gallery-image" loading="lazy" draggable="false" />}
@@ -466,9 +483,11 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 
 <script>
 	if (typeof window !== "undefined") {
-		window.addEventListener("DOMContentLoaded", () => {
+		const initCircularGallery = () => {
 			const gallery = document.querySelector<HTMLDivElement>(".circular-gallery");
 			if (!gallery) return;
+			if (gallery.dataset.galleryInit === "true") return;
+			gallery.dataset.galleryInit = "true";
 
 			const count = Number(gallery.dataset.count ?? "0");
 			const angleStep = count > 0 ? 360 / count : 0;
@@ -487,7 +506,6 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 			let inertiaTween: gsap.core.Tween | null = null;
 
 			const wrapper = gallery.closest(".circular-gallery-wrapper");
-			const infoEl = wrapper?.querySelector<HTMLElement>(".gallery-info") ?? null;
 			const layerCurrent = wrapper?.querySelector<HTMLElement>(".gallery-info__layer--current") ?? null;
 			const layerNext = wrapper?.querySelector<HTMLElement>(".gallery-info__layer--next") ?? null;
 
@@ -525,7 +543,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 			};
 
 			// Write poster data into a layer's title + description elements
-			const writePosterToLayer = async (layer: HTMLElement, selectedIndex: number) => {
+			const writePosterToLayer = (layer: HTMLElement, selectedIndex: number) => {
 				const titleEl = getTitleEl(layer);
 				const descEl = getDescEl(layer);
 				if (!titleEl || !descEl || count === 0) return;
@@ -536,16 +554,11 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 
 				const title = selectedItem.dataset.posterTitle || "";
 				const description = selectedItem.dataset.posterDescription || "";
+				const descriptionHtml = selectedItem.dataset.posterDescriptionHtml || "";
 
 				titleEl.textContent = title;
-
-				try {
-					const { marked: markedModule } = await import("marked");
-					const parsed = markedModule.parse(description);
-					descEl.innerHTML = typeof parsed === "string" ? parsed : "";
-				} catch (err) {
-					descEl.textContent = description;
-				}
+				if (descriptionHtml) descEl.innerHTML = descriptionHtml;
+				else descEl.textContent = description;
 			};
 
 			// Crossfade: fade out current layer while fading in next layer with new content
@@ -554,7 +567,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 				isCrossfading = true;
 
 				// Pre-populate the next layer with new content (invisible)
-				await writePosterToLayer(layerNext, selectedIndex);
+				writePosterToLayer(layerNext, selectedIndex);
 
 				const { gsap } = await import("gsap");
 
@@ -592,23 +605,8 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 					crossfadeInfo(selectedIndex);
 				} else {
 					// Instant update (used during drag)
-					const curTitleEl = getTitleEl(layerCurrent);
-					const curDescEl = getDescEl(layerCurrent);
-					if (!curTitleEl || !curDescEl) return;
-					const items = gallery.querySelectorAll<HTMLElement>(".gallery-item");
-					const selectedItem = items[selectedIndex];
-					if (!selectedItem) return;
-					const title = selectedItem.dataset.posterTitle || "";
-					const description = selectedItem.dataset.posterDescription || "";
-					curTitleEl.textContent = title;
-					import("marked")
-						.then(({ marked: markedModule }) => {
-							const parsed = markedModule.parse(description);
-							curDescEl.innerHTML = typeof parsed === "string" ? parsed : "";
-						})
-						.catch(() => {
-							curDescEl.textContent = description;
-						});
+					if (!layerCurrent) return;
+					writePosterToLayer(layerCurrent, selectedIndex);
 				}
 			};
 
@@ -1063,6 +1061,13 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 					}
 				});
 			}
-		});
+		};
+
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", initCircularGallery, { once: true });
+		} else {
+			initCircularGallery();
+		}
+		document.addEventListener("astro:page-load", initCircularGallery);
 	}
 </script>

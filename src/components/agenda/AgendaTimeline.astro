@@ -119,6 +119,7 @@ function getSlotType(slotStartTime: number): "narrow" | "espresso" | "normal" {
 
 const NARROW_SLOT_WEIGHT = 30;
 const ESPRESSO_SLOT_WEIGHT = 40;
+const NORMAL_SLOT_MIN_WEIGHT = 40;
 const slotWeights: number[] = [];
 for (let i = 0; i < totalSlots; i++) {
 	const slotStart = timeLabels[i];
@@ -130,7 +131,7 @@ for (let i = 0; i < totalSlots; i++) {
 		slotWeights.push(ESPRESSO_SLOT_WEIGHT);
 	} else {
 		const durationMinutes = (slotEnd - slotStart) / (1000 * 60);
-		slotWeights.push(durationMinutes);
+		slotWeights.push(Math.max(NORMAL_SLOT_MIN_WEIGHT, durationMinutes));
 	}
 }
 const totalWeight = slotWeights.reduce((sum, w) => sum + w, 0) || 1;
