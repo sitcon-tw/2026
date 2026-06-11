@@ -1,8 +1,12 @@
 ---
-import en from "@/i18n/en.json";
-import zhHant from "@/i18n/zh.json";
+import { getLangFromUrl, useTranslations, type Lang } from "@/utils/i18n";
 
-const t = Astro.currentLocale === "en" ? en : zhHant;
+interface Props {
+	lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const socialLinks = [
 	{ name: "Facebook", url: "fb" },

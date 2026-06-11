@@ -5,7 +5,11 @@
 		"venue": "會場地圖",
 		"team": "團隊成員",
 		"about": "關於",
-		"openMenu": "開啟選單"
+		"openMenu": "開啟選單",
+		"switchToEnglish": "切換至英文",
+		"switchToChinese": "切換至中文",
+		"languageEnglish": "EN",
+		"languageChinese": "中文"
 	},
 	"landing": {
 		"location": ["中央研究院", "人文社會科學館"],

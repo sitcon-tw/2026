@@ -2,7 +2,7 @@
 import Nav from "@/components/Nav.astro";
 import "lenis/dist/lenis.css";
 import "./global.css";
-import { langMeta, getAlternateUrl, type Lang } from "@/utils/i18n";
+import { getAlternateUrl, getLocalePath, langMeta, type Lang } from "@/utils/i18n";
 
 interface Props {
 	title?: string;
@@ -21,16 +21,102 @@ const defaultTitles = {
 };
 
 const defaultDescriptions = {
-	zh: "SITCON 2026 學生計算機年會徵稿開始！主題「Jam the Chaos」，邀請對資訊技術有熱情的學生投稿分享你的創新想法、專案經驗與技術見解。2026/03/28 於中央研究院人文社會科學館盛大舉辦。",
+	zh: "SITCON 2026 學生計算機年會，主題「Jam the Chaos」，邀請對資訊技術有熱情的學生一同參與。2026/03/28 於中央研究院人文社會科學館盛大舉辦。",
 	en: "SITCON 2026 - Students' Information Technology Conference. Theme: 'Jam the Chaos'. Join us on 2026/03/28 at Academia Sinica Humanities and Social Sciences Building."
 };
 
 const title = Astro.props.title ?? defaultTitles[lang];
 const description = Astro.props.description ?? defaultDescriptions[lang];
 const ogImage = Astro.props.ogImage ?? "https://sitcon.org/2026/img/og.webp";
-const siteUrl = Astro.props.seoUrl ?? (lang === "en" ? "https://sitcon.org/2026/en/" : "https://sitcon.org/2026/");
+const siteUrl = Astro.props.seoUrl ?? `https://sitcon.org${getLocalePath(Astro.url.pathname, lang)}`;
 const alternateLang = lang === "en" ? "zh" : "en";
-const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
+const alternateUrl = `https://sitcon.org${getAlternateUrl(Astro.url.pathname, alternateLang)}`;
+const localizedUrls = {
+	zh: `https://sitcon.org${getAlternateUrl(Astro.url.pathname, "zh")}`,
+	en: `https://sitcon.org${getAlternateUrl(Astro.url.pathname, "en")}`
+};
+const keywords = {
+	zh: "SITCON,學生計算機年會,2026,資訊技術,程式設計,開源,學生社群,技術研討會,Jam the Chaos,中央研究院,議程,演講,工作坊",
+	en: "SITCON,Students' Information Technology Conference,2026,information technology,programming,open source,student community,tech conference,Jam the Chaos,Academia Sinica,agenda,talks,workshops"
+};
+const eventLocale = {
+	zh: {
+		name: "SITCON 2026 學生計算機年會",
+		description:
+			"學生計算機年會（Students' Information Technology Conference）以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神。2026 年主題「Jam the Chaos」，邀請對資訊技術有熱情的學生與社群夥伴一同參與。",
+		locationName: "中央研究院人文社會科學館",
+		streetAddress: "研究院路二段128號",
+		addressLocality: "南港區",
+		addressRegion: "台北市",
+		organizerName: "SITCON 學生計算機年會籌備團隊",
+		performerName: "SITCON 學生計算機年會",
+		offers: ["學生票（第一波）", "一般票（第一波）", "學生票（第二波）", "一般票（第二波）", "邀請票"]
+	},
+	en: {
+		name: "SITCON 2026 Students' Information Technology Conference",
+		description:
+			"SITCON is a student-centered and student-initiated conference dedicated to student information technology education and open source culture. The 2026 theme is 'Jam the Chaos', inviting students and community partners passionate about information technology to join.",
+		locationName: "Humanities and Social Sciences Building, Academia Sinica",
+		streetAddress: "No. 128, Sec. 2, Academia Rd.",
+		addressLocality: "Nangang District",
+		addressRegion: "Taipei City",
+		organizerName: "SITCON Organizing Team",
+		performerName: "SITCON",
+		offers: ["Student Ticket (First Round)", "General Ticket (First Round)", "Student Ticket (Second Round)", "General Ticket (Second Round)", "Invitation Ticket"]
+	}
+}[lang];
+const offerDates = [
+	["2026-01-25T20:00:00+08:00", "2026-02-07T23:59:00+08:00", "https://schema.org/PreOrder"],
+	["2026-01-25T20:00:00+08:00", "2026-02-07T23:59:00+08:00", "https://schema.org/PreOrder"],
+	["2026-02-23T20:00:00+08:00", "2026-03-01T23:59:00+08:00", "https://schema.org/PreOrder"],
+	["2026-02-23T20:00:00+08:00", "2026-03-01T23:59:00+08:00", "https://schema.org/PreOrder"],
+	["2025-12-15T00:00:00+08:00", "2026-02-10T23:59:00+08:00", "https://schema.org/InStock"]
+] as const;
+const eventJsonLd = JSON.stringify({
+	"@context": "https://schema.org",
+	"@type": "Event",
+	name: eventLocale.name,
+	description: eventLocale.description,
+	startDate: "2026-03-28T09:00:00+08:00",
+	endDate: "2026-03-28T17:00:00+08:00",
+	eventStatus: "https://schema.org/EventScheduled",
+	eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+	location: {
+		"@type": "Place",
+		name: eventLocale.locationName,
+		address: {
+			"@type": "PostalAddress",
+			streetAddress: eventLocale.streetAddress,
+			addressLocality: eventLocale.addressLocality,
+			addressRegion: eventLocale.addressRegion,
+			addressCountry: "TW"
+		}
+	},
+	image: [ogImage],
+	organizer: {
+		"@type": "Organization",
+		name: eventLocale.organizerName,
+		url: "https://sitcon.org"
+	},
+	offers: eventLocale.offers.map((name, index) => {
+		const [validFrom, validThrough, availability] = offerDates[index] ?? offerDates[0];
+
+		return {
+			"@type": "Offer",
+			name,
+			url: "https://tickets.sitcon.org/sitcon2026",
+			price: "0",
+			priceCurrency: "TWD",
+			availability,
+			validFrom,
+			validThrough
+		};
+	}),
+	performer: {
+		"@type": "Organization",
+		name: eventLocale.performerName
+	}
+}).replace(/</g, "\\u003c");
 ---
 
 <html lang={meta.htmlLang}>
@@ -42,11 +128,11 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		<title>{title}</title>
 		<meta name="title" content={title} />
 		<meta name="description" content={description} />
-		<meta name="keywords" content="SITCON,學生計算機年會,2026,徵稿,CFP,Call for Proposals,資訊技術,程式設計,開源,學生社群,技術研討會,Jam the Chaos,中央研究院,投稿,演講,工作坊" />
+		<meta name="keywords" content={keywords[lang]} />
 		<meta name="author" content="SITCON" />
 		<meta name="robots" content="index, follow" />
 		<link rel="canonical" href={siteUrl} />
-		<link rel="alternate" hreflang={langMeta[alternateLang].htmlLang} href={`https://sitcon.org${alternateUrl}`} />
+		<link rel="alternate" hreflang={langMeta[alternateLang].htmlLang} href={alternateUrl} />
 
 		<link rel="icon" type="image/png" href="/2026/img/favicon/favicon-96x96.png" sizes="96x96" />
 		<link rel="shortcut icon" href="/2026/img/favicon/favicon.ico" />
@@ -75,8 +161,9 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		<meta name="theme-color" content="#010121" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-		<link rel="alternate" hreflang="zh-TW" href="https://sitcon.org/2026/" />
-		<link rel="alternate" hreflang="en" href="https://sitcon.org/2026/en/" />
+		<link rel="alternate" hreflang="zh-TW" href={localizedUrls.zh} />
+		<link rel="alternate" hreflang="en" href={localizedUrls.en} />
+		<link rel="alternate" hreflang="x-default" href={localizedUrls.zh} />
 
 		<link rel="preconnect" href="https://font.emtech.cc" />
 		<link rel="preconnect" href="https://www.googletagmanager.com" />
@@ -87,91 +174,7 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		<link href="https://font.emtech.cc/css/JetBrainsMono" rel="stylesheet" />
 		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap&text=Jam%20theCos" rel="stylesheet" />
 
-		<script type="application/ld+json" is:inline>
-			{
-				"@context": "https://schema.org",
-				"@type": "Event",
-				"name": "SITCON 2026 學生計算機年會",
-				"description": "學生計算機年會（Students' Information Technology Conference）以學生為本、由學生自發舉辦，長期投身學生資訊教育與推廣開源精神。2026 年主題「Jam the Chaos」，邀請對資訊技術有熱情的學生投稿分享創新想法、專案經驗與技術見解。",
-				"startDate": "2026-03-28T09:00:00+08:00",
-				"endDate": "2026-03-28T17:00:00+08:00",
-				"eventStatus": "https://schema.org/EventScheduled",
-				"eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-				"location": {
-					"@type": "Place",
-					"name": "中央研究院人文社會科學館",
-					"address": {
-						"@type": "PostalAddress",
-						"streetAddress": "研究院路二段128號",
-						"addressLocality": "南港區",
-						"addressRegion": "台北市",
-						"addressCountry": "TW"
-					}
-				},
-				"image": ["https://sitcon.org/2026/cfp/og-image.webp"],
-				"organizer": {
-					"@type": "Organization",
-					"name": "SITCON 學生計算機年會籌備團隊",
-					"url": "https://sitcon.org"
-				},
-				"offers": [
-					{
-						"@type": "Offer",
-						"name": "學生票（第一波）",
-						"url": "https://sitcon.org/2026/cfp/",
-						"price": "0",
-						"priceCurrency": "TWD",
-						"availability": "https://schema.org/PreOrder",
-						"validFrom": "2026-01-25T20:00:00+08:00",
-						"validThrough": "2026-02-07T23:59:00+08:00"
-					},
-					{
-						"@type": "Offer",
-						"name": "一般票（第一波）",
-						"url": "https://sitcon.org/2026/cfp/",
-						"price": "0",
-						"priceCurrency": "TWD",
-						"availability": "https://schema.org/PreOrder",
-						"validFrom": "2026-01-25T20:00:00+08:00",
-						"validThrough": "2026-02-07T23:59:00+08:00"
-					},
-					{
-						"@type": "Offer",
-						"name": "學生票（第二波）",
-						"url": "https://sitcon.org/2026/cfp/",
-						"price": "0",
-						"priceCurrency": "TWD",
-						"availability": "https://schema.org/PreOrder",
-						"validFrom": "2026-02-23T20:00:00+08:00",
-						"validThrough": "2026-03-01T23:59:00+08:00"
-					},
-					{
-						"@type": "Offer",
-						"name": "一般票（第二波）",
-						"url": "https://sitcon.org/2026/cfp/",
-						"price": "0",
-						"priceCurrency": "TWD",
-						"availability": "https://schema.org/PreOrder",
-						"validFrom": "2026-02-23T20:00:00+08:00",
-						"validThrough": "2026-03-01T23:59:00+08:00"
-					},
-					{
-						"@type": "Offer",
-						"name": "邀請票",
-						"url": "https://sitcon.org/2026/cfp/",
-						"price": "0",
-						"priceCurrency": "TWD",
-						"availability": "https://schema.org/InStock",
-						"validFrom": "2025-12-15T00:00:00+08:00",
-						"validThrough": "2026-02-10T23:59:00+08:00"
-					}
-				],
-				"performer": {
-					"@type": "Organization",
-					"name": "SITCON 學生計算機年會"
-				}
-			}
-		</script>
+		<script type="application/ld+json" set:html={eventJsonLd} />
 		<!-- Google Tag Manager -->
 		<script is:inline>
 			(function (w, d, s, l, i) {
@@ -269,69 +272,69 @@ const alternateUrl = getAlternateUrl(Astro.url.pathname, alternateLang);
 		<div id="main-content">
 			<slot />
 		</div>
-			<!-- Google Tag Manager (noscript) -->
-			<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPVBCDZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-			<!-- End Google Tag Manager (noscript) -->
-			<script>
-				type LenisInstance = {
-					destroy: () => void;
-					start?: () => void;
-					stop?: () => void;
-				};
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPVBCDZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+		<script>
+			type LenisInstance = {
+				destroy: () => void;
+				start?: () => void;
+				stop?: () => void;
+			};
 
-				let lenis: LenisInstance | null = null;
-				let lenisModulePromise: Promise<typeof import("lenis")> | null = null;
-				let textRevealModulePromise: Promise<typeof import("@/utils/text-reveal")> | null = null;
+			let lenis: LenisInstance | null = null;
+			let lenisModulePromise: Promise<typeof import("lenis")> | null = null;
+			let textRevealModulePromise: Promise<typeof import("@/utils/text-reveal")> | null = null;
 
-				const shouldUseLenis = () => {
-					const pathname = window.location.pathname;
-					const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-					const disabledRoute = /(^|\/)(team\/explore|venue|info\/academia-sinica)(\/|$)/.test(pathname);
-					return !prefersReducedMotion && !disabledRoute;
-				};
+			const shouldUseLenis = () => {
+				const pathname = window.location.pathname;
+				const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+				const disabledRoute = /(^|\/)(team\/explore|venue|info\/academia-sinica)(\/|$)/.test(pathname);
+				return !prefersReducedMotion && !disabledRoute;
+			};
 
-				const destroyLenis = () => {
-					if (lenis) {
-						lenis.destroy();
-						lenis = null;
-					}
-					(window as any).lenis = null;
-				};
+			const destroyLenis = () => {
+				if (lenis) {
+					lenis.destroy();
+					lenis = null;
+				}
+				(window as any).lenis = null;
+			};
 
-				const initLenis = async () => {
-					if (!shouldUseLenis()) {
-						destroyLenis();
-						return;
-					}
-					if (lenis) return;
+			const initLenis = async () => {
+				if (!shouldUseLenis()) {
+					destroyLenis();
+					return;
+				}
+				if (lenis) return;
 
-					lenisModulePromise ??= import("lenis");
-					const { default: Lenis } = await lenisModulePromise;
-					if (!shouldUseLenis() || lenis) return;
+				lenisModulePromise ??= import("lenis");
+				const { default: Lenis } = await lenisModulePromise;
+				if (!shouldUseLenis() || lenis) return;
 
-					lenis = new Lenis({
-						autoRaf: true,
-						anchors: true
-					});
-					(window as any).lenis = lenis;
-				};
+				lenis = new Lenis({
+					autoRaf: true,
+					anchors: true
+				});
+				(window as any).lenis = lenis;
+			};
 
-				const initTextRevealIfNeeded = async () => {
-					if (!document.querySelector(".text-reveal-title, .text-reveal-paragraph")) return;
+			const initTextRevealIfNeeded = async () => {
+				if (!document.querySelector(".text-reveal-title, .text-reveal-paragraph")) return;
 
-					textRevealModulePromise ??= import("@/utils/text-reveal");
-					const { initTextReveal } = await textRevealModulePromise;
-					initTextReveal();
-				};
+				textRevealModulePromise ??= import("@/utils/text-reveal");
+				const { initTextReveal } = await textRevealModulePromise;
+				initTextReveal();
+			};
 
-				const initAnimations = () => {
-					void initLenis();
-					void initTextRevealIfNeeded();
-				};
+			const initAnimations = () => {
+				void initLenis();
+				void initTextRevealIfNeeded();
+			};
 
-				initAnimations();
+			initAnimations();
 
-				document.addEventListener("astro:page-load", initAnimations);
-			</script>
-		</body>
-	</html>
+			document.addEventListener("astro:page-load", initAnimations);
+		</script>
+	</body>
+</html>

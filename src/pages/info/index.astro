@@ -7,6 +7,7 @@ const lang = Astro.props.lang ?? "zh";
 const i18n = useTranslations(lang);
 const { info } = i18n;
 const { sections } = info;
+const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/2026/info/academia-sinica/";
 ---
 
 <Layout title={lang === "en" ? "Event Info - SITCON 2026" : "活動資訊 - SITCON 2026"} lang={lang}>
@@ -17,7 +18,7 @@ const { sections } = info;
 			<button class="hero-button" data-open-transport>{info.mainButton}</button>
 		</div>
 
-		<button class="hero-into-button" id="into-academia-sinica">{info.intoAcademiaSinica}</button>
+		<button class="hero-into-button" id="into-academia-sinica" data-academia-sinica-href={academiaSinicaHref}>{info.intoAcademiaSinica}</button>
 		<div class="hero-bg" aria-hidden="true">
 			<img src="/2026/img/academia-sinica.svg" alt="" class="hero-bg-img" />
 		</div>
@@ -253,7 +254,7 @@ const { sections } = info;
 			if (hero) hero.style.height = "100vh";
 			if (hero) hero.style.width = "100vw";
 
-			const href = "/2026/info/academia-sinica/";
+			const href = intoBtn.dataset.academiaSinicaHref ?? "/2026/info/academia-sinica/";
 
 			setTimeout(() => {
 				window.location.href = href;

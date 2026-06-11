@@ -1,5 +1,5 @@
 ---
-import { useTranslations, type Lang } from "@/utils/i18n";
+import { getAlternateUrl, useTranslations, type Lang } from "@/utils/i18n";
 import { Menu, X } from "@lucide/astro";
 
 interface Props {
@@ -18,15 +18,15 @@ const navItems = [
 	{ label: t.nav.about, href: `${prefix}/about/` }
 ];
 
-const alternatePrefix = lang === "en" ? "/2026" : "/2026/en";
-const currentPath = Astro.url.pathname.replace(/^\/2026(\/en)?/, "");
-const alternateHref = `${alternatePrefix}${currentPath || "/"}`;
+const alternateHref = getAlternateUrl(Astro.url.pathname, lang === "en" ? "zh" : "en");
+const languageSwitchLabel = lang === "en" ? t.nav.switchToChinese : t.nav.switchToEnglish;
+const languageSwitchText = lang === "en" ? t.nav.languageChinese : t.nav.languageEnglish;
 ---
 
 <nav>
 	<div class="nav-container">
 		<div class="nav-logo-container">
-			<a href="/2026/" id="logo" aria-label="SITCON 2026"><img id="logo-svg" src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
+			<a href={`${prefix}/`} id="logo" aria-label="SITCON 2026"><img id="logo-svg" src="/2026/img/SITCON-white.svg" alt="SITCON 2026" /></a>
 			<button class="hamburger" aria-expanded="false" aria-label={t.nav.openMenu}>
 				<Menu id="menu-icon" />
 				<X id="x-icon" />
@@ -41,9 +41,9 @@ const alternateHref = `${alternatePrefix}${currentPath || "/"}`;
 				))
 			}
 
-			<!-- <a href={alternateHref} class="nav-item lang-switch" aria-label={lang === "en" ? "切換至中文" : "Switch to English"}>
-				{lang === "en" ? "中文" : "EN"}
-			</a> -->
+			<a href={alternateHref} class="nav-item lang-switch" aria-label={languageSwitchLabel}>
+				{languageSwitchText}
+			</a>
 		</div>
 	</div>
 </nav>
