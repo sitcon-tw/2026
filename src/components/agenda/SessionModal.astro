@@ -47,13 +47,15 @@ function formatTime(isoString: string): string {
 type ModalAdConfig = { name: string; weight: number; link: string; mobile?: boolean; desktop?: boolean };
 const ads = adsData as ModalAdConfig[];
 const weightedAds = ads.filter(ad => typeof ad.weight === "number" && ad.weight > 0 && !!ad.name && !!ad.link);
-const initialAd = weightedAds[0] ?? null;
+const hasCjk = (value: string) => /[\u3400-\u9fff]/.test(value);
+const localizedAds = lang === "en" ? weightedAds.filter(ad => !hasCjk(ad.name)) : weightedAds;
+const initialAd = localizedAds[0] ?? null;
 ---
 
 <div
 	class="session-modal"
 	id="session-modal"
-	data-ads={JSON.stringify(weightedAds)}
+	data-ads={JSON.stringify(localizedAds)}
 	data-action-labels={JSON.stringify(actionLabels)}
 	data-session-type-labels={JSON.stringify(sessionTypeLabels)}
 	data-modal-text={JSON.stringify(modalText)}
