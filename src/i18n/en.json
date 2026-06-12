@@ -17,14 +17,14 @@
 		"cta": "Register Now"
 	},
 	"dialogue": {
-		"headline": "The script of our era has been shattered, and the once-unified melody now falls apart.<br />In this age of chaos, can we rediscover balance together?",
-		"paragraph1": "Standing in 2026, as students and practitioners of information technology, we find ourselves at the forefront of a transformative era. The rise of AI challenges traditional development paradigms, and the technical barriers that once defined our value are gradually eroding. As the power of creation becomes democratized and individual technical prowess can no longer serve as a moat, \"collaboration\" emerges as our most critical challenge. We are heading into a grand chaos that seeks balance between AI, peers, and cross-disciplinary partners. But what if disorder is not an obstacle, but the starting point of a new equilibrium?",
-		"paragraph2": "In an improvised music jam session, there is no conductor. When the beats don’t align, we create a new rhythm together. When the harmony is imperfect, that imperfection becomes the voice of our generation—inclusive, bold, unrestrained, and diverse. At SITCON 2026, we invite you to join this jam. Let us navigate chaos, find rhythm amid disorder, and seek resonance through collaboration.",
-		"paragraph3": "The Students’ Information Technology Conference (SITCON), founded in 2012, is a student-centered, student-initiated conference. It has long been dedicated to advancing student IT education and promoting open-source culture. SITCON aims to guide more students into the world of information technology, while also bringing together all students interested in IT to exchange ideas, pass on knowledge, and inspire one another—realizing the spirit of learning by doing and teaching through sharing.",
+		"headline": "The script of our era has been torn apart, and the once-unified melody has scattered into fragments.<br />In this age of chaos, can we find our balance again?",
+		"paragraph1": "As we stand in 2026, we—as students and people in tech—find ourselves at the crest of an era in flux. The rise of AI is challenging long-standing ways of building software, and the technical barriers that once defined our value are steadily falling away. When the power to create becomes democratized and individual technical skill can no longer be our moat, collaboration becomes our central challenge. We are moving toward a magnificent chaos: a search for balance as we co-create with AI, our peers, and partners across disciplines. But what if chaos is not an obstacle, but the beginning of a new equilibrium?",
+		"paragraph2": "In an improvised Jam Session, there is no conductor. When the beat falls out of sync, we create a new rhythm together. When the harmony is imperfect, it becomes the voice of our generation—inclusive, bold, unrestrained, and alive with many voices. At SITCON 2026, we invite you to join this Jam. Let us navigate chaos, find rhythm amid disorder, and seek resonance through collaboration.",
+		"paragraph3": "Founded in 2012, the Students’ Information Technology Conference (SITCON) is a student-centered conference initiated and organized by students. SITCON has long been dedicated to student IT education and the promotion of open source. It hopes to guide more students into the world of information technology and bring together students interested in tech to exchange ideas, pass knowledge forward, and inspire one another—putting into practice the spirit of learning by doing and teaching through sharing.",
 		"dialogTrigger": "Read Full Theme Statement",
 		"dialog": {
-			"fullParagraph": "\t<p>\n\t\tStanding in 2026, as students and practitioners of information technology, we find ourselves at the forefront of a transformative era. The rise of AI challenges traditional development paradigms, and the technical barriers that once defined our value are gradually eroding. As the power of creation becomes democratized and individual technical prowess can no longer serve as a moat, \"collaboration\" emerges as our most critical challenge. We are heading into a grand chaos that seeks balance between AI, peers, and cross-disciplinary partners.\n\t</p>\n\t<p>\n\t\tBut what if disorder is not an obstacle, but the starting point of a new equilibrium? In an improvised music Jam Session, there is no conductor. The tone, beat, and character of the music are entirely composed through the interaction and synergy of the performers. Therefore, the key is no longer playing the most beautiful solo; the key lies in having the musicians who best understand how to listen, to interpret, predict, and respond to the needs of every collaborator, and create value through interaction with various partners. However, when we collaborate with AI, peers, and cross-disciplinary partners—different musicians on the same stage—this Jam will face its own variations and challenges.\n\t</p>\n\t<p>Jamming with AI, we must proactively define the boundaries of collaboration. Over-reliance on AI causes us to lose deep thinking, while completely rejecting AI makes us miss the efficiency revolution. As possibly the last generation to learn programming 'purely by hand,' we seek ways to preserve the soul of developers.</p>\n\t<p>Jamming with IT peers, we must redefine what 'value' means. Shift the focus from the depth of individual technical skills to the breadth of integrating collective wisdom. While continuously advancing our own abilities, we must also learn how to guide and listen, and forge stronger consensus amid divergence.</p>\n\t<p>Jamming with cross-disciplinary partners, we must proactively serve as translators of cross-boundary symphonies. When information technology is no longer our exclusive domain, we translate our technical language into melodies that resonate with mathematicians, physicists, designers, and artists, co-creating entirely new value.</p>\n\t<p>\n\t\tWhen the beats of the Jam don't align, let's create a new rhythm together.<br />When the harmony of the Jam is imperfect, it becomes the voice of our generation—inclusive, bold, unrestrained, and diverse.\n\t</p>\n\t<p>At SITCON 2026, we invite you to join this Jam. Let us navigate chaos, find rhythm amid disorder, and seek resonance through collaboration.</p>",
-			"title": "We Invite You to Join",
+			"fullParagraph": "\t<p>\n\t\tAs we stand in 2026, we—as students and people in tech—find ourselves at the crest of an era in flux. The rise of AI is challenging long-standing ways of building software, and the technical barriers that once defined our value are steadily falling away. When the power to create becomes democratized and individual technical skill can no longer be our moat, collaboration becomes our central challenge. We are moving toward a magnificent chaos: a search for balance as we co-create with AI, our peers, and partners across disciplines.\n\t</p>\n\t<p>\n\t\tBut what if chaos is not an obstacle, but the beginning of a new equilibrium? In an improvised Jam Session, there is no conductor. The timbre, beat, and character of the music emerge entirely from the performers’ interaction and shared intuition. That means the key is no longer to play the most beautiful solo; it is to become the kind of musician who knows how to listen, interpret, anticipate, and respond to every collaborator’s needs, creating value through interaction with partners of all kinds. Yet when we share the stage with AI, our peers, and cross-disciplinary partners—each a different musician in the same Jam—this performance will bring its own variations and challenges.\n\t</p>\n\t<p>When we jam with AI, we must actively define the boundaries of collaboration. Over-reliance on AI can cost us deep thinking, while rejecting AI outright may cause us to miss a revolution in efficiency. As perhaps the last generation to learn programming “purely by hand,” we are searching for ways to keep the developer’s soul alive.</p>\n\t<p>When we jam with fellow technologists, we must redefine what value means. The focus shifts from the depth of individual technical skill to the breadth of integrating collective wisdom. While continuing to sharpen our own abilities, we must also learn how to guide and listen, forging stronger consensus amid divergence.</p>\n\t<p>When we jam with cross-disciplinary partners, we must take the initiative to become translators in a cross-boundary symphony. As information technology is no longer our exclusive domain, we translate our technical language into melodies that can resonate with mathematicians, physicists, designers, and artists, creating entirely new value together.</p>\n\t<p>\n\t\tWhen the beat of the Jam falls out of sync, let us create a new rhythm together.<br />When the harmony of the Jam is imperfect, it becomes the voice of our generation—inclusive, bold, unrestrained, and alive with many voices.\n\t</p>\n\t<p>At SITCON 2026, we invite you to join this Jam. Let us navigate chaos, find rhythm amid disorder, and seek resonance through collaboration.</p>",
+			"title": "We Invite You to Join Us",
 			"featured": [
 				{
 					"id": "7d336b",
@@ -34,12 +34,12 @@
 				{
 					"id": "e00a05",
 					"type": "Keynote",
-					"name": "Taiwan's Unprecedented Open Source Group Fight: How to Shake the World with Code"
+					"name": "Taiwan’s Unprecedented Open Source Brawl: How Code Can Shake the World"
 				},
 				{
 					"id": "1ac048",
 					"type": "Forum",
-					"name": "Is Your Brain Being Hosted? After Outsourcing Homework and Thinking to AI"
+					"name": "Is Your Brain Being Hosted? When Homework and Thinking Are Outsourced to AI"
 				}
 			]
 		}
@@ -51,9 +51,9 @@
 	},
 	"demoShow": {
 		"subtitle": "Brand New in 2026",
-		"title": "Demo Show",
+		"title": "Demo Showcase",
 		"cta": "View Agenda",
-		"description": "Demo Show submissions focus on live project demonstrations—such as web games, interactive applications, robots, and other hands-on works—supplemented by static posters and short videos to showcase individual or team projects."
+		"description": "Submissions to the Demo Showcase center on live project demonstrations—such as web games, interactive apps, robots, and other works that attendees can try or operate on-site—supported by static posters and short videos to present individual or team projects."
 	},
 	"coc": {
 		"title": "Code of Conduct",
@@ -75,11 +75,15 @@
 		}
 	},
 	"ticket": {
-		"title": "Ticket Information",
+		"title": "How to Get Tickets",
 		"student": {
 			"title": "Student Ticket",
 			"englishTitle": "STUDENT",
-			"description": ["First round: 2026/01/25 20:00 – 2026/02/07 23:59", "Second round: 2026/02/23 20:00 – 2026/03/01 23:59", "For students only. Invalid eligibility will result in cancellation."],
+			"description": [
+				"First round: 2026/01/25 20:00 – 2026/02/07 23:59",
+				"Second round: 2026/02/23 20:00 – 2026/03/01 23:59",
+				"Reserved for students only. Registrations with invalid eligibility will be canceled."
+			],
 			"verticalTitle": "Student Ticket",
 			"url": "https://tickets.sitcon.org/sitcon2026"
 		},
@@ -88,7 +92,7 @@
 			"englishTitle": "OSCVPASS",
 			"description": [
 				"Eligibility: Contributors to open-source projects.",
-				"Applicants who apply and pass before 2026/01/17 23:59 may receive an invitation code for the SITCON 2026 Open Source Contributor Ticket. Please refer to <a href=https://ocf.tw/p/oscvpass/>Open Source Contributor Fast Track</a> for details.",
+				"Applicants approved by 2026/01/17 23:59 may receive an invitation code for the SITCON 2026 Open Source Contributor Ticket. For the application form, eligibility requirements, and detailed instructions, please see <a href=https://ocf.tw/p/oscvpass/>Open Source Contributor Fast Track</a>.",
 				"For a list of projects from past OSCVPass recipients, see <a href=https://oscvpass.ocf.tw/>OSCVPass Project Overview</a>."
 			],
 			"verticalTitle": "Open Source Contributor Ticket",
@@ -102,14 +106,14 @@
 			"url": "https://tickets.sitcon.org/sitcon2026"
 		},
 		"longDistance": {
-			"title": "Long Distance Ticket",
+			"title": "Long-Distance Ticket",
 			"englishTitle": "LONG DISTANCE",
 			"description": [
-				"Eligibility: Students from rural areas, offshore islands, or overseas.",
-				"Applications are reviewed on a rolling basis. Please submit the <a href=https://forms.gle/2rr5WYuuLQ6WgVkP7>application form</a> by 2026/01/17 23:59.",
-				"For eligibility and detailed instructions, see <a href=https://hackmd.io/lYvvY7y_RaCr4ilKdq-XTQ>SITCON 2026 Long Distance Ticket</a>."
+				"Eligibility: students from rural areas, offshore islands, or overseas.",
+				"Applications are reviewed on a first-come, first-reviewed basis. Please submit the <a href=https://forms.gle/2rr5WYuuLQ6WgVkP7>application form</a> by 2026/01/17 23:59.",
+				"For eligibility requirements and detailed instructions, please see <a href=https://hackmd.io/lYvvY7y_RaCr4ilKdq-XTQ>SITCON 2026 Long-Distance Ticket</a>."
 			],
-			"verticalTitle": "Long Distance Ticket",
+			"verticalTitle": "Long-Distance Ticket",
 			"url": "https://forms.gle/2rr5WYuuLQ6WgVkP7"
 		},
 		"buttons": {
@@ -120,14 +124,14 @@
 		"referral": {
 			"title": "Invite Friends & Win Rewards",
 			"description1": "Join SITCON 2026 in spreading the open-source spirit to more people.",
-			"description2": "Share your exclusive referral code with friends! If they successfully register, you'll accumulate referrals, enter the lottery, and have a chance to become the 'Most Popular Referrer'!",
-			"description3": "The more you refer, the more chances to win. Invite friends and earn yourself an extra souvenir."
+			"description2": "Share your exclusive referral code with friends! When they successfully register, you’ll accumulate referrals, enter the prize draw, and have a chance to become the “Top Referrer.”",
+			"description3": "The more you refer, the more chances you have to win. Invite friends and earn yourself an extra souvenir."
 		}
 	},
 	"joinUs": {
 		"title1": "Join Us",
 		"title2": "Shape the Future",
-		"description": "Since 2013, SITCON has upheld its founding principle of free admission,<br />dedicated to promoting student IT education. We encourage participants to break free from conventional thinking, explore hidden possibilities,<br />and provide students with valuable opportunities to learn and connect. Over the years, we have accompanied countless students into the world of information technology.<br />If you share SITCON’s vision, we welcome your support in spreading the seeds of IT education across Taiwan.",
+		"description": "Since 2013, SITCON has upheld its founding principle of free admission,<br />dedicating itself to student IT education. We encourage participants to break free from conventional thinking, explore hidden possibilities,<br />and gain valuable opportunities to learn and connect. Over the years, we have accompanied countless students into the world of information technology.<br />If you share SITCON’s vision, we welcome your support in helping the seeds of IT education spread to every corner of Taiwan.",
 		"stats": ["> Over 14,000 total participants", "> More than 500 student speakers", "> Over 500 meetups and talks, plus 10 summer camps", "> Nearly 1,400 passionate volunteers supported"],
 		"buttons": {
 			"sponsorRequest": "Sponsorship Prospectus",
@@ -135,9 +139,9 @@
 		}
 	},
 	"sponsor": {
-		"main": "Presenter",
-		"cohost": "Co-Host",
-		"organizer": "Organizer",
+		"main": "Organizer",
+		"cohost": "Co-organizer",
+		"organizer": "Supporting Organizer",
 		"sponsorNavigator": "Navigator",
 		"sponsorDeepCultivation": "Cultivator",
 		"sponsorVisionary": "Visionary",
@@ -150,7 +154,7 @@
 		"visitWebsite": "Visit Website",
 		"sponsorLevel": "Sponsorship Level",
 		"sponsorName": "Sponsor Name",
-		"sponsorDesc": "Detailed sponsor description goes here."
+		"sponsorDesc": "Detailed sponsor introduction goes here."
 	},
 	"venue": {
 		"title": "Venue",
@@ -165,21 +169,21 @@
 		"map2DTitle": "2D Floor Plan",
 		"mapFloorSwitch": "Switch floor plan",
 		"close2D": "Close 2D floor plan",
-		"mapAlt": "venue floor plan"
+		"mapAlt": "Venue floor plan"
 	},
 	"agenda": {
 		"title": "Agenda",
 		"filterAll": "All Sessions",
-		"filterFavorites": "Favorites",
+		"filterFavorites": "Bookmarked Sessions",
 		"shareJamTitle": "Your Exclusive Jam",
-		"shareJamPlaceholder": "Enter your name",
+		"shareJamPlaceholder": "Enter an alias",
 		"shareJamCopy": "Copy link",
 		"shareJamCopied": "Copied!",
-		"curatedTitleSuffix": "Picks",
-		"legendUndefined": "Open Session",
-		"legendSponsored": "Sponsored Session",
+		"curatedTitleSuffix": "Curated Sessions",
+		"legendUndefined": "Open-format Session",
+		"legendSponsored": "Partner Session",
 		"legendPD": "Forum",
-		"mcpDesc": "Connect to our MCP server to customize your agenda, manage schedule, and share it with others effortlessly.",
+		"mcpDesc": "Use AI tools such as ChatGPT and Claude to plan your personal agenda, manage your schedule, and share it with others.",
 		"mcpFeatureAgenda": "Agenda Arrangement",
 		"mcpFeatureShare": "Share Link",
 		"mcpFeatureInfo": "Conference Info",
@@ -187,8 +191,8 @@
 		"mcpCopyUrl": "Copy Server URL",
 		"mcpCopied": "Copied!",
 		"galleryTitle": "Demo Gallery",
-		"sessionTypeUndefined": "Open Session",
-		"sessionTypeSponsored": "Sponsored Session",
+		"sessionTypeUndefined": "Open-format Session",
+		"sessionTypeSponsored": "Partner Session",
 		"sessionTypePD": "Forum",
 		"sessionAskQuestion": "Ask Question",
 		"sessionCollabNotes": "Collaborative Notes",
@@ -196,25 +200,25 @@
 		"sessionShare": "Share",
 		"sessionBookmark": "Bookmark session",
 		"sessionClose": "Close",
-		"sessionMobileAd": "mobile ad",
-		"sessionDesktopAd": "desktop ad",
-		"sessionRecording": "recording",
+		"sessionMobileAd": "Landscape Ad",
+		"sessionDesktopAd": "Portrait Ad",
+		"sessionRecording": "Session Recording",
 		"sessionLocation": "Humanities and Social Sciences Building, Academia Sinica",
-		"emptyFavorites": "You don't have any favorite sessions yet.",
-		"shareJamButton": "Share Jam",
+		"emptyFavorites": "You haven’t bookmarked any sessions yet.",
+		"shareJamButton": "Share My Picks",
 		"shareJamAria": "Share your Jam",
 		"shareJamList": "Bookmarked sessions",
-		"shareJamEmpty": "You haven't added any featured sessions yet!",
-		"shareJamNameRequired": "Please enter your name so others know who shared it with them.",
+		"shareJamEmpty": "You haven’t added any picked sessions yet!",
+		"shareJamNameRequired": "Please enter a name so others know who shared it with them.",
 		"scrollLeft": "Scroll left",
 		"scrollRight": "Scroll right",
 		"zoomIn": "Zoom in",
 		"zoomOut": "Zoom out",
-		"curatedLabel": "Picks"
+		"curatedLabel": "’s Picks"
 	},
 	"teamPage": {
 		"title": "Team Members",
-		"description": "SITCON is made possible every year by volunteers who dedicate their time and energy. Without their contributions, this rich and high-quality conference would not exist.<br>If you are interested in joining the preparation team, feel free to fill out the interest form or follow the SITCON mailing list. You’ll receive updates when next year’s preparation begins!",
+		"description": "SITCON is made possible every year by volunteers who dedicate their time and energy. Without their contributions, this rich and high-quality conference would not exist.<br>If you are interested in joining the organizing team, feel free to fill out the interest form or follow the SITCON mailing list. You’ll receive updates when next year’s preparation begins!",
 		"formButton": "Join the Crew",
 		"forumButton": "Mailing List",
 		"exploreMode": "Explore Mode",
@@ -295,7 +299,7 @@
 				"activities": [
 					{
 						"title": "Keynote",
-						"body": "This session takes you straight to the heart of this year’s conference theme! We’ve invited a speaker to break down the key ideas behind the theme in a clear and accessible way. Through the speaker’s perspective, you’ll not only understand what SITCON wants to convey this year, but also follow the rhythm of the talk to brainstorm around interesting ideas and uncover deeper insights together!",
+						"body": "This session takes you straight to the heart of this year’s conference theme. We have invited a speaker to break down the core ideas in a clear and accessible way. Through the speaker’s perspective, you will not only understand what SITCON hopes to convey this year, but also follow the rhythm of the talk to brainstorm fresh ideas and uncover deeper insights together.",
 						"image": {
 							"url": "/2026/img/info/Keynote.webp",
 							"alt": "SITCON Keynote"
@@ -303,7 +307,7 @@
 					},
 					{
 						"title": "Panel",
-						"body": "This is a deep and engaging discussion featuring one moderator and three panelists! Guided by the moderator’s thoughtful facilitation, guests from diverse backgrounds will explore this year’s theme from different angles. You’ll hear multiple perspectives collide on stage, helping you step outside the box, re-examine the core topics from new viewpoints, and piece together a broader and richer technical vision through shared experiences.",
+						"body": "This is a deep and engaging conversation featuring one moderator and three panelists. Guided by the moderator’s thoughtful facilitation, guests from diverse backgrounds will explore this year’s theme from different angles. You will hear multiple perspectives collide on stage, helping you step outside the box, re-examine the core issues from new standpoints, and piece together a broader and richer technical vision through shared experience.",
 						"image": {
 							"url": "/2026/img/info/Forum.webp",
 							"alt": "SITCON Panel"
@@ -311,7 +315,7 @@
 					},
 					{
 						"title": "Sessions",
-						"body": "Here you’ll find a collection of excellent talks submitted by students from all over! Whether you prefer in-depth Presentations that thoroughly unpack technical concepts, or fast-paced Espresso sessions that deliver key takeaways in a short time, there’s plenty to discover. On top of that, there are flexible open-format sessions where ideas from different backgrounds can freely interweave. Come experience the hands-on knowledge and creativity brought by student speakers on-site!",
+						"body": "Here you will find excellent talks submitted by students from many backgrounds. Whether you prefer in-depth Presentations that thoroughly unpack technical concepts, or fast-paced Espresso sessions that deliver key takeaways in a short time, there is plenty to discover. On top of that, there are flexible open-format sessions where ideas from different backgrounds can freely interweave. Come experience the practical knowledge and boundless creativity brought by student speakers on-site!",
 						"image": {
 							"url": "/2026/img/info/Agenda.webp",
 							"alt": "SITCON Sessions"
@@ -319,7 +323,7 @@
 					},
 					{
 						"title": "Demo Showcase",
-						"body": "Building on last year’s enthusiastic response, the Demo Showcase returns with an exciting upgrade! This special exhibition area goes beyond the regular program, providing a stage for students to present their projects and research through live demos and conversations. It’s a great opportunity for attendees to explore diverse topics in a relaxed way and spark new inspiration.\n\nThe showcase will take place on March 28, 2026 (conference day), at the booths on the north side of the 4th floor, featuring outstanding student work from across Taiwan. Whether you’re interested in technical innovation, project sharing, interactive design, or cutting-edge research discoveries, you’re sure to find topics that surprise and inspire you.\n\nIn addition, project exhibitors will be present at different time slots to chat and discuss with attendees. This is a perfect chance to ask questions, learn, and meet amazing peers from around the country—if you love exploring new knowledge, don’t miss it!",
+						"body": "Building on last year’s enthusiastic response, the Demo Showcase returns with an exciting upgrade! This special exhibition area goes beyond the regular program, providing a stage for students to present their projects and research through live demos and conversations. It is a great opportunity for attendees to explore diverse topics in a relaxed way and spark new exchanges and inspiration.\n\nThe showcase will take place on March 28, 2026, the day of the conference, at the booths on the north side of the 4th floor, featuring outstanding student work from across Taiwan. Whether you are interested in technical innovation, project sharing, interactive design, or cutting-edge research discoveries, you are sure to find topics that surprise and inspire you.\n\nIn addition, project exhibitors will be present at different time slots to chat and discuss with attendees. This is a perfect chance to ask questions, learn, and meet amazing peers from around the country. If you love exploring new knowledge, don’t miss it!",
 						"image": {
 							"url": "/2026/img/info/Demo.webp",
 							"alt": "SITCON Demo Showcase"
@@ -332,7 +336,7 @@
 				"activities": [
 					{
 						"title": "Compass Project",
-						"body": "Looking forward to meeting like-minded partners at the conference? We sincerely invite you to join the Compass Project!\n\nThe Compass Project provides an opportunity for exchange, aiming to help you find partners with shared interests to explore topics together. Whether you are an experienced veteran or a curious newcomer, you can find resonance here.\n\nBased on the information you provide, we will match you with suitable partners to form groups and encourage active interaction. To ensure a good experience for everyone, please stay in touch and engage with your group members after signing up, so that every participant expecting interaction can truly meet others. During the conference, you can participate in various activities with your group members or have a relaxed meetup during lunch. Whether sharing experiences, exchanging viewpoints, or discussing conference agenda topics, it will be a rewarding experience.\n\nEveryone, regardless of their level of expertise, can find their place here and work together to create an open environment for mutual exchange and learning. We look forward to your enthusiastic participation, making SITCON 2026 even more wonderful!",
+						"body": "Looking forward to meeting like-minded peers at the conference? We sincerely invite you to join the Compass Project!\n\nThe Compass Project provides an opportunity for exchange, helping you find partners with shared interests to explore topics together. Whether you are an experienced participant or a curious newcomer, you can find resonance here.\n\nBased on the information you provide, we will match you with suitable partners and form groups. We also encourage everyone to actively interact with their matched partners. To ensure a good experience for all, please stay in touch with your group members after signing up and participate actively, so that every participant looking forward to interaction can truly meet others. During the conference, you can join various activities with your group members or have a relaxed meetup during lunch. Whether you share experiences, exchange viewpoints, or discuss conference sessions in depth, it will be a rewarding experience.\n\nNo matter whether this is your first time here or you already know the IT field well, everyone can find their place here and work together to create an open environment for mutual exchange and learning. We look forward to your participation and to making SITCON 2026 even more exciting together!",
 						"image": {
 							"url": "/2026/img/info/Compass.webp",
 							"alt": "SITCON Compass Project"
@@ -340,7 +344,7 @@
 					},
 					{
 						"title": "Guided Tours",
-						"body": "Facing a chaotic scene with intertwined melodies of crowds, perhaps you are still lost. The laughter in the venue is like scattered notes with unset beats. What are you waiting for? Join the Guided Tour! Let the conductors lead you through the unknown of SITCON to find your own melody and belonging.\n\nYou can find guides holding SITCON flags at the meeting point. Follow the SITCON guides to visit community booths and the poster exhibition, helping you understand the various aspects and operations of SITCON.\n\nThere are two tours in the morning and two in the afternoon, each lasting about 40 minutes. Details will be announced later.\n\n<table>\n<tr><th>Tour Name & Guide</th><th>Meeting Point</th><th>Time</th></tr>\n<tr><td>XX Band (Guide: -- )</td><td rowspan=\"2\">North Corridor</td><td>10:00-10:40</td></tr>\n<tr><td>XX Band (Guide: -- )</td><td>10:30-11:00</td></tr>\n<tr><td>XX Band (Guide: -- )</td><td></td><td>14:00-14:10</td></tr>\n</table>\n\nCome and join the guided tour to unveil the excitement of the conference with new friends!",
+						"body": "A scene of tangled chaos lies before you. In a melody of interwoven crowds, perhaps you still feel a little lost; the laughter throughout the venue is like scattered notes with no fixed beat. What are you waiting for? Join a Guided Tour! Let our conductors guide you through the unknowns of SITCON and help you find your own melody and sense of belonging.\n\nAt the tour meeting point, you will find guides holding SITCON flags. Follow the SITCON guides as they lead you to community booths and the Demo Showcase, helping you understand the many facets of SITCON and how the conference works.\n\nThere will be two tours in the morning and one in the afternoon. Details are as follows:\n<table>\n<tr><th>Time</th><th>Meeting Point</th></tr>\n<tr><td>11:10 AM</td><td rowspan=\"3\">3F Whiteboard Area near R1\n\n(Please arrive 10 minutes early)</td></tr>\n<tr><td>11:20 AM</td></tr>\n<tr><td>2:45 PM</td></tr>\n</table>Join a Guided Tour and unveil the excitement of the conference with new friends!",
 						"image": {
 							"url": "/2026/img/info/Guide.webp",
 							"alt": "SITCON Guided Tours"
@@ -353,7 +357,7 @@
 				"activities": [
 					{
 						"title": "Reality Game",
-						"body": "Don't know what to do between sessions? Want to interact with booths but don't know how to start? Don't worry! Open OPass and join the Reality Game!\n\nThis year's Reality Game combines the SITCON 2026 theme 'Jam the Chaos'. In the game, you will unlock levels, challenge memory sequence games, master the rhythm, solve puzzles, accumulate completions, and climb the leaderboard for a chance to win coupons for the SITCON 2026 souvenir booth!\n\n<b>【How to Unlock New Levels?】</b>\n\n<b>🤝 Interact with Sponsors:</b> Communicate with sponsors to unlock new levels, verify higher difficulty challenges, and sprint up the leaderboard! \n\n <b>🎤 Join Activities & Explore Venue:</b> Explore the venue, check in at activity locations, and participate in exciting events. Each activity and new location unlocks a new level~\n\n<b>🔍 Meet New Friends:</b> Interact with other attendees; every new encounter unlocks a new level.\n\nThe more levels you complete and the higher you rank, the greater your chances of winning! Pick up your phone and groove with the rhythm!",
+						"body": "Don’t know what to do between sessions? Want to interact with booths but don’t know how to start the conversation? Don’t worry—open OPass and join the Reality Game!\n\nThis year’s Reality Game combines the SITCON 2026 theme, “Jam the Chaos.” In the game, you will unlock levels, challenge memory sequence games, master the rhythm, solve puzzles, accumulate completions, and climb the leaderboard for a chance to win discount vouchers for the SITCON 2026 souvenir booth!\n\n<b>【How to Unlock New Levels?】</b>\n\n<b>🤝 Interact with Sponsors:</b> Talk with sponsors to unlock new levels, verify higher-difficulty challenges, and sprint up the leaderboard!\n\n <b>🎤 Join Activities & Explore the Venue:</b> Explore the venue, check in at activity locations, and participate in exciting events. Each activity and new location can unlock a new level~\n\n<b>🔍 Meet New Friends:</b> Interact with other attendees; every new encounter can unlock a new level.\n\nThe more levels you complete and the higher you rank, the greater your chances of winning. Pick up your phone and groove with the rhythm!",
 						"image": {
 							"url": "/2026/img/info/Game.webp",
 							"alt": "SITCON Reality Game"
@@ -361,7 +365,7 @@
 					},
 					{
 						"title": "Whiteboard War",
-						"body": "In this era of intertwined viewpoints and infinite creativity, pick up a whiteboard marker, add your thoughts to this chaotic world, and start a wonderful battle of ideas!\n\nWe sincerely invite you to the whiteboard area on the 3rd floor to join this smokeless 'Whiteboard War'. Jam the code together, debate and defend the sect you believe in (x). This will be a grand platform for you to showcase creativity and clash viewpoints.\n\nIn a relaxed atmosphere, let's use whiteboards as weapons, unleash infinite creativity, challenge different viewpoints, and create more sparks! Come and splash your ideas to make this whiteboard world even more chaotic!",
+						"body": "In this era of intertwined viewpoints and boundless creativity, pick up a whiteboard marker, add your thoughts to this chaotic world, and begin a wonderful clash of ideas!\n\nWe sincerely invite you to the whiteboard area on the 3rd floor to join this “Whiteboard War” without smoke or gunpowder. Jam the code together, debate, and defend the sect you believe in (x). This will be a grand platform for you to showcase creativity and let viewpoints collide.\n\nIn a relaxed atmosphere, let us use whiteboards as weapons, unleash boundless creativity, challenge different viewpoints, and create more sparks! Come splash your ideas across the board and make this whiteboard world even more chaotic!",
 						"image": {
 							"url": "/2026/img/info/Whiteboard.webp",
 							"alt": "SITCON Whiteboard War"
@@ -374,7 +378,7 @@
 				"activities": [
 					{
 						"title": "Meet the Speakers",
-						"body": "Just finished an inspiring session but still have questions you did not get to ask? Want to talk with the speakers about the stories and experiences behind their work? Do not take those thoughts home unanswered!\n\nMeet the Speakers is a chance to have face-to-face conversations with speakers after their talks. Some speakers will move to Hall S after their sessions and wait there for attendees to chat. Whether you want to ask deeper questions about the session, discuss technical details, or simply exchange experiences, you are welcome to join.\n\nThe activity will take place from 15:25 to 16:45 in Hall S. Each speaker is expected to stay for 20 to 30 minutes. No preparation is required. Find the speaker you are interested in and say hello!",
+						"body": "Just finished an inspiring session, but still have questions you did not get to ask? Want to talk with the speakers about the stories and experiences behind their work? Don’t take those thoughts home unanswered!\n\nMeet the Speakers is a great opportunity to have face-to-face conversations with speakers. After their sessions, some speakers will move to Hall S and wait there to chat with attendees. Whether you want to ask deeper questions about the session, discuss technical details, or simply exchange experiences, you are welcome to join.\n\nThe activity will take place from 15:25 to 16:45 in Hall S. Each speaker is expected to stay for 20 to 30 minutes. No preparation is required. Find the speaker you are interested in and say hello!",
 						"image": {
 							"url": "/2026/img/info/Coffee.webp",
 							"alt": "SITCON Meet the Speakers"
@@ -382,7 +386,7 @@
 					},
 					{
 						"title": "Lightning Talks",
-						"body": "Do you have something exciting to share but missed the submission deadline? Welcome to participate in SITCON 2026 Lightning Talks! Lightning Talks provide eight slots for the quickest attendees to share their projects or ideas in five minutes!\n\nOn the day of the conference from 10:00 AM to 3:30 PM, you are welcome to submit your proposal at the designated whiteboard area. The submission method is simple! Once submission opens, choose an empty slot on the whiteboard and write down your talk title and name (e.g., 'How I Became the Wind by Windful'). There are only eight slots, and each person is limited to one submission, so be quick! After submitting, please scan the form next to the whiteboard to provide more information, such as title, speaker name, and outline. We suggest preparing this content in advance to ensure a smooth process!\n\nIf you successfully become a speaker, please gather at the right side of R0 on the 3rd floor at 4:40 PM sharp with your presentation equipment. Agenda team members will be there to assist you. To maintain diversity and fun, we do not accept overly commercial submissions. If your talk exceeds the time limit or contains commercial content for more than ten seconds, the screen will be cut off directly!\n\nWe invite you to this adrenaline-pumping activity to communicate and share with more people at SITCON!",
+						"body": "Do you have something exciting to share, but missed the submission deadline? Welcome to SITCON 2026 Lightning Talks! Lightning Talks provide eight slots for the fastest attendees to share their projects or ideas with everyone in five minutes.\n\nOn the day of the conference, from 10:10 AM to 3:30 PM, you are welcome to submit your proposal at the designated whiteboard area. The submission method is simple: once submissions open, choose an empty slot on the whiteboard and write down your talk title and name (for example, “How I Became the Wind by Windful”). There are only eight slots, and each person may submit only once, so act fast! After submitting, please scan the form next to the whiteboard to provide more information, such as your title, speaker name, and outline. We suggest preparing this content in advance to ensure a smooth process.\n\nIf you successfully become a speaker, please gather at the right side of R0 on the 3rd floor at 4:40 PM sharp and bring your presentation equipment. Members of the Agenda Team will be there to assist you. To maintain diversity and fun, we do not accept overly commercial submissions. If your talk runs over time or includes commercial content for more than ten seconds, the screen will be cut immediately.\n\nWe invite you to join this adrenaline-pumping activity and share your ideas with more people at SITCON!",
 						"image": {
 							"url": "/2026/img/info/Lightning.webp",
 							"alt": "SITCON Lightning Talks"
@@ -395,7 +399,7 @@
 			"title": "Souvenirs",
 			"items": [
 				{
-					"name": "iPASS Card",
+					"name": "iPASS",
 					"price": "NT$ 499",
 					"image": "/2026/img/souvenirs/一卡通.webp"
 				},
@@ -410,7 +414,7 @@
 					"image": "/2026/img/souvenirs/非磁吸封口電腦包.webp"
 				},
 				{
-					"name": "Conference T-Shirt",
+					"name": "Conference T-shirt",
 					"price": "NT$ 350",
 					"image": "/2026/img/souvenirs/會眾踢.webp"
 				},
@@ -437,7 +441,7 @@
 			"title": "Sitemap",
 			"links": [
 				{
-					"name": "Conference Activities (incl. Transport)",
+					"name": "Conference Activities (including Transportation)",
 					"url": "/2026/en/info/"
 				},
 				{
@@ -498,7 +502,7 @@
 					"url": "https://sitcon.org/podcast/"
 				},
 				{
-					"name": "Hackers",
+					"name": "Good Hacker",
 					"url": "https://sitcon.org/hacker/"
 				}
 			]
@@ -577,48 +581,48 @@
 	],
 	"team": {
 		"general": {
-			"name": "Coordinator Team",
-			"description": "The core team coordinating the entire conference, responsible for orchestrating operations across all teams and defining the conference's direction and policies. We are the navigators, ensuring the event runs smoothly and achieves its goals."
+			"name": "Core Organizing Team",
+			"description": "The core team that coordinates the entire conference, oversees collaboration across all teams, and defines the conference’s direction and policies. We are the navigators of the conference, ensuring that the event runs smoothly and achieves its goals."
 		},
 		"administration": {
 			"name": "Administration Team",
-			"description": "Handles all administrative affairs, including documentation, meeting minutes, and internal communication. We are the lubricant of the team, ensuring smooth processes."
+			"description": "Handles all administrative affairs, including documentation, meeting minutes, and internal communication. We are the lubricant of the team, ensuring that every process runs smoothly."
 		},
 		"agenda": {
 			"name": "Agenda Team",
-			"description": "Responsible for agenda planning and speaker invitations, the core content producers of the conference. We review a large number of technical submissions and select the most suitable topics to ensuring attendees hear high-quality content."
+			"description": "Responsible for program planning and speaker invitations, the Agenda Team is the core producer of the conference’s content. We review a large number of technical submissions and select the topics best suited for the conference, ensuring that attendees can hear high-quality content."
 		},
 		"operations": {
 			"name": "Operations Team",
-			"description": "The guardians of the venue on the day of the conference, responsible for flow planning, equipment setup, and handling emergencies. We are the unsung heroes behind the smooth running of the event, requiring strong adaptability to face various challenges."
+			"description": "The guardians of the venue on conference day, responsible for traffic flow planning, equipment setup, and emergency response. We are the unsung heroes behind the smooth running of the event, and we need strong adaptability to face all kinds of challenges."
 		},
 		"design": {
 			"name": "Design Team",
-			"description": "Responsible for the key visual and merchandise design, depicting SITCON with colors and lines. We pursue visual excellence, striving to visualize abstract concepts and bring everyone a perfect visual feast."
+			"description": "Responsible for the key visual identity and merchandise design, depicting SITCON through colors and lines. We pursue visual excellence, transforming abstract concepts into concrete forms and bringing everyone a polished visual experience."
 		},
 		"finance": {
 			"name": "Finance Team",
-			"description": "Controls the financial power of the conference, ensuring every penny of sponsorship and budget is used effectively. We need meticulousness and patience to handle complex accounting and budgeting, serving as the solid backing for the event."
+			"description": "Manages the conference’s finances, ensuring that every dollar of sponsorship and budget is used effectively. We need meticulousness and patience to handle complex reimbursement, accounting, and budgeting work, serving as the solid backing behind the event."
 		},
 		"recording": {
-			"name": "Photography Team",
-			"description": "Captures every wonderful moment of the conference promoting event photography and video recording. We are the guardians of memories, preserving every touching moment forever."
+			"name": "Documentation Team",
+			"description": "Captures every highlight of the conference through photography and video. We are the guardians of the conference’s memories, preserving every touching moment."
 		},
 		"production": {
 			"name": "Production Team",
-			"description": "Responsible for audio-visual equipment and live streaming systems, ensuring agendas are presented smoothly to all participants. We are the combination of technology and art, allowing every speech to be perfectly conveyed."
+			"description": "Responsible for the conference’s audiovisual equipment and livestreaming systems, ensuring that every session is presented smoothly to all participants. We bring technology and art together so that every talk can be delivered at its best."
 		},
 		"development": {
 			"name": "Development Team",
-			"description": "Make the website go BOW BOW BOW!"
+			"description": "Make the website go whoosh."
 		},
 		"editorial": {
 			"name": "Editorial Team",
-			"description": "Responsible for the production and proofreading of all text content, including website copy, promotional materials, and press releases. We convey the spirit of SITCON through words, ensuring every message accurately reaches the target audience."
+			"description": "Responsible for producing and proofreading all written content, including website copy, promotional materials, and press releases. We convey the spirit of SITCON through words, ensuring that every message reaches its target audience accurately."
 		},
 		"marketing": {
 			"name": "Marketing Team",
-			"description": "Responsible for external promotion and community management, letting more people know About through various channels. We are the spokespersons of the conference, promoting the event to the world with creativity and passion."
+			"description": "Responsible for external promotion and community management, helping more people discover SITCON through various channels. We are the spokespersons of the conference, promoting the event to the world with creativity and passion."
 		}
 	},
 	"role": {
@@ -628,21 +632,21 @@
 		"deputy": "Deputy Lead",
 		"member": "Member",
 		"treasurer": "Treasurer",
-		"agenda": "Agenda Section Lead",
-		"agenda_lead": "Agenda Section",
-		"ops_mobility_lead": "Mobility Lead",
-		"ops_registration_lead": "Registration Lead",
-		"ops_catering_lead": "Catering Lead",
-		"ops_logistics_lead": "Logistics Lead",
-		"ops_mobility": "Mobility Team",
-		"ops_registration": "Registration Team",
-		"ops_catering": "Catering Team",
-		"ops_logistics": "Logistics Team",
-		"marketing_helper": "Marketing Assistant"
+		"agenda": "Agenda Assistant",
+		"agenda_lead": "Agenda Assistant Lead",
+		"ops_mobility_lead": "Mobility Section Lead",
+		"ops_registration_lead": "Registration Section Lead",
+		"ops_catering_lead": "Catering Section Lead",
+		"ops_logistics_lead": "Logistics Section Lead",
+		"ops_mobility": "Mobility Section",
+		"ops_registration": "Registration Section",
+		"ops_catering": "Catering Section",
+		"ops_logistics": "Logistics Section",
+		"marketing_helper": "Marketing Helper"
 	},
 	"referral": {
 		"mainHeading": "Referral Program",
-		"heroTitle": "Invite Friends to SITCON!",
+		"heroTitle": "Invite Your Friends to SITCON!",
 		"heroSubtitle": "Invite friends to join, and you can win prizes too",
 		"howTo": {
 			"steps": [
@@ -652,7 +656,7 @@
 				},
 				{
 					"title": "Share with Friends",
-					"description": "Share your referral code with friends, classmates, or community partners who haven't registered yet, in any way you like."
+					"description": "Share your referral code with friends, classmates, or community partners who have not registered yet, in any way you like."
 				},
 				{
 					"title": "Friend Completes Registration",
@@ -667,7 +671,7 @@
 			"title": "Referral Rewards Await!",
 			"lottery": {
 				"title": "One Lottery Entry per Referral",
-				"description": "For every new registrant you successfully refer, you get one entry into the lottery. The more you refer, the higher your chances of winning!",
+				"description": "For every new registrant you successfully refer, you get one entry into the prize draw. The more you refer, the higher your chances of winning! Winners will be announced before 3/15 and notified by email, and the list will also be published below.",
 				"table": {
 					"headers": ["Prize Category", "Prize", "Quota", "Cut-off Time", "Winners"],
 					"rows": [
@@ -678,7 +682,7 @@
 			},
 			"topReferrers": {
 				"title": "Top Referrer",
-				"description": "The referrers with the most successful referrals will receive exclusive honors and SITCON 2026 commemorative gifts, and will be publicly recognized and awarded at the SITCON 2026 conference!",
+				"description": "The top five referrers with the most successful referrals will receive exclusive honors and SITCON 2026 commemorative gifts, and their names will be announced and awarded publicly at the SITCON 2026 conference!",
 				"table": {
 					"headers": ["Prize Category", "Reward Content", "Quota", "Winners"],
 					"rows": [
@@ -690,30 +694,30 @@
 						]
 					]
 				},
-				"deadlines": ["Referral Count Cut-off: 3/1 23:59", "Winner Announcement: before 3/15 23:59 (notified via Email)"],
+				"deadlines": ["Referral Count Cut-off: 3/1 23:59", "Winner Announcement: before 3/15 23:59 (notified by email)"],
 				"rules": [
-					"Ranked by number of successful referrals, top five will be selected.",
-					"If referral counts are the same, the one with the earlier 'first successful referral time' takes precedence.",
-					"Top Referrer awards must be claimed at the conference venue; detailed claiming process will be announced separately."
+					"Ranked by the number of successful referrals; the top five will be selected.",
+					"If there is a tie in referral counts, the person with the earlier first successful referral time takes precedence.",
+					"Top Referrer awards must be claimed at the conference venue; the detailed claiming process will be announced separately."
 				]
 			}
 		},
 		"fairness": {
 			"title": "Fairness and Notices",
-			"description": "To ensure fairness, the organizer will:",
+			"description": "To ensure fairness, the organizers will:",
 			"items": [
-				"Exclude referral records generated from duplicate, abnormal, or false registrations",
+				"Exclude referral records generated by duplicate, abnormal, or false registrations",
 				"Reserve the right to cancel eligibility if behavior affecting fairness is found",
-				"All referral and lottery records are based on system data"
+				"Use system data as the basis for all referral and prize draw records"
 			],
-			"disclaimer": "The organizer reserves the right of final interpretation and adjustment of event content, prizes, and rules."
+			"disclaimer": "The organizers reserve the right of final interpretation and adjustment of the event content, prizes, and rules."
 		}
 	},
 	"about": {
-		"title": "About",
-		"description": "SITCON is a student-driven community dedicated to IT education and promoting the open source spirit. It is a student-organized conference that provides a stage for students to present and exchange technical knowledge.",
+		"title": "About SITCON",
+		"description": "SITCON is a student-driven community dedicated to IT education and the promotion of open source. It is also a student-organized technology conference that gives students a stage to present and exchange technical knowledge.",
 		"community": {
-			"title": "The Largest Student Community in East Asia for 13 Years",
+			"title": "East Asia’s Largest Student Community for 13 Years",
 			"data": [
 				{
 					"label": "student speakers",
@@ -746,7 +750,7 @@
 				},
 				{
 					"number": "200",
-					"label": "schools from home and abroad"
+					"label": "schools in Taiwan and abroad"
 				},
 				{
 					"number": "70%",
@@ -860,28 +864,28 @@
 			"data": [
 				{
 					"image": "sitcon_hk",
-					"title": "Largest Student IT Conference in East Asia",
-					"description": "Inspired the founding of SITCON x HK in Hong Kong and the Student Open Source Conference in Chongqing, and provides support to student groups and IT communities worldwide. More than half of new participants join each year, and alumni now work across the IT industry in Taiwan, the US, Japan, and the Netherlands, with many returning to support the community."
+					"title": "East Asia’s Largest Student IT Conference",
+					"description": "Inspired the founding of SITCON x HK in Hong Kong and the Student Open Source Conference in Chongqing, and provides support to student groups and IT communities worldwide. More than half of the participants each year are first-time attendees. Alumni now work across the IT industry in Taiwan, the United States, Japan, and the Netherlands, and many continue to return and support the community."
 				},
 				{
 					"image": "groups",
 					"title": "Meetups Across Taiwan",
-					"description": "Continuously co-hosting meetups with local communities across Taiwan to provide channels for students to exchange knowledge. These events have partnered with universities such as National Taiwan University and Tamkang University, bringing together outstanding talents from the IT field."
+					"description": "Continuously co-hosting meetups with local communities across Taiwan, providing channels for students to exchange knowledge. These events have also partnered with universities such as National Taiwan University and Tamkang University, bringing together outstanding talents from the IT field."
 				},
 				{
 					"image": "edu",
 					"title": "SITCON Hour of Code",
-					"description": "Since 2014, in collaboration with the Ministry of Education, we have regularly held Hour of Code events across Taiwan, sparking curiosity about the IT field in hundreds of children and students aged 4 to 16."
+					"description": "Since 2014, in collaboration with the Ministry of Education, we have regularly held Hour of Code events across Taiwan, sparking curiosity about the IT field among hundreds of children and students aged 4 to 16."
 				},
 				{
 					"image": "hackathon",
 					"title": "SITCON Hackathon",
-					"description": "We held HackGen in 2014 and 2015, and in 2024 upgraded the event to the SITCON Hackathon. We aim for participants to learn ideation, planning, and implementation, helping society and businesses discover talented student teams."
+					"description": "We held HackGen in 2014 and 2015, and in 2024 upgraded the event into the SITCON Hackathon. We hope participants can learn ideation, planning, and implementation through the hackathon, helping society and businesses discover student teams with strong potential."
 				},
 				{
 					"image": "camp",
 					"title": "SITCON Summer Camp",
-					"description": "Since 2014, SITCON has held a summer camp every July, making it easy for students interested in IT to get started and ignite their passion for open source. Both campers and volunteers are students. In addition to the main curriculum, there are open source talks, a community expo, and a World Café, giving students opportunities to not only learn but also exchange ideas and spark inspiration."
+					"description": "Since 2014, SITCON has held a summer camp every July, helping students interested in IT get started and igniting their passion for open source. Both campers and volunteers are students. In addition to the main curriculum, there are open source talks, a community expo, and a World Café, giving students opportunities not only to learn, but also to exchange ideas and spark inspiration."
 				}
 			]
 		}
