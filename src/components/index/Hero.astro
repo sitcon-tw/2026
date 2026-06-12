@@ -544,9 +544,6 @@ const lang = Astro.props.lang ?? "zh";
 
 		const animate = () => {
 			if (!isRunning) return;
-			if (!reduceMotion) {
-				animationFrameId = requestAnimationFrame(animate);
-			}
 			idleTime += reduceMotion ? 0 : 0.0007; // Slowed down significantly (half of 0.0015)
 
 			const signedScrollDelta = reduceMotion ? 0 : window.scrollY - lastScrollY;
@@ -580,7 +577,9 @@ const lang = Astro.props.lang ?? "zh";
 
 			// Update Meteors - only show front half
 			meteors.forEach(m => {
-				m.progress = (m.progress + m.speed * scrollFactor) % 1;
+				if (!reduceMotion) {
+					m.progress = (m.progress + m.speed * scrollFactor) % 1;
+				}
 				const pos = getVortexPosition(vortexConfig, narrowViewport, m.progress + scrollProgress * 0.04, m.offset, m.radiusBias, m.verticalOffset, vortexScrollSpin + idleTime * 0.88, meteorPos);
 				m.mesh.position.copy(pos);
 
@@ -650,11 +649,7 @@ const lang = Astro.props.lang ?? "zh";
 			});
 
 			renderer.render(scene, camera);
-
-			if (reduceMotion) {
-				isRunning = false;
-				animationFrameId = null;
-			}
+			animationFrameId = requestAnimationFrame(animate);
 		};
 
 		const onResize = () => {
