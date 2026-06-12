@@ -279,19 +279,41 @@ const eventJsonLd = JSON.stringify({
 			}
 		</style>
 
-		<script>
-			const hideLoader = () => {
-				const mask = document.getElementById("loading-mask");
-				if (mask) {
-					mask.classList.add("hidden");
-				}
-			};
+		<script is:inline>
+			(() => {
+				const CONTROLLER_KEY = "__sitcon2026LoaderController";
 
-			if (document.readyState === "complete") {
-				hideLoader();
-			} else {
-				window.addEventListener("load", hideLoader);
-			}
+				const hideLoader = () => {
+					requestAnimationFrame(() => {
+						const mask = document.getElementById("loading-mask");
+						if (mask) {
+							mask.classList.add("hidden");
+						}
+					});
+				};
+
+				const showLoader = () => {
+					const mask = document.getElementById("loading-mask");
+					if (mask) {
+						mask.classList.remove("hidden");
+					}
+				};
+
+				if (!window[CONTROLLER_KEY]) {
+					window[CONTROLLER_KEY] = true;
+					document.addEventListener("astro:before-preparation", showLoader);
+					document.addEventListener("astro:after-preparation", hideLoader);
+					document.addEventListener("astro:after-swap", hideLoader);
+					document.addEventListener("astro:page-load", hideLoader);
+					window.addEventListener("pageshow", hideLoader);
+				}
+
+				if (document.readyState === "complete") {
+					hideLoader();
+				} else {
+					window.addEventListener("load", hideLoader, { once: true });
+				}
+			})();
 		</script>
 
 		<a href="#main-content" class="skip-link">{lang === "en" ? "Skip to main content" : "跳至主要內容"}</a>
@@ -362,6 +384,7 @@ const eventJsonLd = JSON.stringify({
 			initAnimations();
 
 			document.addEventListener("astro:page-load", initAnimations);
+			document.addEventListener("astro:before-swap", destroyLenis);
 		</script>
 	</body>
 </html>
