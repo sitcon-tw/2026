@@ -24,12 +24,12 @@ export const createSeededRandom = (seed = HERO_RANDOM_SEED) => {
 };
 
 export const createVortexConfig = (narrowViewport: boolean): VortexConfig => ({
-	centerX: narrowViewport ? 11 : 18,
+	centerX: narrowViewport ? 17 : 18,
 	centerZ: narrowViewport ? -76 : -74,
 	bottomY: narrowViewport ? -34 : -40,
 	height: narrowViewport ? 90 : 98,
 	baseRadius: narrowViewport ? 12 : 17,
-	topRadius: narrowViewport ? 34 : 56,
+	topRadius: narrowViewport ? 32 : 56,
 	turns: narrowViewport ? 1.54 : 1.82
 });
 
