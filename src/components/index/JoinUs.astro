@@ -50,16 +50,36 @@ const t = useTranslations(lang).joinUs;
 	.title {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
+		gap: clamp(1rem, 3vw, 2rem);
 		max-width: var(--max-width);
 		margin: 0 auto;
 		padding-top: 5rem;
 		width: 90%;
 	}
+
+	.title::before {
+		content: "";
+		order: 2;
+		flex: 1 1 auto;
+		height: 1px;
+		min-width: 8rem;
+		background: linear-gradient(90deg, rgba(45, 33, 17, 0.08), rgba(45, 33, 17, 0.52), rgba(45, 33, 17, 0.08));
+		box-shadow: 0 0 1.25rem rgba(141, 99, 48, 0.18);
+		transform: translateY(0.18em);
+	}
+
 	h2 {
+		flex: 0 0 auto;
 		color: rgba(45, 33, 17, 0.56);
 	}
 
+	h2:first-of-type {
+		order: 1;
+	}
+
 	h2:nth-of-type(2) {
+		order: 3;
 		color: var(--coffee);
 	}
 
@@ -159,9 +179,18 @@ const t = useTranslations(lang).joinUs;
 	@media screen and (max-width: 50rem) {
 		.title {
 			flex-direction: column;
+			align-items: stretch;
 			padding: 3rem 2rem 0;
-			gap: 0.5rem;
+			gap: 0.65rem;
 			margin: 0 auto;
+		}
+
+		.title::before {
+			width: min(100%, 18rem);
+			min-width: 0;
+			flex: 0 0 auto;
+			margin: 0.15rem 0 0.1rem auto;
+			transform: none;
 		}
 
 		.title h2:nth-of-type(2) {
