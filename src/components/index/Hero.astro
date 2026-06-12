@@ -184,18 +184,18 @@ const lang = Astro.props.lang ?? "zh";
 
 		// Meteors (Improved trails with Shaders)
 		const meteorsGroup = new THREE.Group();
-		const meteorCount = narrowViewport ? 10 : 18;
+		const meteorCount = narrowViewport ? 13 : 24;
 		const meteors: { mesh: THREE.Mesh; speed: number; progress: number; offset: number; radiusBias: number; verticalOffset: number }[] = [];
 
-		const meteorLength = narrowViewport ? 14 : 20;
-		const meteorGeometry = new THREE.CylinderGeometry(0.006, 0.085, meteorLength, 8); // v=1(Top) is thin tail, v=0(Bottom) is thick head
+		const meteorLength = narrowViewport ? 20 : 28;
+		const meteorGeometry = new THREE.CylinderGeometry(0.012, 0.135, meteorLength, 10); // v=1(Top) is thin tail, v=0(Bottom) is thick head
 		meteorGeometry.translate(0, meteorLength / 2, 0); // Move Bottom(Head) to origin
 		meteorGeometry.rotateX(-Math.PI / 2); // Rotate so head (v=0) points forward (+Z)
 
 		const meteorShaderMaterial = new THREE.ShaderMaterial({
 			uniforms: {
-				color: { value: new THREE.Color(0xf4e7c8) },
-				opacity: { value: 0.24 }
+				color: { value: new THREE.Color(0xffedbd) },
+				opacity: { value: 0.44 }
 			},
 			vertexShader: `
 				varying vec2 vUv;
@@ -211,8 +211,10 @@ const lang = Astro.props.lang ?? "zh";
 				void main() {
 					// vUv.y is from 0 (head) to 1 (tail)
 					// Smooth head, long fading tail
-					float alpha = smoothstep(0.0, 0.05, vUv.y) * pow(1.0 - vUv.y, 3.0);
-					// Add a core brightness
+					float taper = pow(1.0 - vUv.y, 1.65);
+					float headGlow = smoothstep(0.0, 0.16, 1.0 - vUv.y);
+					float tailFeather = smoothstep(0.0, 0.08, vUv.y);
+					float alpha = taper * headGlow * tailFeather;
 					gl_FragColor = vec4(color, alpha * opacity);
 				}
 			`,
@@ -226,7 +228,7 @@ const lang = Astro.props.lang ?? "zh";
 			meteorsGroup.add(mesh);
 			meteors.push({
 				mesh,
-				speed: (narrowViewport ? 0.00042 : 0.00034) + random() * 0.00018,
+				speed: (narrowViewport ? 0.00045 : 0.00036) + random() * 0.0002,
 				progress: (i + 0.5) / meteorCount + (random() - 0.5) * 0.012,
 				offset: i * goldenAngle + random() * 0.22,
 				radiusBias: 0.92 + random() * 0.26,
@@ -638,7 +640,7 @@ const lang = Astro.props.lang ?? "zh";
 				m.mesh.visible = isVisible;
 				if (isVisible) {
 					// @ts-ignore
-					m.mesh.material.uniforms.opacity.value = 0.2 * opacity;
+					m.mesh.material.uniforms.opacity.value = 0.42 * opacity;
 				}
 			});
 
