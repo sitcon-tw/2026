@@ -310,6 +310,7 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 		align-items: center;
 		justify-content: center;
 		padding-block: 13rem;
+		background: var(--metal-bg);
 	}
 
 	.hero-content {
@@ -340,21 +341,22 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 		padding: 1rem 2rem;
 		font-size: 1.25rem;
 		font-weight: bold;
-		background-color: var(--coffee);
-		color: #ffefcf;
+		background: linear-gradient(145deg, var(--metal-cream), var(--metal-gold));
+		color: var(--metal-ink);
 		border-radius: 10rem;
-		border: none;
+		border: 1px solid rgba(242, 216, 148, 0.5);
 		cursor: pointer;
+		box-shadow: var(--metal-card-shadow);
 	}
 
 	.hero-into-button {
 		padding: 1rem 2rem;
 		font-size: 1rem;
 		font-weight: bold;
-		background-color: #ffffff4f;
-		color: #ffffffcc;
+		background: rgba(255, 244, 214, 0.14);
+		color: var(--metal-cream);
 		border-radius: 10rem;
-		border: none;
+		border: 1px solid rgba(242, 216, 148, 0.32);
 		cursor: pointer;
 		position: absolute;
 		bottom: 1.63rem;
@@ -364,9 +366,9 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 	}
 
 	main {
-		background-color: var(--silence-white);
+		background: radial-gradient(circle at 12% 8%, rgba(242, 216, 148, 0.12), transparent 26rem), linear-gradient(180deg, rgba(244, 239, 229, 0.96), rgba(229, 218, 195, 0.94));
 		color: var(--coffee);
-		padding: 3rem 2rem;
+		padding: clamp(3.5rem, 7vw, 6rem) 2rem;
 	}
 
 	.activities-container {
@@ -378,7 +380,7 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 		max-width: var(--content-max-width);
 		margin-inline: auto;
 		padding-top: 3rem;
-		border-top: 2px solid var(--coffee);
+		border-top: 1px solid rgba(45, 33, 17, 0.22);
 		margin-top: 2rem;
 	}
 
@@ -390,11 +392,13 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 	}
 
 	.souvenir-card {
-		border-radius: 1rem;
+		border-radius: 0.5rem;
 		overflow: hidden;
-		border: 2px solid var(--coffee);
+		border: 1px solid rgba(45, 33, 17, 0.22);
 		display: flex;
 		flex-direction: column;
+		background: rgba(255, 255, 255, 0.5);
+		box-shadow: 0 1rem 2rem rgba(45, 33, 17, 0.12);
 	}
 
 	.souvenir-image {
@@ -426,18 +430,18 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 	}
 
 	.activities-section {
-		border-top: 2px solid var(--coffee);
-		padding: 2rem 0rem;
+		border-top: 1px solid rgba(45, 33, 17, 0.22);
+		padding: 3rem 0rem;
 	}
 
 	h2 {
-		font-size: 4rem;
-		margin: 2rem;
+		font-size: clamp(2.5rem, 6vw, 4rem);
+		margin: 2rem 0;
 	}
 
 	h3 {
-		font-size: 3rem;
-		margin: 1rem 2rem 2.5rem;
+		font-size: clamp(2rem, 5vw, 3rem);
+		margin: 1rem 0 2.5rem;
 	}
 
 	h4 {
@@ -446,8 +450,7 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 	}
 
 	.activity {
-		padding-inline: 2rem;
-		margin: 2rem;
+		margin: 2.5rem 0;
 		gap: 2.75rem;
 		display: flex;
 		align-items: center;
@@ -463,6 +466,8 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 		max-width: 100%;
 		flex-shrink: 0;
 		object-fit: cover;
+		border-radius: 0.5rem;
+		box-shadow: 0 1rem 2rem rgba(45, 33, 17, 0.14);
 	}
 
 	:global(table) {

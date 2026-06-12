@@ -148,8 +148,8 @@ const speakers = [
 
 	.speaker-section {
 		position: relative;
-		background-color: #f4f4f4;
-		padding: 4rem 2rem 8rem 2rem;
+		background: radial-gradient(circle at 22% 12%, rgba(242, 216, 148, 0.16), transparent 28rem), linear-gradient(180deg, rgba(20, 19, 15, 0.98), rgba(36, 35, 31, 0.96));
+		padding: var(--section-padding);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -160,7 +160,7 @@ const speakers = [
 		width: 100%;
 		max-width: var(--max-width);
 		margin-bottom: 3rem;
-		color: #a79164;
+		color: var(--metal-gold-soft);
 		display: grid;
 		grid-template-columns: max-content 1fr max-content;
 		align-items: center;
@@ -169,7 +169,7 @@ const speakers = [
 
 	.line {
 		height: 0.0625rem;
-		background-color: #a79164;
+		background: linear-gradient(90deg, transparent, var(--metal-line), transparent);
 		width: 100%;
 		justify-self: center;
 	}
@@ -192,7 +192,7 @@ const speakers = [
 		width: 100%;
 		font-size: 3.5rem;
 		font-weight: bold;
-		color: rgba(169, 124, 33, 0.3);
+		color: rgba(244, 239, 229, 0.24);
 		cursor: pointer;
 		transition: 0.3s;
 		display: flex;
@@ -203,7 +203,7 @@ const speakers = [
 	}
 
 	.speaker-item.active {
-		color: #a79164;
+		color: var(--metal-cream);
 		transform: scale(1.125);
 		transform-origin: left center;
 	}
@@ -222,7 +222,7 @@ const speakers = [
 	}
 
 	.speaker-item.active .speakerdesc {
-		color: #4f4031;
+		color: var(--metal-muted);
 	}
 
 	.speaker-image {
@@ -236,7 +236,8 @@ const speakers = [
 		width: 100%;
 		height: auto;
 		border-radius: 0.5rem;
-		box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.1);
+		border: 1px solid rgba(242, 216, 148, 0.18);
+		box-shadow: var(--metal-card-shadow);
 		transform-style: preserve-3d;
 		transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 	}
@@ -252,12 +253,12 @@ const speakers = [
 		font-weight: 700;
 		font-size: 1.5rem;
 		letter-spacing: 0.05em;
-		color: #4f4031;
+		color: var(--metal-ink);
 		padding: 0.75rem 3rem;
 		margin-top: 5rem;
-		border: 0.125rem solid #4f4031;
+		border: 0.125rem solid rgba(242, 216, 148, 0.6);
 		border-radius: 624.9375rem;
-		background: linear-gradient(180deg, #e6dac0 0%, #c4b188 100%);
+		background: linear-gradient(180deg, var(--metal-cream) 0%, var(--metal-gold) 100%);
 		transition:
 			transform 0.2s,
 			filter 0.2s;
@@ -281,7 +282,8 @@ const speakers = [
 		bottom: 0;
 		left: 0;
 		width: 100%;
-		height: 80%;
+		height: 62%;
+		opacity: 0.22;
 		pointer-events: none;
 		z-index: 0;
 		overflow: hidden;
@@ -319,7 +321,7 @@ const speakers = [
 
 	@media (max-width: 900px) {
 		.speaker-section {
-			padding: 3rem 1.5rem 8rem 1.5rem;
+			padding: 5rem 1.5rem 7rem;
 		}
 
 		.title {
@@ -367,7 +369,7 @@ const speakers = [
 			padding-right: 0;
 			padding-left: 0;
 			margin-top: 0.25rem;
-			color: #4f4031;
+			color: var(--metal-muted);
 		}
 
 		.speaker-image {
@@ -396,7 +398,7 @@ const speakers = [
 			height: 15.625rem;
 			width: auto;
 			border-radius: 0.75rem;
-			box-shadow: 0 0.3125rem 0.9375rem rgba(0, 0, 0, 0.1);
+			box-shadow: var(--metal-card-shadow);
 			flex-shrink: 0;
 		}
 

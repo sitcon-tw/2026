@@ -125,10 +125,11 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 	}
 
 	.header-img {
-		border-radius: 1rem;
+		border-radius: 0.5rem;
 		object-fit: cover;
 		height: 20rem;
 		margin-bottom: 1rem;
+		box-shadow: var(--metal-card-shadow);
 	}
 
 	/* Community Section */
@@ -164,10 +165,11 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 	}
 
 	.community-item {
-		background-color: #ffffff;
-		border-radius: 1rem;
+		background: rgba(255, 244, 214, 0.88);
+		border: 1px solid rgba(242, 216, 148, 0.34);
+		border-radius: 0.5rem;
 		padding: 1rem;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.16);
 		color: #3c2d0e;
 	}
 
@@ -175,7 +177,7 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 		font-size: 2.5rem;
 		font-weight: bold;
 		margin-bottom: 0;
-		color: #d1a348;
+		color: var(--metal-bronze);
 	}
 
 	.community-item .community-label {
@@ -207,20 +209,21 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 	}
 
 	.recap-stat {
-		background-color: #3c2d0e;
-		border-radius: 1rem;
+		background: var(--metal-surface-strong);
+		border: 1px solid var(--metal-line);
+		border-radius: 0.5rem;
 		padding: 1.5rem 1rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--metal-card-shadow);
 	}
 
 	.recap-number {
 		font-size: 2.5rem;
 		font-weight: bold;
-		color: #e8bb5f;
+		color: var(--metal-gold-soft);
 		line-height: 1;
 	}
 
@@ -239,10 +242,11 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 	}
 
 	.recap-chart-item {
-		background-color: #3c2d0e;
-		border-radius: 1rem;
+		background: var(--metal-surface-strong);
+		border: 1px solid var(--metal-line);
+		border-radius: 0.5rem;
 		padding: 1.5rem;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--metal-card-shadow);
 	}
 
 	.chart-title {
@@ -267,9 +271,10 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 
 	.history-item {
 		position: relative;
-		border-radius: 1rem;
+		border-radius: 0.5rem;
 		overflow: hidden;
 		height: 15rem;
+		box-shadow: var(--metal-card-shadow);
 	}
 
 	.history-image {
@@ -345,12 +350,12 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 	.media-item {
 		position: relative;
 		display: block;
-		border-radius: 1rem;
+		border-radius: 0.5rem;
 		overflow: hidden;
 		transition:
 			box-shadow 0.3s ease,
 			transform 0.3s ease;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.16);
 	}
 
 	.media-item:hover {

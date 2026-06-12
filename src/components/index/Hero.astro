@@ -33,7 +33,9 @@ const lang = Astro.props.lang ?? "zh";
 		width: 100%;
 		height: 100dvh;
 		overflow: hidden;
-		background: radial-gradient(circle at 56% 36%, rgba(246, 216, 142, 0.38) 0%, rgba(184, 137, 45, 0.22) 34%, transparent 62%), linear-gradient(135deg, #6b4a18 0%, #aa7d2e 48%, #493514 100%);
+		background:
+			radial-gradient(circle at 57% 34%, rgba(242, 216, 148, 0.34) 0%, rgba(141, 99, 48, 0.18) 32%, transparent 62%), radial-gradient(circle at 78% 8%, rgba(216, 212, 199, 0.2), transparent 34rem),
+			linear-gradient(135deg, #11100d 0%, #2c2418 48%, #15140f 100%);
 		z-index: -1;
 		animation: fadeIn 2s ease-out forwards;
 	}
@@ -48,14 +50,16 @@ const lang = Astro.props.lang ?? "zh";
 
 	.bg-fixed::before {
 		z-index: 0;
-		background: repeating-linear-gradient(108deg, rgba(255, 244, 207, 0.055) 0 1px, transparent 1px 9px), repeating-linear-gradient(18deg, rgba(36, 24, 8, 0.04) 0 1px, transparent 1px 13px);
-		mix-blend-mode: soft-light;
-		opacity: 0.62;
+		background:
+			linear-gradient(115deg, transparent 0%, rgba(255, 246, 220, 0.12) 46%, transparent 54%), repeating-linear-gradient(108deg, rgba(255, 244, 207, 0.045) 0 1px, transparent 1px 10px),
+			repeating-linear-gradient(18deg, rgba(216, 212, 199, 0.032) 0 1px, transparent 1px 14px);
+		mix-blend-mode: screen;
+		opacity: 0.52;
 	}
 
 	.bg-fixed::after {
 		z-index: 2;
-		background: radial-gradient(ellipse at 52% 42%, transparent 0%, transparent 48%, rgba(28, 18, 4, 0.34) 100%);
+		background: radial-gradient(ellipse at 52% 42%, transparent 0%, transparent 48%, rgba(8, 8, 7, 0.48) 100%);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

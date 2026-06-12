@@ -263,9 +263,9 @@ const supportersList = sponsors.supporters as Sponsor[];
 
 	<style>
 		.sponsor-container {
-			background-color: #f2f2f2;
-			padding: 4rem 1rem;
-			color: #333;
+			background: radial-gradient(circle at 15% 12%, rgba(242, 216, 148, 0.12), transparent 30rem), linear-gradient(180deg, rgba(20, 19, 15, 0.98), rgba(36, 35, 31, 0.96));
+			padding: var(--section-padding);
+			color: var(--metal-cream);
 			font-family: sans-serif;
 		}
 
@@ -280,14 +280,14 @@ const supportersList = sponsors.supporters as Sponsor[];
 		h2 {
 			font-size: 1.3rem;
 			margin-bottom: 1rem;
-			color: #1f2937;
+			color: var(--metal-cream);
 		}
 
 		h3 {
 			font-size: 1.1rem;
 			font-weight: bold;
 			margin-top: 2rem;
-			color: #222;
+			color: var(--metal-gold-soft);
 			scroll-margin-top: 5rem;
 		}
 
@@ -295,11 +295,13 @@ const supportersList = sponsors.supporters as Sponsor[];
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			background: none;
-			border: none;
-			padding: 0;
+			background: rgba(255, 244, 214, 0.08);
+			border: 1px solid rgba(242, 216, 148, 0.2);
+			border-radius: 0.5rem;
+			padding: 1.5rem;
 			cursor: pointer;
 			width: 100%;
+			min-height: 8rem;
 			outline: none;
 			-webkit-tap-highlight-color: transparent;
 		}
@@ -309,12 +311,17 @@ const supportersList = sponsors.supporters as Sponsor[];
 			max-width: 10rem;
 			height: auto;
 			transition: transform 0.3s ease;
-			mix-blend-mode: multiply;
 			display: block;
+			filter: saturate(0.92) contrast(1.04);
 		}
 
 		.logo-box:hover img {
 			transform: scale(1.05);
+		}
+
+		.logo-box:hover {
+			background: rgba(255, 244, 214, 0.13);
+			border-color: rgba(242, 216, 148, 0.38);
 		}
 
 		.top-tier-grid {
@@ -389,8 +396,9 @@ const supportersList = sponsors.supporters as Sponsor[];
 		}
 
 		.dialog-wrapper {
-			background: #fff;
-			border-radius: 1rem;
+			background: rgba(244, 239, 229, 0.96);
+			border: 1px solid rgba(242, 216, 148, 0.36);
+			border-radius: 0.5rem;
 			padding: 1.5rem;
 			position: relative;
 			box-shadow: 0 1.5rem 3rem -0.75rem rgba(0, 0, 0, 0.25);
@@ -436,8 +444,8 @@ const supportersList = sponsors.supporters as Sponsor[];
 		}
 
 		.badge {
-			background-color: #e0e7ff;
-			color: #4338ca;
+			background-color: rgba(141, 99, 48, 0.16);
+			color: var(--metal-bronze);
 			font-size: 0.8rem;
 			font-weight: 700;
 			padding: 0.25rem 0.75rem;

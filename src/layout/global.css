@@ -2,9 +2,26 @@
 	--max-width: 1400px;
 	--content-max-width: 1200px;
 	--black: #000000;
-	--coffee: #3c2d0e;
-	--silence-white: #f2f2f2;
-	--copper: #431b0a;
+	--coffee: #2d2111;
+	--silence-white: #f4efe5;
+	--copper: #8a5326;
+	--metal-ink: #14130f;
+	--metal-charcoal: #24231f;
+	--metal-bronze: #8d6330;
+	--metal-gold: #d6b463;
+	--metal-gold-soft: #f2d894;
+	--metal-silver: #d8d4c7;
+	--metal-cream: #fff3d2;
+	--metal-muted: rgba(244, 239, 229, 0.72);
+	--metal-line: rgba(242, 216, 148, 0.28);
+	--metal-surface: rgba(28, 25, 20, 0.72);
+	--metal-surface-strong: rgba(20, 19, 15, 0.9);
+	--metal-glass: rgba(255, 244, 214, 0.08);
+	--metal-bg:
+		radial-gradient(circle at 18% 12%, rgba(242, 216, 148, 0.18), transparent 32rem), radial-gradient(circle at 82% 22%, rgba(216, 212, 199, 0.16), transparent 34rem),
+		linear-gradient(135deg, #11100d 0%, #2b2418 42%, #14130f 100%);
+	--metal-card-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.32);
+	--section-padding: clamp(5rem, 9vw, 9rem) clamp(1.25rem, 4vw, 4rem);
 }
 
 * {
@@ -34,12 +51,12 @@ html {
 }
 
 body {
-	background-color: #ac782b;
+	background: var(--metal-bg);
 	color: var(--silence-white);
 	font-family: "GenKiGothicTW", sans-serif;
 	font-optical-sizing: auto;
 	font-size: 17px;
-	color: #fff;
+	color: var(--silence-white);
 }
 
 h1,
@@ -63,13 +80,14 @@ h1 {
 }
 
 h2 {
-	font-size: 5rem;
+	font-size: clamp(2.75rem, 7vw, 5rem);
 }
 
 p {
 	line-height: 1.5;
 	margin-bottom: 1rem;
 	word-break: break-word;
+	color: inherit;
 }
 
 a {
@@ -98,6 +116,17 @@ a {
 	text-decoration: none;
 	z-index: 10000;
 	font-weight: bold;
+}
+
+::selection {
+	background: rgba(242, 216, 148, 0.35);
+	color: var(--metal-cream);
+}
+
+@supports (background: color-mix(in srgb, black, white)) {
+	body {
+		background-color: color-mix(in srgb, var(--metal-ink), var(--metal-bronze) 14%);
+	}
 }
 
 .skip-link:focus {

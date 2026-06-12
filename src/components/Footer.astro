@@ -41,15 +41,17 @@ const socialLinks = [
 
 <style>
 	footer {
-		background-color: #ffd172;
-		color: #2b2e3a;
+		background: radial-gradient(circle at 80% 10%, rgba(242, 216, 148, 0.18), transparent 30rem), linear-gradient(180deg, #24231f 0%, #11100d 100%);
+		color: var(--metal-cream);
 		overflow-y: hidden;
 		position: relative;
 		z-index: 100;
+		border-top: 1px solid var(--metal-line);
 	}
 
 	.social-wrapper {
-		background-color: #f1b12e;
+		background: rgba(255, 244, 214, 0.06);
+		border-bottom: 1px solid var(--metal-line);
 	}
 
 	.social {
@@ -70,7 +72,8 @@ const socialLinks = [
 	}
 
 	.social a:hover {
-		text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
+		color: var(--metal-gold-soft);
+		text-shadow: 0 0 1rem rgba(242, 216, 148, 0.22);
 		transform: scale(1.05);
 	}
 
@@ -103,7 +106,8 @@ const socialLinks = [
 	}
 
 	.info-item-links a:hover {
-		opacity: 0.5;
+		color: var(--metal-gold-soft);
+		opacity: 1;
 	}
 
 	.info-item-links.grid-layout {
@@ -120,6 +124,7 @@ const socialLinks = [
 		margin: 0 auto;
 		padding: 0rem 2rem;
 		transform: translateY(2.7%);
+		opacity: 0.82;
 	}
 
 	@media (max-width: 60rem) {

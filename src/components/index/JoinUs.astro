@@ -44,7 +44,8 @@ const t = useTranslations(lang).joinUs;
 
 <style>
 	section {
-		background-color: white;
+		background: radial-gradient(circle at 18% 20%, rgba(216, 212, 199, 0.12), transparent 28rem), linear-gradient(180deg, rgba(244, 239, 229, 0.96), rgba(229, 218, 195, 0.94));
+		color: var(--coffee);
 	}
 	.title {
 		display: flex;
@@ -55,11 +56,11 @@ const t = useTranslations(lang).joinUs;
 		width: 90%;
 	}
 	h2 {
-		color: #828282;
+		color: rgba(45, 33, 17, 0.56);
 	}
 
 	h2:nth-of-type(2) {
-		color: #595959;
+		color: var(--coffee);
 	}
 
 	.content-container {
@@ -71,14 +72,14 @@ const t = useTranslations(lang).joinUs;
 
 	.content-text {
 		text-align: center;
-		color: black;
+		color: var(--coffee);
 		font-size: 1.2rem;
 		font-weight: 500;
 		margin: 5rem 10rem auto;
 	}
 
 	.content-list {
-		color: black;
+		color: var(--coffee);
 		font-weight: bold;
 		margin: 5rem 12rem;
 	}
@@ -98,11 +99,9 @@ const t = useTranslations(lang).joinUs;
 		cursor: pointer;
 		text-decoration: none;
 		font-weight: bold;
-		color: #595959;
-		background:
-			linear-gradient(124deg, rgba(133, 138, 146, 0) -3.36%, rgba(133, 138, 146, 0.5) 31.33%, rgba(133, 138, 146, 0.75) 69.49%, rgba(133, 138, 146, 0.88) 96.26%, #858a92 98.2%),
-			radial-gradient(390.63% 225.3% at 8.72% -121.17%, #fff 0%, rgba(255, 255, 255, 0) 100%);
-		border: 0.0625rem solid #595959;
+		color: var(--metal-ink);
+		background: linear-gradient(145deg, var(--metal-cream), var(--metal-silver));
+		border: 0.0625rem solid rgba(45, 33, 17, 0.28);
 		transition:
 			transform 0.3s ease,
 			box-shadow 0.3s ease;
@@ -118,7 +117,7 @@ const t = useTranslations(lang).joinUs;
 		width: 100%;
 		height: 100%;
 		background:
-			linear-gradient(124deg, rgba(133, 138, 146, 0.1) -3.36%, rgba(133, 138, 146, 0.6) 31.33%, rgba(133, 138, 146, 0.8) 69.49%, rgba(133, 138, 146, 0.9) 96.26%, #7a7f87 98.2%),
+			linear-gradient(124deg, rgba(216, 212, 199, 0.2) -3.36%, rgba(216, 212, 199, 0.72) 48%, rgba(141, 99, 48, 0.28) 100%),
 			radial-gradient(390.63% 225.3% at 8.72% -121.17%, #fff 0%, rgba(255, 255, 255, 0) 100%);
 		transform: translateX(-100%);
 		z-index: -1;
@@ -132,8 +131,8 @@ const t = useTranslations(lang).joinUs;
 
 	.content-btn a:hover {
 		transform: translateY(-0.1875rem);
-		box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.1);
-		border-color: #333333;
+		box-shadow: 0 0.75rem 1.5rem rgba(45, 33, 17, 0.16);
+		border-color: rgba(45, 33, 17, 0.44);
 	}
 
 	.content-btn a svg path {
