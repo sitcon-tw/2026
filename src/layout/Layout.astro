@@ -165,6 +165,31 @@ const eventJsonLd = JSON.stringify({
 		<link rel="alternate" hreflang="en" href={localizedUrls.en} />
 		<link rel="alternate" hreflang="x-default" href={localizedUrls.zh} />
 
+		<script is:inline>
+			(() => {
+				const LANGUAGE_STORAGE_KEY = "sitcon2026:preferred-language";
+				const pathname = window.location.pathname.replace(/\/+$/, "/");
+				if (pathname !== "/2026/") return;
+
+				let preferredLanguage = null;
+				try {
+					preferredLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+				} catch {
+					preferredLanguage = null;
+				}
+
+				const languages = navigator.languages?.length ? navigator.languages : [navigator.language];
+				const readsChinese = languages.some(language => /^zh\b/i.test(language));
+				const shouldUseEnglish = preferredLanguage === "en" || (!preferredLanguage && !readsChinese);
+				if (!shouldUseEnglish) return;
+
+				const targetUrl = new URL("/2026/en/", window.location.origin);
+				targetUrl.search = window.location.search;
+				targetUrl.hash = window.location.hash;
+				window.location.replace(targetUrl);
+			})();
+		</script>
+
 		<link rel="preconnect" href="https://font.emtech.cc" />
 		<link rel="preconnect" href="https://www.googletagmanager.com" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />

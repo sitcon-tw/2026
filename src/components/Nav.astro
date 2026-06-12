@@ -41,7 +41,7 @@ const languageSwitchText = lang === "en" ? t.nav.languageChinese : t.nav.languag
 				))
 			}
 
-			<a href={alternateHref} class="nav-item lang-switch" aria-label={languageSwitchLabel}>
+			<a href={alternateHref} class="nav-item lang-switch" aria-label={languageSwitchLabel} data-language-target={lang === "en" ? "zh" : "en"}>
 				{languageSwitchText}
 			</a>
 		</div>
@@ -60,8 +60,20 @@ const languageSwitchText = lang === "en" ? t.nav.languageChinese : t.nav.languag
 
 	const menu = document.querySelector(".hamburger") as HTMLButtonElement;
 	const navMenu = document.querySelector(".nav-container") as HTMLDivElement;
+	const languageSwitch = document.querySelector("[data-language-target]") as HTMLAnchorElement | null;
 
 	let animating = false;
+	const LANGUAGE_STORAGE_KEY = "sitcon2026:preferred-language";
+
+	languageSwitch?.addEventListener("click", () => {
+		const targetLanguage = languageSwitch.dataset.languageTarget;
+		if (!targetLanguage) return;
+		try {
+			window.localStorage.setItem(LANGUAGE_STORAGE_KEY, targetLanguage);
+		} catch {
+			// Private browsing or blocked storage should not prevent navigation.
+		}
+	});
 
 	gsap.fromTo(
 		".hamburger",
