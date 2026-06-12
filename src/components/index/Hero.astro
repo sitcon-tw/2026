@@ -506,8 +506,13 @@ const lang = Astro.props.lang ?? "zh";
 		let animationFrameId: number | null = null;
 		let isRunning = false;
 
+		const isHeroInViewport = () => {
+			const rect = heroContainer.getBoundingClientRect();
+			return rect.bottom > 0 && rect.top < window.innerHeight;
+		};
+
 		const startAnimation = () => {
-			if (isRunning) return;
+			if (isRunning || !isHeroInViewport()) return;
 			isRunning = true;
 			animate();
 		};
@@ -671,7 +676,7 @@ const lang = Astro.props.lang ?? "zh";
 				const entry = entries[0];
 				if (!entry) return;
 
-				if (entry.isIntersecting) {
+				if (entry.isIntersecting && isHeroInViewport()) {
 					// Hero is visible, start animation
 					startAnimation();
 				} else {
