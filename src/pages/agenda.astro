@@ -538,4 +538,138 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 	.mcp-btn:hover {
 		transform: scale(1.05);
 	}
+
+	main {
+		background: var(--metal-bg);
+		color: var(--metal-cream);
+	}
+
+	.agenda-header {
+		margin-top: clamp(7rem, 11vw, 9rem);
+		padding: 0 clamp(1rem, 4vw, 3rem);
+	}
+
+	.agenda-title,
+	.gallery-title {
+		font-size: clamp(3rem, 7vw, 5rem);
+		line-height: 0.98;
+		margin-bottom: 1.5rem;
+		color: var(--metal-cream);
+	}
+
+	.agenda-legend {
+		gap: 0.6rem;
+		padding-inline: 1rem;
+	}
+
+	.legend-item {
+		padding: 0.45rem 0.7rem;
+		border: 1px solid rgba(242, 216, 148, 0.18);
+		border-radius: 999px;
+		background: rgba(255, 244, 214, 0.08);
+		color: rgba(244, 239, 229, 0.82);
+		font-size: 0.92rem;
+	}
+
+	.legend-color {
+		width: 0.8rem;
+		height: 0.8rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 244, 214, 0.18);
+	}
+
+	.legend-color.keynote {
+		background: linear-gradient(145deg, #f2d894, #8d6330);
+	}
+
+	.legend-color.presentation,
+	.legend-color.generic {
+		background: linear-gradient(145deg, #6f6858, #24231f);
+	}
+
+	.legend-color.undefined {
+		background: linear-gradient(145deg, #a59acd, #514a70);
+	}
+
+	.legend-color.espresso {
+		background: linear-gradient(145deg, #f4efe5, #b9b2a5);
+	}
+
+	.legend-color.sponsored {
+		background: linear-gradient(145deg, #d89178, #8d4d3d);
+	}
+
+	.legend-color.forum {
+		background: linear-gradient(145deg, #9ebf9f, #4f7656);
+	}
+
+	.mcp-section {
+		margin-top: clamp(4rem, 8vw, 6rem);
+		padding: 0 clamp(1rem, 4vw, 3rem);
+	}
+
+	.mcp-container {
+		max-width: 66rem;
+		padding: clamp(2rem, 5vw, 4rem);
+		border: 1px solid rgba(242, 216, 148, 0.24);
+		border-radius: var(--metal-radius);
+		background: linear-gradient(145deg, rgba(255, 244, 214, 0.12), rgba(20, 19, 15, 0.55));
+		box-shadow: var(--metal-card-shadow);
+		backdrop-filter: blur(1rem);
+		-webkit-backdrop-filter: blur(1rem);
+	}
+
+	.mcp-title {
+		font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+		color: var(--metal-cream);
+		text-align: left;
+	}
+
+	.mcp-desc {
+		color: var(--metal-muted);
+		font-size: clamp(1rem, 1.7vw, 1.15rem);
+	}
+
+	.mcp-feature-item {
+		border: 1px solid rgba(242, 216, 148, 0.2);
+		border-radius: 999px;
+		background: rgba(255, 244, 214, 0.1);
+		color: rgba(244, 239, 229, 0.86);
+	}
+
+	.mcp-btn {
+		border: 1px solid rgba(242, 216, 148, 0.36);
+		background: linear-gradient(145deg, var(--metal-cream), var(--metal-silver));
+		color: var(--metal-ink);
+		box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
+		transition:
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.mcp-btn:hover {
+		box-shadow: 0 1rem 2.2rem rgba(0, 0, 0, 0.24);
+		transform: translateY(-0.125rem);
+	}
+
+	@media (max-width: 600px) {
+		.agenda-header {
+			text-align: left;
+		}
+
+		.agenda-legend {
+			justify-content: flex-start;
+			padding-inline: 0;
+		}
+
+		.mcp-container {
+			padding: 1.5rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.mcp-btn {
+			transition: none;
+		}
+	}
 </style>

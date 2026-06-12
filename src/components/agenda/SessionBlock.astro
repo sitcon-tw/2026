@@ -360,6 +360,68 @@ const tAgenda = useTranslations(lang).agenda;
 			display: block;
 		}
 	}
+
+	.session-block {
+		border: 1px solid rgba(255, 244, 214, 0.16);
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+	}
+
+	.session-block.keynote {
+		background: linear-gradient(145deg, #8d6330, #5f3f1b);
+	}
+
+	.session-block.presentation,
+	.session-block.generic {
+		background: linear-gradient(145deg, #3a3934, #20201d);
+	}
+
+	.session-block.undefined {
+		background: linear-gradient(145deg, #686082, #47415d);
+	}
+
+	.session-block.espresso {
+		background: linear-gradient(145deg, #f4efe5, #bdb6aa);
+		color: var(--metal-ink);
+	}
+
+	.session-block.sponsored {
+		background: linear-gradient(145deg, #a86858, #6f3a30);
+	}
+
+	.session-block.forum {
+		background: linear-gradient(145deg, #647d61, #384b38);
+	}
+
+	.session-block.event,
+	.session-block.lightning {
+		background: linear-gradient(145deg, #465b7e, #23304b);
+	}
+
+	.session-block.no-description {
+		background: rgba(255, 244, 214, 0.09);
+		color: rgba(244, 239, 229, 0.68);
+	}
+
+	.session-name {
+		line-height: 1.25;
+		-webkit-line-clamp: 4;
+		line-clamp: 4;
+	}
+
+	.session-tag {
+		color: var(--metal-gold-soft);
+	}
+
+	.espresso .session-tag {
+		color: #6f4d24;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.session-block,
+		.session-link {
+			transition: none;
+		}
+	}
 </style>
 
 <script>
@@ -442,8 +504,19 @@ const tAgenda = useTranslations(lang).agenda;
 		document.dispatchEvent(new CustomEvent(BOOKMARKS_CHANGED_EVENT, { detail: { sessionId } }));
 	}
 
-	// Add click handler to open modal
-	document.addEventListener("DOMContentLoaded", () => {
+	let sessionBlockController: AbortController | null = null;
+	const sessionBlockLifecycleController = new AbortController();
+	const sessionBlockLifecycleSignal = sessionBlockLifecycleController.signal;
+
+	function cleanupSessionBlocks() {
+		sessionBlockController?.abort();
+		sessionBlockController = null;
+	}
+
+	function mountSessionBlocks() {
+		cleanupSessionBlocks();
+		sessionBlockController = new AbortController();
+		const { signal } = sessionBlockController;
 		const sessionBlocks = document.querySelectorAll(".session-block");
 		syncBookmarkIcons();
 
@@ -464,58 +537,86 @@ const tAgenda = useTranslations(lang).agenda;
 					dispatchBookmarksChanged(sessionId);
 				};
 
-				bookmarkEl.addEventListener("click", toggle);
-				bookmarkEl.addEventListener("keydown", e => {
-					if ("key" in e && (e.key === "Enter" || e.key === " ")) toggle(e);
-				});
+				bookmarkEl.addEventListener("click", toggle, { signal });
+				bookmarkEl.addEventListener(
+					"keydown",
+					e => {
+						if ("key" in e && (e.key === "Enter" || e.key === " ")) toggle(e);
+					},
+					{ signal }
+				);
 			}
 
-			block.addEventListener("click", e => {
-				// Don't trigger if just finished dragging the timeline
-				if ((window as any).__agendaDragState?.justDragged) {
+			block.addEventListener(
+				"click",
+				e => {
+					// Don't trigger if just finished dragging the timeline
+					if ((window as any).__agendaDragState?.justDragged) {
+						e.preventDefault();
+						return;
+					}
+
+					// Don't trigger if clicking an inner link (not the block itself)
+					const closestAnchor = (e.target as HTMLElement).closest("a");
+					if (closestAnchor && closestAnchor !== block) {
+						return;
+					}
+
+					// Don't trigger if clicking the bookmark
+					if ((e.target as HTMLElement).closest(".session-favorite")) {
+						return;
+					}
+
+					const id = block.getAttribute("data-session-id") || "";
+					const detail = id ? getAgendaSession(id) : null;
+					const description = detail?.description ?? "";
+
+					if (!description || description === "") {
+						return;
+					}
+
+					// Only intercept unmodified primary-button clicks so modifier-clicks
+					// (Ctrl/Cmd/Shift/Alt or middle-click) keep default link behavior.
+					const mouseEvent = e as MouseEvent;
+					if (mouseEvent.defaultPrevented || mouseEvent.button !== 0 || mouseEvent.metaKey || mouseEvent.ctrlKey || mouseEvent.shiftKey || mouseEvent.altKey) {
+						return;
+					}
+
 					e.preventDefault();
-					return;
-				}
 
-				// Don't trigger if clicking an inner link (not the block itself)
-				const closestAnchor = (e.target as HTMLElement).closest("a");
-				if (closestAnchor && closestAnchor !== block) {
-					return;
-				}
-
-				// Don't trigger if clicking the bookmark
-				if ((e.target as HTMLElement).closest(".session-favorite")) {
-					return;
-				}
-
-				const id = block.getAttribute("data-session-id") || "";
-				const detail = id ? getAgendaSession(id) : null;
-				const description = detail?.description ?? "";
-
-				if (!description || description === "") {
-					return;
-				}
-
-				// Only intercept unmodified primary-button clicks so modifier-clicks
-				// (Ctrl/Cmd/Shift/Alt or middle-click) keep default link behavior.
-				const mouseEvent = e as MouseEvent;
-				if (mouseEvent.defaultPrevented || mouseEvent.button !== 0 || mouseEvent.metaKey || mouseEvent.ctrlKey || mouseEvent.shiftKey || mouseEvent.altKey) {
-					return;
-				}
-
-				e.preventDefault();
-
-				// Trigger modal update event
-				const event = new CustomEvent("openSessionModal", {
-					detail
-				});
-				document.dispatchEvent(event);
-			});
+					// Trigger modal update event
+					const event = new CustomEvent("openSessionModal", {
+						detail
+					});
+					document.dispatchEvent(event);
+				},
+				{ signal }
+			);
 		});
-	});
 
-	// Sync bookmark icons when toggled from modal ribbon or another duplicate block.
-	document.addEventListener(BOOKMARKS_CHANGED_EVENT, ((e: CustomEvent) => {
-		syncBookmarkIcons(e.detail?.sessionId);
-	}) as EventListener);
+		// Sync bookmark icons when toggled from modal ribbon or another duplicate block.
+		document.addEventListener(
+			BOOKMARKS_CHANGED_EVENT,
+			((e: CustomEvent) => {
+				syncBookmarkIcons(e.detail?.sessionId);
+			}) as EventListener,
+			{ signal }
+		);
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", mountSessionBlocks, { once: true, signal: sessionBlockLifecycleSignal });
+	} else {
+		mountSessionBlocks();
+	}
+
+	document.addEventListener("astro:page-load", mountSessionBlocks, { signal: sessionBlockLifecycleSignal });
+	document.addEventListener(
+		"astro:before-swap",
+		() => {
+			cleanupSessionBlocks();
+			sessionBlockLifecycleController.abort();
+		},
+		{ once: true, signal: sessionBlockLifecycleSignal }
+	);
 </script>

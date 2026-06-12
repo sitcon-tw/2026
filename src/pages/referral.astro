@@ -32,7 +32,7 @@ const { referral } = i18n;
 								</div>
 								{index < 2 && (
 									<div class="step-arrow" aria-hidden="true">
-										<ArrowRight size="48" stroke-width="3.4" color="#ffd172" />
+										<ArrowRight size="48" stroke-width="3.4" color="currentColor" />
 									</div>
 								)}
 							</>
@@ -557,6 +557,167 @@ const { referral } = i18n;
 		table th,
 		table td {
 			padding: 0.5rem 0.75rem;
+		}
+	}
+
+	.hero {
+		min-height: min(56rem, 100svh);
+		padding: clamp(7rem, 11vw, 10rem) clamp(1rem, 4vw, 3rem) clamp(4rem, 8vw, 6rem);
+		background: radial-gradient(circle at 18% 14%, rgba(242, 216, 148, 0.18), transparent 28rem), linear-gradient(135deg, #11100d 0%, #2b2418 48%, #14130f 100%);
+	}
+
+	.hero-content {
+		gap: clamp(2rem, 5vw, 3.5rem);
+		margin: 0 auto;
+	}
+
+	.hero-title {
+		max-width: 58rem;
+		font-size: clamp(3rem, 7vw, 5rem);
+		font-family: "GenKiMinTW", serif;
+		line-height: 0.98;
+		color: var(--metal-cream);
+	}
+
+	.hero-subtitle {
+		max-width: 40rem;
+		font-size: clamp(1.05rem, 2vw, 1.35rem);
+		font-weight: 500;
+		color: var(--metal-muted);
+		line-height: 1.75;
+	}
+
+	.hero-steps {
+		align-items: stretch;
+		gap: clamp(1rem, 2.4vw, 1.75rem);
+	}
+
+	.step-arrow {
+		color: var(--metal-gold-soft);
+		opacity: 0.78;
+	}
+
+	.hero-step {
+		width: min(100%, 20rem);
+		padding: 1rem;
+		border: 1px solid rgba(242, 216, 148, 0.22);
+		border-radius: var(--metal-radius);
+		background: linear-gradient(145deg, rgba(255, 244, 214, 0.1), rgba(20, 19, 15, 0.36));
+		box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.22);
+	}
+
+	.hero-step-image {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 1.18;
+		border: 1px solid rgba(242, 216, 148, 0.22);
+		border-radius: var(--metal-radius);
+		background: rgba(244, 239, 229, 0.92);
+		box-shadow: none;
+	}
+
+	.hero-step-title {
+		color: var(--metal-gold-soft);
+		font-size: clamp(1.25rem, 2vw, 1.5rem);
+	}
+
+	.hero-step-description {
+		color: rgba(244, 239, 229, 0.78);
+	}
+
+	.hero-tips {
+		border: 1px solid rgba(242, 216, 148, 0.28);
+		border-radius: 999px;
+		background: rgba(255, 244, 214, 0.1);
+		color: var(--metal-cream);
+	}
+
+	.content {
+		background: var(--metal-light-bg);
+		color: var(--metal-ink);
+		padding: clamp(4rem, 8vw, 7rem) clamp(1rem, 4vw, 3rem);
+	}
+
+	.section {
+		max-width: 62rem;
+		margin-bottom: clamp(3rem, 6vw, 5rem);
+		border-bottom-color: rgba(45, 33, 17, 0.12);
+	}
+
+	h2 {
+		font-size: clamp(2.3rem, 5vw, 4rem);
+		line-height: 1.05;
+		color: var(--metal-ink);
+	}
+
+	.reward-card,
+	.rules-box,
+	.disclaimer {
+		border: 1px solid var(--metal-light-line);
+		border-radius: var(--metal-radius);
+		background: rgba(255, 255, 255, 0.58);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.72),
+			0 1rem 2.5rem rgba(45, 33, 17, 0.08);
+	}
+
+	.reward-card-title {
+		color: var(--metal-bronze);
+		font-size: clamp(1.6rem, 3vw, 2.25rem);
+		line-height: 1.15;
+	}
+
+	table {
+		border: 1px solid rgba(45, 33, 17, 0.14);
+		border-radius: var(--metal-radius);
+		background: rgba(255, 255, 255, 0.72);
+	}
+
+	table th {
+		background: rgba(141, 99, 48, 0.14);
+		color: var(--metal-ink);
+		letter-spacing: 0;
+	}
+
+	table td {
+		color: #2d2111;
+	}
+
+	table tbody tr {
+		transition: background-color 0.2s ease;
+	}
+
+	table tbody tr:hover {
+		background: rgba(141, 99, 48, 0.08);
+	}
+
+	.disclaimer {
+		border-left: 0.25rem solid var(--metal-bronze);
+	}
+
+	@media (max-width: 768px) {
+		.hero-steps {
+			align-items: center;
+		}
+
+		.hero-step {
+			width: min(100%, 22rem);
+		}
+
+		.hero-step-image {
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero-step-image,
+		table tbody tr {
+			transition: none;
+		}
+
+		.hero-step:hover .hero-step-image {
+			transform: none;
 		}
 	}
 </style>

@@ -66,6 +66,8 @@ import "./GridPerson.css";
 </div>
 
 <script>
+	const gridPersonLifecycleController = new AbortController();
+	const gridPersonLifecycleSignal = gridPersonLifecycleController.signal;
 	let gridPersonController: AbortController | null = null;
 
 	const cleanupGridPerson = () => {
@@ -188,11 +190,18 @@ import "./GridPerson.css";
 	};
 
 	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initGridPerson, { once: true });
+		document.addEventListener("DOMContentLoaded", initGridPerson, { once: true, signal: gridPersonLifecycleSignal });
 	} else {
 		initGridPerson();
 	}
 
-	document.addEventListener("astro:page-load", initGridPerson);
-	document.addEventListener("astro:before-swap", cleanupGridPerson);
+	document.addEventListener("astro:page-load", initGridPerson, { signal: gridPersonLifecycleSignal });
+	document.addEventListener(
+		"astro:before-swap",
+		() => {
+			cleanupGridPerson();
+			gridPersonLifecycleController.abort();
+		},
+		{ once: true, signal: gridPersonLifecycleSignal }
+	);
 </script>

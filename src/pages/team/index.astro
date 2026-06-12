@@ -151,6 +151,8 @@ const forum_url = "https://groups.google.com/g/sitcon-general/";
 </Layout>
 
 <script>
+	const teamAnchorLifecycleController = new AbortController();
+	const teamAnchorLifecycleSignal = teamAnchorLifecycleController.signal;
 	let observer: IntersectionObserver | null = null;
 
 	const initTeamAnchors = () => {
@@ -192,13 +194,20 @@ const forum_url = "https://groups.google.com/g/sitcon-general/";
 	};
 
 	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initTeamAnchors, { once: true });
+		document.addEventListener("DOMContentLoaded", initTeamAnchors, { once: true, signal: teamAnchorLifecycleSignal });
 	} else {
 		initTeamAnchors();
 	}
 
-	document.addEventListener("astro:page-load", initTeamAnchors);
-	document.addEventListener("astro:before-swap", cleanupTeamAnchors);
+	document.addEventListener("astro:page-load", initTeamAnchors, { signal: teamAnchorLifecycleSignal });
+	document.addEventListener(
+		"astro:before-swap",
+		() => {
+			cleanupTeamAnchors();
+			teamAnchorLifecycleController.abort();
+		},
+		{ once: true, signal: teamAnchorLifecycleSignal }
+	);
 </script>
 
 <style>
@@ -268,6 +277,84 @@ const forum_url = "https://groups.google.com/g/sitcon-general/";
 			gap: 2rem;
 		}
 		main {
+		}
+	}
+
+	main {
+		max-width: var(--max-width);
+		padding: clamp(6.5rem, 10vw, 8.5rem) clamp(1rem, 4vw, 3rem) 0;
+		color: var(--metal-cream);
+	}
+
+	h1 {
+		font-size: clamp(3rem, 7vw, 5rem);
+		line-height: 0.98;
+		margin-bottom: 1.25rem;
+		color: var(--metal-cream);
+	}
+
+	.top {
+		align-items: flex-end;
+		gap: clamp(2rem, 5vw, 4rem);
+		padding: 0 0 clamp(4rem, 7vw, 6rem);
+	}
+
+	.top-left {
+		max-width: 44rem;
+	}
+
+	.top-text {
+		max-width: 38rem;
+		color: var(--metal-muted);
+		line-height: 1.75;
+	}
+
+	.top-right-btn-group {
+		flex-wrap: wrap;
+		justify-content: flex-end;
+	}
+
+	.top-right-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 3rem;
+		height: auto;
+		border: 1px solid rgba(242, 216, 148, 0.36);
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.16), rgba(20, 19, 15, 0.38));
+		color: var(--metal-cream);
+		padding: 0.78rem 1.25rem;
+		border-radius: 999px;
+		font-size: 1rem;
+		box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
+		transition:
+			background 0.25s ease,
+			border-color 0.25s ease,
+			box-shadow 0.25s ease,
+			transform 0.25s ease;
+	}
+
+	.top-right-btn:hover {
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.26), rgba(20, 19, 15, 0.3));
+		border-color: rgba(242, 216, 148, 0.58);
+		box-shadow: 0 1rem 2.2rem rgba(0, 0, 0, 0.24);
+		transform: translateY(-0.125rem);
+	}
+
+	@media (max-width: 40rem) {
+		.top {
+			align-items: flex-start;
+			padding-bottom: 3rem;
+		}
+
+		.top-right-btn-group {
+			justify-content: flex-start;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.top-right-btn {
+			transition: none;
 		}
 	}
 </style>

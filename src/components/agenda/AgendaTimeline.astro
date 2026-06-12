@@ -615,6 +615,39 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 <script>
 	import { gsap } from "gsap";
 
+	const agendaTimelineController = new AbortController();
+	const agendaTimelineSignal = agendaTimelineController.signal;
+	const agendaTimelineTimers: number[] = [];
+	const setAgendaTimeout = (handler: TimerHandler, timeout?: number) => {
+		const id = window.setTimeout(() => {
+			const index = agendaTimelineTimers.indexOf(id);
+			if (index >= 0) agendaTimelineTimers.splice(index, 1);
+			if (!agendaTimelineSignal.aborted) {
+				if (typeof handler === "function") handler();
+				else window.setTimeout(handler, 0);
+			}
+		}, timeout);
+		agendaTimelineTimers.push(id);
+		return id;
+	};
+	const setAgendaInterval = (handler: TimerHandler, timeout?: number) => {
+		const id = window.setInterval(handler, timeout);
+		agendaTimelineTimers.push(id);
+		return id;
+	};
+
+	agendaTimelineSignal.addEventListener(
+		"abort",
+		() => {
+			agendaTimelineTimers.splice(0).forEach(id => {
+				window.clearTimeout(id);
+				window.clearInterval(id);
+			});
+		},
+		{ once: true }
+	);
+	document.addEventListener("astro:before-swap", () => agendaTimelineController.abort(), { once: true, signal: agendaTimelineSignal });
+
 	const scrollContainer = document.getElementById("agenda-scroll");
 	const scrollLeftBtn = document.getElementById("scroll-left");
 	const scrollRightBtn = document.getElementById("scroll-right");
@@ -643,28 +676,44 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 		// Set initial zoom
 		updateZoom();
 
-		zoomInBtn.addEventListener("click", () => {
-			timeScale = Math.min(maxZoom, timeScale + zoomStep);
-			updateZoom();
-		});
+		zoomInBtn.addEventListener(
+			"click",
+			() => {
+				timeScale = Math.min(maxZoom, timeScale + zoomStep);
+				updateZoom();
+			},
+			{ signal: agendaTimelineSignal }
+		);
 
-		zoomOutBtn.addEventListener("click", () => {
-			timeScale = Math.max(minZoom, timeScale - zoomStep);
-			updateZoom();
-		});
+		zoomOutBtn.addEventListener(
+			"click",
+			() => {
+				timeScale = Math.max(minZoom, timeScale - zoomStep);
+				updateZoom();
+			},
+			{ signal: agendaTimelineSignal }
+		);
 	}
 
 	if (scrollContainer && scrollLeftBtn && scrollRightBtn) {
 		const scrollAmount = 300; // pixels per scroll
 
 		// Button scroll handlers
-		scrollLeftBtn.addEventListener("click", () => {
-			scrollContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-		});
+		scrollLeftBtn.addEventListener(
+			"click",
+			() => {
+				scrollContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+			},
+			{ signal: agendaTimelineSignal }
+		);
 
-		scrollRightBtn.addEventListener("click", () => {
-			scrollContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
-		});
+		scrollRightBtn.addEventListener(
+			"click",
+			() => {
+				scrollContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
+			},
+			{ signal: agendaTimelineSignal }
+		);
 
 		// Drag to scroll with inertia using GSAP
 		let isDragging = false;
@@ -764,7 +813,7 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 			// Set global flag to prevent SessionModal from opening after drag
 			if (hasDragged) {
 				(window as any).__agendaDragState.justDragged = true;
-				setTimeout(() => {
+				setAgendaTimeout(() => {
 					(window as any).__agendaDragState.justDragged = false;
 				}, 50);
 			}
@@ -807,14 +856,14 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 		};
 
 		// Mouse events
-		scrollContainer.addEventListener("mousedown", startDrag);
-		document.addEventListener("mousemove", drag);
-		document.addEventListener("mouseup", endDrag);
+		scrollContainer.addEventListener("mousedown", startDrag, { signal: agendaTimelineSignal });
+		document.addEventListener("mousemove", drag, { signal: agendaTimelineSignal });
+		document.addEventListener("mouseup", endDrag, { signal: agendaTimelineSignal });
 
 		// Touch events
-		scrollContainer.addEventListener("touchstart", startDrag, { passive: false });
-		scrollContainer.addEventListener("touchmove", drag, { passive: false });
-		scrollContainer.addEventListener("touchend", endDrag);
+		scrollContainer.addEventListener("touchstart", startDrag, { passive: false, signal: agendaTimelineSignal });
+		scrollContainer.addEventListener("touchmove", drag, { passive: false, signal: agendaTimelineSignal });
+		scrollContainer.addEventListener("touchend", endDrag, { signal: agendaTimelineSignal });
 
 		scrollContainer.addEventListener(
 			"wheel",
@@ -850,7 +899,7 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 					});
 				}
 			},
-			{ passive: false }
+			{ passive: false, signal: agendaTimelineSignal }
 		);
 
 		// Update/destroy current time indicator based on whether now is between start and end time
@@ -942,7 +991,7 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 						scrollContainer.scrollLeft = ((percent - 13.5) / 100) * scrollContainer.scrollWidth;
 					});
 
-					setInterval(updateTimeIndicator, 1000);
+					setAgendaInterval(updateTimeIndicator, 1000);
 				}
 			}
 		}
@@ -968,37 +1017,41 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 	}
 
 	filterTabs.forEach(tab => {
-		tab.addEventListener("click", () => {
-			const filter = (tab as HTMLElement).dataset.filter;
-			if (!filter) return;
-			// When switching to "all" from URL-curated view, revert to default (clear URL and show all)
-			if (filter === "all" && timelineContainer?.classList.contains("agenda-url-curated")) {
-				document.dispatchEvent(new CustomEvent("clearUrlCuratedState"));
-				updateFilterTabSlider();
-				return;
-			}
-			// Sync active state to the other tab with same data-filter (desktop ↔ mobile)
-			const otherTabs = Array.from(filterTabs).filter(t => t !== tab && (t as HTMLElement).dataset.filter === filter);
-			filterTabs.forEach(t => {
-				t.setAttribute("aria-selected", "false");
-				t.classList.remove("active");
-			});
-			tab.setAttribute("aria-selected", "true");
-			tab.classList.add("active");
-			otherTabs.forEach(t => {
-				t.setAttribute("aria-selected", "true");
-				t.classList.add("active");
-			});
-			if (timelineContainer) {
-				if (filter === "favorites") {
-					timelineContainer.classList.add("agenda-filter-favorites");
-				} else {
-					timelineContainer.classList.remove("agenda-filter-favorites");
+		tab.addEventListener(
+			"click",
+			() => {
+				const filter = (tab as HTMLElement).dataset.filter;
+				if (!filter) return;
+				// When switching to "all" from URL-curated view, revert to default (clear URL and show all)
+				if (filter === "all" && timelineContainer?.classList.contains("agenda-url-curated")) {
+					document.dispatchEvent(new CustomEvent("clearUrlCuratedState"));
+					updateFilterTabSlider();
+					return;
 				}
-			}
-			updateFilterTabSlider();
-			updatePhoneTimeBlockVisibility();
-		});
+				// Sync active state to the other tab with same data-filter (desktop ↔ mobile)
+				const otherTabs = Array.from(filterTabs).filter(t => t !== tab && (t as HTMLElement).dataset.filter === filter);
+				filterTabs.forEach(t => {
+					t.setAttribute("aria-selected", "false");
+					t.classList.remove("active");
+				});
+				tab.setAttribute("aria-selected", "true");
+				tab.classList.add("active");
+				otherTabs.forEach(t => {
+					t.setAttribute("aria-selected", "true");
+					t.classList.add("active");
+				});
+				if (timelineContainer) {
+					if (filter === "favorites") {
+						timelineContainer.classList.add("agenda-filter-favorites");
+					} else {
+						timelineContainer.classList.remove("agenda-filter-favorites");
+					}
+				}
+				updateFilterTabSlider();
+				updatePhoneTimeBlockVisibility();
+			},
+			{ signal: agendaTimelineSignal }
+		);
 	});
 
 	// Mobile: hide time-blocks that have no visible sessions when filter is Favorites only; show empty message when no favorites
@@ -1037,11 +1090,15 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 		updateFilterTabSlider();
 		updatePhoneTimeBlockVisibility();
 	});
-	document.addEventListener("agendaBookmarksChanged", () => {
-		updatePhoneTimeBlockVisibility();
-	});
+	document.addEventListener(
+		"agendaBookmarksChanged",
+		() => {
+			updatePhoneTimeBlockVisibility();
+		},
+		{ signal: agendaTimelineSignal }
+	);
 	if (filterTabListSliderPairs.length > 0) {
-		window.addEventListener("resize", updateFilterTabSlider);
+		window.addEventListener("resize", updateFilterTabSlider, { signal: agendaTimelineSignal });
 	}
 
 	// Share Jam trigger: open share modal; show only when user has bookmarks
@@ -1071,7 +1128,7 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 					agendaMobileControls?.classList.add("share-button-visible");
 					agendaMobileControls?.classList.remove("share-button-hidden");
 					// Fade out glow after 2 seconds
-					setTimeout(() => {
+					setAgendaTimeout(() => {
 						shareJamTriggerMobile.classList.remove("glowing");
 					}, 2000);
 				} else if (!hasBookmarks && previousHasBookmarks) {
@@ -1107,17 +1164,25 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 	}
 
 	if (shareJamTrigger) {
-		shareJamTrigger.addEventListener("click", () => {
-			(window as any).openShareJamModal?.();
-		});
+		shareJamTrigger.addEventListener(
+			"click",
+			() => {
+				(window as any).openShareJamModal?.();
+			},
+			{ signal: agendaTimelineSignal }
+		);
 	}
 	if (shareJamTriggerMobile) {
-		shareJamTriggerMobile.addEventListener("click", () => {
-			(window as any).openShareJamModal?.();
-		});
+		shareJamTriggerMobile.addEventListener(
+			"click",
+			() => {
+				(window as any).openShareJamModal?.();
+			},
+			{ signal: agendaTimelineSignal }
+		);
 	}
 	updateShareJamTriggerVisibility();
-	document.addEventListener("agendaBookmarksChanged", updateShareJamTriggerVisibility);
+	document.addEventListener("agendaBookmarksChanged", updateShareJamTriggerVisibility, { signal: agendaTimelineSignal });
 
 	// Phone view: update current time indicator every minute (indicator = latest session start <= now). Only when now is in range.
 	function updatePhoneTimeIndicator() {
@@ -1172,7 +1237,7 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 	const nowInRangeForListener = !isNaN(minTimeNum) && !isNaN(maxTimeNum) && Date.now() >= minTimeNum && Date.now() <= maxTimeNum;
 	if (phoneViewEl && nowInRangeForListener) {
 		updatePhoneTimeIndicator();
-		setInterval(updatePhoneTimeIndicator, 60 * 1000);
+		setAgendaInterval(updatePhoneTimeIndicator, 60 * 1000);
 
 		// Auto-scroll phone view to the current time block, centered on screen
 		requestAnimationFrame(() => {
@@ -1861,6 +1926,160 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 		.scroll-btn {
 			width: 2.5rem;
 			height: 2.5rem;
+		}
+	}
+
+	.agenda-filter-wrap,
+	.agenda-filter-wrap-mobile {
+		padding: 2rem clamp(1rem, 4vw, 3rem) 0;
+	}
+
+	.agenda-filter-wrap .filter-tabs-wrap,
+	.agenda-filter-wrap-mobile .filter-tabs-wrap {
+		max-width: min(100%, 26rem);
+		border: 1px solid rgba(242, 216, 148, 0.22);
+		background: rgba(20, 19, 15, 0.62);
+		box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
+		backdrop-filter: blur(1rem);
+		-webkit-backdrop-filter: blur(1rem);
+	}
+
+	.agenda-filter-wrap .filter-tab-slider,
+	.agenda-filter-wrap-mobile .filter-tab-slider {
+		background: linear-gradient(145deg, var(--metal-cream), var(--metal-silver));
+		box-shadow: 0 0.65rem 1.4rem rgba(0, 0, 0, 0.18);
+	}
+
+	.agenda-filter-wrap .filter-tab,
+	.agenda-filter-wrap-mobile .filter-tab {
+		color: rgba(244, 239, 229, 0.78);
+		letter-spacing: 0;
+		white-space: nowrap;
+	}
+
+	.agenda-filter-wrap .filter-tab:hover,
+	.agenda-filter-wrap-mobile .filter-tab:hover {
+		color: var(--metal-cream);
+	}
+
+	.agenda-filter-wrap .filter-tab.active,
+	.agenda-filter-wrap .filter-tab[aria-selected="true"],
+	.agenda-filter-wrap-mobile .filter-tab.active,
+	.agenda-filter-wrap-mobile .filter-tab[aria-selected="true"] {
+		color: var(--metal-ink);
+	}
+
+	.share-jam-trigger,
+	.share-jam-trigger-mobile {
+		border: 1px solid rgba(242, 216, 148, 0.28);
+		border-radius: 999px;
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.16), rgba(20, 19, 15, 0.38));
+		color: var(--metal-cream);
+		box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.share-jam-trigger:hover,
+	.share-jam-trigger-mobile:hover {
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.26), rgba(20, 19, 15, 0.3));
+		border-color: rgba(242, 216, 148, 0.52);
+		transform: translateY(-0.125rem);
+	}
+
+	.share-jam-trigger-mobile.glowing {
+		background: linear-gradient(145deg, rgba(242, 216, 148, 0.28), rgba(20, 19, 15, 0.44));
+		border-color: rgba(242, 216, 148, 0.8);
+		box-shadow:
+			0 0 1rem rgba(242, 216, 148, 0.5),
+			0 0.85rem 1.8rem rgba(0, 0, 0, 0.2);
+	}
+
+	.venue-label {
+		background: rgba(20, 19, 15, 0.9);
+		border-right: 1px solid rgba(242, 216, 148, 0.18);
+		color: var(--metal-cream);
+	}
+
+	.time-label,
+	.agenda-phone-view .time-block-label {
+		color: rgba(244, 239, 229, 0.72);
+	}
+
+	.time-line {
+		background-color: rgba(242, 216, 148, 0.18);
+	}
+
+	.indicator-line,
+	.indicator-line-extended {
+		background-color: var(--metal-gold-soft);
+		box-shadow: 0 0 1rem rgba(242, 216, 148, 0.35);
+	}
+
+	.indicator-triangle {
+		border-top-color: var(--metal-gold-soft);
+	}
+
+	.scroll-controls {
+		padding: 0.35rem;
+		border: 1px solid rgba(242, 216, 148, 0.22);
+		border-radius: 999px;
+		background: rgba(20, 19, 15, 0.62);
+		box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
+		backdrop-filter: blur(1rem);
+		-webkit-backdrop-filter: blur(1rem);
+	}
+
+	.zoom-controls {
+		border-left-color: rgba(242, 216, 148, 0.24);
+	}
+
+	.scroll-btn,
+	.zoom-btn {
+		border: 1px solid transparent;
+		border-radius: 999px;
+		background: transparent;
+		color: rgba(244, 239, 229, 0.84);
+		transition:
+			background 0.2s ease,
+			color 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.scroll-btn:hover,
+	.zoom-btn:hover {
+		background: rgba(255, 244, 214, 0.12);
+		color: var(--metal-cream);
+	}
+
+	.agenda-phone-view .time-block-label::after {
+		background: rgba(242, 216, 148, 0.12);
+	}
+
+	.agenda-phone-view .phone-time-indicator {
+		background: var(--metal-gold-soft);
+		box-shadow: 0 0 0.85rem rgba(242, 216, 148, 0.4);
+	}
+
+	@media (max-width: 768px) {
+		.agenda-mobile-controls {
+			background: linear-gradient(180deg, transparent, rgba(20, 19, 15, 0.96) 32%);
+			padding-top: 1.5rem;
+		}
+
+		.agenda-mobile-controls .agenda-filter-wrap-mobile {
+			padding: 0.75rem 0.5rem 0.75rem 0.75rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.share-jam-trigger,
+		.share-jam-trigger-mobile,
+		.scroll-btn,
+		.zoom-btn {
+			transition: none;
 		}
 	}
 </style>

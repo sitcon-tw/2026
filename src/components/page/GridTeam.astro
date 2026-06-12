@@ -27,24 +27,28 @@ const { index, member, name, description } = Astro.props;
 
 <style>
 	.team {
-		margin-bottom: 3rem;
+		margin-bottom: clamp(4rem, 8vw, 7rem);
 	}
 
 	h2 {
-		margin-bottom: 1.5rem;
-		font-size: 3rem;
+		margin-bottom: 1rem;
+		font-size: clamp(2rem, 4.5vw, 3.5rem);
+		color: var(--metal-cream);
+		line-height: 1;
 	}
 
 	.text {
-		max-width: 34rem;
+		max-width: 40rem;
 		margin-bottom: 2rem;
+		color: var(--metal-muted);
+		line-height: 1.75;
 	}
 
 	.person-group {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: start;
-		gap: 2.5rem;
+		gap: clamp(1.5rem, 4vw, 2.5rem);
 	}
 
 	@media (max-width: 640px) {
