@@ -1,0 +1,50 @@
+import * as THREE from "three";
+
+export const HERO_RANDOM_SEED = 20260328;
+export const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+
+export interface VortexConfig {
+	centerX: number;
+	centerZ: number;
+	bottomY: number;
+	height: number;
+	baseRadius: number;
+	topRadius: number;
+	turns: number;
+}
+
+export type HeroObjectRole = "orb" | "facet" | "ring" | "decor";
+
+export const createSeededRandom = (seed = HERO_RANDOM_SEED) => {
+	let randomSeed = seed;
+	return () => {
+		randomSeed = (randomSeed * 1664525 + 1013904223) >>> 0;
+		return randomSeed / 4294967296;
+	};
+};
+
+export const createVortexConfig = (narrowViewport: boolean): VortexConfig => ({
+	centerX: narrowViewport ? 10 : 14,
+	centerZ: narrowViewport ? -76 : -72,
+	bottomY: narrowViewport ? -32 : -36,
+	height: narrowViewport ? 84 : 88,
+	baseRadius: narrowViewport ? 10 : 13,
+	topRadius: narrowViewport ? 28 : 42,
+	turns: narrowViewport ? 1.48 : 1.74
+});
+
+export const getVortexPosition = (config: VortexConfig, narrowViewport: boolean, level: number, thetaOffset = 0, radiusBias = 1, yOffset = 0, time = 0, target = new THREE.Vector3()) => {
+	const normalizedLevel = THREE.MathUtils.euclideanModulo(level, 1);
+	const centerSway = Math.sin(normalizedLevel * Math.PI * 2.4 + time * 0.42) * (narrowViewport ? 2.4 : 4.5);
+	const radiusEase = Math.pow(normalizedLevel, 0.72);
+	const radius = THREE.MathUtils.lerp(config.baseRadius, config.topRadius, radiusEase) * radiusBias;
+	const angle = normalizedLevel * Math.PI * 2 * config.turns + thetaOffset + time;
+
+	return target.set(config.centerX + centerSway + radius * Math.cos(angle), config.bottomY + normalizedLevel * config.height + yOffset, config.centerZ + radius * Math.sin(angle) * 0.68);
+};
+
+export const getDepthOpacity = (config: VortexConfig, z: number) => {
+	const nearFade = THREE.MathUtils.clamp((z - (config.centerZ - config.topRadius * 0.85)) / (config.topRadius * 1.35), 0.32, 1);
+	const frontFade = THREE.MathUtils.clamp((config.centerZ + config.topRadius * 0.88 - z) / (config.topRadius * 0.9), 0.58, 1);
+	return nearFade * frontFade;
+};

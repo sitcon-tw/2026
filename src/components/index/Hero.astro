@@ -104,6 +104,7 @@ const lang = Astro.props.lang ?? "zh";
 	import { Line2 } from "three/examples/jsm/lines/Line2.js";
 	import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
 	import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
+	import { createSeededRandom, createVortexConfig, getDepthOpacity, getVortexPosition, goldenAngle, type HeroObjectRole } from "./Hero/vortex";
 	import gsap from "gsap";
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -120,11 +121,7 @@ const lang = Astro.props.lang ?? "zh";
 
 		const narrowViewport = window.innerWidth < 700;
 		const reduceMotion = prefersReducedMotion();
-		let randomSeed = 20260328;
-		const random = () => {
-			randomSeed = (randomSeed * 1664525 + 1013904223) >>> 0;
-			return randomSeed / 4294967296;
-		};
+		const random = createSeededRandom();
 
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -144,6 +141,9 @@ const lang = Astro.props.lang ?? "zh";
 
 		// Reusable vector for lerp operations to avoid GC pressure
 		const tempVec3 = new THREE.Vector3();
+		const ribbonPoint = new THREE.Vector3();
+		const meteorPos = new THREE.Vector3();
+		const meteorNextPos = new THREE.Vector3();
 
 		// Lighting
 		const ambientLight = new THREE.HemisphereLight(0xfff2d2, 0x1b1406, 1.0);
@@ -161,34 +161,7 @@ const lang = Astro.props.lang ?? "zh";
 		fillLight.position.set(0, 14, -22);
 		scene.add(fillLight);
 
-		const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-		const vortexConfig = {
-			centerX: narrowViewport ? 10 : 14,
-			centerZ: narrowViewport ? -76 : -72,
-			bottomY: narrowViewport ? -32 : -36,
-			height: narrowViewport ? 84 : 88,
-			baseRadius: narrowViewport ? 10 : 13,
-			topRadius: narrowViewport ? 28 : 42,
-			turns: narrowViewport ? 1.48 : 1.74
-		};
-
-		const getVortexPosition = (level: number, thetaOffset: number = 0, radiusBias = 1, yOffset = 0, time = 0) => {
-			const normalizedLevel = THREE.MathUtils.euclideanModulo(level, 1);
-			const centerSway = Math.sin(normalizedLevel * Math.PI * 2.4 + time * 0.42) * (narrowViewport ? 2.4 : 4.5);
-			const radiusEase = Math.pow(normalizedLevel, 0.72);
-			const radius = THREE.MathUtils.lerp(vortexConfig.baseRadius, vortexConfig.topRadius, radiusEase) * radiusBias;
-			const angle = normalizedLevel * Math.PI * 2 * vortexConfig.turns + thetaOffset + time;
-			const x = vortexConfig.centerX + centerSway + radius * Math.cos(angle);
-			const y = vortexConfig.bottomY + normalizedLevel * vortexConfig.height + yOffset;
-			const z = vortexConfig.centerZ + radius * Math.sin(angle) * 0.68;
-			return new THREE.Vector3(x, y, z);
-		};
-
-		const getDepthOpacity = (z: number) => {
-			const nearFade = THREE.MathUtils.clamp((z - (vortexConfig.centerZ - vortexConfig.topRadius * 0.85)) / (vortexConfig.topRadius * 1.35), 0.32, 1);
-			const frontFade = THREE.MathUtils.clamp((vortexConfig.centerZ + vortexConfig.topRadius * 0.88 - z) / (vortexConfig.topRadius * 0.9), 0.58, 1);
-			return nearFade * frontFade;
-		};
+		const vortexConfig = createVortexConfig(narrowViewport);
 
 		interface HeroObject {
 			mesh: THREE.Object3D;
@@ -264,12 +237,14 @@ const lang = Astro.props.lang ?? "zh";
 			offset: number;
 			radiusBias: number;
 			verticalOffset: number;
+			positions: Float32Array;
 			opacity: number;
 		}[] = [];
 
 		const createVortexRibbon = (offset: number, radiusBias: number, verticalOffset: number, opacity: number) => {
 			const geometry = new LineGeometry();
-			geometry.setPositions(new Array(ribbonPointCount * 3).fill(0));
+			const positions = new Float32Array(ribbonPointCount * 3);
+			geometry.setPositions(positions);
 			const material = new LineMaterial({
 				color: 0xffe8ad,
 				linewidth: narrowViewport ? 2.2 : 2.8,
@@ -282,7 +257,7 @@ const lang = Astro.props.lang ?? "zh";
 			const line = new Line2(geometry, material);
 			line.computeLineDistances();
 			scene.add(line);
-			vortexRibbons.push({ line, geometry, material, offset, radiusBias, verticalOffset, opacity });
+			vortexRibbons.push({ line, geometry, material, offset, radiusBias, verticalOffset, positions, opacity });
 		};
 
 		for (let i = 0; i < (narrowViewport ? 2 : 3); i++) {
@@ -295,7 +270,6 @@ const lang = Astro.props.lang ?? "zh";
 		let objectSlotCursor = 0;
 		const screenVec3 = new THREE.Vector3();
 
-		type HeroObjectRole = "orb" | "facet" | "ring" | "decor";
 		const levelSequence = narrowViewport ? [0.17, 0.29, 0.41, 0.53, 0.65, 0.77, 0.87] : [0.12, 0.21, 0.3, 0.39, 0.49, 0.59, 0.69, 0.79, 0.88];
 
 		const getObjectPlacement = (role: HeroObjectRole) => {
@@ -348,7 +322,7 @@ const lang = Astro.props.lang ?? "zh";
 				const roleScaleBoost = role === "orb" ? 1 + middleWeight * 0.08 : role === "decor" ? 0.9 : 1;
 				const scale = (scaleRange[0] + random() * (scaleRange[1] - scaleRange[0])) * roleScaleBoost;
 				mesh.scale.setScalar(scale);
-				mesh.position.copy(getVortexPosition(placement.level, placement.thetaOffset, placement.radiusBias, placement.verticalOffset, 0));
+				getVortexPosition(vortexConfig, narrowViewport, placement.level, placement.thetaOffset, placement.radiusBias, placement.verticalOffset, 0, mesh.position);
 
 				scene.add(mesh);
 				heroObjects.push({
@@ -541,13 +515,15 @@ const lang = Astro.props.lang ?? "zh";
 
 		const updateVortexRibbons = (time: number) => {
 			vortexRibbons.forEach(ribbon => {
-				const positions: number[] = [];
 				for (let i = 0; i < ribbonPointCount; i++) {
 					const level = i / (ribbonPointCount - 1);
-					const point = getVortexPosition(level, ribbon.offset, ribbon.radiusBias, ribbon.verticalOffset, time);
-					positions.push(point.x, point.y, point.z);
+					getVortexPosition(vortexConfig, narrowViewport, level, ribbon.offset, ribbon.radiusBias, ribbon.verticalOffset, time, ribbonPoint);
+					const positionIndex = i * 3;
+					ribbon.positions[positionIndex] = ribbonPoint.x;
+					ribbon.positions[positionIndex + 1] = ribbonPoint.y;
+					ribbon.positions[positionIndex + 2] = ribbonPoint.z;
 				}
-				ribbon.geometry.setPositions(positions);
+				ribbon.geometry.setPositions(ribbon.positions);
 				ribbon.line.computeLineDistances();
 				ribbon.material.opacity = ribbon.opacity;
 			});
@@ -587,15 +563,24 @@ const lang = Astro.props.lang ?? "zh";
 			// Update Meteors - only show front half
 			meteors.forEach(m => {
 				m.progress = (m.progress + m.speed * scrollFactor) % 1;
-				const pos = getVortexPosition(m.progress + scrollProgress * 0.04, m.offset, m.radiusBias, m.verticalOffset, vortexScrollSpin + idleTime * 0.88);
+				const pos = getVortexPosition(vortexConfig, narrowViewport, m.progress + scrollProgress * 0.04, m.offset, m.radiusBias, m.verticalOffset, vortexScrollSpin + idleTime * 0.88, meteorPos);
 				m.mesh.position.copy(pos);
 
 				// Rotate to look along path
-				const nextPos = getVortexPosition((m.progress + 0.018) % 1, m.offset + 0.02, m.radiusBias, m.verticalOffset, vortexScrollSpin + idleTime * 0.88 + 0.025);
+				const nextPos = getVortexPosition(
+					vortexConfig,
+					narrowViewport,
+					(m.progress + 0.018) % 1,
+					m.offset + 0.02,
+					m.radiusBias,
+					m.verticalOffset,
+					vortexScrollSpin + idleTime * 0.88 + 0.025,
+					meteorNextPos
+				);
 				m.mesh.lookAt(nextPos);
 
 				// Visibility and Alpha via Uniforms
-				const opacity = getDepthOpacity(pos.z) * getContentFade(pos);
+				const opacity = getDepthOpacity(vortexConfig, pos.z) * getContentFade(pos);
 				const isVisible = opacity > 0.02;
 				m.mesh.visible = isVisible;
 				if (isVisible) {
@@ -607,7 +592,7 @@ const lang = Astro.props.lang ?? "zh";
 			// Update Orbiting Decorative Objects (now all in heroObjects and draggable)
 			heroObjects.forEach(obj => {
 				const objectSpinTime = vortexScrollSpin + idleTime * (narrowViewport ? 0.78 : 0.95) * (0.78 + obj.speed * 850);
-				const pathPos = getVortexPosition(obj.vortexLevel, obj.pathOffset, obj.radiusBias, obj.verticalOffset, objectSpinTime);
+				const pathPos = getVortexPosition(vortexConfig, narrowViewport, obj.vortexLevel, obj.pathOffset, obj.radiusBias, obj.verticalOffset, objectSpinTime, obj.targetPos);
 
 				if (!obj.isDragging) {
 					const distanceToPath = obj.mesh.position.distanceTo(pathPos);
@@ -635,7 +620,7 @@ const lang = Astro.props.lang ?? "zh";
 				}
 
 				// Scale visibility based on Z position for smooth fade
-				const opacity = getDepthOpacity(obj.mesh.position.z) * getContentFade(obj.mesh.position);
+				const opacity = getDepthOpacity(vortexConfig, obj.mesh.position.z) * getContentFade(obj.mesh.position);
 				const isVisible = opacity > 0.02;
 				obj.mesh.visible = isVisible;
 				const meshWithMaterial = obj.mesh as THREE.Mesh;
