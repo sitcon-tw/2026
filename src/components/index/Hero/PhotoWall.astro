@@ -235,8 +235,6 @@ const images = [
 	const pageLoadHandler = () => mount();
 	const beforeSwapHandler = () => {
 		cleanup?.();
-		document.removeEventListener("astro:page-load", pageLoadHandler);
-		document.removeEventListener("astro:before-swap", beforeSwapHandler);
 	};
 
 	document.addEventListener("astro:page-load", pageLoadHandler);

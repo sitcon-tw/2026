@@ -772,8 +772,6 @@ const supportersList = sponsors.supporters as Sponsor[];
 		};
 
 		const beforeSwapHandler = () => {
-			document.removeEventListener("astro:page-load", pageLoadHandler);
-			document.removeEventListener("astro:before-swap", beforeSwapHandler);
 			cleanup?.();
 		};
 

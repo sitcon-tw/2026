@@ -559,8 +559,6 @@ const speakers = [
 
 	const beforeSwapHandler = () => {
 		cleanup?.();
-		document.removeEventListener("astro:page-load", pageLoadHandler);
-		document.removeEventListener("astro:before-swap", beforeSwapHandler);
 	};
 
 	if (document.readyState === "loading") {

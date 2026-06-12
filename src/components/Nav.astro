@@ -11,11 +11,11 @@ const t = useTranslations(lang);
 const prefix = lang === "en" ? "/2026/en" : "/2026";
 
 const navItems = [
-	{ label: t.nav.info, href: `${prefix}/info/` },
-	{ label: t.nav.agenda, href: `${prefix}/agenda/` },
-	{ label: t.nav.venue, href: `${prefix}/venue/` },
-	{ label: t.nav.team, href: `${prefix}/team/` },
-	{ label: t.nav.about, href: `${prefix}/about/` }
+	{ label: t.nav.info, href: `${prefix}/info/`, reload: false },
+	{ label: t.nav.agenda, href: `${prefix}/agenda/`, reload: true },
+	{ label: t.nav.venue, href: `${prefix}/venue/`, reload: true },
+	{ label: t.nav.team, href: `${prefix}/team/`, reload: true },
+	{ label: t.nav.about, href: `${prefix}/about/`, reload: false }
 ];
 
 const alternateHref = getAlternateUrl(Astro.url.pathname, lang === "en" ? "zh" : "en");
@@ -35,7 +35,7 @@ const languageSwitchText = lang === "en" ? t.nav.languageChinese : t.nav.languag
 		<div class="nav-items-container">
 			{
 				navItems.map(item => (
-					<a href={item.href} class="nav-item">
+					<a href={item.href} class="nav-item" data-astro-reload={item.reload ? "" : undefined}>
 						{item.label}
 					</a>
 				))
@@ -49,112 +49,150 @@ const languageSwitchText = lang === "en" ? t.nav.languageChinese : t.nav.languag
 </nav>
 
 <script>
-	// Hide navigation in app mode
-	const params = new URLSearchParams(window.location.search);
-	if (params.get("mode") === "app") {
-		const nav = document.querySelector("nav");
-		if (nav) nav.style.display = "none";
-	}
-
 	import gsap from "gsap";
 
-	const menu = document.querySelector(".hamburger") as HTMLButtonElement;
-	const navMenu = document.querySelector(".nav-container") as HTMLDivElement;
-	const languageSwitch = document.querySelector("[data-language-target]") as HTMLAnchorElement | null;
-
-	let animating = false;
 	const LANGUAGE_STORAGE_KEY = "sitcon2026:preferred-language";
 
-	languageSwitch?.addEventListener("click", () => {
-		const targetLanguage = languageSwitch.dataset.languageTarget;
-		if (!targetLanguage) return;
-		try {
-			window.localStorage.setItem(LANGUAGE_STORAGE_KEY, targetLanguage);
-		} catch {
-			// Private browsing or blocked storage should not prevent navigation.
-		}
-	});
+	const initNav = () => {
+		const nav = document.querySelector("nav") as HTMLElement | null;
+		const menu = document.querySelector(".hamburger") as HTMLButtonElement | null;
+		const navMenu = document.querySelector(".nav-container") as HTMLDivElement | null;
+		const navItems = document.querySelector(".nav-items-container") as HTMLDivElement | null;
+		const menuIcon = document.getElementById("menu-icon");
+		const xIcon = document.getElementById("x-icon");
+		const languageSwitch = document.querySelector("[data-language-target]") as HTMLAnchorElement | null;
+		if (!nav || !menu || !navMenu || !navItems || !menuIcon || !xIcon) return () => {};
+		if (navMenu.dataset.navInit === "true") return () => {};
+		navMenu.dataset.navInit = "true";
 
-	gsap.fromTo(
-		".hamburger",
-		{ scale: 1 },
-		{
-			scale: 1.1,
-			duration: 0.3,
-			paused: true,
-			ease: "power2.out",
-			id: "hoverScale"
-		}
-	);
+		const params = new URLSearchParams(window.location.search);
+		nav.style.display = params.get("mode") === "app" ? "none" : "";
 
-	const hover = gsap.getById("hoverScale") as gsap.core.Tween;
+		let animating = false;
+		let lastScroll = window.scrollY;
+		let offset = 0;
+		let unlockTimer: number | null = null;
+		let closeTimer: number | null = null;
 
-	menu.addEventListener("mouseenter", () => hover.play());
-	menu.addEventListener("mouseleave", () => hover.reverse());
+		const hover = gsap.fromTo(menu, { scale: 1 }, { scale: 1.1, duration: 0.3, paused: true, ease: "power2.out" });
 
-	menu.addEventListener("click", () => {
-		if (animating) return;
-		animating = true;
-		setTimeout(() => {
-			animating = false;
-		}, 500);
-		const isActive = menu.getAttribute("aria-expanded") === "true";
-		menu.setAttribute("aria-expanded", String(!isActive));
-		if (isActive) {
-			let tl = gsap.timeline();
+		const lockAnimation = () => {
+			animating = true;
+			if (unlockTimer !== null) window.clearTimeout(unlockTimer);
+			unlockTimer = window.setTimeout(() => {
+				animating = false;
+				unlockTimer = null;
+			}, 500);
+		};
 
-			gsap.timeline().to("#x-icon", { opacity: 0, y: -2, display: "none", duration: 0.2 }).to("#menu-icon", { opacity: 1, y: 0, display: "block", duration: 0.3 });
-
-			tl.to(".nav-items-container", { opacity: 0, y: -5, duration: 0.2 }).to(".nav-container", { duration: 0.2, height: "4rem", ease: "power2.out" });
-
-			setTimeout(() => {
-				menu.classList.toggle("active");
-				navMenu.classList.toggle("active");
-			}, tl.duration() * 1000);
-		} else {
-			menu.classList.toggle("active");
-			navMenu.classList.toggle("active");
-
-			gsap
-				.timeline()
-				.to("#menu-icon", { opacity: 0, y: -4, display: "none", duration: 0.2 })
-				.fromTo("#x-icon", { opacity: 0, y: 4, display: "none" }, { opacity: 1, y: 0, display: "block", duration: 0.3 });
-
-			gsap.timeline().to(".nav-container", { duration: 0.2, height: "auto", ease: "power2.in" }).fromTo(".nav-items-container", { opacity: 0, y: -5 }, { duration: 0.2, opacity: 1, y: 0 });
-		}
-	});
-
-	window.addEventListener("resize", () => {
-		if (window.innerWidth > 850) {
+		const setClosedState = () => {
 			menu.setAttribute("aria-expanded", "false");
 			menu.classList.remove("active");
 			navMenu.classList.remove("active");
-			gsap.set([".nav-container", "#menu-icon", "#x-icon", ".nav-items-container"], { clearProps: "all" });
-		}
-	});
+		};
 
-	let lastScroll = 0;
-	let offset = 0;
-	const nav = document.querySelector(".nav-container") as HTMLElement;
+		const onLanguageSwitchClick = () => {
+			const targetLanguage = languageSwitch?.dataset.languageTarget;
+			if (!targetLanguage) return;
+			try {
+				window.localStorage.setItem(LANGUAGE_STORAGE_KEY, targetLanguage);
+			} catch {
+				// Private browsing or blocked storage should not prevent navigation.
+			}
+		};
 
-	window.addEventListener("scroll", () => {
-		// iPhone elastic scrolling: when scrollY <= 0, keep nav visible
-		if (window.scrollY <= 0) {
-			offset = 0;
-			nav.style.transform = `translateY(0px)`;
-			nav.style.opacity = "1";
-			lastScroll = 0;
-			return;
-		}
+		const onMouseEnter = () => hover.play();
+		const onMouseLeave = () => hover.reverse();
 
-		const delta = window.scrollY - lastScroll;
-		const navHeight = nav.offsetHeight + 32;
+		const onClick = () => {
+			if (animating) return;
+			lockAnimation();
+			const isActive = menu.getAttribute("aria-expanded") === "true";
+			menu.setAttribute("aria-expanded", String(!isActive));
+			if (isActive) {
+				const tl = gsap.timeline();
+				gsap.timeline().to(xIcon, { opacity: 0, y: -2, display: "none", duration: 0.2 }).to(menuIcon, { opacity: 1, y: 0, display: "block", duration: 0.3 });
+				tl.to(navItems, { opacity: 0, y: -5, duration: 0.2 }).to(navMenu, { duration: 0.2, height: "4rem", ease: "power2.out" });
 
-		offset = Math.min(0, Math.max(-navHeight, offset - delta));
-		nav.style.transform = `translateY(${offset}px)`;
-		nav.style.opacity = `${1 - Math.abs(offset) / navHeight}`;
-		lastScroll = window.scrollY;
-	});
+				if (closeTimer !== null) window.clearTimeout(closeTimer);
+				closeTimer = window.setTimeout(() => {
+					setClosedState();
+					closeTimer = null;
+				}, tl.duration() * 1000);
+			} else {
+				menu.classList.add("active");
+				navMenu.classList.add("active");
+
+				gsap.timeline().to(menuIcon, { opacity: 0, y: -4, display: "none", duration: 0.2 }).fromTo(xIcon, { opacity: 0, y: 4, display: "none" }, { opacity: 1, y: 0, display: "block", duration: 0.3 });
+				gsap.timeline().to(navMenu, { duration: 0.2, height: "auto", ease: "power2.in" }).fromTo(navItems, { opacity: 0, y: -5 }, { duration: 0.2, opacity: 1, y: 0 });
+			}
+		};
+
+		const onResize = () => {
+			if (window.innerWidth > 850) {
+				setClosedState();
+				gsap.set([navMenu, menuIcon, xIcon, navItems], { clearProps: "all" });
+			}
+		};
+
+		const onScroll = () => {
+			if (window.scrollY <= 0 || navMenu.classList.contains("active")) {
+				offset = 0;
+				navMenu.style.transform = "translateY(0px)";
+				navMenu.style.opacity = "1";
+				lastScroll = Math.max(window.scrollY, 0);
+				return;
+			}
+
+			const delta = window.scrollY - lastScroll;
+			const navHeight = navMenu.offsetHeight + 32;
+
+			offset = Math.min(0, Math.max(-navHeight, offset - delta));
+			navMenu.style.transform = `translateY(${offset}px)`;
+			navMenu.style.opacity = `${1 - Math.abs(offset) / navHeight}`;
+			lastScroll = window.scrollY;
+		};
+
+		languageSwitch?.addEventListener("click", onLanguageSwitchClick);
+		menu.addEventListener("mouseenter", onMouseEnter);
+		menu.addEventListener("mouseleave", onMouseLeave);
+		menu.addEventListener("click", onClick);
+		window.addEventListener("resize", onResize);
+		window.addEventListener("scroll", onScroll);
+
+		return () => {
+			if (unlockTimer !== null) window.clearTimeout(unlockTimer);
+			if (closeTimer !== null) window.clearTimeout(closeTimer);
+			languageSwitch?.removeEventListener("click", onLanguageSwitchClick);
+			menu.removeEventListener("mouseenter", onMouseEnter);
+			menu.removeEventListener("mouseleave", onMouseLeave);
+			menu.removeEventListener("click", onClick);
+			window.removeEventListener("resize", onResize);
+			window.removeEventListener("scroll", onScroll);
+			hover.kill();
+			gsap.killTweensOf([menu, navMenu, navItems, menuIcon, xIcon]);
+			navMenu.dataset.navInit = "false";
+		};
+	};
+
+	let cleanupNav: (() => void) | null = null;
+	const mountNav = () => {
+		cleanupNav?.();
+		cleanupNav = initNav();
+	};
+	const unmountNav = () => {
+		cleanupNav?.();
+		cleanupNav = null;
+	};
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", mountNav, { once: true });
+	} else {
+		mountNav();
+	}
+
+	document.addEventListener("astro:page-load", mountNav);
+	document.addEventListener("astro:before-swap", unmountNav);
 </script>
 
 <style>

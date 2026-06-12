@@ -222,6 +222,10 @@ if (typeof window !== "undefined") {
 		initTextReveal();
 	});
 
+	document.addEventListener("astro:before-swap", () => {
+		cleanupTextReveal();
+	});
+
 	// 視窗大小改變時重新計算
 	let resizeTimeout: ReturnType<typeof setTimeout>;
 	let previousWidth = window.innerWidth;

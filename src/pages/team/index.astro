@@ -151,35 +151,54 @@ const forum_url = "https://groups.google.com/g/sitcon-general/";
 </Layout>
 
 <script>
-	const observerOptions = {
-		root: null,
-		rootMargin: "-20% 0px -60% 0px",
-		threshold: 0
+	let observer: IntersectionObserver | null = null;
+
+	const initTeamAnchors = () => {
+		observer?.disconnect();
+		const sections = document.querySelectorAll('[id^="team-"]');
+		if (!sections.length) return;
+
+		observer = new IntersectionObserver(
+			entries => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						const id = entry.target.getAttribute("id");
+						if (id) {
+							document.querySelectorAll(".anchor-btn").forEach(btn => {
+								btn.classList.remove("active");
+								if (btn.getAttribute("href") === `#${id}`) {
+									btn.classList.add("active");
+								}
+							});
+						}
+					}
+				});
+			},
+			{
+				root: null,
+				rootMargin: "-20% 0px -60% 0px",
+				threshold: 0
+			}
+		);
+
+		sections.forEach(section => {
+			observer?.observe(section);
+		});
 	};
 
-	const observer = new IntersectionObserver(entries => {
-		entries.forEach(entry => {
-			if (entry.isIntersecting) {
-				const id = entry.target.getAttribute("id");
-				if (id) {
-					document.querySelectorAll(".anchor-btn").forEach(btn => {
-						btn.classList.remove("active");
-						if (btn.getAttribute("href") === `#${id}`) {
-							btn.classList.add("active");
-						}
-					});
-				}
-			}
-		});
-	}, observerOptions);
+	const cleanupTeamAnchors = () => {
+		observer?.disconnect();
+		observer = null;
+	};
 
-	document.querySelectorAll('[id^="team-"]').forEach(section => {
-		observer.observe(section);
-	});
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initTeamAnchors, { once: true });
+	} else {
+		initTeamAnchors();
+	}
 
-	window.addEventListener("beforeunload", () => {
-		observer.disconnect();
-	});
+	document.addEventListener("astro:page-load", initTeamAnchors);
+	document.addEventListener("astro:before-swap", cleanupTeamAnchors);
 </script>
 
 <style>

@@ -76,7 +76,7 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 	};
 
 	let lastActiveElement: HTMLElement | null = null;
-	const memberOverlay = document.getElementById("member-info-overlay");
+	const getMemberOverlay = () => document.getElementById("member-info-overlay");
 
 	const setBackgroundScrollLock = (locked: boolean) => {
 		document.body.style.overflow = locked ? "hidden" : "";
@@ -93,7 +93,7 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 
 	const openMemberModal = (modal: HTMLElement) => {
 		lastActiveElement = document.activeElement as HTMLElement | null;
-		memberOverlay?.classList.add("show");
+		getMemberOverlay()?.classList.add("show");
 		modal.classList.add("show");
 		modal.scrollTop = 0;
 		setBackgroundScrollLock(true);
@@ -104,9 +104,10 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 
 	const closeMemberModal = (modal: HTMLElement) => {
 		if (!modal.classList.contains("show")) return;
-		memberOverlay?.classList.remove("show");
+		getMemberOverlay()?.classList.remove("show");
 		modal.classList.remove("show");
 		setBackgroundScrollLock(false);
+		cleanup3DEffectForModal();
 		if (lastActiveElement && typeof lastActiveElement.focus === "function") {
 			lastActiveElement.focus();
 		}
@@ -310,6 +311,12 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 	if (memberModal) {
 		modalObserver.observe(memberModal, { attributes: true });
 	}
+
+	document.addEventListener("astro:before-swap", () => {
+		cleanup3DEffectForModal();
+		setBackgroundScrollLock(false);
+		modalObserver.disconnect();
+	});
 </script>
 
 <style>

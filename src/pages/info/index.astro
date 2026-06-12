@@ -169,16 +169,19 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 </Layout>
 
 <script>
-	window.addEventListener("DOMContentLoaded", () => {
-		// Modal logic
+	const initInfoPage = () => {
 		const dialog = document.querySelector<HTMLDialogElement>("[data-transport-dialog]");
 		const openButton = document.querySelector<HTMLButtonElement>("[data-open-transport]");
 		const closeButton = document.querySelector<HTMLButtonElement>("[data-close-transport]");
-
-		if (!dialog || !openButton || !closeButton) return;
+		const intoBtn = document.getElementById("into-academia-sinica");
+		if (!dialog || !openButton || !closeButton || !intoBtn) return () => {};
+		if (dialog.dataset.infoInit === "true") return () => {};
+		dialog.dataset.infoInit = "true";
 
 		const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-transport-tab]"));
 		const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-transport-panel]"));
+		let redirectTimer: number | null = null;
+		let exiting = false;
 
 		const activateTab = (name: string) => {
 			tabs.forEach(btn => {
@@ -194,36 +197,34 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 			});
 		};
 
-		openButton.addEventListener("click", () => {
+		const openDialog = () => {
 			if (typeof dialog.showModal === "function") dialog.showModal();
 			else dialog.setAttribute("open", "");
 
 			activateTab("shuttle");
-		});
+		};
 
-		closeButton.addEventListener("click", () => dialog.close());
+		const closeDialog = () => dialog.close();
 
-		dialog.addEventListener("click", (e: MouseEvent) => {
+		const onDialogClick = (e: MouseEvent) => {
 			if (e.target === dialog) dialog.close();
-		});
+		};
 
-		tabs.forEach(btn => {
-			btn.addEventListener("click", () => {
+		const tabHandlers = tabs.map(btn => {
+			const handler = () => {
 				const name = btn.getAttribute("data-transport-tab");
 				if (name) activateTab(name);
-			});
+			};
+			btn.addEventListener("click", handler);
+			return [btn, handler] as const;
 		});
 
-		// Into Academia Sinica button logic
-		const intoBtn = document.getElementById("into-academia-sinica");
-		const hero = document.querySelector<HTMLElement>("header.hero");
+		const hero = document.querySelector<HTMLElement>("header");
 		const heroContent = hero?.querySelector<HTMLElement>(".hero-content");
-		const main = document.querySelector<HTMLElement>("main.activities");
+		const main = document.querySelector<HTMLElement>("main");
 		const footer = document.querySelector<HTMLElement>("footer");
 
-		let exiting = false;
-
-		intoBtn?.addEventListener("click", () => {
+		const enterAcademiaSinica = () => {
 			if (exiting) return;
 			exiting = true;
 
@@ -256,11 +257,49 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 
 			const href = intoBtn.dataset.academiaSinicaHref ?? "/2026/info/academia-sinica/";
 
-			setTimeout(() => {
+			redirectTimer = window.setTimeout(() => {
 				window.location.href = href;
 			}, 300);
-		});
-	});
+		};
+
+		openButton.addEventListener("click", openDialog);
+		closeButton.addEventListener("click", closeDialog);
+		dialog.addEventListener("click", onDialogClick);
+		intoBtn.addEventListener("click", enterAcademiaSinica);
+
+		return () => {
+			if (redirectTimer !== null) window.clearTimeout(redirectTimer);
+			openButton.removeEventListener("click", openDialog);
+			closeButton.removeEventListener("click", closeDialog);
+			dialog.removeEventListener("click", onDialogClick);
+			intoBtn.removeEventListener("click", enterAcademiaSinica);
+			tabHandlers.forEach(([btn, handler]) => btn.removeEventListener("click", handler));
+			document.body.classList.remove("page-lock");
+			document.body.style.position = "";
+			document.body.style.top = "";
+			document.documentElement.style.scrollBehavior = "";
+			dialog.dataset.infoInit = "false";
+		};
+	};
+
+	let cleanup: (() => void) | null = null;
+	const mount = () => {
+		cleanup?.();
+		cleanup = initInfoPage();
+	};
+	const unmount = () => {
+		cleanup?.();
+		cleanup = null;
+	};
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", mount, { once: true });
+	} else {
+		mount();
+	}
+
+	document.addEventListener("astro:page-load", mount);
+	document.addEventListener("astro:before-swap", unmount);
 </script>
 
 <style>
