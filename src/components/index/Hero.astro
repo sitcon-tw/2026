@@ -513,7 +513,8 @@ const lang = Astro.props.lang ?? "zh";
 		let vortexScrollVelocity = 0;
 		const mouseOffset = { x: 0, y: 0 };
 		const targetMouseOffset = { x: 0, y: 0 };
-		const maxScrollZoom = narrowViewport ? 1.16 : 1.24;
+		const maxScrollZoom = narrowViewport ? 1.32 : 1.42;
+		const easeOutCubic = (value: number) => 1 - Math.pow(1 - value, 3);
 
 		const onPointerMoveOffset = (e: PointerEvent) => {
 			targetMouseOffset.x = (e.clientX / window.innerWidth - 0.5) * 5; // Horizontal sway
@@ -592,18 +593,20 @@ const lang = Astro.props.lang ?? "zh";
 			camera.position.y = -mouseOffset.y * 0.8;
 			camera.rotation.y = -mouseOffset.x * 0.02;
 			camera.rotation.x = -mouseOffset.y * 0.02;
-			const targetCameraZoom = reduceMotion ? 1 : THREE.MathUtils.lerp(1, maxScrollZoom, heroScrollProgress);
+			const moveProgress = reduceMotion ? 0 : easeOutCubic(THREE.MathUtils.clamp(heroScrollProgress / 0.36, 0, 1));
+			const scaleProgress = reduceMotion ? 0 : easeOutCubic(THREE.MathUtils.clamp(heroScrollProgress / 0.82, 0, 1));
+			const targetCameraZoom = reduceMotion ? 1 : THREE.MathUtils.lerp(1, maxScrollZoom, scaleProgress);
 			camera.zoom += (targetCameraZoom - camera.zoom) * 0.08;
 			if (Math.abs(camera.zoom - targetCameraZoom) > 0.0005) {
 				camera.updateProjectionMatrix();
 			}
-			const targetVortexX = reduceMotion ? 0 : -vortexConfig.centerX * (narrowViewport ? 0.48 : 0.72) * heroScrollProgress;
-			const targetVortexY = reduceMotion ? 0 : (narrowViewport ? -2.5 : -3.5) * heroScrollProgress;
-			const targetVortexScale = reduceMotion ? 1 : THREE.MathUtils.lerp(1, narrowViewport ? 1.08 : 1.12, heroScrollProgress);
-			vortexGroup.position.x += (targetVortexX - vortexGroup.position.x) * 0.08;
-			vortexGroup.position.y += (targetVortexY - vortexGroup.position.y) * 0.08;
+			const targetVortexX = reduceMotion ? 0 : -vortexConfig.centerX * (narrowViewport ? 0.84 : 0.92) * moveProgress;
+			const targetVortexY = reduceMotion ? 0 : (narrowViewport ? -2.2 : -3.2) * moveProgress;
+			const targetVortexScale = reduceMotion ? 1 : THREE.MathUtils.lerp(1, narrowViewport ? 1.22 : 1.3, scaleProgress);
+			vortexGroup.position.x += (targetVortexX - vortexGroup.position.x) * 0.13;
+			vortexGroup.position.y += (targetVortexY - vortexGroup.position.y) * 0.13;
 			tempVec3.set(targetVortexScale, targetVortexScale, targetVortexScale);
-			vortexGroup.scale.lerp(tempVec3, 0.08);
+			vortexGroup.scale.lerp(tempVec3, 0.1);
 
 			const vortexTime = vortexScrollSpin + idleTime * (narrowViewport ? 0.52 : 0.62);
 			updateVortexRibbons(vortexTime);
