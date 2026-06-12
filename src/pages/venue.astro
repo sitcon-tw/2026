@@ -750,6 +750,169 @@ const localizedFloors = floors.map(floor => ({
 			padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0.5rem));
 		}
 	}
+
+	main {
+		background: radial-gradient(circle at 72% 22%, rgba(242, 216, 148, 0.24), transparent 34rem), linear-gradient(135deg, #14130f 0%, #332a1a 48%, #171510 100%);
+		color: var(--metal-cream);
+	}
+
+	.venue-container {
+		padding: clamp(6.5rem, 10vw, 8rem) clamp(1rem, 4vw, 4rem) clamp(2rem, 4vw, 4rem);
+	}
+
+	.title {
+		font-size: clamp(3rem, 6vw, 5rem);
+		line-height: 1;
+		color: var(--metal-cream);
+		text-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.42);
+	}
+
+	.hint {
+		color: rgba(244, 239, 229, 0.82);
+		font-family: "JetBrainsMono", monospace;
+		font-size: 0.95rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.menu-panel {
+		width: min(24rem, 34vw);
+	}
+
+	.back-btn {
+		color: var(--metal-cream);
+		padding: 0.55rem 0.85rem;
+		border-radius: 999px;
+		transition:
+			background 0.2s ease,
+			opacity 0.2s ease;
+	}
+
+	.back-btn:hover {
+		background: rgba(255, 244, 214, 0.1);
+	}
+
+	.room-list::-webkit-scrollbar-track,
+	.floor-buttons::-webkit-scrollbar-track,
+	.detail-content::-webkit-scrollbar-track {
+		background: rgba(255, 244, 214, 0.08);
+	}
+
+	.room-list::-webkit-scrollbar-thumb,
+	.floor-buttons::-webkit-scrollbar-thumb,
+	.detail-content::-webkit-scrollbar-thumb {
+		background: rgba(242, 216, 148, 0.36);
+	}
+
+	.detail-content {
+		padding: 1rem;
+		border: 1px solid rgba(242, 216, 148, 0.2);
+		border-radius: var(--metal-radius);
+		background: rgba(20, 19, 15, 0.48);
+		backdrop-filter: blur(1rem);
+	}
+
+	.detail-name {
+		color: var(--metal-cream);
+		font-size: clamp(1.35rem, 2.5vw, 1.9rem);
+	}
+
+	.detail-badge,
+	.detail-long-desc {
+		color: rgba(244, 239, 229, 0.74);
+		opacity: 1;
+	}
+
+	.detail-link-btn,
+	.explode-btn,
+	.emergency-btn {
+		border: 1px solid rgba(242, 216, 148, 0.3);
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.14), rgba(20, 19, 15, 0.36));
+		color: var(--metal-cream);
+		border-radius: 999px;
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.detail-link-btn:hover,
+	.explode-btn:hover,
+	.emergency-btn:hover,
+	.explode-btn.active {
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.24), rgba(20, 19, 15, 0.3));
+		border-color: rgba(242, 216, 148, 0.52);
+		transform: translateY(-0.0625rem);
+	}
+
+	.toggle-2d-btn {
+		border-color: rgba(242, 216, 148, 0.28);
+		background: rgba(20, 19, 15, 0.72);
+		color: var(--metal-cream);
+		box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.28);
+	}
+
+	.toggle-2d-btn:hover {
+		background: rgba(45, 33, 17, 0.86);
+	}
+
+	.map-2d-overlay::backdrop {
+		background: rgba(10, 9, 7, 0.72);
+		backdrop-filter: blur(0.75rem);
+		-webkit-backdrop-filter: blur(0.75rem);
+	}
+
+	.map-2d-popup {
+		border: 1px solid rgba(242, 216, 148, 0.28);
+		background: radial-gradient(circle at 12% 8%, rgba(242, 216, 148, 0.14), transparent 22rem), linear-gradient(145deg, rgba(28, 25, 20, 0.96), rgba(12, 11, 9, 0.96));
+		box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.46);
+	}
+
+	.map-2d-image-wrapper {
+		background: rgba(244, 239, 229, 0.96);
+	}
+
+	.map-2d-close-btn,
+	.map-floor-switch {
+		border: 1px solid rgba(242, 216, 148, 0.28);
+		background: rgba(20, 19, 15, 0.72);
+	}
+
+	.map-floor-btn.active {
+		background: rgba(242, 216, 148, 0.24);
+		color: var(--metal-cream);
+	}
+
+	@media (max-width: 1024px) {
+		.content-wrapper,
+		.emergency-btn-container {
+			background: linear-gradient(180deg, rgba(28, 25, 20, 0.9), rgba(20, 19, 15, 0.94));
+			border-top: 1px solid rgba(242, 216, 148, 0.22);
+		}
+
+		.content-wrapper {
+			padding: 1.2rem 1.2rem 0;
+		}
+
+		.menu-panel {
+			width: 100%;
+		}
+
+		.sheet-toggle {
+			border: 1px solid rgba(242, 216, 148, 0.24);
+			background: rgba(255, 244, 214, 0.1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.back-btn,
+		.detail-link-btn,
+		.explode-btn,
+		.emergency-btn,
+		.toggle-2d-btn {
+			transition: none;
+		}
+	}
 </style>
 
 <script>
@@ -790,7 +953,7 @@ const localizedFloors = floors.map(floor => ({
 	const meshByName = new Map<string, THREE.Mesh>();
 	// Track currently highlighted meshes and their original emissive colors
 	const highlightedMeshes = new Map<string, THREE.Color>();
-	const HIGHLIGHT_COLOR = new THREE.Color(0xffdd44);
+	const HIGHLIGHT_COLOR = new THREE.Color(0xf2d894);
 
 	// Raycaster for 3D picking
 	const raycaster = new THREE.Raycaster();
@@ -867,7 +1030,8 @@ const localizedFloors = floors.map(floor => ({
 
 		// Scene
 		scene = new THREE.Scene();
-		scene.background = new THREE.Color(0xa67c37);
+		scene.background = new THREE.Color(0x181610);
+		scene.fog = new THREE.FogExp2(0x181610, 0.028);
 
 		// Camera
 		const canvasRect = canvas.getBoundingClientRect();
@@ -879,6 +1043,9 @@ const localizedFloors = floors.map(floor => ({
 		renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 		renderer.setSize(canvasRect.width, canvasRect.height);
 		renderer.setPixelRatio(Math.min(window.devicePixelRatio, isConstrainedViewport() ? 1.5 : 2));
+		renderer.outputColorSpace = THREE.SRGBColorSpace;
+		renderer.toneMapping = THREE.ACESFilmicToneMapping;
+		renderer.toneMappingExposure = 1.18;
 		renderer.shadowMap.enabled = !isConstrainedViewport();
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -892,11 +1059,11 @@ const localizedFloors = floors.map(floor => ({
 		controls.target.set(0, 1, 0);
 
 		// Lighting
-		const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+		const ambientLight = new THREE.AmbientLight(0xfff0cf, 0.72);
 		scene.add(ambientLight);
 
-		const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
-		directionalLight.position.set(5, 10, 5);
+		const directionalLight = new THREE.DirectionalLight(0xffe2a4, 1.9);
+		directionalLight.position.set(5, 10, 6);
 		directionalLight.castShadow = renderer.shadowMap.enabled;
 		directionalLight.shadow.mapSize.width = 2048;
 		directionalLight.shadow.mapSize.height = 2048;
@@ -909,9 +1076,13 @@ const localizedFloors = floors.map(floor => ({
 		directionalLight.shadow.bias = -0.001;
 		scene.add(directionalLight);
 
-		const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
-		fillLight.position.set(-5, 5, -5);
+		const fillLight = new THREE.DirectionalLight(0xd8d4c7, 0.68);
+		fillLight.position.set(-6, 5, -6);
 		scene.add(fillLight);
+
+		const rimLight = new THREE.DirectionalLight(0xf2d894, 1.15);
+		rimLight.position.set(-8, 2, 8);
+		scene.add(rimLight);
 
 		// Root group for the entire model (for rotation/scale/centering)
 		modelGroup = new THREE.Group();
@@ -966,12 +1137,28 @@ const localizedFloors = floors.map(floor => ({
 						const cloneMat = (mat: THREE.Material) => {
 							const m = mat.clone() as THREE.MeshStandardMaterial;
 							const baseOpacity = (m as THREE.MeshStandardMaterial).opacity ?? 1;
+							const meshName = obj.name.toLowerCase();
+							const isGlass = baseOpacity < 0.99 || meshName.includes("glass") || meshName.includes("window");
+							const isOutside = meshName.includes("outside");
+							const isFloor = meshName.includes("floor") || meshName.includes("wall") || meshName.includes("ceiling");
+							const isFurniture = meshName.includes("chair") || meshName.includes("desk") || meshName.includes("table") || meshName.includes("booth");
+
+							if ("color" in m) {
+								if (isGlass) m.color.set(0xe2dbc8);
+								else if (isOutside) m.color.set(0x332b20);
+								else if (isFurniture) m.color.set(0xa06f34);
+								else if (isFloor) m.color.set(0x746d5b);
+								else m.color.set(0x807765);
+							}
+							m.roughness = isGlass ? 0.18 : 0.48;
+							m.metalness = isGlass ? 0.1 : 0.22;
 							m.transparent = true;
-							if (baseOpacity < 0.99) {
+							if (isGlass) {
 								// Window-like material: preserve original alpha, fix depth/side issues
+								m.opacity = Math.min(baseOpacity, 0.5);
 								m.depthWrite = false;
 								m.side = THREE.DoubleSide;
-								m.userData = { ...m.userData, baseOpacity };
+								m.userData = { ...m.userData, baseOpacity: m.opacity };
 							} else {
 								m.opacity = 1;
 								m.userData = { ...m.userData, baseOpacity: 1 };
@@ -1175,7 +1362,7 @@ const localizedFloors = floors.map(floor => ({
 	let hoveredMesh: THREE.Mesh | null = null;
 	// Meshes currently tinted by hover (may be a whole floor pivot's meshes)
 	const hoveredMeshOriginals = new Map<THREE.Mesh, THREE.Color>();
-	const HOVER_COLOR = new THREE.Color(0xffffff);
+	const HOVER_COLOR = new THREE.Color(0xf2d894);
 
 	const applyHoverTint = (meshes: THREE.Mesh[]) => {
 		meshes.forEach(mesh => {
@@ -1184,7 +1371,7 @@ const localizedFloors = floors.map(floor => ({
 				if (mat instanceof THREE.MeshStandardMaterial && !highlightedMeshes.has(mesh.name.toLowerCase())) {
 					hoveredMeshOriginals.set(mesh, mat.emissive.clone());
 					mat.emissive.copy(HOVER_COLOR);
-					mat.emissiveIntensity = 0.15;
+					mat.emissiveIntensity = 0.22;
 				}
 			});
 		});
@@ -1390,7 +1577,7 @@ const localizedFloors = floors.map(floor => ({
 
 	// ── Outline (inverted-hull) for selected meshes ──────────────────────────
 	const outlineMeshes = new Map<string, THREE.Mesh>();
-	const OUTLINE_COLOR = new THREE.Color(0xffdd44);
+	const OUTLINE_COLOR = new THREE.Color(0xf2d894);
 	const OUTLINE_THICKNESS = 0.008;
 
 	const addOutline = (mesh: THREE.Mesh) => {
@@ -1464,7 +1651,7 @@ const localizedFloors = floors.map(floor => ({
 				}
 				mat.emissive.copy(HIGHLIGHT_COLOR);
 				gsap.killTweensOf(mat);
-				gsap.fromTo(mat, { emissiveIntensity: 0.2 }, { emissiveIntensity: 0.5, duration: 0.8, ease: "sine.inOut", yoyo: true, repeat: -1 });
+				gsap.fromTo(mat, { emissiveIntensity: 0.22 }, { emissiveIntensity: 0.62, duration: 0.8, ease: "sine.inOut", yoyo: true, repeat: -1 });
 			});
 			addOutline(mesh);
 		});
