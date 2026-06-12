@@ -15,6 +15,13 @@ export interface VortexConfig {
 
 export type HeroObjectRole = "orb" | "facet" | "ring" | "decor";
 
+const roleVisualScale: Record<HeroObjectRole, number> = {
+	orb: 0.82,
+	facet: 1,
+	ring: 0.92,
+	decor: 1.08
+};
+
 export const createSeededRandom = (seed = HERO_RANDOM_SEED) => {
 	let randomSeed = seed;
 	return () => {
@@ -47,4 +54,10 @@ export const getDepthOpacity = (config: VortexConfig, z: number) => {
 	const nearFade = THREE.MathUtils.clamp((z - (config.centerZ - config.topRadius * 0.85)) / (config.topRadius * 1.35), 0.32, 1);
 	const frontFade = THREE.MathUtils.clamp((config.centerZ + config.topRadius * 0.88 - z) / (config.topRadius * 0.9), 0.58, 1);
 	return nearFade * frontFade;
+};
+
+export const getHeroObjectScale = (role: HeroObjectRole, narrowViewport: boolean, level: number, random: () => number) => {
+	const [minScale, maxScale] = narrowViewport ? [0.52, 1.08] : [0.72, 1.58];
+	const middleBoost = 1 + Math.sin(level * Math.PI) * 0.06;
+	return THREE.MathUtils.lerp(minScale, maxScale, random()) * roleVisualScale[role] * middleBoost;
 };

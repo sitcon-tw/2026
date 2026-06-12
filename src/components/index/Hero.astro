@@ -104,7 +104,7 @@ const lang = Astro.props.lang ?? "zh";
 	import { Line2 } from "three/examples/jsm/lines/Line2.js";
 	import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
 	import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
-	import { createSeededRandom, createVortexConfig, getDepthOpacity, getVortexPosition, goldenAngle, type HeroObjectRole } from "./Hero/vortex";
+	import { getHeroObjectScale, createSeededRandom, createVortexConfig, getDepthOpacity, getVortexPosition, goldenAngle, type HeroObjectRole } from "./Hero/vortex";
 	import gsap from "gsap";
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -124,6 +124,8 @@ const lang = Astro.props.lang ?? "zh";
 		const random = createSeededRandom();
 
 		const scene = new THREE.Scene();
+		const vortexGroup = new THREE.Group();
+		scene.add(vortexGroup);
 		const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 		camera.position.set(0, 0, 0); // Camera at center
 
@@ -227,7 +229,7 @@ const lang = Astro.props.lang ?? "zh";
 				verticalOffset: (random() - 0.5) * (narrowViewport ? 7 : 9)
 			});
 		}
-		scene.add(meteorsGroup);
+		vortexGroup.add(meteorsGroup);
 
 		const ribbonPointCount = 120;
 		const vortexRibbons: {
@@ -256,7 +258,7 @@ const lang = Astro.props.lang ?? "zh";
 			});
 			const line = new Line2(geometry, material);
 			line.computeLineDistances();
-			scene.add(line);
+			vortexGroup.add(line);
 			vortexRibbons.push({ line, geometry, material, offset, radiusBias, verticalOffset, positions, opacity });
 		};
 
@@ -286,8 +288,9 @@ const lang = Astro.props.lang ?? "zh";
 			};
 		};
 
-		const getContentFade = (worldPosition: THREE.Vector3) => {
-			screenVec3.copy(worldPosition).project(camera);
+		const getContentFade = (localPosition: THREE.Vector3) => {
+			vortexGroup.localToWorld(screenVec3.copy(localPosition));
+			screenVec3.project(camera);
 			const screenX = (screenVec3.x + 1) / 2;
 			const screenY = (1 - screenVec3.y) / 2;
 			if (screenVec3.z < -1 || screenVec3.z > 1) return 1;
@@ -307,24 +310,15 @@ const lang = Astro.props.lang ?? "zh";
 			return overTitle || overLocation || overCta || overHeader ? 0.08 : 1;
 		};
 
-		const createOrbitingObjects = (
-			geometry: THREE.BufferGeometry,
-			material: THREE.Material,
-			count: number,
-			scaleRange: [number, number],
-			speedRange: [number, number],
-			role: HeroObjectRole = "decor"
-		) => {
+		const createOrbitingObjects = (geometry: THREE.BufferGeometry, material: THREE.Material, count: number, speedRange: [number, number], role: HeroObjectRole = "decor") => {
 			for (let i = 0; i < count; i++) {
 				const mesh = new THREE.Mesh(geometry, material.clone());
 				const placement = getObjectPlacement(role);
-				const middleWeight = Math.sin(placement.level * Math.PI);
-				const roleScaleBoost = role === "orb" ? 1 + middleWeight * 0.08 : role === "decor" ? 0.9 : 1;
-				const scale = (scaleRange[0] + random() * (scaleRange[1] - scaleRange[0])) * roleScaleBoost;
+				const scale = getHeroObjectScale(role, narrowViewport, placement.level, random);
 				mesh.scale.setScalar(scale);
 				getVortexPosition(vortexConfig, narrowViewport, placement.level, placement.thetaOffset, placement.radiusBias, placement.verticalOffset, 0, mesh.position);
 
-				scene.add(mesh);
+				vortexGroup.add(mesh);
 				heroObjects.push({
 					mesh,
 					pathOffset: placement.thetaOffset,
@@ -349,7 +343,19 @@ const lang = Astro.props.lang ?? "zh";
 		const plane = new THREE.Plane();
 		const intersection = new THREE.Vector3();
 		const offset = new THREE.Vector3();
+		const dragWorldPosition = new THREE.Vector3();
+		const dragLocalPosition = new THREE.Vector3();
 		let draggedObj: HeroObject | null = null;
+
+		const findHeroObject = (object: THREE.Object3D) => {
+			let current: THREE.Object3D | null = object;
+			while (current) {
+				const match = heroObjects.find(o => o.mesh === current);
+				if (match) return match;
+				current = current.parent;
+			}
+			return null;
+		};
 
 		const createMetalMaterial = (color: THREE.ColorRepresentation, roughness = 0.32, envMapIntensity = 1.75) => {
 			return new THREE.MeshPhysicalMaterial({
@@ -364,20 +370,31 @@ const lang = Astro.props.lang ?? "zh";
 		};
 
 		const svgLoader = new SVGLoader();
-		// textureLoader removed - was declared but never used
+
+		const normalizeGeometry = <T extends THREE.BufferGeometry>(geometry: T, targetSize = 2.4) => {
+			geometry.computeBoundingBox();
+			const size = geometry.boundingBox?.getSize(new THREE.Vector3()) ?? new THREE.Vector3(1, 1, 1);
+			const maxDimension = Math.max(size.x, size.y, size.z);
+			if (maxDimension > 0) {
+				const scale = targetSize / maxDimension;
+				geometry.scale(scale, scale, scale);
+			}
+			geometry.computeBoundingSphere();
+			return geometry;
+		};
 
 		// Add Volumetric Primitives (Cubes & Spheres & Toruses)
-		const cubeGeom = new RoundedBoxGeometry(2, 2, 2, 5, 0.1);
-		const sphereGeom = new THREE.IcosahedronGeometry(1.2, 4); // Increased detail from 1 to 4 for smoothness
-		const torusGeom = new THREE.TorusGeometry(1, 0.4, 32, 48); // Also increased torus segments for smoothness
+		const cubeGeom = normalizeGeometry(new RoundedBoxGeometry(2, 2, 2, 5, 0.1));
+		const sphereGeom = normalizeGeometry(new THREE.IcosahedronGeometry(1.2, 4));
+		const torusGeom = normalizeGeometry(new THREE.TorusGeometry(1, 0.4, 32, 48));
 
 		const goldMat = createMetalMaterial(0xd1a348, 0.28, 2.0);
 		const silverMat = createMetalMaterial(0xc9c8bb, 0.34, 1.8);
 		const copperMat = createMetalMaterial(0xa96330, 0.36, 1.6);
 
-		createOrbitingObjects(sphereGeom, silverMat, narrowViewport ? 10 : 16, narrowViewport ? [0.75, 1.35] : [1.05, 2.05], [0.0003, 0.00052], "orb");
-		createOrbitingObjects(cubeGeom, goldMat, narrowViewport ? 3 : 5, narrowViewport ? [0.48, 1.0] : [0.6, 1.35], [0.00026, 0.00048], "facet");
-		createOrbitingObjects(torusGeom, copperMat, narrowViewport ? 2 : 4, narrowViewport ? [0.45, 1.05] : [0.58, 1.45], [0.00026, 0.00046], "ring");
+		createOrbitingObjects(sphereGeom, silverMat, narrowViewport ? 10 : 16, [0.0003, 0.00052], "orb");
+		createOrbitingObjects(cubeGeom, goldMat, narrowViewport ? 3 : 5, [0.00026, 0.00048], "facet");
+		createOrbitingObjects(torusGeom, copperMat, narrowViewport ? 2 : 4, [0.00026, 0.00046], "ring");
 
 		// round-metal.svg
 		svgLoader.load("/2026/img/Hero/round-metal.svg", (data: SVGResult) => {
@@ -386,12 +403,13 @@ const lang = Astro.props.lang ?? "zh";
 			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 15, bevelEnabled: true }); // Increased depth
 			geometry.center();
 			geometry.rotateX(Math.PI); // Correct SVG flip
+			normalizeGeometry(geometry);
 
 			const baseColor = data.paths[0]?.color || 0xdaa520;
 			const material = createMetalMaterial(baseColor, 0.3, 1.9);
 
 			// Orbiting Background (now draggable)
-			createOrbitingObjects(geometry, material, decorInstanceCount, narrowViewport ? [0.028, 0.08] : [0.026, 0.095], [0.00024, 0.00042], "decor");
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.00024, 0.00042], "decor");
 		});
 
 		// stone-metal.svg
@@ -401,12 +419,13 @@ const lang = Astro.props.lang ?? "zh";
 			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 18, bevelEnabled: true }); // Increased depth
 			geometry.center();
 			geometry.rotateX(Math.PI);
+			normalizeGeometry(geometry);
 
 			const baseColor = data.paths[0]?.color || 0xdfdfdf;
 			const material = createMetalMaterial(baseColor, 0.34, 1.75);
 
 			// Orbiting Background (now draggable)
-			createOrbitingObjects(geometry, material, decorInstanceCount, narrowViewport ? [0.032, 0.095] : [0.03, 0.12], [0.00024, 0.00042], "decor");
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.00024, 0.00042], "decor");
 		});
 
 		// star-metal.svg
@@ -416,12 +435,13 @@ const lang = Astro.props.lang ?? "zh";
 			const geometry = new THREE.ExtrudeGeometry(shapes, { depth: 12, bevelEnabled: true }); // Increased depth
 			geometry.center();
 			geometry.rotateX(Math.PI);
+			normalizeGeometry(geometry);
 
 			const baseColor = data.paths[0]?.color || 0xffffff;
 			const material = createMetalMaterial(baseColor, 0.32, 1.8);
 
 			// Orbiting Background (now draggable)
-			createOrbitingObjects(geometry, material, decorInstanceCount, narrowViewport ? [0.038, 0.12] : [0.036, 0.15], [0.00024, 0.00042], "decor");
+			createOrbitingObjects(geometry, material, decorInstanceCount, [0.00024, 0.00042], "decor");
 		});
 
 		// Drag Events
@@ -434,15 +454,14 @@ const lang = Astro.props.lang ?? "zh";
 				true
 			);
 			if (intersects.length > 0) {
-				let root = intersects[0].object;
-				while (root.parent && root.parent !== scene) root = root.parent;
-				draggedObj = heroObjects.find(o => o.mesh === root) || null;
+				draggedObj = findHeroObject(intersects[0].object);
 				if (draggedObj) {
 					draggedObj.isDragging = true;
 					canvas.style.cursor = "grabbing";
 					plane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(new THREE.Vector3()).negate(), intersects[0].point);
 					if (raycaster.ray.intersectPlane(plane, intersection)) {
-						offset.copy(intersection).sub(root.position);
+						draggedObj.mesh.getWorldPosition(dragWorldPosition);
+						offset.copy(intersection).sub(dragWorldPosition);
 					}
 				}
 			}
@@ -455,7 +474,9 @@ const lang = Astro.props.lang ?? "zh";
 			if (draggedObj && draggedObj.isDragging) {
 				raycaster.setFromCamera(mouse, camera);
 				if (raycaster.ray.intersectPlane(plane, intersection)) {
-					draggedObj.mesh.position.copy(intersection.sub(offset));
+					dragLocalPosition.copy(intersection).sub(offset);
+					vortexGroup.worldToLocal(dragLocalPosition);
+					draggedObj.mesh.position.copy(dragLocalPosition);
 				}
 			} else {
 				// Hover check for cursor change
@@ -480,7 +501,8 @@ const lang = Astro.props.lang ?? "zh";
 		window.addEventListener("pointermove", onPointerMove);
 		window.addEventListener("pointerup", onPointerUp);
 
-		let scrollProgress = 0;
+		let pathScrollProgress = 0;
+		let heroScrollProgress = 0;
 		let idleTime = 0;
 		let lastScrollY = 0;
 		let vortexScrollSpin = 0;
@@ -496,11 +518,10 @@ const lang = Astro.props.lang ?? "zh";
 
 		window.addEventListener("pointermove", onPointerMoveOffset);
 
-		const getScrollZoomTarget = () => {
+		const getHeroScrollProgress = () => {
 			const heroHeight = Math.max(heroContainer.offsetHeight, window.innerHeight);
 			const zoomDistance = Math.max(heroHeight - window.innerHeight, window.innerHeight);
-			const scrollProgress = THREE.MathUtils.clamp(-heroContainer.getBoundingClientRect().top / zoomDistance, 0, 1);
-			return THREE.MathUtils.lerp(1, maxScrollZoom, scrollProgress);
+			return THREE.MathUtils.clamp(-heroContainer.getBoundingClientRect().top / zoomDistance, 0, 1);
 		};
 
 		let animationFrameId: number | null = null;
@@ -555,7 +576,8 @@ const lang = Astro.props.lang ?? "zh";
 				vortexScrollVelocity *= 0.88;
 				vortexScrollSpin += vortexScrollVelocity;
 
-				scrollProgress += (window.scrollY / 8000 - scrollProgress) * 0.05;
+				pathScrollProgress += (window.scrollY / 8000 - pathScrollProgress) * 0.05;
+				heroScrollProgress += (getHeroScrollProgress() - heroScrollProgress) * 0.08;
 
 				mouseOffset.x += (targetMouseOffset.x - mouseOffset.x) * 0.05;
 				mouseOffset.y += (targetMouseOffset.y - mouseOffset.y) * 0.05;
@@ -566,11 +588,18 @@ const lang = Astro.props.lang ?? "zh";
 			camera.position.y = -mouseOffset.y * 0.8;
 			camera.rotation.y = -mouseOffset.x * 0.02;
 			camera.rotation.x = -mouseOffset.y * 0.02;
-			const targetCameraZoom = reduceMotion ? 1 : getScrollZoomTarget();
+			const targetCameraZoom = reduceMotion ? 1 : THREE.MathUtils.lerp(1, maxScrollZoom, heroScrollProgress);
 			camera.zoom += (targetCameraZoom - camera.zoom) * 0.08;
 			if (Math.abs(camera.zoom - targetCameraZoom) > 0.0005) {
 				camera.updateProjectionMatrix();
 			}
+			const targetVortexX = reduceMotion ? 0 : -vortexConfig.centerX * (narrowViewport ? 0.48 : 0.72) * heroScrollProgress;
+			const targetVortexY = reduceMotion ? 0 : (narrowViewport ? -2.5 : -3.5) * heroScrollProgress;
+			const targetVortexScale = reduceMotion ? 1 : THREE.MathUtils.lerp(1, narrowViewport ? 1.08 : 1.12, heroScrollProgress);
+			vortexGroup.position.x += (targetVortexX - vortexGroup.position.x) * 0.08;
+			vortexGroup.position.y += (targetVortexY - vortexGroup.position.y) * 0.08;
+			tempVec3.set(targetVortexScale, targetVortexScale, targetVortexScale);
+			vortexGroup.scale.lerp(tempVec3, 0.08);
 
 			const vortexTime = vortexScrollSpin + idleTime * (narrowViewport ? 0.52 : 0.62);
 			updateVortexRibbons(vortexTime);
@@ -580,7 +609,7 @@ const lang = Astro.props.lang ?? "zh";
 				if (!reduceMotion) {
 					m.progress = (m.progress + m.speed * scrollFactor) % 1;
 				}
-				const pos = getVortexPosition(vortexConfig, narrowViewport, m.progress + scrollProgress * 0.04, m.offset, m.radiusBias, m.verticalOffset, vortexScrollSpin + idleTime * 0.88, meteorPos);
+				const pos = getVortexPosition(vortexConfig, narrowViewport, m.progress + pathScrollProgress * 0.04, m.offset, m.radiusBias, m.verticalOffset, vortexScrollSpin + idleTime * 0.88, meteorPos);
 				m.mesh.position.copy(pos);
 
 				// Rotate to look along path
