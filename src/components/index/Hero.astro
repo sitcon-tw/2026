@@ -14,7 +14,6 @@ const lang = Astro.props.lang ?? "zh";
 <section class="hero-container">
 	<div class="bg-fixed">
 		<canvas id="bg-canvas"></canvas>
-		<img class="bg-static" src="/2026/img/Hero/intro.png" alt="" aria-hidden="true" />
 	</div>
 	<Landing lang={lang} />
 	<Dialogue lang={lang} />
@@ -37,16 +36,6 @@ const lang = Astro.props.lang ?? "zh";
 		background: radial-gradient(circle at 56% 36%, rgba(246, 216, 142, 0.38) 0%, rgba(184, 137, 45, 0.22) 34%, transparent 62%), linear-gradient(135deg, #6b4a18 0%, #aa7d2e 48%, #493514 100%);
 		z-index: -1;
 		animation: fadeIn 2s ease-out forwards;
-	}
-
-	.bg-static {
-		display: none;
-		position: absolute;
-		top: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 100%;
-		pointer-events: none;
 	}
 
 	.bg-fixed::before,
@@ -73,14 +62,6 @@ const lang = Astro.props.lang ?? "zh";
 		.bg-fixed {
 			animation: none;
 			opacity: 1;
-			height: auto;
-			min-height: 100dvh;
-			position: absolute;
-			overflow: visible;
-		}
-
-		.bg-static {
-			display: block;
 		}
 	}
 
@@ -137,14 +118,8 @@ const lang = Astro.props.lang ?? "zh";
 		if (heroContainer.dataset.heroInit === "true") return () => {};
 		heroContainer.dataset.heroInit = "true";
 
-		// Skip complex 3D animation if user prefers reduced motion
-		if (prefersReducedMotion()) {
-			return () => {
-				heroContainer.dataset.heroInit = "false";
-			};
-		}
-
 		const narrowViewport = window.innerWidth < 700;
+		const reduceMotion = prefersReducedMotion();
 		let randomSeed = 20260328;
 		const random = () => {
 			randomSeed = (randomSeed * 1664525 + 1013904223) >>> 0;
@@ -373,6 +348,7 @@ const lang = Astro.props.lang ?? "zh";
 				const roleScaleBoost = role === "orb" ? 1 + middleWeight * 0.08 : role === "decor" ? 0.9 : 1;
 				const scale = (scaleRange[0] + random() * (scaleRange[1] - scaleRange[0])) * roleScaleBoost;
 				mesh.scale.setScalar(scale);
+				mesh.position.copy(getVortexPosition(placement.level, placement.thetaOffset, placement.radiusBias, placement.verticalOffset, 0));
 
 				scene.add(mesh);
 				heroObjects.push({
@@ -387,6 +363,10 @@ const lang = Astro.props.lang ?? "zh";
 					radiusBias: placement.radiusBias,
 					verticalOffset: placement.verticalOffset
 				});
+
+				if (reduceMotion) {
+					renderer.render(scene, camera);
+				}
 			}
 		};
 
@@ -575,21 +555,25 @@ const lang = Astro.props.lang ?? "zh";
 
 		const animate = () => {
 			if (!isRunning) return;
-			animationFrameId = requestAnimationFrame(animate);
-			idleTime += 0.0007; // Slowed down significantly (half of 0.0015)
+			if (!reduceMotion) {
+				animationFrameId = requestAnimationFrame(animate);
+			}
+			idleTime += reduceMotion ? 0 : 0.0007; // Slowed down significantly (half of 0.0015)
 
-			const signedScrollDelta = window.scrollY - lastScrollY;
+			const signedScrollDelta = reduceMotion ? 0 : window.scrollY - lastScrollY;
 			const scrollDelta = Math.abs(signedScrollDelta);
 			lastScrollY = window.scrollY;
 			const scrollFactor = 1 + Math.min(scrollDelta * 0.01, 2);
-			vortexScrollVelocity += THREE.MathUtils.clamp(signedScrollDelta * 0.0018, -0.22, 0.22);
-			vortexScrollVelocity *= 0.88;
-			vortexScrollSpin += vortexScrollVelocity;
+			if (!reduceMotion) {
+				vortexScrollVelocity += THREE.MathUtils.clamp(signedScrollDelta * 0.0018, -0.22, 0.22);
+				vortexScrollVelocity *= 0.88;
+				vortexScrollSpin += vortexScrollVelocity;
 
-			scrollProgress += (window.scrollY / 8000 - scrollProgress) * 0.05;
+				scrollProgress += (window.scrollY / 8000 - scrollProgress) * 0.05;
 
-			mouseOffset.x += (targetMouseOffset.x - mouseOffset.x) * 0.05;
-			mouseOffset.y += (targetMouseOffset.y - mouseOffset.y) * 0.05;
+				mouseOffset.x += (targetMouseOffset.x - mouseOffset.x) * 0.05;
+				mouseOffset.y += (targetMouseOffset.y - mouseOffset.y) * 0.05;
+			}
 
 			// Subtle perspective shift
 			camera.position.x = mouseOffset.x * 0.8;
@@ -634,9 +618,11 @@ const lang = Astro.props.lang ?? "zh";
 					}
 
 					// Individualized slow rotation
-					obj.mesh.rotation.x += obj.rotationSpeed.x * scrollFactor;
-					obj.mesh.rotation.y += obj.rotationSpeed.y * scrollFactor;
-					obj.mesh.rotation.z += obj.rotationSpeed.z * scrollFactor;
+					if (!reduceMotion) {
+						obj.mesh.rotation.x += obj.rotationSpeed.x * scrollFactor;
+						obj.mesh.rotation.y += obj.rotationSpeed.y * scrollFactor;
+						obj.mesh.rotation.z += obj.rotationSpeed.z * scrollFactor;
+					}
 
 					// Lerp scale back to baseScale (reuse tempVec3 to avoid GC)
 					tempVec3.set(obj.baseScale, obj.baseScale, obj.baseScale);
@@ -661,6 +647,11 @@ const lang = Astro.props.lang ?? "zh";
 			});
 
 			renderer.render(scene, camera);
+
+			if (reduceMotion) {
+				isRunning = false;
+				animationFrameId = null;
+			}
 		};
 
 		const onResize = () => {
