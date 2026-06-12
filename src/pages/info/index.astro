@@ -76,7 +76,9 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 		<div class="modal-card">
 			<div class="modal-header">
 				<h2 class="modal-title">{info.transport.title}</h2>
-				<button class="modal-x" type="button" data-close-transport><X /></button>
+				<button class="modal-x" type="button" data-close-transport aria-label={lang === "en" ? "Close transportation dialog" : "關閉交通資訊"}>
+					<X aria-hidden="true" />
+				</button>
 			</div>
 
 			<div class="modal-body">
@@ -897,6 +899,168 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 
 		:global(table tbody tr) {
 			transition: none;
+		}
+	}
+
+	.modal[open] {
+		padding: 1.25rem;
+	}
+
+	.modal::backdrop {
+		background: rgba(10, 9, 7, 0.72);
+		backdrop-filter: blur(0.75rem);
+		-webkit-backdrop-filter: blur(0.75rem);
+	}
+
+	.modal-card {
+		width: min(56rem, calc(100vw - 2rem));
+		max-height: min(44rem, calc(100svh - 2rem));
+		overflow: auto;
+		overscroll-behavior: contain;
+		padding: clamp(1rem, 3vw, 2rem);
+		border-radius: var(--metal-radius);
+		border: 1px solid rgba(242, 216, 148, 0.34);
+		background: radial-gradient(circle at 14% 8%, rgba(242, 216, 148, 0.18), transparent 22rem), linear-gradient(145deg, rgba(28, 25, 20, 0.94), rgba(12, 11, 9, 0.94));
+		box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.44);
+		color: var(--metal-cream);
+	}
+
+	.modal-header {
+		padding: 0 0 1.2rem;
+		border-bottom: 1px solid rgba(242, 216, 148, 0.18);
+	}
+
+	.modal-title {
+		font-size: clamp(1.8rem, 4vw, 3rem);
+		color: var(--metal-cream);
+	}
+
+	.modal-x {
+		width: 2.5rem;
+		height: 2.5rem;
+		border: 1px solid rgba(242, 216, 148, 0.28);
+		background: rgba(255, 244, 214, 0.08);
+		color: var(--metal-cream);
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.modal-x:hover {
+		background: rgba(255, 244, 214, 0.16);
+		border-color: rgba(242, 216, 148, 0.48);
+		transform: rotate(90deg);
+	}
+
+	.modal-body {
+		padding: 1.35rem 0 0;
+	}
+
+	.modal-button-container {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.65rem;
+		padding: 0.35rem;
+		border: 1px solid rgba(242, 216, 148, 0.18);
+		border-radius: var(--metal-radius);
+		background: rgba(255, 244, 214, 0.06);
+	}
+
+	.modal-button {
+		min-height: 3rem;
+		padding: 0.65rem 1rem;
+		border-radius: calc(var(--metal-radius) - 0.125rem);
+		border: 1px solid transparent;
+		background: transparent;
+		color: rgba(244, 239, 229, 0.68);
+		font-size: 1rem;
+		transition:
+			background 0.2s ease,
+			color 0.2s ease,
+			border-color 0.2s ease;
+	}
+
+	.modal-button:hover,
+	.modal-button.is-active {
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.18), rgba(141, 99, 48, 0.22));
+		border-color: rgba(242, 216, 148, 0.26);
+		color: var(--metal-cream);
+	}
+
+	.modal-button.is-active {
+		outline: none;
+	}
+
+	.transport-route {
+		color: var(--metal-cream);
+		gap: 1rem;
+	}
+
+	.transport-route-line {
+		background: linear-gradient(90deg, rgba(242, 216, 148, 0.18), var(--metal-gold-soft));
+	}
+
+	.transport-route-line::after {
+		border-color: var(--metal-gold-soft);
+	}
+
+	.transport-card,
+	.transport-section {
+		border: 1px solid rgba(242, 216, 148, 0.18);
+		border-radius: var(--metal-radius);
+		background: rgba(255, 244, 214, 0.07);
+	}
+
+	.transport-section {
+		padding: 1.2rem;
+	}
+
+	.transport-card {
+		padding: 1.2rem;
+	}
+
+	.transport-card p,
+	.transport-section-desc,
+	.transport-route-desc,
+	.transport-references-list li {
+		color: rgba(244, 239, 229, 0.78);
+	}
+
+	.transport-card-title,
+	.transport-section-title,
+	.transport-references-title {
+		color: var(--metal-cream);
+	}
+
+	.transport-station-tag,
+	.transport-bus-tag {
+		border: 1px solid rgba(242, 216, 148, 0.26);
+		border-radius: 999px;
+		background: rgba(255, 244, 214, 0.1);
+		color: var(--metal-cream);
+	}
+
+	.transport-card :global(a),
+	.transport-references-list a {
+		color: var(--metal-gold-soft);
+		text-underline-offset: 0.18em;
+	}
+
+	@media (max-width: 730px) {
+		.modal[open] {
+			padding: 0.75rem;
+			align-items: end;
+		}
+
+		.modal-card {
+			width: 100%;
+			max-height: calc(100svh - 1.5rem);
+			padding: 1rem;
+		}
+
+		.modal-button-container {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
