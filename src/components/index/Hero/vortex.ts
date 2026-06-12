@@ -24,13 +24,13 @@ export const createSeededRandom = (seed = HERO_RANDOM_SEED) => {
 };
 
 export const createVortexConfig = (narrowViewport: boolean): VortexConfig => ({
-	centerX: narrowViewport ? 10 : 14,
-	centerZ: narrowViewport ? -76 : -72,
-	bottomY: narrowViewport ? -32 : -36,
-	height: narrowViewport ? 84 : 88,
-	baseRadius: narrowViewport ? 10 : 13,
-	topRadius: narrowViewport ? 28 : 42,
-	turns: narrowViewport ? 1.48 : 1.74
+	centerX: narrowViewport ? 11 : 18,
+	centerZ: narrowViewport ? -76 : -74,
+	bottomY: narrowViewport ? -34 : -40,
+	height: narrowViewport ? 90 : 98,
+	baseRadius: narrowViewport ? 12 : 17,
+	topRadius: narrowViewport ? 34 : 56,
+	turns: narrowViewport ? 1.54 : 1.82
 });
 
 export const getVortexPosition = (config: VortexConfig, narrowViewport: boolean, level: number, thetaOffset = 0, radiusBias = 1, yOffset = 0, time = 0, target = new THREE.Vector3()) => {
