@@ -487,6 +487,7 @@ const lang = Astro.props.lang ?? "zh";
 		let vortexScrollVelocity = 0;
 		const mouseOffset = { x: 0, y: 0 };
 		const targetMouseOffset = { x: 0, y: 0 };
+		const maxScrollZoom = narrowViewport ? 1.16 : 1.24;
 
 		const onPointerMoveOffset = (e: PointerEvent) => {
 			targetMouseOffset.x = (e.clientX / window.innerWidth - 0.5) * 5; // Horizontal sway
@@ -494,6 +495,13 @@ const lang = Astro.props.lang ?? "zh";
 		};
 
 		window.addEventListener("pointermove", onPointerMoveOffset);
+
+		const getScrollZoomTarget = () => {
+			const heroHeight = Math.max(heroContainer.offsetHeight, window.innerHeight);
+			const zoomDistance = Math.max(heroHeight - window.innerHeight, window.innerHeight);
+			const scrollProgress = THREE.MathUtils.clamp(-heroContainer.getBoundingClientRect().top / zoomDistance, 0, 1);
+			return THREE.MathUtils.lerp(1, maxScrollZoom, scrollProgress);
+		};
 
 		let animationFrameId: number | null = null;
 		let isRunning = false;
@@ -556,6 +564,11 @@ const lang = Astro.props.lang ?? "zh";
 			camera.position.y = -mouseOffset.y * 0.8;
 			camera.rotation.y = -mouseOffset.x * 0.02;
 			camera.rotation.x = -mouseOffset.y * 0.02;
+			const targetCameraZoom = reduceMotion ? 1 : getScrollZoomTarget();
+			camera.zoom += (targetCameraZoom - camera.zoom) * 0.08;
+			if (Math.abs(camera.zoom - targetCameraZoom) > 0.0005) {
+				camera.updateProjectionMatrix();
+			}
 
 			const vortexTime = vortexScrollSpin + idleTime * (narrowViewport ? 0.52 : 0.62);
 			updateVortexRibbons(vortexTime);
