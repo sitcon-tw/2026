@@ -43,6 +43,7 @@ const t = useTranslations(lang).landing;
 
 <style>
 	header {
+		--hero-copy-offset: clamp(0rem, calc(15vh - 2rem), 8rem);
 		position: relative;
 		min-height: 100vh;
 		min-height: 100svh;
@@ -67,6 +68,7 @@ const t = useTranslations(lang).landing;
 	}
 
 	h1 {
+		padding-left: var(--hero-copy-offset);
 		line-height: clamp(3rem, 10vw, 5rem);
 		text-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.42);
 		text-transform: uppercase;
@@ -129,7 +131,7 @@ const t = useTranslations(lang).landing;
 		user-select: none;
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		text-decoration: none;
-		margin-bottom: 1rem;
+		margin: 0 0 1rem var(--hero-copy-offset);
 	}
 	.cta-container:hover {
 		background: linear-gradient(145deg, rgba(255, 246, 220, 0.22), rgba(20, 19, 15, 0.34));
@@ -209,6 +211,12 @@ const t = useTranslations(lang).landing;
 
 		.cta-text-layer {
 			transition: none;
+		}
+	}
+
+	@media (max-width: 700px) {
+		header {
+			--hero-copy-offset: 0rem;
 		}
 	}
 </style>
