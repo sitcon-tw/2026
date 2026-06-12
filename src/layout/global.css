@@ -17,6 +17,11 @@
 	--metal-surface: rgba(28, 25, 20, 0.72);
 	--metal-surface-strong: rgba(20, 19, 15, 0.9);
 	--metal-glass: rgba(255, 244, 214, 0.08);
+	--metal-glass-strong: rgba(255, 244, 214, 0.14);
+	--metal-light-bg: linear-gradient(180deg, rgba(244, 239, 229, 0.98), rgba(229, 218, 195, 0.94));
+	--metal-light-panel: rgba(255, 255, 255, 0.58);
+	--metal-light-line: rgba(45, 33, 17, 0.14);
+	--metal-radius: 0.5rem;
 	--metal-bg:
 		radial-gradient(circle at 18% 12%, rgba(242, 216, 148, 0.18), transparent 32rem), radial-gradient(circle at 82% 22%, rgba(216, 212, 199, 0.16), transparent 34rem),
 		linear-gradient(135deg, #11100d 0%, #2b2418 42%, #14130f 100%);
@@ -57,6 +62,7 @@ body {
 	font-optical-sizing: auto;
 	font-size: 17px;
 	color: var(--silence-white);
+	overflow-x: hidden;
 }
 
 h1,
@@ -93,6 +99,83 @@ p {
 a {
 	color: inherit;
 	text-decoration: none;
+}
+
+:where(a, button, summary, [tabindex]):focus-visible {
+	outline: 0.125rem solid var(--metal-gold-soft);
+	outline-offset: 0.1875rem;
+}
+
+.metal-eyebrow {
+	font-family: "JetBrainsMono", monospace;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--metal-gold-soft);
+}
+
+.metal-page-title {
+	font-size: clamp(3rem, 7vw, 5rem);
+	line-height: 0.98;
+	letter-spacing: 0;
+	color: var(--metal-cream);
+}
+
+.metal-copy {
+	color: rgba(244, 239, 229, 0.82);
+	line-height: 1.75;
+}
+
+.metal-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.55rem;
+	min-height: 2.9rem;
+	padding: 0.75rem 1.25rem;
+	border: 1px solid rgba(242, 216, 148, 0.36);
+	border-radius: 999px;
+	background: linear-gradient(145deg, rgba(255, 246, 220, 0.18), rgba(20, 19, 15, 0.34));
+	color: var(--metal-cream);
+	box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
+	cursor: pointer;
+	text-decoration: none;
+	transition:
+		background 0.25s ease,
+		border-color 0.25s ease,
+		box-shadow 0.25s ease,
+		transform 0.25s ease;
+}
+
+.metal-button:hover {
+	background: linear-gradient(145deg, rgba(255, 246, 220, 0.26), rgba(20, 19, 15, 0.3));
+	border-color: rgba(242, 216, 148, 0.58);
+	box-shadow: 0 1rem 2.2rem rgba(0, 0, 0, 0.24);
+	transform: translateY(-0.125rem);
+}
+
+.metal-button.light {
+	background: linear-gradient(145deg, var(--metal-cream), var(--metal-silver));
+	color: var(--metal-ink);
+	border-color: rgba(45, 33, 17, 0.22);
+	box-shadow: 0 0.85rem 1.8rem rgba(45, 33, 17, 0.12);
+}
+
+.metal-panel {
+	border: 1px solid var(--metal-line);
+	border-radius: var(--metal-radius);
+	background: linear-gradient(145deg, rgba(255, 244, 214, 0.12), rgba(20, 19, 15, 0.58));
+	box-shadow: var(--metal-card-shadow);
+}
+
+.light-panel {
+	border: 1px solid var(--metal-light-line);
+	border-radius: var(--metal-radius);
+	background: var(--metal-light-panel);
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.72),
+		0 1rem 2.5rem rgba(45, 33, 17, 0.08);
 }
 
 @media (max-width: 600px) {
@@ -181,5 +264,9 @@ a {
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;
 		scroll-behavior: auto !important;
+	}
+
+	.metal-button {
+		transition: none;
 	}
 }

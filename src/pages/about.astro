@@ -10,15 +10,23 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 ---
 
 <Layout lang={lang} title={title} description={description}>
-	<main>
-		<section class="about-header">
-			<img src="/2026/img/about/sitcon-2025.webp" alt="SITCON 2025" class="header-img" />
-			<h1 class="text-3xl font-bold mb-4 text-reveal-title">{t.title}</h1>
-			<p class="text-lg text-reveal-paragraph">{t.description}</p>
+	<main class="about-page">
+		<section class="about-hero">
+			<div class="about-hero-copy">
+				<p class="metal-eyebrow text-reveal-paragraph">SITCON</p>
+				<h1 class="metal-page-title text-reveal-title">{t.title}</h1>
+				<p class="about-description metal-copy text-reveal-paragraph">{t.description}</p>
+			</div>
+			<figure class="about-hero-media">
+				<img src="/2026/img/about/sitcon-2025.webp" alt="SITCON 2025" width="1200" height="675" fetchpriority="high" />
+			</figure>
 		</section>
 		<section class="community-section">
-			<h2 class="section-title text-reveal-title">{t.community.title}</h2>
-			<div class="community-data-container">
+			<div class="section-heading">
+				<p class="metal-eyebrow text-reveal-paragraph">Community</p>
+				<h2 class="section-title text-reveal-title">{t.community.title}</h2>
+			</div>
+			<div class="community-data-container" aria-label={t.community.title}>
 				{
 					t.community.data.map(item => (
 						<div class="community-item">
@@ -30,15 +38,18 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 			</div>
 		</section>
 		<section class="history-section">
-			<h2 class="section-title text-reveal-title">{t.history.title}</h2>
+			<div class="section-heading">
+				<p class="metal-eyebrow text-reveal-paragraph">Impact</p>
+				<h2 class="section-title text-reveal-title">{t.history.title}</h2>
+			</div>
 			<div class="history-container">
 				{
 					t.history.data.map(item => (
 						<div class="history-item">
-							<img src={`/2026/img/about/${item.image}.webp`} alt={item.title} class="history-image" />
-							<div class="history-overlay">
-								<h3 class="text-reveal-title">{item.title}</h3>
-								<p class="text-reveal-paragraph">{item.description}</p>
+							<img src={`/2026/img/about/${item.image}.webp`} alt={item.title} class="history-image" width="640" height="420" loading="lazy" />
+							<div class="history-content">
+								<h3>{item.title}</h3>
+								<p>{item.description}</p>
 							</div>
 						</div>
 					))
@@ -46,21 +57,26 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 			</div>
 		</section>
 		<section class="media-section">
-			<h2 class="section-title text-reveal-title">{t.media.title}</h2>
+			<div class="section-heading">
+				<p class="metal-eyebrow text-reveal-paragraph">Press</p>
+				<h2 class="section-title text-reveal-title">{t.media.title}</h2>
+			</div>
 			<div class="media-container">
 				{
 					t.media.items.map(item => (
 						<a href={item.url} target="_blank" rel="noopener noreferrer" class="media-item">
-							<img src={`/2026/img/about/${item.image}.webp`} alt={item.alt} />
-							<span class="media-overlay text-reveal-paragraph">{item.alt}</span>
+							<img src={`/2026/img/about/${item.image}.webp`} alt={item.alt} width="520" height="300" loading="lazy" />
+							<span>{item.alt}</span>
 						</a>
 					))
 				}
 			</div>
 		</section>
 		<section class="recap-section">
-			<div class="wavy-spacer"></div>
-			<h2 class="section-title text-reveal-title">{t.recap.title}</h2>
+			<div class="section-heading">
+				<p class="metal-eyebrow text-reveal-paragraph">Review</p>
+				<h2 class="section-title text-reveal-title">{t.recap.title}</h2>
+			</div>
 			<div class="recap-stats">
 				{
 					t.recap.stats.map(stat => (
@@ -390,6 +406,328 @@ const description = Astro.props.description ?? (lang === "en" ? t.description : 
 
 	.media-item:hover .media-overlay {
 		opacity: 1;
+	}
+
+	main.about-page {
+		max-width: none;
+		margin: 0;
+		padding: 0;
+		gap: 0;
+		color: var(--metal-cream);
+		background: var(--metal-bg);
+	}
+
+	.about-hero,
+	.community-section,
+	.history-section,
+	.media-section,
+	.recap-section {
+		padding: var(--section-padding);
+	}
+
+	.about-hero {
+		min-height: 100svh;
+		display: grid;
+		grid-template-columns: minmax(0, 0.85fr) minmax(20rem, 1.15fr);
+		align-items: center;
+		gap: clamp(2rem, 6vw, 7rem);
+		max-width: 92rem;
+		margin-inline: auto;
+		padding-top: clamp(7rem, 12vw, 10rem);
+	}
+
+	.about-hero-copy {
+		display: flex;
+		flex-direction: column;
+		gap: 1.35rem;
+	}
+
+	.about-description {
+		max-width: 42rem;
+		font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+		margin: 0;
+	}
+
+	.about-hero-media {
+		margin: 0;
+		position: relative;
+		overflow: hidden;
+		border-radius: var(--metal-radius);
+		border: 1px solid rgba(242, 216, 148, 0.28);
+		background: var(--metal-glass);
+		box-shadow: var(--metal-card-shadow);
+	}
+
+	.about-hero-media::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(120deg, rgba(255, 246, 220, 0.12), transparent 44%), linear-gradient(0deg, rgba(20, 19, 15, 0.28), transparent 50%);
+		pointer-events: none;
+	}
+
+	.about-hero-media img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 16 / 10;
+		height: auto;
+		object-fit: cover;
+	}
+
+	.section-heading {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		max-width: 72rem;
+		margin: 0 auto clamp(2rem, 5vw, 3.5rem);
+	}
+
+	.section-title {
+		text-align: left;
+		font-size: clamp(2.4rem, 5vw, 4.5rem);
+		line-height: 1.05;
+		margin: 0;
+		color: inherit;
+	}
+
+	.community-section,
+	.media-section {
+		background: var(--metal-light-bg);
+		color: var(--coffee);
+	}
+
+	.community-section .metal-eyebrow,
+	.media-section .metal-eyebrow {
+		color: var(--metal-bronze);
+	}
+
+	.community-data-container {
+		display: grid;
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+		gap: 1rem;
+		max-width: 72rem;
+		margin-inline: auto;
+	}
+
+	.community-item {
+		min-width: 0;
+		grid-column: span 2;
+		background: rgba(255, 255, 255, 0.58);
+		border: 1px solid var(--metal-light-line);
+		border-radius: var(--metal-radius);
+		padding: clamp(1.25rem, 3vw, 2rem);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.76),
+			0 1rem 2.5rem rgba(45, 33, 17, 0.08);
+		align-items: flex-start;
+	}
+
+	.community-item:nth-last-child(-n + 2) {
+		grid-column: span 3;
+	}
+
+	.community-item .community-count {
+		font-family: "JetBrainsMono", monospace;
+		font-size: clamp(2.5rem, 6vw, 4.5rem);
+		color: var(--metal-bronze);
+		letter-spacing: 0;
+	}
+
+	.community-item .community-label {
+		font-size: 1rem;
+		color: rgba(45, 33, 17, 0.76);
+	}
+
+	.history-section,
+	.recap-section {
+		background: radial-gradient(circle at 85% 8%, rgba(242, 216, 148, 0.12), transparent 28rem), linear-gradient(180deg, rgba(20, 19, 15, 0.98), rgba(36, 35, 31, 0.96));
+		color: var(--metal-cream);
+	}
+
+	.history-container {
+		max-width: 72rem;
+		margin-inline: auto;
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.history-item,
+	.history-item:last-child {
+		grid-column: span 3;
+		height: auto;
+		min-height: 28rem;
+		display: flex;
+		flex-direction: column;
+		background: linear-gradient(145deg, rgba(255, 244, 214, 0.12), rgba(20, 19, 15, 0.5));
+		border: 1px solid var(--metal-line);
+		border-radius: var(--metal-radius);
+		box-shadow: var(--metal-card-shadow);
+	}
+
+	.history-item:first-child {
+		grid-column: span 6;
+		display: grid;
+		grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+		min-height: 24rem;
+	}
+
+	.history-image {
+		position: static;
+		width: 100%;
+		height: 15rem;
+		object-fit: cover;
+	}
+
+	.history-item:first-child .history-image {
+		height: 100%;
+		min-height: 24rem;
+	}
+
+	.history-content {
+		padding: clamp(1.4rem, 3vw, 2rem);
+		display: flex;
+		flex-direction: column;
+		gap: 0.85rem;
+	}
+
+	.history-content h3 {
+		font-size: clamp(1.35rem, 2.5vw, 2rem);
+		line-height: 1.15;
+		margin: 0;
+		color: var(--metal-cream);
+	}
+
+	.history-content p {
+		margin: 0;
+		color: rgba(244, 239, 229, 0.74);
+		line-height: 1.72;
+	}
+
+	.media-container {
+		max-width: 72rem;
+		margin-inline: auto;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.media-item {
+		display: flex;
+		flex-direction: column;
+		background: rgba(255, 255, 255, 0.58);
+		border: 1px solid var(--metal-light-line);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.72),
+			0 1rem 2.5rem rgba(45, 33, 17, 0.08);
+		color: var(--coffee);
+	}
+
+	.media-item img {
+		height: auto;
+		aspect-ratio: 16 / 10;
+	}
+
+	.media-item span {
+		padding: 1rem;
+		font-size: 0.95rem;
+		line-height: 1.5;
+		text-align: left;
+		color: rgba(45, 33, 17, 0.78);
+	}
+
+	.recap-section {
+		text-align: left;
+	}
+
+	.recap-stats,
+	.recap-charts {
+		max-width: 72rem;
+		margin-inline: auto;
+	}
+
+	.recap-stats {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.recap-stat,
+	.recap-chart-item {
+		background: linear-gradient(145deg, rgba(255, 244, 214, 0.12), rgba(20, 19, 15, 0.58));
+		border: 1px solid var(--metal-line);
+		border-radius: var(--metal-radius);
+		box-shadow: var(--metal-card-shadow);
+	}
+
+	.recap-stat {
+		align-items: flex-start;
+		text-align: left;
+	}
+
+	.recap-number {
+		font-family: "JetBrainsMono", monospace;
+		font-size: clamp(2.25rem, 5vw, 3.75rem);
+	}
+
+	.recap-label {
+		color: rgba(244, 239, 229, 0.74);
+	}
+
+	.recap-charts {
+		gap: 1rem;
+	}
+
+	.chart-title {
+		font-size: clamp(1.1rem, 2vw, 1.4rem);
+		color: var(--metal-cream);
+	}
+
+	@media (max-width: 60rem) {
+		.about-hero {
+			grid-template-columns: 1fr;
+			min-height: auto;
+		}
+
+		.about-hero-media {
+			order: -1;
+		}
+
+		.community-data-container,
+		.history-container,
+		.media-container,
+		.recap-stats {
+			grid-template-columns: 1fr;
+		}
+
+		.community-item,
+		.community-item:nth-last-child(-n + 2),
+		.history-item,
+		.history-item:first-child,
+		.history-item:last-child {
+			grid-column: auto;
+		}
+
+		.history-item:first-child {
+			display: flex;
+		}
+
+		.history-item:first-child .history-image {
+			height: 15rem;
+			min-height: 0;
+		}
+	}
+
+	@media (max-width: 45rem) {
+		.about-hero,
+		.community-section,
+		.history-section,
+		.media-section,
+		.recap-section {
+			padding-inline: 1rem;
+		}
+
+		.recap-charts {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>
 
