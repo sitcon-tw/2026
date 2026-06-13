@@ -73,7 +73,7 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 	</main>
 
 	<dialog class="modal" data-transport-dialog>
-		<div class="modal-card">
+		<div class="modal-card" data-lenis-prevent>
 			<div class="modal-header">
 				<h2 class="modal-title">{info.transport.title}</h2>
 				<button class="modal-x" type="button" data-close-transport aria-label={lang === "en" ? "Close transportation dialog" : "關閉交通資訊"}>
@@ -81,7 +81,7 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 				</button>
 			</div>
 
-			<div class="modal-body">
+			<div class="modal-body" data-lenis-prevent>
 				<div class="modal-button-container" role="tablist" aria-label={info.transport.title}>
 					<button class="modal-button is-active" type="button" data-transport-tab="shuttle" role="tab" aria-selected="true">{info.transport.tabs.shuttle}</button>
 
@@ -90,79 +90,81 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 					<button class="modal-button" type="button" data-transport-tab="drive" role="tab" aria-selected="false">{info.transport.tabs.drive}</button>
 				</div>
 
-				<section class="transport-panel" data-transport-panel="shuttle" role="tabpanel">
-					<div class="transport-route">
-						<div class="transport-route-left">{info.transport.shuttle.from}</div>
+				<div class="transport-panel-viewport" data-lenis-prevent>
+					<section class="transport-panel" data-transport-panel="shuttle" role="tabpanel">
+						<div class="transport-route">
+							<div class="transport-route-left">{info.transport.shuttle.from}</div>
 
-						<div class="transport-route-line" aria-hidden="true"></div>
+							<div class="transport-route-line" aria-hidden="true"></div>
 
-						<div class="transport-route-right">{info.transport.shuttle.to}</div>
-					</div>
-
-					<div class="transport-card">
-						<p>{info.transport.shuttle.location}</p>
-						<p>{info.transport.shuttle.time}</p>
-						<p>{info.transport.shuttle.interval}</p>
-					</div>
-				</section>
-
-				<section class="transport-panel" data-transport-panel="public" role="tabpanel" hidden>
-					<div class="transport-section">
-						<h3 class="transport-section-title">{info.transport.public.youbike.title}</h3>
-						<p class="transport-section-desc">{info.transport.public.youbike.description}</p>
-						<div class="transport-stations">
-							{info.transport.public.youbike.stations.map((station: string) => <span class="transport-station-tag">{station}</span>)}
+							<div class="transport-route-right">{info.transport.shuttle.to}</div>
 						</div>
-					</div>
 
-					<div class="transport-section">
-						<h3 class="transport-section-title">{info.transport.public.bus.title}</h3>
-						{
-							info.transport.public.bus.routes.map((route: { from: string; description: string; to: string; buses: string[] }) => (
-								<div class="transport-card">
-									<div class="transport-route">
-										<div class="transport-route-left">{route.from}</div>
-										<div class="transport-route-line" aria-hidden="true" />
-										<div class="transport-route-right">{route.to}</div>
-									</div>
-									<p class="transport-route-desc">{route.description}</p>
-									<div class="transport-buses">
-										{route.buses.map((bus: string) => (
-											<span class="transport-bus-tag">{bus}</span>
-										))}
-									</div>
-								</div>
-							))
-						}
-					</div>
-				</section>
+						<div class="transport-card">
+							<p>{info.transport.shuttle.location}</p>
+							<p>{info.transport.shuttle.time}</p>
+							<p>{info.transport.shuttle.interval}</p>
+						</div>
+					</section>
 
-				<section class="transport-panel" data-transport-panel="drive" role="tabpanel" hidden>
-					<div class="transport-card">
-						<h3 class="transport-card-title">{info.transport.drive.car.title}</h3>
-						<p set:html={info.transport.drive.car.description} />
-					</div>
+					<section class="transport-panel" data-transport-panel="public" role="tabpanel" hidden>
+						<div class="transport-section">
+							<h3 class="transport-section-title">{info.transport.public.youbike.title}</h3>
+							<p class="transport-section-desc">{info.transport.public.youbike.description}</p>
+							<div class="transport-stations">
+								{info.transport.public.youbike.stations.map((station: string) => <span class="transport-station-tag">{station}</span>)}
+							</div>
+						</div>
 
-					<div class="transport-card">
-						<h3 class="transport-card-title">{info.transport.drive.motorcycle.title}</h3>
-						<p set:html={info.transport.drive.motorcycle.description} />
-					</div>
-
-					<div class="transport-references">
-						<h4 class="transport-references-title">{info.transport.drive.referencesTitle}</h4>
-						<ul class="transport-references-list">
+						<div class="transport-section">
+							<h3 class="transport-section-title">{info.transport.public.bus.title}</h3>
 							{
-								info.transport.drive.references.map((ref: { name: string; url: string }) => (
-									<li>
-										<a href={ref.url} target="_blank" rel="noopener noreferrer">
-											{ref.name}
-										</a>
-									</li>
+								info.transport.public.bus.routes.map((route: { from: string; description: string; to: string; buses: string[] }) => (
+									<div class="transport-card">
+										<div class="transport-route">
+											<div class="transport-route-left">{route.from}</div>
+											<div class="transport-route-line" aria-hidden="true" />
+											<div class="transport-route-right">{route.to}</div>
+										</div>
+										<p class="transport-route-desc">{route.description}</p>
+										<div class="transport-buses">
+											{route.buses.map((bus: string) => (
+												<span class="transport-bus-tag">{bus}</span>
+											))}
+										</div>
+									</div>
 								))
 							}
-						</ul>
-					</div>
-				</section>
+						</div>
+					</section>
+
+					<section class="transport-panel" data-transport-panel="drive" role="tabpanel" hidden>
+						<div class="transport-card">
+							<h3 class="transport-card-title">{info.transport.drive.car.title}</h3>
+							<p set:html={info.transport.drive.car.description} />
+						</div>
+
+						<div class="transport-card">
+							<h3 class="transport-card-title">{info.transport.drive.motorcycle.title}</h3>
+							<p set:html={info.transport.drive.motorcycle.description} />
+						</div>
+
+						<div class="transport-references">
+							<h4 class="transport-references-title">{info.transport.drive.referencesTitle}</h4>
+							<ul class="transport-references-list">
+								{
+									info.transport.drive.references.map((ref: { name: string; url: string }) => (
+										<li>
+											<a href={ref.url} target="_blank" rel="noopener noreferrer">
+												{ref.name}
+											</a>
+										</li>
+									))
+								}
+							</ul>
+						</div>
+					</section>
+				</div>
 			</div>
 		</div>
 	</dialog>
@@ -182,31 +184,104 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 
 		const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-transport-tab]"));
 		const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-transport-panel]"));
+		const tabOrder = ["shuttle", "public", "drive"];
+		const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 		let redirectTimer: number | null = null;
+		let panelAnimationTimer: number | null = null;
+		let activeTransportTab = panels.find(panel => !panel.hidden)?.getAttribute("data-transport-panel") ?? "shuttle";
 		let exiting = false;
 
-		const activateTab = (name: string) => {
+		const setModalScrollLock = (locked: boolean) => {
+			document.body.style.overflow = locked ? "hidden" : "";
+
+			const lenis = (window as any).lenis;
+			if (locked && lenis && typeof lenis.stop === "function") {
+				lenis.stop();
+			}
+			if (!locked && lenis && typeof lenis.start === "function") {
+				lenis.start();
+			}
+		};
+
+		const clearPanelMotionClasses = (panel: HTMLElement) => {
+			panel.classList.remove("is-entering", "is-active-transition", "is-exiting-left", "is-exiting-right", "from-left", "from-right");
+		};
+
+		const settlePanels = (name: string) => {
+			panels.forEach(panel => {
+				const active = panel.getAttribute("data-transport-panel") === name;
+				clearPanelMotionClasses(panel);
+				panel.toggleAttribute("hidden", !active);
+				panel.setAttribute("aria-hidden", active ? "false" : "true");
+			});
+		};
+
+		const activateTab = (name: string, options: { immediate?: boolean } = {}) => {
+			if (!tabOrder.includes(name)) return;
+			if (name === activeTransportTab && !options.immediate) return;
+
+			if (panelAnimationTimer !== null) {
+				window.clearTimeout(panelAnimationTimer);
+				panelAnimationTimer = null;
+			}
+
+			const previousName = activeTransportTab;
+			const previousPanel = panels.find(panel => panel.getAttribute("data-transport-panel") === previousName);
+			const nextPanel = panels.find(panel => panel.getAttribute("data-transport-panel") === name);
+			const direction = tabOrder.indexOf(name) >= tabOrder.indexOf(previousName) ? 1 : -1;
+
 			tabs.forEach(btn => {
 				const active = btn.getAttribute("data-transport-tab") === name;
 				btn.classList.toggle("is-active", active);
 				btn.setAttribute("aria-selected", active ? "true" : "false");
 			});
 
+			if (options.immediate || reduceMotionQuery.matches || !previousPanel || !nextPanel) {
+				settlePanels(name);
+				nextPanel?.scrollTo({ top: 0 });
+				activeTransportTab = name;
+				return;
+			}
+
 			panels.forEach(panel => {
-				const active = panel.getAttribute("data-transport-panel") === name;
-				if (active) panel.removeAttribute("hidden");
-				else panel.setAttribute("hidden", "");
+				const panelName = panel.getAttribute("data-transport-panel");
+				const relevant = panelName === previousName || panelName === name;
+				clearPanelMotionClasses(panel);
+				panel.toggleAttribute("hidden", !relevant);
+				panel.setAttribute("aria-hidden", panelName === name ? "false" : "true");
 			});
+
+			previousPanel.classList.add(direction > 0 ? "is-exiting-left" : "is-exiting-right");
+			nextPanel.classList.add("is-entering", direction > 0 ? "from-right" : "from-left");
+			nextPanel.scrollTo({ top: 0 });
+
+			window.requestAnimationFrame(() => {
+				nextPanel.classList.add("is-active-transition");
+			});
+
+			activeTransportTab = name;
+			panelAnimationTimer = window.setTimeout(() => {
+				settlePanels(name);
+				panelAnimationTimer = null;
+			}, 280);
 		};
 
 		const openDialog = () => {
+			setModalScrollLock(true);
 			if (typeof dialog.showModal === "function") dialog.showModal();
 			else dialog.setAttribute("open", "");
 
-			activateTab("shuttle");
+			activateTab("shuttle", { immediate: true });
 		};
 
-		const closeDialog = () => dialog.close();
+		const closeDialog = () => {
+			if (dialog.open) dialog.close();
+			else dialog.removeAttribute("open");
+		};
+
+		const onDialogClose = () => {
+			setModalScrollLock(false);
+		};
 
 		const onDialogClick = (e: MouseEvent) => {
 			if (e.target === dialog) dialog.close();
@@ -266,13 +341,17 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 
 		openButton.addEventListener("click", openDialog);
 		closeButton.addEventListener("click", closeDialog);
+		dialog.addEventListener("close", onDialogClose);
 		dialog.addEventListener("click", onDialogClick);
 		intoBtn.addEventListener("click", enterAcademiaSinica);
 
 		return () => {
 			if (redirectTimer !== null) window.clearTimeout(redirectTimer);
+			if (panelAnimationTimer !== null) window.clearTimeout(panelAnimationTimer);
+			setModalScrollLock(false);
 			openButton.removeEventListener("click", openDialog);
 			closeButton.removeEventListener("click", closeDialog);
+			dialog.removeEventListener("close", onDialogClose);
 			dialog.removeEventListener("click", onDialogClick);
 			intoBtn.removeEventListener("click", enterAcademiaSinica);
 			tabHandlers.forEach(([btn, handler]) => btn.removeEventListener("click", handler));
@@ -914,8 +993,11 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 
 	.modal-card {
 		width: min(56rem, calc(100vw - 2rem));
-		max-height: min(44rem, calc(100svh - 2rem));
-		overflow: auto;
+		height: min(44rem, calc(100svh - 2rem));
+		max-height: calc(100svh - 2rem);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
 		overscroll-behavior: contain;
 		padding: clamp(1rem, 3vw, 2rem);
 		border-radius: var(--metal-radius);
@@ -954,7 +1036,13 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 	}
 
 	.modal-body {
+		flex: 1;
+		min-height: 0;
 		padding: 1.35rem 0 0;
+		display: grid;
+		grid-template-rows: auto minmax(0, 1fr);
+		gap: 1rem;
+		overflow: hidden;
 	}
 
 	.modal-button-container {
@@ -990,6 +1078,72 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 
 	.modal-button.is-active {
 		outline: none;
+	}
+
+	.transport-panel-viewport {
+		position: relative;
+		min-height: 0;
+		overflow: hidden;
+	}
+
+	.transport-panel {
+		height: 100%;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-gutter: stable;
+		padding: 0 0.35rem 0.15rem 0;
+		transition:
+			opacity 0.28s ease,
+			transform 0.28s ease;
+		will-change: opacity, transform;
+	}
+
+	.transport-panel::-webkit-scrollbar {
+		width: 0.45rem;
+	}
+
+	.transport-panel::-webkit-scrollbar-track {
+		background: rgba(255, 244, 214, 0.08);
+		border-radius: 999px;
+	}
+
+	.transport-panel::-webkit-scrollbar-thumb {
+		background: rgba(242, 216, 148, 0.42);
+		border-radius: 999px;
+	}
+
+	.transport-panel.is-entering.from-right {
+		opacity: 0;
+		transform: translateX(1.6rem);
+	}
+
+	.transport-panel.is-entering.from-left {
+		opacity: 0;
+		transform: translateX(-1.6rem);
+	}
+
+	.transport-panel.is-entering.is-active-transition {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.transport-panel.is-exiting-left,
+	.transport-panel.is-exiting-right {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		overflow: hidden;
+	}
+
+	.transport-panel.is-exiting-left {
+		opacity: 0;
+		transform: translateX(-1.6rem);
+	}
+
+	.transport-panel.is-exiting-right {
+		opacity: 0;
+		transform: translateX(1.6rem);
 	}
 
 	.transport-route {
@@ -1055,6 +1209,7 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 
 		.modal-card {
 			width: 100%;
+			height: min(42rem, calc(100svh - 1.5rem));
 			max-height: calc(100svh - 1.5rem);
 			padding: 1rem;
 		}
