@@ -1936,12 +1936,18 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 
 	.agenda-filter-wrap .filter-tabs-wrap,
 	.agenda-filter-wrap-mobile .filter-tabs-wrap {
-		max-width: min(100%, 26rem);
+		max-width: min(100%, 34rem);
 		border: 1px solid rgba(242, 216, 148, 0.22);
 		background: rgba(20, 19, 15, 0.62);
 		box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
 		backdrop-filter: blur(1rem);
 		-webkit-backdrop-filter: blur(1rem);
+	}
+
+	.agenda-filter-wrap .filter-tabs,
+	.agenda-filter-wrap-mobile .filter-tabs {
+		width: max-content;
+		max-width: 100%;
 	}
 
 	.agenda-filter-wrap .filter-tab-slider,
@@ -1952,6 +1958,9 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 
 	.agenda-filter-wrap .filter-tab,
 	.agenda-filter-wrap-mobile .filter-tab {
+		flex: 0 0 auto;
+		min-width: max-content;
+		padding-inline: 1.35rem;
 		color: rgba(244, 239, 229, 0.78);
 		letter-spacing: 0;
 		white-space: nowrap;
@@ -2071,6 +2080,17 @@ const agendaSessionJson = JSON.stringify(agendaSessionData).replace(/</g, "\\u00
 
 		.agenda-mobile-controls .agenda-filter-wrap-mobile {
 			padding: 0.75rem 0.5rem 0.75rem 0.75rem;
+		}
+
+		.agenda-filter-wrap-mobile .filter-tabs {
+			width: 100%;
+		}
+
+		.agenda-filter-wrap-mobile .filter-tab {
+			flex: 1 1 0;
+			min-width: 0;
+			padding-inline: 0.75rem;
+			font-size: clamp(0.82rem, 3.1vw, 0.95rem);
 		}
 	}
 
