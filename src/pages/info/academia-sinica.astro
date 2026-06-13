@@ -20,6 +20,7 @@ const t = useTranslations(lang).academiaSinica;
 		height: 100vh;
 		display: block;
 		touch-action: none;
+		background: var(--metal-bg);
 	}
 
 	#instructions {
@@ -29,25 +30,31 @@ const t = useTranslations(lang).academiaSinica;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		background: rgba(0, 0, 0, 0.55);
-		color: white;
+		background: radial-gradient(circle at 50% 45%, rgba(242, 216, 148, 0.18), transparent 24rem), linear-gradient(135deg, rgba(20, 19, 15, 0.84), rgba(8, 8, 7, 0.74));
+		color: var(--metal-cream);
 		text-align: center;
-		font-family:
-			ui-sans-serif,
-			system-ui,
-			-apple-system,
-			Segoe UI,
-			Roboto,
-			"Noto Sans",
-			Arial;
 		cursor: pointer;
 		user-select: none;
 		z-index: 10;
+		backdrop-filter: blur(0.75rem);
+		-webkit-backdrop-filter: blur(0.75rem);
 	}
 
 	#instructions span {
-		font-size: 40px;
-		font-weight: bold;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		max-width: min(42rem, calc(100vw - 2rem));
+		min-height: 4rem;
+		padding: 1rem 1.75rem;
+		border: 1px solid rgba(242, 216, 148, 0.34);
+		border-radius: 999px;
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.18), rgba(20, 19, 15, 0.42));
+		box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.32);
+		font-family: "GenKiMinTW", serif;
+		font-size: clamp(1.5rem, 4vw, 2.5rem);
+		font-weight: 700;
+		line-height: 1.2;
 	}
 
 	#touchControls {
@@ -63,9 +70,11 @@ const t = useTranslations(lang).academiaSinica;
 		pointer-events: auto;
 		touch-action: none;
 		border-radius: 9999px;
-		background: rgba(0, 0, 0, 0.25);
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		backdrop-filter: blur(4px);
+		background: rgba(20, 19, 15, 0.62);
+		border: 1px solid rgba(242, 216, 148, 0.28);
+		box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.32);
+		backdrop-filter: blur(1rem);
+		-webkit-backdrop-filter: blur(1rem);
 		display: grid;
 		place-items: center;
 	}
@@ -81,7 +90,7 @@ const t = useTranslations(lang).academiaSinica;
 		position: absolute;
 		inset: 0;
 		border-radius: 9999px;
-		background: rgba(0, 0, 0, 0.12);
+		background: radial-gradient(circle at 50% 50%, rgba(255, 244, 214, 0.12), rgba(20, 19, 15, 0.28));
 	}
 
 	#joyKnob {
@@ -92,8 +101,8 @@ const t = useTranslations(lang).academiaSinica;
 		height: 70px;
 		transform: translate(-50%, -50%);
 		border-radius: 9999px;
-		background: rgba(255, 255, 255, 0.18);
-		border: 1px solid rgba(255, 255, 255, 0.28);
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.22), rgba(141, 99, 48, 0.24));
+		border: 1px solid rgba(242, 216, 148, 0.34);
 		display: grid;
 		place-items: center;
 	}
@@ -108,7 +117,7 @@ const t = useTranslations(lang).academiaSinica;
 	.lucide {
 		width: 34px;
 		height: 34px;
-		stroke: white;
+		stroke: var(--metal-cream);
 		stroke-width: 2;
 		fill: none;
 		stroke-linecap: round;
@@ -168,6 +177,94 @@ const t = useTranslations(lang).academiaSinica;
 		(tex as unknown as LegacyTextureEncoding).encoding = 3001;
 	};
 
+	const METAL_SCENE = {
+		background: 0x181610,
+		floor: 0x2a251b,
+		outside: 0x332b20,
+		structure: 0x746d5b,
+		neutral: 0x807765,
+		bronze: 0xa06f34,
+		gold: 0xf2d894,
+		silver: 0xd8d4c7,
+		cream: 0xfff3d2,
+		ink: 0x14130f,
+		glass: 0xe2dbc8
+	} as const;
+
+	type RethemeRole = "world" | "player";
+
+	const isStandardLikeMaterial = (material: THREE.Material): material is THREE.MeshStandardMaterial => {
+		return "color" in material && "roughness" in material && "metalness" in material;
+	};
+
+	const rethemeMaterial = (material: THREE.Material, meshName: string, role: RethemeRole): THREE.Material => {
+		const themed = material.clone();
+		if (!isStandardLikeMaterial(themed)) return themed;
+
+		if (themed.map) setTextureToSRGB(themed.map);
+
+		const name = `${meshName} ${themed.name ?? ""}`.toLowerCase();
+		let color: number = METAL_SCENE.neutral;
+		let roughness = 0.48;
+		let metalness = 0.22;
+		let opacity = 1;
+		let transparent = false;
+
+		if (role === "player") {
+			if (name.includes("eye") || name.includes("mouth")) color = METAL_SCENE.ink;
+			else if (name.includes("hand") || name.includes("leaf") || name.includes("outline")) color = METAL_SCENE.bronze;
+			else if (name.includes("light") || name.includes("star")) color = METAL_SCENE.gold;
+			else if (name.includes("shade")) color = 0x9b927d;
+			else color = METAL_SCENE.silver;
+			roughness = 0.42;
+			metalness = 0.14;
+		} else if (name.includes("glass") || name.includes("window")) {
+			color = METAL_SCENE.glass;
+			roughness = 0.18;
+			metalness = 0.1;
+			opacity = Math.min(themed.opacity ?? 0.48, 0.48);
+			transparent = true;
+			themed.depthWrite = false;
+			themed.side = THREE.DoubleSide;
+		} else if (name.includes("text")) {
+			color = METAL_SCENE.cream;
+			roughness = 0.38;
+			metalness = 0.08;
+		} else if (name.includes("arrow")) {
+			color = METAL_SCENE.gold;
+			roughness = 0.34;
+			metalness = 0.18;
+		} else if (name.includes("table") || name.includes("booth") || name.includes("chair") || name.includes("desk")) {
+			color = METAL_SCENE.bronze;
+			roughness = 0.44;
+			metalness = 0.28;
+		} else if (name.includes("outside")) {
+			color = METAL_SCENE.outside;
+			roughness = 0.56;
+			metalness = 0.24;
+		} else if (name.includes("elevator")) {
+			color = METAL_SCENE.silver;
+			roughness = 0.32;
+			metalness = 0.36;
+		} else if (name.includes("floor") || name.includes("base") || name.includes("wall") || name.includes("ceiling") || name.includes("pillar") || name.includes("stairs") || name.includes("slope")) {
+			color = METAL_SCENE.structure;
+			roughness = 0.5;
+			metalness = 0.24;
+		}
+
+		themed.color.set(color);
+		themed.roughness = roughness;
+		themed.metalness = metalness;
+		themed.opacity = opacity;
+		themed.transparent = transparent;
+		themed.needsUpdate = true;
+		return themed;
+	};
+
+	const rethemeMaterialSet = (material: THREE.Material | THREE.Material[], meshName: string, role: RethemeRole): THREE.Material | THREE.Material[] => {
+		return Array.isArray(material) ? material.map(mat => rethemeMaterial(mat, meshName, role)) : rethemeMaterial(material, meshName, role);
+	};
+
 	// DOM
 	const canvas = mustGetEl<HTMLCanvasElement>("c");
 	const instructions = mustGetEl<HTMLDivElement>("instructions");
@@ -186,26 +283,49 @@ const t = useTranslations(lang).academiaSinica;
 	// THREE
 	const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, isTouchDevice ? 1.5 : 2));
+	renderer.outputColorSpace = THREE.SRGBColorSpace;
+	renderer.toneMapping = THREE.ACESFilmicToneMapping;
+	renderer.toneMappingExposure = 1.12;
 	renderer.shadowMap.enabled = !isTouchDevice;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 	const scene = new THREE.Scene();
-	scene.background = new THREE.Color(0xa97c21);
-	scene.fog = new THREE.Fog(0xa97c21, 20, 160);
+	scene.background = new THREE.Color(METAL_SCENE.background);
+	scene.fog = new THREE.FogExp2(METAL_SCENE.background, 0.018);
 
 	const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 500);
 	camera.position.set(0, 2, 6);
 
-	scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.0));
-	const sun = new THREE.DirectionalLight(0xffffff, 1.0);
-	sun.position.set(10, 20, 10);
+	const ambientLight = new THREE.AmbientLight(0xfff0cf, 0.68);
+	scene.add(ambientLight);
+
+	const sun = new THREE.DirectionalLight(0xffe2a4, 1.75);
+	sun.position.set(10, 18, 10);
+	sun.castShadow = renderer.shadowMap.enabled;
+	sun.shadow.mapSize.width = 2048;
+	sun.shadow.mapSize.height = 2048;
+	sun.shadow.camera.near = 0.1;
+	sun.shadow.camera.far = 80;
+	sun.shadow.camera.left = -35;
+	sun.shadow.camera.right = 35;
+	sun.shadow.camera.top = 35;
+	sun.shadow.camera.bottom = -35;
+	sun.shadow.bias = -0.001;
 	scene.add(sun);
+
+	const fillLight = new THREE.DirectionalLight(0xd8d4c7, 0.62);
+	fillLight.position.set(-8, 6, -8);
+	scene.add(fillLight);
+
+	const rimLight = new THREE.DirectionalLight(0xf2d894, 0.9);
+	rimLight.position.set(-10, 3, 9);
+	scene.add(rimLight);
 
 	// Colliders group: put meshes you want collision with in here
 	const colliders = new THREE.Group();
 	scene.add(colliders);
 
-	const floor = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshStandardMaterial({ color: 0x3c2d0e }));
+	const floor = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshStandardMaterial({ color: METAL_SCENE.floor, roughness: 0.58, metalness: 0.18 }));
 	floor.rotation.x = -Math.PI / 2;
 	floor.receiveShadow = renderer.shadowMap.enabled;
 	colliders.add(floor);
@@ -222,20 +342,20 @@ const t = useTranslations(lang).academiaSinica;
 	let actualPlayerDepth = playerDepth;
 
 	// Player mesh - will be replaced by stone.glb
-	let playerMesh: THREE.Object3D = new THREE.Mesh(new THREE.BoxGeometry(playerWidth, playerHeight, playerDepth), new THREE.MeshStandardMaterial({ color: 0xddddff, wireframe: true }));
+	let playerMesh: THREE.Object3D = new THREE.Mesh(new THREE.BoxGeometry(playerWidth, playerHeight, playerDepth), new THREE.MeshStandardMaterial({ color: METAL_SCENE.silver, wireframe: true }));
 	playerMesh.castShadow = renderer.shadowMap.enabled;
 	scene.add(playerMesh);
 
 	// Debug box helper for physics visualization (rotatable wireframe box)
 	const playerBoxGeometry = new THREE.BoxGeometry(playerWidth, playerHeight, playerDepth);
-	const playerBoxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+	const playerBoxMaterial = new THREE.MeshBasicMaterial({ color: METAL_SCENE.gold, wireframe: true });
 	const playerBoxHelper = new THREE.Mesh(playerBoxGeometry, playerBoxMaterial);
 	scene.add(playerBoxHelper);
 
 	const debugHelpers: THREE.Object3D[] = [playerBoxHelper];
 	let debugVisible: boolean = false;
 
-	const createBoundingBox = (object: THREE.Object3D, color = 0xffff00): THREE.BoxHelper => {
+	const createBoundingBox = (object: THREE.Object3D, color = METAL_SCENE.gold): THREE.BoxHelper => {
 		const helper = new THREE.BoxHelper(object, color);
 		helper.visible = debugVisible;
 		helper.update();
@@ -271,11 +391,7 @@ const t = useTranslations(lang).academiaSinica;
 				obj.castShadow = renderer.shadowMap.enabled;
 				obj.receiveShadow = renderer.shadowMap.enabled;
 
-				const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
-				for (const m of materials) {
-					const mat = m as THREE.MeshStandardMaterial;
-					if (mat?.map) setTextureToSRGB(mat.map);
-				}
+				obj.material = rethemeMaterialSet(obj.material, obj.name, "player");
 			});
 
 			stoneModel.traverse(obj => {
@@ -347,19 +463,14 @@ const t = useTranslations(lang).academiaSinica;
 				obj.castShadow = renderer.shadowMap.enabled;
 				obj.receiveShadow = renderer.shadowMap.enabled;
 
-				// material can be Material or Material[]
-				const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
-				for (const m of materials) {
-					const mat = m as THREE.MeshStandardMaterial;
-					if (mat?.map) setTextureToSRGB(mat.map);
-				}
+				obj.material = rethemeMaterialSet(obj.material, obj.name, "world");
 			});
 
 			model.position.set(0, 5, -50);
 			colliders.add(model);
 
 			rebuildOctree();
-			createBoundingBox(model, 0xff8800);
+			createBoundingBox(model, METAL_SCENE.gold);
 		},
 		undefined,
 		err => console.error("Failed to load academia-sinica.glb", err)
