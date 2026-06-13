@@ -174,7 +174,7 @@
 	"agenda": {
 		"title": "Agenda",
 		"filterAll": "All Sessions",
-		"filterFavorites": "Bookmarked Sessions",
+		"filterFavorites": "Bookmark",
 		"shareJamTitle": "Your Exclusive Jam",
 		"shareJamPlaceholder": "Enter an alias",
 		"shareJamCopy": "Copy link",
