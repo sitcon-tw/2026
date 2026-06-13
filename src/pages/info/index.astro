@@ -580,13 +580,15 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 		border-bottom: 2px solid rgba(180, 148, 76, 0.3);
 	}
 
-	:global(table tbody tr) {
-		transition: all 0.2s ease;
+	:global(table tbody td) {
+		transition:
+			background 0.2s ease,
+			color 0.2s ease;
 	}
 
-	:global(table tbody tr:hover) {
+	:global(table tbody tr:hover td),
+	:global(table tbody:hover td[rowspan]) {
 		background: rgba(180, 148, 76, 0.06);
-		transform: translateX(2px);
 	}
 
 	:global(table tbody tr:last-child td) {
@@ -976,19 +978,30 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 			transition: none;
 		}
 
-		:global(table tbody tr) {
+		:global(table tbody td) {
 			transition: none;
+		}
+
+		.modal[open],
+		.modal[open]::backdrop,
+		.modal[open] .modal-card {
+			animation: none;
 		}
 	}
 
 	.modal[open] {
 		padding: 1.25rem;
+		animation: transport-modal-in 0.22s ease-out both;
 	}
 
 	.modal::backdrop {
 		background: rgba(10, 9, 7, 0.72);
 		backdrop-filter: blur(0.75rem);
 		-webkit-backdrop-filter: blur(0.75rem);
+	}
+
+	.modal[open]::backdrop {
+		animation: transport-modal-backdrop-in 0.22s ease-out both;
 	}
 
 	.modal-card {
@@ -1005,6 +1018,46 @@ const academiaSinicaHref = lang === "en" ? "/2026/en/info/academia-sinica/" : "/
 		background: radial-gradient(circle at 14% 8%, rgba(242, 216, 148, 0.18), transparent 22rem), linear-gradient(145deg, rgba(28, 25, 20, 0.94), rgba(12, 11, 9, 0.94));
 		box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.44);
 		color: var(--metal-cream);
+	}
+
+	.modal[open] .modal-card {
+		animation: transport-modal-card-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+
+	@keyframes transport-modal-in {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes transport-modal-backdrop-in {
+		from {
+			background: rgba(10, 9, 7, 0);
+			backdrop-filter: blur(0);
+			-webkit-backdrop-filter: blur(0);
+		}
+
+		to {
+			background: rgba(10, 9, 7, 0.72);
+			backdrop-filter: blur(0.75rem);
+			-webkit-backdrop-filter: blur(0.75rem);
+		}
+	}
+
+	@keyframes transport-modal-card-in {
+		from {
+			opacity: 0;
+			transform: translateY(1.5rem) scale(0.985);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
 	}
 
 	.modal-header {
