@@ -3,8 +3,8 @@
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 8rem;
-	background: linear-gradient(to top, #ac782b, transparent);
+	height: 7rem;
+	background: linear-gradient(to top, rgba(20, 19, 15, 0.94), rgba(31, 27, 20, 0.64) 48%, transparent);
 	z-index: 10;
 	pointer-events: none;
 }
