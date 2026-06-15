@@ -114,8 +114,6 @@ const lang = Astro.props.lang ?? "zh";
 
 	gsap.registerPlugin(ScrollTrigger);
 
-	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 	const initHeroBackground = () => {
 		const canvas = document.getElementById("bg-canvas") as HTMLCanvasElement | null;
 		const heroContainer = document.querySelector(".hero-container") as HTMLElement | null;
@@ -124,7 +122,8 @@ const lang = Astro.props.lang ?? "zh";
 		heroContainer.dataset.heroInit = "true";
 
 		const narrowViewport = window.innerWidth < 700;
-		const reduceMotion = prefersReducedMotion();
+		const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+		let reduceMotion = reduceMotionQuery.matches;
 		const random = createSeededRandom();
 
 		const scene = new THREE.Scene();
@@ -554,6 +553,15 @@ const lang = Astro.props.lang ?? "zh";
 			}
 		};
 
+		const onReducedMotionChange = (event: MediaQueryListEvent) => {
+			reduceMotion = event.matches;
+			if (reduceMotion) {
+				stopAnimation();
+			}
+			lastScrollY = window.scrollY;
+			startAnimation();
+		};
+
 		const updateVortexRibbons = (time: number) => {
 			vortexRibbons.forEach(ribbon => {
 				for (let i = 0; i < ribbonPointCount; i++) {
@@ -687,6 +695,11 @@ const lang = Astro.props.lang ?? "zh";
 			});
 
 			renderer.render(scene, camera);
+			if (reduceMotion) {
+				isRunning = false;
+				animationFrameId = null;
+				return;
+			}
 			animationFrameId = requestAnimationFrame(animate);
 		};
 
@@ -700,6 +713,7 @@ const lang = Astro.props.lang ?? "zh";
 		};
 
 		window.addEventListener("resize", onResize);
+		reduceMotionQuery.addEventListener("change", onReducedMotionChange);
 
 		startAnimation();
 
@@ -743,6 +757,7 @@ const lang = Astro.props.lang ?? "zh";
 			window.removeEventListener("pointerup", onPointerUp);
 			window.removeEventListener("pointermove", onPointerMoveOffset);
 			window.removeEventListener("resize", onResize);
+			reduceMotionQuery.removeEventListener("change", onReducedMotionChange);
 			heroObserver.disconnect();
 			disposeScene();
 			environmentRenderTarget.dispose();
