@@ -132,10 +132,13 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 
 	.circular-gallery {
 		--rotation: 0deg;
+		--gallery-pivot-y: 57.6rem;
 		position: relative;
 		width: 100%;
-		height: 48rem;
+		height: 54rem;
 		overflow: clip;
+		-webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 5rem), transparent 100%);
+		mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 5rem), transparent 100%);
 		cursor: grab;
 		touch-action: pan-y;
 	}
@@ -146,7 +149,7 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 
 	.gallery-item {
 		position: absolute;
-		top: 120%;
+		top: var(--gallery-pivot-y);
 		left: 50%;
 		transform-origin: bottom center;
 		transform: translate(-50%, -50%) rotate(calc(var(--angle) + var(--rotation)));
@@ -314,11 +317,13 @@ const angleStep = itemCount > 0 ? 360 / itemCount : 0;
 
 	@media (max-width: 768px) {
 		.circular-gallery {
+			--gallery-pivot-y: 105%;
 			height: 32rem;
+			-webkit-mask-image: none;
+			mask-image: none;
 		}
 
 		.gallery-item {
-			top: 105%;
 			padding-bottom: 40rem;
 		}
 
