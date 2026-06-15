@@ -19,8 +19,11 @@
 	position: relative;
 	width: 10rem;
 	height: 10rem;
-	border-radius: 1rem;
+	border: 1px solid rgba(242, 216, 148, 0.2);
+	border-radius: var(--metal-radius);
 	overflow: hidden;
+	background: rgba(255, 244, 214, 0.08);
+	box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.18);
 }
 
 .avatar-layer {
@@ -29,7 +32,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	border-radius: 1rem;
+	border-radius: var(--metal-radius);
 	transform: scale(1.125);
 	transition: transform 0.1s ease-out;
 	will-change: transform;
@@ -79,7 +82,17 @@
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	gap: 1rem;
+	gap: 0.35rem 1rem;
+	color: var(--metal-cream);
+}
+
+.name {
+	font-weight: 700;
+}
+
+.position {
+	color: rgba(244, 239, 229, 0.66);
+	font-size: 0.95rem;
 }
 
 @media (max-width: 640px) {

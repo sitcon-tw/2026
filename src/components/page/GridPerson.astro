@@ -66,11 +66,25 @@ import "./GridPerson.css";
 </div>
 
 <script>
+	const gridPersonLifecycleController = new AbortController();
+	const gridPersonLifecycleSignal = gridPersonLifecycleController.signal;
+	let gridPersonController: AbortController | null = null;
+
+	const cleanupGridPerson = () => {
+		gridPersonController?.abort();
+		gridPersonController = null;
+		document.querySelectorAll<HTMLElement>(".person[data-grid-person-init='true']").forEach(item => {
+			delete item.dataset.gridPersonInit;
+		});
+	};
+
 	// 3D 視差效果
-	const init3DEffectForGrid = () => {
+	const init3DEffectForGrid = (signal: AbortSignal) => {
 		const personItems = document.querySelectorAll(".person");
 
 		personItems.forEach(item => {
+			if ((item as HTMLElement).dataset.gridPersonInit === "true") return;
+			(item as HTMLElement).dataset.gridPersonInit = "true";
 			const container = item.querySelector(".avatar-container") as HTMLElement;
 			if (!container) return;
 
@@ -101,44 +115,48 @@ import "./GridPerson.css";
 
 			// Grid 模式（方形）：只監聽頭像 hover
 			if (!isCircle) {
-				item.addEventListener("mousemove", handleMouseMove as EventListener);
-				item.addEventListener("mouseleave", handleMouseLeave);
+				item.addEventListener("mousemove", handleMouseMove as EventListener, { signal });
+				item.addEventListener("mouseleave", handleMouseLeave, { signal });
 			}
 		});
 	};
 
 	// 探索模式：全螢幕追蹤（當 modal 打開時）
-	const initExploreMode = () => {
+	const initExploreMode = (signal: AbortSignal) => {
 		// 監聽 modal 打開
-		document.addEventListener("click", e => {
-			const trigger = (e.target as HTMLElement).closest(".person-trigger.person-circle") as HTMLElement | null;
-			if (trigger) {
-				const layers = trigger.querySelectorAll(".avatar-layer");
+		document.addEventListener(
+			"click",
+			e => {
+				const trigger = (e.target as HTMLElement).closest(".person-trigger.person-circle") as HTMLElement | null;
+				if (trigger) {
+					const layers = trigger.querySelectorAll(".avatar-layer");
 
-				// 開始全螢幕追蹤
-				const handleGlobalMouseMove = (e: MouseEvent) => {
-					const modal = document.getElementById("member-info-modal");
-					if (!modal || !modal.classList.contains("show")) {
-						document.removeEventListener("mousemove", handleGlobalMouseMove);
-						// 重置 transform
-						layers.forEach(layer => {
-							(layer as HTMLElement).style.transform = "scale(1.125) translate(0, 0) skew(0, 0)";
-						});
-						return;
-					}
+					// 開始全螢幕追蹤
+					const handleGlobalMouseMove = (e: MouseEvent) => {
+						const modal = document.getElementById("member-info-modal");
+						if (!modal || !modal.classList.contains("show")) {
+							document.removeEventListener("mousemove", handleGlobalMouseMove);
+							// 重置 transform
+							layers.forEach(layer => {
+								(layer as HTMLElement).style.transform = "scale(1.125) translate(0, 0) skew(0, 0)";
+							});
+							return;
+						}
 
-					// 相對於螢幕中心的偏移量（標準化到 -1 到 1）
-					const screenCenterX = window.innerWidth / 2;
-					const screenCenterY = window.innerHeight / 2;
-					const offsetX = (e.clientX - screenCenterX) / screenCenterX;
-					const offsetY = (e.clientY - screenCenterY) / screenCenterY;
+						// 相對於螢幕中心的偏移量（標準化到 -1 到 1）
+						const screenCenterX = window.innerWidth / 2;
+						const screenCenterY = window.innerHeight / 2;
+						const offsetX = (e.clientX - screenCenterX) / screenCenterX;
+						const offsetY = (e.clientY - screenCenterY) / screenCenterY;
 
-					applyTransform(layers, offsetX, offsetY);
-				};
+						applyTransform(layers, offsetX, offsetY);
+					};
 
-				document.addEventListener("mousemove", handleGlobalMouseMove);
-			}
-		});
+					document.addEventListener("mousemove", handleGlobalMouseMove, { signal });
+				}
+			},
+			{ signal }
+		);
 	};
 
 	// 通用的 transform 應用函數
@@ -163,14 +181,27 @@ import "./GridPerson.css";
 		});
 	};
 
-	// 初始化
+	const initGridPerson = () => {
+		cleanupGridPerson();
+		const controller = new AbortController();
+		gridPersonController = controller;
+		init3DEffectForGrid(controller.signal);
+		initExploreMode(controller.signal);
+	};
+
 	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", () => {
-			init3DEffectForGrid();
-			initExploreMode();
-		});
+		document.addEventListener("DOMContentLoaded", initGridPerson, { once: true, signal: gridPersonLifecycleSignal });
 	} else {
-		init3DEffectForGrid();
-		initExploreMode();
+		initGridPerson();
 	}
+
+	document.addEventListener("astro:page-load", initGridPerson, { signal: gridPersonLifecycleSignal });
+	document.addEventListener(
+		"astro:before-swap",
+		() => {
+			cleanupGridPerson();
+			gridPersonLifecycleController.abort();
+		},
+		{ once: true, signal: gridPersonLifecycleSignal }
+	);
 </script>

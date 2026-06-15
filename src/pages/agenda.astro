@@ -120,6 +120,19 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 	const basePath = isEn ? "/2026/en/agenda" : "/2026/agenda";
 
 	const originalTitle = document.title;
+	const agendaController = new AbortController();
+	const { signal } = agendaController;
+	const agendaTimeouts = new Set();
+
+	document.addEventListener(
+		"astro:before-swap",
+		() => {
+			agendaController.abort();
+			agendaTimeouts.forEach(timeoutId => window.clearTimeout(timeoutId));
+			agendaTimeouts.clear();
+		},
+		{ once: true, signal }
+	);
 
 	function getAgendaIdFromPathname(pathname) {
 		// Support: /2026/agenda/:id/ , /2026/en/agenda/:id/ , /agenda/:id , /en/agenda/:id
@@ -166,36 +179,44 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 	}
 
 	// Handle modal opening from SessionBlock clicks
-	document.addEventListener("openSessionModal", e => {
-		const data = e.detail ?? {};
+	document.addEventListener(
+		"openSessionModal",
+		e => {
+			const data = e.detail ?? {};
 
-		if (data?.name) {
-			document.title = `${data.name} - SITCON 2026`;
-		}
-
-		// URL sync: /2026/agenda/:id/ or /2026/en/agenda/:id/
-		if (data?.id) {
-			const nextUrl = `${basePath}/${data.id}/`;
-			if (window.location.pathname !== nextUrl && !window.location.pathname.startsWith(`${basePath}/${data.id}/`)) {
-				history.pushState({ agendaID: data.id }, "", nextUrl);
+			if (data?.name) {
+				document.title = `${data.name} - SITCON 2026`;
 			}
-		}
-	});
+
+			// URL sync: /2026/agenda/:id/ or /2026/en/agenda/:id/
+			if (data?.id) {
+				const nextUrl = `${basePath}/${data.id}/`;
+				if (window.location.pathname !== nextUrl && !window.location.pathname.startsWith(`${basePath}/${data.id}/`)) {
+					history.pushState({ agendaID: data.id }, "", nextUrl);
+				}
+			}
+		},
+		{ signal }
+	);
 
 	// URL sync: closing reverts to /2026/agenda/ or /2026/en/agenda/
 	// Use replaceState to avoid adding extra history entries and prevent scroll jump
-	document.addEventListener("closeSessionModal", () => {
-		document.title = originalTitle;
+	document.addEventListener(
+		"closeSessionModal",
+		() => {
+			document.title = originalTitle;
 
-		const basePathWithSlash = `${basePath}/`;
-		if (window.location.pathname !== basePathWithSlash) {
-			const scrollX = window.scrollX;
-			const scrollY = window.scrollY;
-			history.replaceState({}, "", basePathWithSlash);
-			// Restore scroll position in case browser tries to reset it
-			window.scrollTo(scrollX, scrollY);
-		}
-	});
+			const basePathWithSlash = `${basePath}/`;
+			if (window.location.pathname !== basePathWithSlash) {
+				const scrollX = window.scrollX;
+				const scrollY = window.scrollY;
+				history.replaceState({}, "", basePathWithSlash);
+				// Restore scroll position in case browser tries to reset it
+				window.scrollTo(scrollX, scrollY);
+			}
+		},
+		{ signal }
+	);
 
 	// URL params ?q=id1,id2,id3&n=NAME: show a curated agenda title, only blocks in q, filter to favorites
 	const agendaTitleEl = document.getElementById("agenda-title");
@@ -296,32 +317,41 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 		const btn = document.getElementById("mcp-copy-btn");
 		if (!btn) return;
 
-		btn.addEventListener("click", async () => {
-			const url = btn.getAttribute("data-url");
-			if (!url) return;
+		btn.addEventListener(
+			"click",
+			async () => {
+				const url = btn.getAttribute("data-url");
+				if (!url) return;
 
-			try {
-				await navigator.clipboard.writeText(url);
-				const span = btn.querySelector(".btn-text");
-				if (span) {
-					const originalText = span.textContent;
-					span.textContent = agendaClientText.mcpCopied;
+				try {
+					await navigator.clipboard.writeText(url);
+					const span = btn.querySelector(".btn-text");
+					if (span) {
+						const originalText = span.textContent;
+						span.textContent = agendaClientText.mcpCopied;
 
-					// Reset text after 2 seconds
-					setTimeout(() => {
-						span.textContent = originalText;
-					}, 2000);
+						// Reset text after 2 seconds
+						const timeoutId = window.setTimeout(() => {
+							span.textContent = originalText;
+							agendaTimeouts.delete(timeoutId);
+						}, 2000);
+						agendaTimeouts.add(timeoutId);
+					}
+				} catch (err) {
+					console.error("Failed to copy:", err);
 				}
-			} catch (err) {
-				console.error("Failed to copy:", err);
-			}
-		});
+			},
+			{ signal }
+		);
 	}
 
-	document.addEventListener("clearUrlCuratedState", clearUrlCuratedState);
+	document.addEventListener("clearUrlCuratedState", clearUrlCuratedState, { signal });
 
 	// Deep link on first load
-	document.addEventListener("DOMContentLoaded", () => {
+	let agendaInitialized = false;
+	const initAgendaPage = () => {
+		if (agendaInitialized) return;
+		agendaInitialized = true;
 		applyUrlCuratedState();
 		cleanNonExistBookmarks();
 		initMcpCopyBtn();
@@ -331,18 +361,29 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 		if (id && typeof id === "string") {
 			openSessionById(id);
 		}
-	});
+	};
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initAgendaPage, { once: true, signal });
+	} else {
+		initAgendaPage();
+	}
+	document.addEventListener("astro:page-load", initAgendaPage, { signal });
 
 	// Back/forward support
-	window.addEventListener("popstate", () => {
-		const id = getAgendaIdFromPathname(window.location.pathname);
-		if (id) {
-			openSessionById(id);
-		} else {
-			closeModalSilently();
-			document.title = originalTitle;
-		}
-	});
+	window.addEventListener(
+		"popstate",
+		() => {
+			const id = getAgendaIdFromPathname(window.location.pathname);
+			if (id) {
+				openSessionById(id);
+			} else {
+				closeModalSilently();
+				document.title = originalTitle;
+			}
+		},
+		{ signal }
+	);
 </script>
 
 <style>
@@ -496,5 +537,139 @@ const mcpServerUrl = "https://mcp.sitcon.org/mcp";
 
 	.mcp-btn:hover {
 		transform: scale(1.05);
+	}
+
+	main {
+		background: var(--metal-bg);
+		color: var(--metal-cream);
+	}
+
+	.agenda-header {
+		margin-top: clamp(7rem, 11vw, 9rem);
+		padding: 0 clamp(1rem, 4vw, 3rem);
+	}
+
+	.agenda-title,
+	.gallery-title {
+		font-size: clamp(3rem, 7vw, 5rem);
+		line-height: 0.98;
+		margin-bottom: 1.5rem;
+		color: var(--metal-cream);
+	}
+
+	.agenda-legend {
+		gap: 0.6rem;
+		padding-inline: 1rem;
+	}
+
+	.legend-item {
+		padding: 0.45rem 0.7rem;
+		border: 1px solid rgba(242, 216, 148, 0.18);
+		border-radius: 999px;
+		background: rgba(255, 244, 214, 0.08);
+		color: rgba(244, 239, 229, 0.82);
+		font-size: 0.92rem;
+	}
+
+	.legend-color {
+		width: 0.8rem;
+		height: 0.8rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 244, 214, 0.18);
+	}
+
+	.legend-color.keynote {
+		background: linear-gradient(145deg, #f2d894, #8d6330);
+	}
+
+	.legend-color.presentation,
+	.legend-color.generic {
+		background: linear-gradient(145deg, #6f6858, #24231f);
+	}
+
+	.legend-color.undefined {
+		background: linear-gradient(145deg, #a59acd, #514a70);
+	}
+
+	.legend-color.espresso {
+		background: linear-gradient(145deg, #f4efe5, #b9b2a5);
+	}
+
+	.legend-color.sponsored {
+		background: linear-gradient(145deg, #d89178, #8d4d3d);
+	}
+
+	.legend-color.forum {
+		background: linear-gradient(145deg, #9ebf9f, #4f7656);
+	}
+
+	.mcp-section {
+		margin-top: clamp(4rem, 8vw, 6rem);
+		padding: 0 clamp(1rem, 4vw, 3rem);
+	}
+
+	.mcp-container {
+		max-width: 66rem;
+		padding: clamp(2rem, 5vw, 4rem);
+		border: 1px solid rgba(242, 216, 148, 0.24);
+		border-radius: var(--metal-radius);
+		background: linear-gradient(145deg, rgba(255, 244, 214, 0.12), rgba(20, 19, 15, 0.55));
+		box-shadow: var(--metal-card-shadow);
+		backdrop-filter: blur(1rem);
+		-webkit-backdrop-filter: blur(1rem);
+	}
+
+	.mcp-title {
+		font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+		color: var(--metal-cream);
+		text-align: left;
+	}
+
+	.mcp-desc {
+		color: var(--metal-muted);
+		font-size: clamp(1rem, 1.7vw, 1.15rem);
+	}
+
+	.mcp-feature-item {
+		border: 1px solid rgba(242, 216, 148, 0.2);
+		border-radius: 999px;
+		background: rgba(255, 244, 214, 0.1);
+		color: rgba(244, 239, 229, 0.86);
+	}
+
+	.mcp-btn {
+		border: 1px solid rgba(242, 216, 148, 0.36);
+		background: linear-gradient(145deg, var(--metal-cream), var(--metal-silver));
+		color: var(--metal-ink);
+		box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
+		transition:
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.mcp-btn:hover {
+		box-shadow: 0 1rem 2.2rem rgba(0, 0, 0, 0.24);
+		transform: translateY(-0.125rem);
+	}
+
+	@media (max-width: 600px) {
+		.agenda-header {
+			text-align: left;
+		}
+
+		.agenda-legend {
+			justify-content: flex-start;
+			padding-inline: 0;
+		}
+
+		.mcp-container {
+			padding: 1.5rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.mcp-btn {
+			transition: none;
+		}
 	}
 </style>

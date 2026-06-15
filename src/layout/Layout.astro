@@ -1,5 +1,6 @@
 ---
 import Nav from "@/components/Nav.astro";
+import { ClientRouter } from "astro:transitions";
 import "lenis/dist/lenis.css";
 import "./global.css";
 import { getAlternateUrl, getLocalePath, langMeta, type Lang } from "@/utils/i18n";
@@ -157,6 +158,7 @@ const eventJsonLd = JSON.stringify({
 		<meta name="twitter:image" content={ogImage} />
 		<meta name="twitter:site" content="@SITCONtw" />
 		<meta name="twitter:creator" content="@SITCONtw" />
+		<ClientRouter />
 
 		<meta name="theme-color" content="#010121" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -164,6 +166,31 @@ const eventJsonLd = JSON.stringify({
 		<link rel="alternate" hreflang="zh-TW" href={localizedUrls.zh} />
 		<link rel="alternate" hreflang="en" href={localizedUrls.en} />
 		<link rel="alternate" hreflang="x-default" href={localizedUrls.zh} />
+
+		<script is:inline>
+			(() => {
+				const LANGUAGE_STORAGE_KEY = "sitcon2026:preferred-language";
+				const pathname = window.location.pathname.replace(/\/+$/, "/");
+				if (pathname !== "/2026/") return;
+
+				let preferredLanguage = null;
+				try {
+					preferredLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+				} catch {
+					preferredLanguage = null;
+				}
+
+				const languages = navigator.languages?.length ? navigator.languages : [navigator.language];
+				const readsChinese = languages.some(language => /^zh\b/i.test(language));
+				const shouldUseEnglish = preferredLanguage === "en" || (!preferredLanguage && !readsChinese);
+				if (!shouldUseEnglish) return;
+
+				const targetUrl = new URL("/2026/en/", window.location.origin);
+				targetUrl.search = window.location.search;
+				targetUrl.hash = window.location.hash;
+				window.location.replace(targetUrl);
+			})();
+		</script>
 
 		<link rel="preconnect" href="https://font.emtech.cc" />
 		<link rel="preconnect" href="https://www.googletagmanager.com" />
@@ -203,7 +230,7 @@ const eventJsonLd = JSON.stringify({
 				position: fixed;
 				inset: 0;
 				z-index: 99999;
-				background-color: #ac782b;
+				background: var(--metal-bg);
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -252,19 +279,41 @@ const eventJsonLd = JSON.stringify({
 			}
 		</style>
 
-		<script>
-			const hideLoader = () => {
-				const mask = document.getElementById("loading-mask");
-				if (mask) {
-					mask.classList.add("hidden");
-				}
-			};
+		<script is:inline>
+			(() => {
+				const CONTROLLER_KEY = "__sitcon2026LoaderController";
 
-			if (document.readyState === "complete") {
-				hideLoader();
-			} else {
-				window.addEventListener("load", hideLoader);
-			}
+				const hideLoader = () => {
+					requestAnimationFrame(() => {
+						const mask = document.getElementById("loading-mask");
+						if (mask) {
+							mask.classList.add("hidden");
+						}
+					});
+				};
+
+				const showLoader = () => {
+					const mask = document.getElementById("loading-mask");
+					if (mask) {
+						mask.classList.remove("hidden");
+					}
+				};
+
+				if (!window[CONTROLLER_KEY]) {
+					window[CONTROLLER_KEY] = true;
+					document.addEventListener("astro:before-preparation", showLoader);
+					document.addEventListener("astro:after-preparation", hideLoader);
+					document.addEventListener("astro:after-swap", hideLoader);
+					document.addEventListener("astro:page-load", hideLoader);
+					window.addEventListener("pageshow", hideLoader);
+				}
+
+				if (document.readyState === "complete") {
+					hideLoader();
+				} else {
+					window.addEventListener("load", hideLoader, { once: true });
+				}
+			})();
 		</script>
 
 		<a href="#main-content" class="skip-link">{lang === "en" ? "Skip to main content" : "跳至主要內容"}</a>
@@ -335,6 +384,7 @@ const eventJsonLd = JSON.stringify({
 			initAnimations();
 
 			document.addEventListener("astro:page-load", initAnimations);
+			document.addEventListener("astro:before-swap", destroyLenis);
 		</script>
 	</body>
 </html>

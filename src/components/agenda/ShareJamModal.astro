@@ -75,7 +75,30 @@ const tAgenda = useTranslations(lang).agenda;
 	const footerEl = document.getElementById("share-jam-footer");
 	const shareJamTitle = modal?.dataset.shareJamTitle ?? "";
 	const shareJamCopied = modal?.dataset.shareJamCopied ?? "Copied!";
+	const shareJamController = new AbortController();
+	const shareJamSignal = shareJamController.signal;
+	const shareJamTimers = [];
+	const setShareJamTimeout = (handler, timeout) => {
+		const id = window.setTimeout(() => {
+			const index = shareJamTimers.indexOf(id);
+			if (index >= 0) shareJamTimers.splice(index, 1);
+			if (!shareJamSignal.aborted) handler();
+		}, timeout);
+		shareJamTimers.push(id);
+		return id;
+	};
 	let agendaSessionCache = null;
+	shareJamSignal.addEventListener(
+		"abort",
+		() => {
+			shareJamTimers.splice(0).forEach(id => window.clearTimeout(id));
+			stopPhysics?.();
+			document.body.style.overflow = "";
+			if (window.openShareJamModal === openShareJamModal) window.openShareJamModal = undefined;
+		},
+		{ once: true }
+	);
+	document.addEventListener("astro:before-swap", () => shareJamController.abort(), { once: true, signal: shareJamSignal });
 
 	function readBookmarks() {
 		try {
@@ -171,7 +194,7 @@ const tAgenda = useTranslations(lang).agenda;
 		if (avatars.length > 0 && physicsContainer) {
 			physicsWrap?.classList.remove("hidden");
 			requestAnimationFrame(() => {
-				initPhysicsCircles(physicsContainer, avatars);
+				if (!shareJamSignal.aborted) initPhysicsCircles(physicsContainer, avatars);
 			});
 		} else {
 			physicsWrap?.classList.add("hidden");
@@ -284,7 +307,7 @@ const tAgenda = useTranslations(lang).agenda;
 					function () {
 						this.src = "https://sitcon.org/2022/imgs/deafult_avatar.jpg";
 					},
-					{ once: true }
+					{ once: true, signal: shareJamSignal }
 				);
 				img.src = src;
 				el.appendChild(img);
@@ -392,7 +415,7 @@ const tAgenda = useTranslations(lang).agenda;
 						function () {
 							this.src = "https://sitcon.org/2022/imgs/deafult_avatar.jpg";
 						},
-						{ once: true }
+						{ once: true, signal: shareJamSignal }
 					);
 					img.src = avatarUrls[i];
 					el.appendChild(img);
@@ -446,14 +469,14 @@ const tAgenda = useTranslations(lang).agenda;
 						DeviceOrientationEvent.requestPermission()
 							.then(permission => {
 								if (permission === "granted") {
-									window.addEventListener("deviceorientation", gyroHandler);
+									window.addEventListener("deviceorientation", gyroHandler, { signal: shareJamSignal });
 									gyroEnabled = true;
 								}
 							})
 							.catch(() => {});
 					} else if ("DeviceOrientationEvent" in window) {
 						// Android and other devices
-						window.addEventListener("deviceorientation", gyroHandler);
+						window.addEventListener("deviceorientation", gyroHandler, { signal: shareJamSignal });
 						gyroEnabled = true;
 					}
 				}
@@ -512,32 +535,40 @@ const tAgenda = useTranslations(lang).agenda;
 			if (copyBtn) {
 				const orig = copyBtn.textContent;
 				copyBtn.textContent = shareJamCopied;
-				setTimeout(() => {
+				setShareJamTimeout(() => {
 					copyBtn.textContent = orig;
 				}, 1500);
 			}
 		});
 	}
 
-	closeBtn?.addEventListener("click", closeShareJamModal);
-	closeBtnMobile?.addEventListener("click", closeShareJamModal);
-	overlay?.addEventListener("click", closeShareJamModal);
-	copyBtn?.addEventListener("click", copyShareLink);
+	closeBtn?.addEventListener("click", closeShareJamModal, { signal: shareJamSignal });
+	closeBtnMobile?.addEventListener("click", closeShareJamModal, { signal: shareJamSignal });
+	overlay?.addEventListener("click", closeShareJamModal, { signal: shareJamSignal });
+	copyBtn?.addEventListener("click", copyShareLink, { signal: shareJamSignal });
 
-	document.addEventListener("keydown", e => {
-		if (e.key === "Escape" && modal?.classList.contains("active")) {
-			closeShareJamModal();
-		}
-	});
+	document.addEventListener(
+		"keydown",
+		e => {
+			if (e.key === "Escape" && modal?.classList.contains("active")) {
+				closeShareJamModal();
+			}
+		},
+		{ signal: shareJamSignal }
+	);
 
-	document.addEventListener("openShareJamModal", () => openShareJamModal());
+	document.addEventListener("openShareJamModal", () => openShareJamModal(), { signal: shareJamSignal });
 
 	// Update content when bookmarks change while modal is open
-	document.addEventListener(BOOKMARKS_CHANGED_EVENT, () => {
-		if (modal?.classList.contains("active")) {
-			updateShareJamContent();
-		}
-	});
+	document.addEventListener(
+		BOOKMARKS_CHANGED_EVENT,
+		() => {
+			if (modal?.classList.contains("active")) {
+				updateShareJamContent();
+			}
+		},
+		{ signal: shareJamSignal }
+	);
 
 	// Phone: GSAP drag-to-dismiss on the handle
 	const PHONE_MQ = window.matchMedia("(max-width: 968px)");
@@ -643,12 +674,12 @@ const tAgenda = useTranslations(lang).agenda;
 			container.classList.add("dragging");
 			if (gsapLib) gsapLib.killTweensOf(container);
 			dragHandle.setPointerCapture?.(e.pointerId);
-			document.addEventListener("pointermove", onPointerMove, { passive: false });
-			document.addEventListener("pointerup", onPointerUp, { once: true });
-			document.addEventListener("pointercancel", onPointerUp, { once: true });
+			document.addEventListener("pointermove", onPointerMove, { passive: false, signal: shareJamSignal });
+			document.addEventListener("pointerup", onPointerUp, { once: true, signal: shareJamSignal });
+			document.addEventListener("pointercancel", onPointerUp, { once: true, signal: shareJamSignal });
 		}
 
-		dragHandle.addEventListener("pointerdown", onPointerDown, { passive: false });
+		dragHandle.addEventListener("pointerdown", onPointerDown, { passive: false, signal: shareJamSignal });
 	}
 
 	if (dragHandle && container) setupPhoneDrag();
@@ -1044,6 +1075,95 @@ const tAgenda = useTranslations(lang).agenda;
 
 		:global(.share-jam-physics-container) {
 			bottom: 0;
+		}
+	}
+
+	.share-jam-overlay {
+		background: rgba(10, 9, 7, 0.72);
+		backdrop-filter: blur(0.75rem);
+		-webkit-backdrop-filter: blur(0.75rem);
+	}
+
+	.share-jam-container {
+		border: 1px solid rgba(45, 33, 17, 0.14);
+		border-radius: var(--metal-radius);
+		background: rgba(244, 239, 229, 0.96);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.72),
+			0 1.5rem 4rem rgba(0, 0, 0, 0.38);
+	}
+
+	.share-jam-close,
+	.share-jam-close-mobile {
+		border: 1px solid rgba(45, 33, 17, 0.18);
+		background: rgba(45, 33, 17, 0.08);
+		color: var(--metal-ink);
+		transition:
+			background 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.share-jam-close:hover {
+		background: rgba(45, 33, 17, 0.14);
+		transform: translateY(-0.075rem);
+	}
+
+	.share-jam-title {
+		color: var(--metal-ink);
+		font-size: clamp(1.75rem, 3vw, 2.4rem);
+		line-height: 1.1;
+	}
+
+	.share-jam-list {
+		color: rgba(45, 33, 17, 0.82);
+	}
+
+	.share-jam-empty {
+		color: rgba(45, 33, 17, 0.62);
+	}
+
+	.share-jam-input {
+		border: 1px solid rgba(45, 33, 17, 0.2);
+		border-radius: var(--metal-radius);
+		background: rgba(255, 255, 255, 0.68);
+		color: var(--metal-ink);
+	}
+
+	.share-jam-copy {
+		border: 1px solid rgba(45, 33, 17, 0.18);
+		border-radius: 999px;
+		background: linear-gradient(145deg, var(--metal-cream), var(--metal-silver));
+		color: var(--metal-ink);
+		box-shadow: 0 0.85rem 1.8rem rgba(45, 33, 17, 0.12);
+	}
+
+	.share-jam-copy:hover {
+		border-color: rgba(45, 33, 17, 0.3);
+		box-shadow: 0 1rem 2.2rem rgba(45, 33, 17, 0.16);
+	}
+
+	:global(.share-jam-circle) {
+		box-shadow: 0 0.5rem 1.5rem rgba(45, 33, 17, 0.22);
+		opacity: 0.42;
+	}
+
+	@media (max-width: 968px) {
+		.share-jam-container {
+			border-radius: var(--metal-radius) var(--metal-radius) 0 0;
+			padding-top: 3rem;
+		}
+
+		.share-jam-close-mobile {
+			background: linear-gradient(145deg, var(--metal-cream), var(--metal-silver));
+			box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.share-jam-close,
+		.share-jam-close-mobile,
+		.share-jam-copy {
+			transition: none;
 		}
 	}
 </style>

@@ -42,45 +42,83 @@ const t = useTranslations(lang).dialogue;
 <script>
 	import gsap from "gsap";
 
-	const dialogTrigger = document.getElementById("dialog-trigger") as HTMLButtonElement;
-	const dialogWrapper = document.querySelector(".dialog-wrapper") as HTMLDivElement;
-	const dialogClose = document.querySelector(".dialog-close") as HTMLButtonElement;
-	const dialogContainer = document.querySelector(".dialog-container") as HTMLDivElement;
-	const dialog = document.querySelector(".dialog") as HTMLDivElement;
+	const initDialogue = () => {
+		const dialogTrigger = document.getElementById("dialog-trigger") as HTMLButtonElement | null;
+		const dialogWrapper = document.querySelector(".dialog-wrapper") as HTMLDivElement | null;
+		const dialogClose = document.querySelector(".dialog-close") as HTMLButtonElement | null;
+		const dialogContainer = document.querySelector(".dialog-container") as HTMLDivElement | null;
+		const dialog = document.querySelector(".dialog") as HTMLDivElement | null;
+		if (!dialogTrigger || !dialogWrapper || !dialogClose || !dialogContainer || !dialog) return () => {};
+		if (dialogWrapper.dataset.dialogInit === "true") return () => {};
+		dialogWrapper.dataset.dialogInit = "true";
 
-	gsap.set(dialogWrapper, { autoAlpha: 0 });
-	gsap.set(dialog, { y: -50, autoAlpha: 0 });
+		let isOpen = false;
 
-	dialogTrigger.addEventListener("click", () => {
-		document.body.style.overflow = "hidden";
-		gsap.to(dialogWrapper, { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out" });
-		gsap.to(dialog, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out", delay: 0.1 });
-	});
+		gsap.set(dialogWrapper, { autoAlpha: 0 });
+		gsap.set(dialog, { y: -50, autoAlpha: 0 });
 
-	function closeDialog() {
-		gsap.to(dialog, { autoAlpha: 0, y: -50, duration: 0.5, ease: "power2.out" });
-		gsap.to(dialogWrapper, { autoAlpha: 0, duration: 0.2, ease: "power2.out", delay: 0.1 });
-		document.body.style.overflow = "";
+		const openDialog = () => {
+			isOpen = true;
+			document.body.style.overflow = "hidden";
+			gsap.to(dialogWrapper, { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out" });
+			gsap.to(dialog, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out", delay: 0.1 });
+		};
+
+		const closeDialog = () => {
+			isOpen = false;
+			gsap.to(dialog, { autoAlpha: 0, y: -50, duration: 0.5, ease: "power2.out" });
+			gsap.to(dialogWrapper, { autoAlpha: 0, duration: 0.2, ease: "power2.out", delay: 0.1 });
+			document.body.style.overflow = "";
+		};
+
+		const onContainerClick = (e: MouseEvent) => {
+			if (e.target === dialogContainer) closeDialog();
+		};
+
+		const onKeydown = (e: KeyboardEvent) => {
+			if (e.key === "Escape" && isOpen) closeDialog();
+		};
+
+		const onWheel = (e: WheelEvent) => {
+			e.stopPropagation();
+		};
+
+		dialogTrigger.addEventListener("click", openDialog);
+		dialogClose.addEventListener("click", closeDialog);
+		dialogContainer.addEventListener("click", onContainerClick);
+		dialogContainer.addEventListener("wheel", onWheel, { passive: true });
+		document.addEventListener("keydown", onKeydown);
+
+		return () => {
+			document.body.style.overflow = "";
+			dialogTrigger.removeEventListener("click", openDialog);
+			dialogClose.removeEventListener("click", closeDialog);
+			dialogContainer.removeEventListener("click", onContainerClick);
+			dialogContainer.removeEventListener("wheel", onWheel);
+			document.removeEventListener("keydown", onKeydown);
+			gsap.killTweensOf([dialogWrapper, dialog]);
+			dialogWrapper.dataset.dialogInit = "false";
+		};
+	};
+
+	let cleanup: (() => void) | null = null;
+	const mount = () => {
+		cleanup?.();
+		cleanup = initDialogue();
+	};
+	const unmount = () => {
+		cleanup?.();
+		cleanup = null;
+	};
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", mount, { once: true });
+	} else {
+		mount();
 	}
 
-	dialogClose.addEventListener("click", closeDialog);
-
-	dialogContainer.addEventListener("click", e => {
-		if (e.target == dialogContainer) {
-			closeDialog();
-		}
-	});
-
-	document.addEventListener("keydown", e => {
-		if (e.key === "Escape" && dialog.style.opacity != "0") {
-			closeDialog();
-		}
-	});
-
-	dialogContainer.addEventListener("wheel", e => {
-		e.stopPropagation();
-		dialogContainer.scrollTop += e.deltaY;
-	});
+	document.addEventListener("astro:page-load", mount);
+	document.addEventListener("astro:before-swap", unmount);
 </script>
 
 <style>
@@ -145,6 +183,7 @@ const t = useTranslations(lang).dialogue;
 
 	.dialog-container {
 		overflow-y: scroll;
+		overscroll-behavior: contain;
 		pointer-events: all;
 		height: 100%;
 		padding: 2rem 1rem;

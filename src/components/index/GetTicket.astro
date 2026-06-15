@@ -179,8 +179,8 @@ const tickets = [
 		position: relative;
 		width: 100%;
 		overflow: hidden;
-		padding-bottom: 4rem;
-		background-color: #ac782b;
+		padding: var(--section-padding);
+		background: radial-gradient(circle at 82% 8%, rgba(216, 212, 199, 0.12), transparent 28rem), linear-gradient(180deg, rgba(36, 35, 31, 0.96), rgba(20, 19, 15, 0.98));
 	}
 
 	.container {
@@ -189,7 +189,7 @@ const tickets = [
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding: 0 1.5rem;
+		padding: 0;
 	}
 
 	.referral-container {
@@ -198,14 +198,21 @@ const tickets = [
 		justify-content: space-between;
 		height: 100%;
 		gap: 3rem;
-		padding: 4rem 6rem;
+		width: min(100%, 80rem);
+		margin-top: 4.5rem;
+		padding: clamp(2rem, 5vw, 4rem);
+		background: var(--metal-glass);
+		border: 1px solid var(--metal-line);
+		border-radius: 0.5rem;
+		box-shadow: var(--metal-card-shadow);
+		backdrop-filter: blur(18px);
 	}
 
 	.referral-title {
 		font-size: 2.25rem;
 		font-weight: 700;
-		color: white;
-		text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+		color: var(--metal-cream);
+		text-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.32);
 		margin-bottom: 1.5rem;
 	}
 
@@ -217,8 +224,8 @@ const tickets = [
 	.referral-description {
 		font-size: 1.125rem;
 		font-weight: 400;
-		color: white;
-		text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+		color: var(--metal-muted);
+		text-shadow: none;
 		margin-bottom: 1.5rem;
 	}
 
@@ -232,8 +239,8 @@ const tickets = [
 
 	.title {
 		padding-top: 6rem;
-		color: white;
-		text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+		color: var(--metal-cream);
+		text-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.28);
 		margin-bottom: 3rem;
 	}
 
@@ -257,7 +264,7 @@ const tickets = [
 		flex: 1;
 		min-width: 6rem;
 		transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-		box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.15);
+		box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.24);
 
 		--stub-width: 7rem;
 		--notch-size: 1.5rem;
@@ -278,7 +285,7 @@ const tickets = [
 	.ticket-card.active {
 		flex: 10;
 		cursor: default;
-		box-shadow: 0 1.25rem 3.125rem rgba(0, 0, 0, 0.3);
+		box-shadow: var(--metal-card-shadow);
 	}
 
 	.ticket-card:hover:not(.active) {
@@ -484,7 +491,7 @@ const tickets = [
 		justify-content: center;
 		width: 6rem;
 		height: 6rem;
-		background-color: #ffd172;
+		background: linear-gradient(145deg, var(--metal-cream), var(--metal-gold));
 		border-radius: 50%;
 		transition:
 			transform 0.3s ease,
@@ -586,7 +593,7 @@ const tickets = [
 			flex-direction: column;
 			align-items: flex-end;
 			gap: 2rem;
-			padding: 4rem 2rem 0;
+			padding: 2.5rem;
 		}
 
 		.title {
@@ -1223,8 +1230,6 @@ const tickets = [
 	const pageLoadHandler = () => mount();
 	const beforeSwapHandler = () => {
 		cleanup?.();
-		document.removeEventListener("astro:page-load", pageLoadHandler);
-		document.removeEventListener("astro:before-swap", beforeSwapHandler);
 	};
 
 	document.addEventListener("astro:page-load", pageLoadHandler);

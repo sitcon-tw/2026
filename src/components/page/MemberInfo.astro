@@ -75,8 +75,39 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 		}
 	};
 
+	const renderDescription = (element: Element, rawDescription: string) => {
+		const template = document.createElement("template");
+		template.innerHTML = rawDescription.replace(/\\n/g, "\n").replace(/\n/g, "<br>");
+
+		template.content.querySelectorAll("script, style, img, iframe, object, embed").forEach(node => node.remove());
+		template.content.querySelectorAll("*").forEach(node => {
+			const tag = node.tagName.toLowerCase();
+			if (tag === "br") return;
+			if (tag === "a") {
+				const href = node.getAttribute("href") || "";
+				[...node.attributes].forEach(attr => node.removeAttribute(attr.name));
+				try {
+					const url = new URL(href, window.location.origin);
+					if (url.protocol === "http:" || url.protocol === "https:") {
+						node.setAttribute("href", url.href);
+						node.setAttribute("target", "_blank");
+						node.setAttribute("rel", "noopener noreferrer");
+						return;
+					}
+				} catch {
+					// Fall through and unwrap invalid anchors.
+				}
+			}
+			node.replaceWith(...node.childNodes);
+		});
+
+		element.replaceChildren(template.content);
+	};
+
 	let lastActiveElement: HTMLElement | null = null;
-	const memberOverlay = document.getElementById("member-info-overlay");
+	const getMemberOverlay = () => document.getElementById("member-info-overlay");
+	const memberInfoController = new AbortController();
+	const memberInfoSignal = memberInfoController.signal;
 
 	const setBackgroundScrollLock = (locked: boolean) => {
 		document.body.style.overflow = locked ? "hidden" : "";
@@ -93,7 +124,7 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 
 	const openMemberModal = (modal: HTMLElement) => {
 		lastActiveElement = document.activeElement as HTMLElement | null;
-		memberOverlay?.classList.add("show");
+		getMemberOverlay()?.classList.add("show");
 		modal.classList.add("show");
 		modal.scrollTop = 0;
 		setBackgroundScrollLock(true);
@@ -104,76 +135,81 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 
 	const closeMemberModal = (modal: HTMLElement) => {
 		if (!modal.classList.contains("show")) return;
-		memberOverlay?.classList.remove("show");
+		getMemberOverlay()?.classList.remove("show");
 		modal.classList.remove("show");
 		setBackgroundScrollLock(false);
+		cleanup3DEffectForModal();
 		if (lastActiveElement && typeof lastActiveElement.focus === "function") {
 			lastActiveElement.focus();
 		}
 	};
 
 	// Unified Click Event Listener
-	document.addEventListener("keydown", e => {
-		if (e.key === "Enter" || e.key === " ") {
+	document.addEventListener(
+		"keydown",
+		e => {
+			if (e.key === "Enter" || e.key === " ") {
+				const target = e.target as HTMLElement;
+				const trigger = target.closest(".person-trigger") as HTMLElement | null;
+				if (trigger) {
+					e.preventDefault();
+					trigger.click();
+				}
+			}
+		},
+		{ signal: memberInfoSignal }
+	);
+
+	document.addEventListener(
+		"click",
+		e => {
 			const target = e.target as HTMLElement;
+
+			// Open modal logic
 			const trigger = target.closest(".person-trigger") as HTMLElement | null;
 			if (trigger) {
-				e.preventDefault();
-				trigger.click();
-			}
-		}
-	});
+				const { name, position, link, team, description, mode, color } = trigger.dataset;
 
-	document.addEventListener("click", e => {
-		const target = e.target as HTMLElement;
+				const modal = document.getElementById("member-info-modal");
+				if (modal) {
+					// Update Text
+					const nameEl = modal.querySelector("#member-name");
+					const posEl = modal.querySelector("#member-position");
+					const descEl = modal.querySelector("#member-description");
 
-		// Open modal logic
-		const trigger = target.closest(".person-trigger") as HTMLElement | null;
-		if (trigger) {
-			const { name, position, link, team, description, mode, color } = trigger.dataset;
+					if (nameEl) nameEl.textContent = name || "";
+					if (posEl) posEl.textContent = `${team} ● ${position}` || "";
+					if (descEl) {
+						renderDescription(descEl, description || "");
+					}
 
-			const modal = document.getElementById("member-info-modal");
-			if (modal) {
-				// Update Text
-				const nameEl = modal.querySelector("#member-name");
-				const posEl = modal.querySelector("#member-position");
-				const descEl = modal.querySelector("#member-description");
+					// Update Avatar - 根據 mode 生成不同結構
+					const avatarContainer = modal.querySelector("#member-avatar-container") as HTMLElement | null;
+					if (avatarContainer && name) {
+						const backImgUrl = `/2026/img/avatar/back/${name}.webp`;
+						const frontImgUrl = `/2026/img/avatar/front/${name}.webp`;
 
-				if (nameEl) nameEl.textContent = name || "";
-				if (posEl) posEl.textContent = `${team} ● ${position}` || "";
-				if (descEl) {
-					// 將 \n 轉換成 <br> 以支援換行
-					const descText = (description || "").replace(/\\n/g, "\n").replace(/\n/g, "<br>");
-					descEl.innerHTML = descText;
-				}
+						// 清空容器
+						avatarContainer.innerHTML = "";
 
-				// Update Avatar - 根據 mode 生成不同結構
-				const avatarContainer = modal.querySelector("#member-avatar-container") as HTMLElement | null;
-				if (avatarContainer && name) {
-					const backImgUrl = `/2026/img/avatar/back/${name}.webp`;
-					const frontImgUrl = `/2026/img/avatar/front/${name}.webp`;
-
-					// 清空容器
-					avatarContainer.innerHTML = "";
-
-					if (mode === "nobg") {
-						// 只有後層
-						avatarContainer.innerHTML = `
+						if (mode === "nobg") {
+							// 只有後層
+							avatarContainer.innerHTML = `
 							<div class="avatar-layer avatar-back">
 								<img class="avatar-img" src="${backImgUrl}" alt="${name}" />
 							</div>
 						`;
-					} else if (mode === "color") {
-						// 只有前層 + 顏色背景
-						avatarContainer.innerHTML = `
+						} else if (mode === "color") {
+							// 只有前層 + 顏色背景
+							avatarContainer.innerHTML = `
 							<div class="avatar-layer avatar-bg" style="background-color: #${color};"></div>
 							<div class="avatar-layer avatar-front">
 								<img class="avatar-img" src="${frontImgUrl}" alt="${name}" />
 							</div>
 						`;
-					} else {
-						// 默認：雙層
-						avatarContainer.innerHTML = `
+						} else {
+							// 默認：雙層
+							avatarContainer.innerHTML = `
 							<div class="avatar-layer avatar-back">
 								<img class="avatar-img" src="${backImgUrl}" alt="${name}" />
 							</div>
@@ -181,61 +217,67 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 								<img class="avatar-img" src="${frontImgUrl}" alt="${name}" />
 							</div>
 						`;
+						}
+
+						// 初始化 3D 效果
+						init3DEffectForModal(avatarContainer);
 					}
 
-					// 初始化 3D 效果
-					init3DEffectForModal(avatarContainer);
-				}
+					// Update Social Button
+					const socialBtn = modal.querySelector("#member-social-btn") as HTMLElement | null;
+					if (socialBtn) {
+						const normalizedLink = normalizeUrl(link || "");
+						socialBtn.setAttribute("data-url", normalizedLink);
+						socialBtn.textContent = getSocialText(normalizedLink);
+						socialBtn.style.display = normalizedLink ? "inline-block" : "none";
+						socialBtn.setAttribute("aria-label", socialBtn.textContent || "");
+					}
 
-				// Update Social Button
-				const socialBtn = modal.querySelector("#member-social-btn") as HTMLElement | null;
-				if (socialBtn) {
-					const normalizedLink = normalizeUrl(link || "");
-					socialBtn.setAttribute("data-url", normalizedLink);
-					socialBtn.textContent = getSocialText(normalizedLink);
-					socialBtn.style.display = normalizedLink ? "inline-block" : "none";
-					socialBtn.setAttribute("aria-label", socialBtn.textContent || "");
+					openMemberModal(modal);
 				}
-
-				openMemberModal(modal);
+				return;
 			}
-			return;
-		}
 
-		// Close modal logic
-		const closeBtn = target.closest(".member-info .close-btn");
-		if (closeBtn) {
-			const modal = closeBtn.closest(".member-info") as HTMLElement | null;
-			if (modal) {
+			// Close modal logic
+			const closeBtn = target.closest(".member-info .close-btn");
+			if (closeBtn) {
+				const modal = closeBtn.closest(".member-info") as HTMLElement | null;
+				if (modal) {
+					closeMemberModal(modal);
+				}
+				return;
+			}
+
+			// Social Button Click Logic
+			const socialBtn = target.closest("#member-social-btn");
+			if (socialBtn) {
+				const url = socialBtn.getAttribute("data-url");
+				if (url) window.open(url, "_blank");
+				return;
+			}
+
+			// Click outside sidebar closes it
+			const modal = document.getElementById("member-info-modal") as HTMLElement | null;
+			if (modal && modal.classList.contains("show") && !target.closest(".member-info")) {
 				closeMemberModal(modal);
 			}
-			return;
-		}
-
-		// Social Button Click Logic
-		const socialBtn = target.closest("#member-social-btn");
-		if (socialBtn) {
-			const url = socialBtn.getAttribute("data-url");
-			if (url) window.open(url, "_blank");
-			return;
-		}
-
-		// Click outside sidebar closes it
-		const modal = document.getElementById("member-info-modal") as HTMLElement | null;
-		if (modal && modal.classList.contains("show") && !target.closest(".member-info")) {
-			closeMemberModal(modal);
-		}
-	});
+		},
+		{ signal: memberInfoSignal }
+	);
 
 	// ESC key to close modal
-	document.addEventListener("keydown", e => {
-		if (e.key === "Escape") {
-			const modal = document.getElementById("member-info-modal");
-			if (modal && modal.classList.contains("show")) {
-				closeMemberModal(modal as HTMLElement);
+	document.addEventListener(
+		"keydown",
+		e => {
+			if (e.key === "Escape") {
+				const modal = document.getElementById("member-info-modal");
+				if (modal && modal.classList.contains("show")) {
+					closeMemberModal(modal as HTMLElement);
+				}
 			}
-		}
-	});
+		},
+		{ signal: memberInfoSignal }
+	);
 
 	// 3D 視差效果（用於 popup）- 全螢幕追蹤
 	let currentModalMouseHandler: ((e: MouseEvent) => void) | null = null;
@@ -283,7 +325,7 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 		currentModalMouseHandler = handleMouseMove;
 
 		// 全螢幕追蹤滑鼠
-		document.addEventListener("mousemove", handleMouseMove);
+		document.addEventListener("mousemove", handleMouseMove, { signal: memberInfoSignal });
 	};
 
 	// 關閉 modal 時清除監聽器
@@ -310,6 +352,17 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 	if (memberModal) {
 		modalObserver.observe(memberModal, { attributes: true });
 	}
+
+	document.addEventListener(
+		"astro:before-swap",
+		() => {
+			memberInfoController.abort();
+			cleanup3DEffectForModal();
+			setBackgroundScrollLock(false);
+			modalObserver.disconnect();
+		},
+		{ once: true, signal: memberInfoSignal }
+	);
 </script>
 
 <style>
@@ -550,6 +603,114 @@ const socialPrefix = lang === "en" ? "Go to" : "前往";
 
 		p {
 			width: 100%;
+		}
+	}
+
+	.member-info {
+		width: clamp(22rem, 34vw, 34rem);
+		padding: clamp(2rem, 4vw, 3rem);
+		border-right: 1px solid rgba(242, 216, 148, 0.28);
+		background: radial-gradient(circle at 18% 12%, rgba(242, 216, 148, 0.18), transparent 18rem), linear-gradient(145deg, rgba(28, 25, 20, 0.98), rgba(12, 11, 9, 0.98));
+		color: var(--metal-cream);
+		box-shadow: 1.25rem 0 4rem rgba(0, 0, 0, 0.42);
+	}
+
+	.member-info-overlay {
+		background: rgba(10, 9, 7, 0.68);
+		backdrop-filter: blur(0.75rem);
+		-webkit-backdrop-filter: blur(0.75rem);
+	}
+
+	.close-btn {
+		top: clamp(1.5rem, 3vw, 2.5rem);
+		right: clamp(1.5rem, 3vw, 2.5rem);
+		background: rgba(255, 244, 214, 0.1);
+		border: 1px solid rgba(242, 216, 148, 0.28);
+		color: var(--metal-cream);
+		box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
+	}
+
+	.close-btn:hover {
+		background: rgba(255, 244, 214, 0.18);
+		box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.28);
+	}
+
+	h1#member-name {
+		font-size: clamp(3rem, 7vw, 5rem);
+		line-height: 0.95;
+		color: var(--metal-cream);
+		padding-right: 2.75rem;
+	}
+
+	#member-position {
+		display: block;
+		padding: 1rem 0 0;
+		font-family: "GenKiMinTW", serif;
+		font-weight: 700;
+		line-height: 1.5;
+		color: var(--metal-gold-soft);
+	}
+
+	.avatar-container {
+		width: min(14rem, 58vw);
+		height: min(14rem, 58vw);
+		margin-top: 2rem;
+		border: 1px solid rgba(242, 216, 148, 0.22);
+		border-radius: var(--metal-radius);
+		background: rgba(255, 244, 214, 0.08);
+		box-shadow: 0 1rem 2.25rem rgba(0, 0, 0, 0.24);
+	}
+
+	.avatar-layer {
+		border-radius: var(--metal-radius);
+	}
+
+	#member-description {
+		max-width: 30rem;
+		padding-top: 2rem;
+		color: rgba(244, 239, 229, 0.82);
+		font-weight: 500;
+		line-height: 1.8;
+	}
+
+	#member-social-btn {
+		border: 1px solid rgba(242, 216, 148, 0.36);
+		border-radius: 999px;
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.18), rgba(20, 19, 15, 0.34));
+		color: var(--metal-cream);
+		padding: 0.75rem 1.15rem;
+		box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
+	}
+
+	#member-social-btn:hover {
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.26), rgba(20, 19, 15, 0.3));
+		box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.26);
+	}
+
+	@media (max-width: 40rem) {
+		.member-info {
+			inset: auto 1rem 1rem;
+			width: calc(100vw - 2rem);
+			height: min(82vh, calc(100dvh - 2rem));
+			padding: 2rem;
+			border: 1px solid rgba(242, 216, 148, 0.28);
+			border-radius: var(--metal-radius);
+			transform: translateY(105%);
+		}
+
+		.member-info.show {
+			transform: translateY(0);
+		}
+
+		.close-btn {
+			top: 1.25rem;
+			right: 1.25rem;
+			width: 2.5rem;
+			height: 2.5rem;
+		}
+
+		h1#member-name {
+			font-size: clamp(2.5rem, 16vw, 4rem);
 		}
 	}
 </style>

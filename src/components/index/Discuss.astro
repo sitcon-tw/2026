@@ -33,7 +33,7 @@ const messages = t.messages;
 
 <style>
 	section {
-		background-color: #ac782b;
+		background: radial-gradient(circle at 18% 20%, rgba(242, 216, 148, 0.12), transparent 30rem), linear-gradient(180deg, rgba(36, 35, 31, 0.96), rgba(20, 19, 15, 0.98));
 	}
 	#discuss {
 		position: relative;
@@ -95,8 +95,8 @@ const messages = t.messages;
 	#discuss :global(.bubble-content) {
 		border-radius: 1.5rem;
 		padding: 1.1rem 1.6rem;
-		background: #c2a05a;
-		color: white;
+		background: linear-gradient(145deg, rgba(242, 216, 148, 0.88), rgba(141, 99, 48, 0.78));
+		color: var(--metal-ink);
 		font-size: 1.5rem;
 		font-weight: 500;
 		line-height: 1.45;
@@ -126,7 +126,7 @@ const messages = t.messages;
 	}
 
 	h2 {
-		color: white;
+		color: var(--metal-cream);
 		margin-bottom: 1.5rem;
 	}
 
@@ -137,8 +137,8 @@ const messages = t.messages;
 	}
 
 	.btn-pill {
-		background-color: #ffd172;
-		color: #634a15;
+		background: linear-gradient(145deg, var(--metal-cream), var(--metal-gold));
+		color: var(--metal-ink);
 		padding: 1rem 2.5rem;
 		border-radius: 3.75rem;
 		text-decoration: none;
@@ -151,7 +151,7 @@ const messages = t.messages;
 
 	.btn-pill:hover {
 		transform: scale(1.05);
-		background-color: #fff;
+		background: var(--metal-cream);
 	}
 
 	.decor-logo {

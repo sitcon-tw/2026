@@ -44,22 +44,44 @@ const t = useTranslations(lang).joinUs;
 
 <style>
 	section {
-		background-color: white;
+		background: radial-gradient(circle at 18% 20%, rgba(216, 212, 199, 0.12), transparent 28rem), linear-gradient(180deg, rgba(244, 239, 229, 0.96), rgba(229, 218, 195, 0.94));
+		color: var(--coffee);
 	}
 	.title {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: clamp(1rem, 3vw, 2rem);
 		max-width: var(--max-width);
 		margin: 0 auto;
 		padding-top: 5rem;
 		width: 90%;
 	}
+
+	.title::before {
+		content: "";
+		order: 2;
+		flex: 1 1 auto;
+		height: 1px;
+		min-width: 8rem;
+		background: linear-gradient(90deg, rgba(45, 33, 17, 0.08), rgba(45, 33, 17, 0.52), rgba(45, 33, 17, 0.08));
+		box-shadow: 0 0 1.25rem rgba(141, 99, 48, 0.18);
+		transform: translateY(0.18em);
+	}
+
 	h2 {
-		color: #828282;
+		flex: 0 0 auto;
+		color: rgba(45, 33, 17, 0.56);
+	}
+
+	h2:first-of-type {
+		order: 1;
 	}
 
 	h2:nth-of-type(2) {
-		color: #595959;
+		order: 3;
+		color: var(--coffee);
 	}
 
 	.content-container {
@@ -71,14 +93,14 @@ const t = useTranslations(lang).joinUs;
 
 	.content-text {
 		text-align: center;
-		color: black;
+		color: var(--coffee);
 		font-size: 1.2rem;
 		font-weight: 500;
 		margin: 5rem 10rem auto;
 	}
 
 	.content-list {
-		color: black;
+		color: var(--coffee);
 		font-weight: bold;
 		margin: 5rem 12rem;
 	}
@@ -98,17 +120,16 @@ const t = useTranslations(lang).joinUs;
 		cursor: pointer;
 		text-decoration: none;
 		font-weight: bold;
-		color: #595959;
-		background:
-			linear-gradient(124deg, rgba(133, 138, 146, 0) -3.36%, rgba(133, 138, 146, 0.5) 31.33%, rgba(133, 138, 146, 0.75) 69.49%, rgba(133, 138, 146, 0.88) 96.26%, #858a92 98.2%),
-			radial-gradient(390.63% 225.3% at 8.72% -121.17%, #fff 0%, rgba(255, 255, 255, 0) 100%);
-		border: 0.0625rem solid #595959;
+		color: var(--metal-ink);
+		background: linear-gradient(145deg, var(--metal-cream), var(--metal-silver));
+		border: 0.0625rem solid rgba(45, 33, 17, 0.28);
 		transition:
 			transform 0.3s ease,
 			box-shadow 0.3s ease;
 		overflow: hidden;
 		position: relative;
 		z-index: 1;
+		box-sizing: border-box;
 	}
 
 	.hover-bg {
@@ -118,7 +139,7 @@ const t = useTranslations(lang).joinUs;
 		width: 100%;
 		height: 100%;
 		background:
-			linear-gradient(124deg, rgba(133, 138, 146, 0.1) -3.36%, rgba(133, 138, 146, 0.6) 31.33%, rgba(133, 138, 146, 0.8) 69.49%, rgba(133, 138, 146, 0.9) 96.26%, #7a7f87 98.2%),
+			linear-gradient(124deg, rgba(216, 212, 199, 0.2) -3.36%, rgba(216, 212, 199, 0.72) 48%, rgba(141, 99, 48, 0.28) 100%),
 			radial-gradient(390.63% 225.3% at 8.72% -121.17%, #fff 0%, rgba(255, 255, 255, 0) 100%);
 		transform: translateX(-100%);
 		z-index: -1;
@@ -128,12 +149,18 @@ const t = useTranslations(lang).joinUs;
 		display: flex;
 		align-items: center;
 		gap: 0.8rem;
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.content-btn a span > div {
+		min-width: 0;
 	}
 
 	.content-btn a:hover {
 		transform: translateY(-0.1875rem);
-		box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.1);
-		border-color: #333333;
+		box-shadow: 0 0.75rem 1.5rem rgba(45, 33, 17, 0.16);
+		border-color: rgba(45, 33, 17, 0.44);
 	}
 
 	.content-btn a svg path {
@@ -160,9 +187,18 @@ const t = useTranslations(lang).joinUs;
 	@media screen and (max-width: 50rem) {
 		.title {
 			flex-direction: column;
+			align-items: stretch;
 			padding: 3rem 2rem 0;
-			gap: 0.5rem;
+			gap: 0.65rem;
 			margin: 0 auto;
+		}
+
+		.title::before {
+			width: min(100%, 18rem);
+			min-width: 0;
+			flex: 0 0 auto;
+			margin: 0.15rem 0 0.1rem auto;
+			transform: none;
 		}
 
 		.title h2:nth-of-type(2) {
@@ -188,10 +224,10 @@ const t = useTranslations(lang).joinUs;
 
 		.content-btn {
 			flex-direction: row;
-			gap: 0.8rem;
+			gap: 0.65rem;
 			align-items: center;
 			width: 100%;
-			padding: 0 1rem;
+			padding: 0 clamp(0.75rem, 4vw, 1rem);
 			box-sizing: border-box;
 		}
 
@@ -199,14 +235,43 @@ const t = useTranslations(lang).joinUs;
 			width: auto;
 			flex: 1;
 			max-width: none;
-			height: 3.2rem;
-			font-size: 1rem;
-			padding: 0;
+			min-width: 0;
+			height: auto;
+			min-height: 3.85rem;
+			padding: 0.68rem 0.8rem 0.68rem 0.95rem;
+			font-size: clamp(0.78rem, 3.7vw, 0.95rem);
+			line-height: 1.05;
+			justify-content: stretch;
+			text-align: left;
+		}
+
+		.content-btn a span {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+			align-items: center;
+			gap: 0.45rem;
+			width: 100%;
+			white-space: normal;
+			overflow-wrap: break-word;
+		}
+
+		.content-btn a span > div {
+			line-height: inherit;
 		}
 
 		.content-btn a svg {
-			width: 1.25rem;
-			height: 1.25rem;
+			width: 1.05rem;
+			height: 1.05rem;
+			align-self: start;
+			margin-top: 0.02rem;
+			flex: 0 0 auto;
+		}
+	}
+
+	@media screen and (max-width: 23rem) {
+		.content-btn {
+			flex-direction: column;
+			align-items: stretch;
 		}
 	}
 

@@ -27,29 +27,68 @@ const { index, member, name, description } = Astro.props;
 
 <style>
 	.team {
-		margin-bottom: 3rem;
+		margin-bottom: clamp(4rem, 8vw, 7rem);
 	}
 
 	h2 {
-		margin-bottom: 1.5rem;
-		font-size: 3rem;
+		margin-bottom: 1rem;
+		font-size: clamp(2rem, 4.5vw, 3.5rem);
+		color: var(--metal-cream);
+		line-height: 1.14;
+		padding-bottom: 0.06em;
+		overflow: visible;
+	}
+
+	h2 :global(.text-reveal-content),
+	h2 :global(.text-reveal-content-mask) {
+		line-height: 1.14 !important;
 	}
 
 	.text {
-		max-width: 34rem;
+		max-width: 40rem;
 		margin-bottom: 2rem;
+		color: var(--metal-muted);
+		line-height: 1.75;
 	}
 
 	.person-group {
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(9.5rem, 11rem));
+		align-items: start;
 		justify-content: start;
-		gap: 2.5rem;
+		gap: clamp(1.5rem, 3vw, 2.5rem) clamp(1.25rem, 3vw, 2rem);
+	}
+
+	.person-group :global(.person) {
+		width: 100%;
+		max-width: none;
+		min-width: 0;
+	}
+
+	.person-group :global(.avatar-container) {
+		margin-inline: auto;
+	}
+
+	.person-group :global(.text-group) {
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		text-align: center;
+		gap: 0.25rem;
+		min-width: 0;
+	}
+
+	.person-group :global(.name),
+	.person-group :global(.position) {
+		width: 100%;
+		line-height: 1.3;
+		overflow-wrap: anywhere;
 	}
 
 	@media (max-width: 640px) {
 		.person-group {
-			gap: 1.5rem;
+			grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+			gap: 1.5rem 1rem;
 		}
 	}
 </style>

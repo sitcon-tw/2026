@@ -151,9 +151,6 @@ const images = [
 
 <script>
 	import { gsap } from "gsap";
-	import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-	gsap.registerPlugin(ScrollTrigger);
 
 	const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -170,52 +167,57 @@ const images = [
 			};
 		}
 
-		let animation: gsap.core.Tween | null = null;
-		let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
+		let animationFrameId: number | null = null;
+		let resizeObserver: ResizeObserver | null = null;
+		let shouldUpdateImmediately = true;
+		const animateX = gsap.quickTo(container, "x", { duration: 0.3, ease: "power2.out" });
 
-		const createAnimation = () => {
-			// 清除舊的動畫
-			if (animation) {
-				animation.kill();
+		const getHorizontalOffset = () => Math.min(window.innerWidth, 1440) * 0.2;
+		const getEndX = () => {
+			const travelDistance = Math.max(0, container.scrollWidth - photoWall.clientWidth);
+			return -(travelDistance + getHorizontalOffset());
+		};
+		const getScrollProgress = () => {
+			const rect = photoWall.getBoundingClientRect();
+			const range = window.innerHeight + rect.height;
+			if (range <= 0) return 0;
+			return gsap.utils.clamp(0, 1, (window.innerHeight - rect.top) / range);
+		};
+		const updatePosition = () => {
+			animationFrameId = null;
+			const progress = getScrollProgress();
+			const x = gsap.utils.interpolate(getHorizontalOffset(), getEndX(), progress);
+			if (shouldUpdateImmediately) {
+				gsap.set(container, { x });
+				shouldUpdateImmediately = false;
+				return;
 			}
-
-			const offset = Math.min(window.innerWidth, 1440) * 0.2;
-			animation = gsap.fromTo(
-				container,
-				{ x: offset },
-				{
-					x: -(container.scrollWidth - photoWall.clientWidth + offset),
-					ease: "none",
-					scrollTrigger: {
-						trigger: photoWall,
-						start: "top bottom",
-						end: "bottom top",
-						scrub: 0.3,
-						invalidateOnRefresh: true
-					}
-				}
-			);
+			animateX(x);
 		};
-
-		createAnimation();
-
-		const onResize = () => {
-			if (resizeTimeout) clearTimeout(resizeTimeout);
-			resizeTimeout = setTimeout(() => {
-				ScrollTrigger.refresh();
-				createAnimation();
-			}, 200);
+		const requestPositionUpdate = (immediate = false) => {
+			shouldUpdateImmediately ||= immediate;
+			if (animationFrameId !== null) return;
+			animationFrameId = requestAnimationFrame(updatePosition);
 		};
+		const onScroll = () => requestPositionUpdate();
+		const onResize = () => requestPositionUpdate(true);
 
-		window.addEventListener("resize", onResize);
+		requestPositionUpdate(true);
+		window.addEventListener("scroll", onScroll, { passive: true });
+		window.addEventListener("resize", onResize, { passive: true });
+		resizeObserver = new ResizeObserver(() => requestPositionUpdate(true));
+		resizeObserver.observe(photoWall);
+		resizeObserver.observe(container);
 
 		return () => {
-			if (resizeTimeout) clearTimeout(resizeTimeout);
-			window.removeEventListener("resize", onResize);
-			if (animation) {
-				animation.scrollTrigger?.kill();
-				animation.kill();
+			if (animationFrameId !== null) {
+				cancelAnimationFrame(animationFrameId);
 			}
+			window.removeEventListener("scroll", onScroll);
+			window.removeEventListener("resize", onResize);
+			resizeObserver?.disconnect();
+			gsap.killTweensOf(container);
+			gsap.set(container, { clearProps: "transform" });
 			photoWall.dataset.photoInit = "false";
 		};
 	};
@@ -235,8 +237,6 @@ const images = [
 	const pageLoadHandler = () => mount();
 	const beforeSwapHandler = () => {
 		cleanup?.();
-		document.removeEventListener("astro:page-load", pageLoadHandler);
-		document.removeEventListener("astro:before-swap", beforeSwapHandler);
 	};
 
 	document.addEventListener("astro:page-load", pageLoadHandler);

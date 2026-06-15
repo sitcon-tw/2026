@@ -20,7 +20,7 @@ const t = useTranslations(lang).landing;
 	<div class="bottom">
 		<!-- 左下角報名按鈕 -->
 		<div class="cta-container" id="cta-container">
-			<a href="https://tickets.sitcon.org/sitcon2026" target="_blank">
+			<a href="https://tickets.sitcon.org/sitcon2026" target="_blank" rel="noopener noreferrer">
 				<div class="cta-text-layer">
 					<span class="cta-text">{t.cta}</span>
 					<span class="arrow">›</span>
@@ -43,12 +43,13 @@ const t = useTranslations(lang).landing;
 
 <style>
 	header {
+		--hero-copy-offset: clamp(0rem, calc(15vh - 2rem), 8rem);
 		position: relative;
 		min-height: 100vh;
 		min-height: 100svh;
 		font-family: "GenKiMinTW", serif;
 		animation: fadeIn 2s ease-out forwards;
-		color: white;
+		color: var(--metal-cream);
 		padding: 8rem 2rem 2rem;
 		display: flex;
 		flex-direction: column;
@@ -67,8 +68,9 @@ const t = useTranslations(lang).landing;
 	}
 
 	h1 {
+		padding-left: var(--hero-copy-offset);
 		line-height: clamp(3rem, 10vw, 5rem);
-		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+		text-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.42);
 		text-transform: uppercase;
 		font-family: "Playfair Display", serif;
 		font-weight: normal;
@@ -96,9 +98,9 @@ const t = useTranslations(lang).landing;
 	/* 右下角資訊 */
 	.info-wrapper {
 		font-size: 1.8rem;
-		letter-spacing: 0.4em;
+		letter-spacing: 0.3em;
 		text-align: right;
-		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+		text-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.42);
 	}
 
 	.location {
@@ -120,20 +122,20 @@ const t = useTranslations(lang).landing;
 		align-items: center;
 		width: 280px;
 		height: 64px;
-		background: rgba(255, 255, 255, 0.1);
-		backdrop-filter: blur(12px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		border-radius: 1.2rem;
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.16), rgba(20, 19, 15, 0.38));
+		backdrop-filter: blur(18px);
+		border: 1px solid rgba(242, 216, 148, 0.32);
+		border-radius: 999px;
 		overflow: hidden;
 		cursor: pointer;
 		user-select: none;
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		text-decoration: none;
-		margin-bottom: 1rem;
+		margin: 0 0 1rem var(--hero-copy-offset);
 	}
 	.cta-container:hover {
-		background: rgba(255, 255, 255, 0.15);
-		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+		background: linear-gradient(145deg, rgba(255, 246, 220, 0.22), rgba(20, 19, 15, 0.34));
+		box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.24);
 	}
 	.cta-text-layer {
 		position: absolute;
@@ -145,7 +147,7 @@ const t = useTranslations(lang).landing;
 		align-items: center;
 		justify-content: center;
 		gap: 0.8rem;
-		color: white;
+		color: var(--metal-cream);
 		z-index: 1;
 		padding-left: 48px;
 		transition: opacity 0.3s ease;
@@ -171,8 +173,8 @@ const t = useTranslations(lang).landing;
 		left: 0;
 		width: 64px;
 		height: 64px;
-		background: rgba(255, 255, 255, 0.2);
-		border-radius: 0.8rem;
+		background: linear-gradient(145deg, rgba(242, 216, 148, 0.42), rgba(216, 212, 199, 0.16));
+		border-radius: 999px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -194,8 +196,7 @@ const t = useTranslations(lang).landing;
 	}
 	.cta-icon img {
 		width: auto;
-		height: 100%;
-		max-width: 100%;
+		height: 80%;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -212,6 +213,12 @@ const t = useTranslations(lang).landing;
 			transition: none;
 		}
 	}
+
+	@media (max-width: 65rem) {
+		header {
+			--hero-copy-offset: 0rem;
+		}
+	}
 </style>
 
 <script>
@@ -226,7 +233,7 @@ const t = useTranslations(lang).landing;
 		let hasMoved = false;
 		let startX = 0;
 		let currentX = 0;
-		let redirectTimeout: number | null = null;
+		const ticketUrl = "https://tickets.sitcon.org/sitcon2026";
 
 		const getX = (e: MouseEvent | TouchEvent) => {
 			return "touches" in e ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
@@ -269,9 +276,7 @@ const t = useTranslations(lang).landing;
 				const textLayer = container.querySelector(".cta-text-layer") as HTMLElement;
 				if (textLayer) textLayer.style.opacity = "0";
 
-				redirectTimeout = window.setTimeout(() => {
-					window.location.href = "https://tickets.sitcon.org/sitcon2026";
-				}, 300);
+				window.open(ticketUrl, "_blank", "noopener,noreferrer");
 			} else {
 				currentX = 0;
 				handle.style.transform = `translateX(0px)`;
@@ -297,9 +302,6 @@ const t = useTranslations(lang).landing;
 		window.addEventListener("touchend", onEnd);
 
 		return () => {
-			if (redirectTimeout !== null) {
-				clearTimeout(redirectTimeout);
-			}
 			container.removeEventListener("click", onClick);
 			handle.removeEventListener("mousedown", onStart as any);
 			window.removeEventListener("mousemove", onMove as any);
@@ -326,8 +328,6 @@ const t = useTranslations(lang).landing;
 	const pageLoadHandler = () => mount();
 	const beforeSwapHandler = () => {
 		cleanup?.();
-		document.removeEventListener("astro:page-load", pageLoadHandler);
-		document.removeEventListener("astro:before-swap", beforeSwapHandler);
 	};
 
 	document.addEventListener("astro:page-load", pageLoadHandler);

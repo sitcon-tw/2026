@@ -159,6 +159,35 @@ const initialAd = localizedAds[0] ?? null;
 	const adClickHandlers = new WeakMap<HTMLAnchorElement, () => void>();
 	const adImageMobile = document.getElementById("modal-ad-image-mobile") as HTMLImageElement | null;
 	const adImageDesktop = document.getElementById("modal-ad-image-desktop") as HTMLImageElement | null;
+	const sessionModalController = new AbortController();
+	const sessionModalSignal = sessionModalController.signal;
+	const sessionModalTimers: number[] = [];
+	const setSessionModalTimeout = (handler: () => void, timeout?: number) => {
+		const id = window.setTimeout(() => {
+			const index = sessionModalTimers.indexOf(id);
+			if (index >= 0) sessionModalTimers.splice(index, 1);
+			if (!sessionModalSignal.aborted) handler();
+		}, timeout);
+		sessionModalTimers.push(id);
+		return id;
+	};
+	sessionModalSignal.addEventListener(
+		"abort",
+		() => {
+			sessionModalTimers.splice(0).forEach(id => window.clearTimeout(id));
+			if (window.openSessionModal) window.openSessionModal = undefined;
+		},
+		{ once: true }
+	);
+	document.addEventListener(
+		"astro:before-swap",
+		() => {
+			sessionModalController.abort();
+			resetSessionVideo();
+			document.body.style.overflow = "";
+		},
+		{ once: true, signal: sessionModalSignal }
+	);
 	type ModalAd = { name: string; weight: number; link: string; mobile?: boolean; desktop?: boolean };
 	const modalAds: ModalAd[] = (() => {
 		if (!modal) return [];
@@ -272,7 +301,7 @@ const initialAd = localizedAds[0] ?? null;
 		adImageDesktop.alt = `${selectedAd.name} ${modalTextConfig.adDesktop}`;
 
 		if (import.meta.env.PROD) gtmPush("session_ad_impression", { ad_sponsor: selectedAd.name });
-		adLink.addEventListener("click", _adClickHandler);
+		adLink.addEventListener("click", _adClickHandler, { signal: sessionModalSignal });
 	}
 
 	function closeModal() {
@@ -281,7 +310,7 @@ const initialAd = localizedAds[0] ?? null;
 		modal.classList.add("closing");
 		const isPhone = window.matchMedia("(max-width: 968px)").matches;
 		const duration = isPhone ? 300 : 220;
-		setTimeout(() => {
+		setSessionModalTimeout(() => {
 			modal.classList.remove("active", "closing", "bookmark-area-hovered");
 			// Re-enable body scrolling
 			document.body.style.overflow = "";
@@ -303,15 +332,15 @@ const initialAd = localizedAds[0] ?? null;
 	}
 
 	if (closeBtn) {
-		closeBtn.addEventListener("click", closeModal);
+		closeBtn.addEventListener("click", closeModal, { signal: sessionModalSignal });
 	}
 
 	if (closeBtnMobile) {
-		closeBtnMobile.addEventListener("click", closeModal);
+		closeBtnMobile.addEventListener("click", closeModal, { signal: sessionModalSignal });
 	}
 
 	if (overlay) {
-		overlay.addEventListener("click", closeModal);
+		overlay.addEventListener("click", closeModal, { signal: sessionModalSignal });
 	}
 	const BOOKMARKS_STORAGE_KEY = "sitcon2026:agendaBookmarks";
 	const ribbonEl = document.getElementById("modal-bookmark-ribbon");
@@ -378,216 +407,224 @@ const initialAd = localizedAds[0] ?? null;
 		videoSectionEl.classList.remove("is-hidden");
 	}
 
-	document.addEventListener("openSessionModal", ((e: CustomEvent) => {
-		const detail = e.detail || {};
-		const sessionId = detail.id ?? "";
-		const sessionType = detail.type ?? "";
-		const sessionName = detail.name ?? "";
-		const sessionDescription = detail.description ?? "";
-		const sessionVenue = detail.venue ?? "";
-		const sessionStartTime = detail.startTime ?? "";
-		const sessionEndTime = detail.endTime ?? "";
-		const sessionSpeakers = detail.speakers ?? [];
-		const sessionTags = detail.tags ?? [];
-		const sessionSlidoLink = detail.slidoLink ?? "";
-		const sessionSlidesLink = detail.slidesLink ?? "";
-		const sessionNotesLink = detail.notesLink ?? "";
-		const sessionRecordLink = detail.recordLink ?? "";
-		const formatTimestamp = (timestamp: string) => {
-			if (!timestamp) return "";
-			const d = new Date(Number(timestamp));
-			if (isNaN(d.getTime())) return "";
-			return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Taipei" });
-		};
+	document.addEventListener(
+		"openSessionModal",
+		((e: CustomEvent) => {
+			const detail = e.detail || {};
+			const sessionId = detail.id ?? "";
+			const sessionType = detail.type ?? "";
+			const sessionName = detail.name ?? "";
+			const sessionDescription = detail.description ?? "";
+			const sessionVenue = detail.venue ?? "";
+			const sessionStartTime = detail.startTime ?? "";
+			const sessionEndTime = detail.endTime ?? "";
+			const sessionSpeakers = detail.speakers ?? [];
+			const sessionTags = detail.tags ?? [];
+			const sessionSlidoLink = detail.slidoLink ?? "";
+			const sessionSlidesLink = detail.slidesLink ?? "";
+			const sessionNotesLink = detail.notesLink ?? "";
+			const sessionRecordLink = detail.recordLink ?? "";
+			const formatTimestamp = (timestamp: string) => {
+				if (!timestamp) return "";
+				const d = new Date(Number(timestamp));
+				if (isNaN(d.getTime())) return "";
+				return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Taipei" });
+			};
 
-		if (modal) modal.setAttribute("data-session-id", sessionId);
-		if (ribbonEl) {
-			ribbonEl.classList.toggle("is-bookmarked", sessionId ? readBookmarks().has(sessionId) : false);
-			ribbonEl.setAttribute("aria-hidden", ribbonEl.classList.contains("is-bookmarked") ? "false" : "true");
-		}
-
-		// Update modal content dynamically
-		const titleEl = modal?.querySelector(".session-title");
-		if (titleEl) titleEl.textContent = sessionName;
-
-		const descEl = modal?.querySelector(".session-description");
-		if (descEl) descEl.innerHTML = sessionDescription;
-		updateSessionVideo(sessionRecordLink, sessionName);
-
-		const typeBadgeEl = modal?.querySelector(".session-type-badge");
-		if (typeBadgeEl) {
-			typeBadgeEl.textContent = modalTypeLabels[sessionType as keyof typeof modalTypeLabels] || "";
-		}
-
-		// Update time
-		const timeMetaEl = modal?.querySelector(".meta-item:first-child span");
-		if (timeMetaEl) {
-			timeMetaEl.textContent = `${formatTimestamp(sessionStartTime)}${sessionEndTime ? ` - ${formatTimestamp(sessionEndTime)}` : ""}`;
-		}
-
-		// Update venue
-		const venueMetaEl = modal?.querySelector(".meta-item:nth-child(2) span");
-		if (venueMetaEl) venueMetaEl.textContent = sessionVenue;
-
-		// Update tags
-		const metaContainer = modal?.querySelector(".session-meta");
-		let tagsContainer = modal?.querySelector(".session-tags");
-		if (metaContainer) {
-			if (sessionTags.length > 0) {
-				if (!tagsContainer) {
-					tagsContainer = document.createElement("div");
-					tagsContainer.className = "session-tags";
-					metaContainer.appendChild(tagsContainer);
-				}
-				tagsContainer.innerHTML = sessionTags.map((tag: string, idx: number) => `<span class="session-tag" id="tag-${idx}">#${tag}</span>`).join("");
-			} else if (tagsContainer) {
-				tagsContainer.innerHTML = "";
+			if (modal) modal.setAttribute("data-session-id", sessionId);
+			if (ribbonEl) {
+				ribbonEl.classList.toggle("is-bookmarked", sessionId ? readBookmarks().has(sessionId) : false);
+				ribbonEl.setAttribute("aria-hidden", ribbonEl.classList.contains("is-bookmarked") ? "false" : "true");
 			}
-		}
 
-		// Update speakers (header chips + detailed card section)
-		const speakerDetailEl = modal?.querySelector(".session-speaker-detail") as HTMLElement;
-		if (speakerDetailEl) {
-			speakerDetailEl.innerHTML = sessionSpeakers
-				.map((speaker: any) => {
-					const name = typeof speaker === "string" ? speaker : speaker.name;
-					const avatar = typeof speaker === "object" ? `<img src="${speaker.avatar}" alt="${name}" onerror="this.onerror=null; this.src='https://sitcon.org/2022/imgs/deafult_avatar.jpg'" />` : null;
-					return `<article>
+			// Update modal content dynamically
+			const titleEl = modal?.querySelector(".session-title");
+			if (titleEl) titleEl.textContent = sessionName;
+
+			const descEl = modal?.querySelector(".session-description");
+			if (descEl) descEl.innerHTML = sessionDescription;
+			updateSessionVideo(sessionRecordLink, sessionName);
+
+			const typeBadgeEl = modal?.querySelector(".session-type-badge");
+			if (typeBadgeEl) {
+				typeBadgeEl.textContent = modalTypeLabels[sessionType as keyof typeof modalTypeLabels] || "";
+			}
+
+			// Update time
+			const timeMetaEl = modal?.querySelector(".meta-item:first-child span");
+			if (timeMetaEl) {
+				timeMetaEl.textContent = `${formatTimestamp(sessionStartTime)}${sessionEndTime ? ` - ${formatTimestamp(sessionEndTime)}` : ""}`;
+			}
+
+			// Update venue
+			const venueMetaEl = modal?.querySelector(".meta-item:nth-child(2) span");
+			if (venueMetaEl) venueMetaEl.textContent = sessionVenue;
+
+			// Update tags
+			const metaContainer = modal?.querySelector(".session-meta");
+			let tagsContainer = modal?.querySelector(".session-tags");
+			if (metaContainer) {
+				if (sessionTags.length > 0) {
+					if (!tagsContainer) {
+						tagsContainer = document.createElement("div");
+						tagsContainer.className = "session-tags";
+						metaContainer.appendChild(tagsContainer);
+					}
+					tagsContainer.innerHTML = sessionTags.map((tag: string, idx: number) => `<span class="session-tag" id="tag-${idx}">#${tag}</span>`).join("");
+				} else if (tagsContainer) {
+					tagsContainer.innerHTML = "";
+				}
+			}
+
+			// Update speakers (header chips + detailed card section)
+			const speakerDetailEl = modal?.querySelector(".session-speaker-detail") as HTMLElement;
+			if (speakerDetailEl) {
+				speakerDetailEl.innerHTML = sessionSpeakers
+					.map((speaker: any) => {
+						const name = typeof speaker === "string" ? speaker : speaker.name;
+						const avatar = typeof speaker === "object" ? `<img src="${speaker.avatar}" alt="${name}" onerror="this.onerror=null; this.src='https://sitcon.org/2022/imgs/deafult_avatar.jpg'" />` : null;
+						return `<article>
 									${avatar}
 									<div>
 										<h2>${avatar}<span>${name}</span></h2>
 										${(speaker.description || "").replace(/\n/g, "<br />")}
 									</div>
 								</article>`;
-				})
-				.join("");
-		}
+					})
+					.join("");
+			}
 
-		// Update action buttons
-		const actionsContainer = modal?.querySelector(".session-actions");
-		if (actionsContainer) {
-			actionsContainer.textContent = "";
+			// Update action buttons
+			const actionsContainer = modal?.querySelector(".session-actions");
+			if (actionsContainer) {
+				actionsContainer.textContent = "";
 
-			const createActionContent = (labelOrNode: string | Node) => {
-				const hoverBg = document.createElement("div");
-				hoverBg.className = "hover-bg";
-				const span = document.createElement("span");
-				if (typeof labelOrNode === "string") {
-					span.textContent = labelOrNode;
-				} else {
-					span.appendChild(labelOrNode);
-				}
-				return { hoverBg, span };
-			};
+				const createActionContent = (labelOrNode: string | Node) => {
+					const hoverBg = document.createElement("div");
+					hoverBg.className = "hover-bg";
+					const span = document.createElement("span");
+					if (typeof labelOrNode === "string") {
+						span.textContent = labelOrNode;
+					} else {
+						span.appendChild(labelOrNode);
+					}
+					return { hoverBg, span };
+				};
 
-			const appendLinkAction = (href: string, label: string) => {
-				if (!href) return;
-				const btn = document.createElement("a");
-				btn.href = href;
-				btn.target = "_blank";
-				btn.rel = "noopener noreferrer";
-				btn.className = "action-btn";
-				const { hoverBg, span } = createActionContent(label);
-				btn.append(hoverBg, span);
-				actionsContainer.appendChild(btn);
-			};
+				const appendLinkAction = (href: string, label: string) => {
+					if (!href) return;
+					const btn = document.createElement("a");
+					btn.href = href;
+					btn.target = "_blank";
+					btn.rel = "noopener noreferrer";
+					btn.className = "action-btn";
+					const { hoverBg, span } = createActionContent(label);
+					btn.append(hoverBg, span);
+					actionsContainer.appendChild(btn);
+				};
 
-			appendLinkAction(sessionSlidoLink, modalActionLabels.askQuestion);
-			appendLinkAction(sessionNotesLink, modalActionLabels.collabNotes);
-			appendLinkAction(sessionSlidesLink, modalActionLabels.presentation);
+				appendLinkAction(sessionSlidoLink, modalActionLabels.askQuestion);
+				appendLinkAction(sessionNotesLink, modalActionLabels.collabNotes);
+				appendLinkAction(sessionSlidesLink, modalActionLabels.presentation);
 
-			const shareBtn = document.createElement("button");
-			shareBtn.type = "button";
-			shareBtn.id = "share-btn";
-			shareBtn.className = "action-btn action-share";
-			shareBtn.setAttribute("aria-label", modalActionLabels.share);
-			const shareIconSize = Number(modal?.getAttribute("data-share-icon-size")) || 24;
-			const shareSvg = document.createElement("div");
-			shareSvg.innerHTML = `<svg class="share-icon share-icon--share" xmlns="http://www.w3.org/2000/svg" width="${shareIconSize}" height="${shareIconSize}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				const shareBtn = document.createElement("button");
+				shareBtn.type = "button";
+				shareBtn.id = "share-btn";
+				shareBtn.className = "action-btn action-share";
+				shareBtn.setAttribute("aria-label", modalActionLabels.share);
+				const shareIconSize = Number(modal?.getAttribute("data-share-icon-size")) || 24;
+				const shareSvg = document.createElement("div");
+				shareSvg.innerHTML = `<svg class="share-icon share-icon--share" xmlns="http://www.w3.org/2000/svg" width="${shareIconSize}" height="${shareIconSize}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<circle cx="18" cy="5" r="3"></circle>
 				<circle cx="6" cy="12" r="3"></circle>
 				<circle cx="18" cy="19" r="3"></circle>
 				<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
 				<line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
 			</svg>`;
-			const checkSvg = document.createElement("div");
-			checkSvg.innerHTML = `<svg class="share-icon share-icon--check" xmlns="http://www.w3.org/2000/svg" width="${shareIconSize}" height="${shareIconSize}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				const checkSvg = document.createElement("div");
+				checkSvg.innerHTML = `<svg class="share-icon share-icon--check" xmlns="http://www.w3.org/2000/svg" width="${shareIconSize}" height="${shareIconSize}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<path d="M20 6 9 17l-5-5"></path>
 			</svg>`;
-			const iconWrap = document.createElement("span");
-			if (shareSvg.firstElementChild) iconWrap.appendChild(shareSvg.firstElementChild);
-			if (checkSvg.firstElementChild) iconWrap.appendChild(checkSvg.firstElementChild);
-			const { hoverBg, span } = createActionContent(iconWrap);
-			shareBtn.append(hoverBg, span);
+				const iconWrap = document.createElement("span");
+				if (shareSvg.firstElementChild) iconWrap.appendChild(shareSvg.firstElementChild);
+				if (checkSvg.firstElementChild) iconWrap.appendChild(checkSvg.firstElementChild);
+				const { hoverBg, span } = createActionContent(iconWrap);
+				shareBtn.append(hoverBg, span);
 
-			let shareSuccessTimer = 0;
-			const showShareSuccess = () => {
-				shareBtn.classList.add("is-success");
-				if (shareSuccessTimer) window.clearTimeout(shareSuccessTimer);
-				shareSuccessTimer = window.setTimeout(() => {
-					shareBtn.classList.remove("is-success");
-				}, 2000);
-			};
+				let shareSuccessTimer = 0;
+				const showShareSuccess = () => {
+					shareBtn.classList.add("is-success");
+					if (shareSuccessTimer) window.clearTimeout(shareSuccessTimer);
+					shareSuccessTimer = setSessionModalTimeout(() => {
+						shareBtn.classList.remove("is-success");
+					}, 2000);
+				};
 
-			shareBtn.addEventListener("click", async () => {
-				const speakerNames = Array.isArray(sessionSpeakers) ? sessionSpeakers.map((speaker: any) => (typeof speaker === "string" ? speaker : speaker.name)).filter(Boolean) : [];
-				const date = sessionStartTime
-					? new Date(Number(sessionStartTime)).toLocaleDateString(modalTextConfig.dateLocale, {
-							year: "numeric",
-							month: "2-digit",
-							day: "2-digit",
-							timeZone: "Asia/Taipei"
-						})
-					: "";
-				const start = sessionStartTime ? formatTimestamp(sessionStartTime) : "";
-				const end = sessionEndTime ? formatTimestamp(sessionEndTime) : "";
-				const speakersText = speakerNames.length > 0 ? ` | ${speakerNames.join(", ")}` : "";
-				const sessionTypeText = modalTypeLabels[sessionType as keyof typeof modalTypeLabels] || "";
-				const typeText = sessionTypeText ? `${sessionTypeText} - ` : "";
-				const timeText = [date, [start, end].filter(Boolean).join(" - ")].filter(Boolean).join(" ");
-				const shareText = `${typeText}${sessionName}${speakersText}\n${timeText} @ ${modalTextConfig.location} ${sessionVenue}\n\n${sessionDescription.replace(/<[^>]*>?/g, "")}`;
+				shareBtn.addEventListener(
+					"click",
+					async () => {
+						const speakerNames = Array.isArray(sessionSpeakers) ? sessionSpeakers.map((speaker: any) => (typeof speaker === "string" ? speaker : speaker.name)).filter(Boolean) : [];
+						const date = sessionStartTime
+							? new Date(Number(sessionStartTime)).toLocaleDateString(modalTextConfig.dateLocale, {
+									year: "numeric",
+									month: "2-digit",
+									day: "2-digit",
+									timeZone: "Asia/Taipei"
+								})
+							: "";
+						const start = sessionStartTime ? formatTimestamp(sessionStartTime) : "";
+						const end = sessionEndTime ? formatTimestamp(sessionEndTime) : "";
+						const speakersText = speakerNames.length > 0 ? ` | ${speakerNames.join(", ")}` : "";
+						const sessionTypeText = modalTypeLabels[sessionType as keyof typeof modalTypeLabels] || "";
+						const typeText = sessionTypeText ? `${sessionTypeText} - ` : "";
+						const timeText = [date, [start, end].filter(Boolean).join(" - ")].filter(Boolean).join(" ");
+						const shareText = `${typeText}${sessionName}${speakersText}\n${timeText} @ ${modalTextConfig.location} ${sessionVenue}\n\n${sessionDescription.replace(/<[^>]*>?/g, "")}`;
 
-				if (navigator.share) {
-					try {
-						await navigator.share({
-							title: sessionName,
-							text: shareText,
-							url: window.location.href
-						});
-						showShareSuccess();
-					} catch (err) {
-						console.log("Error sharing:", err);
-					}
-				} else {
-					try {
-						await navigator.clipboard.writeText(window.location.href);
-						showShareSuccess();
-					} catch (err) {
-						console.log("Error copying:", err);
-					}
-				}
-			});
-			actionsContainer.appendChild(shareBtn);
-		}
+						if (navigator.share) {
+							try {
+								await navigator.share({
+									title: sessionName,
+									text: shareText,
+									url: window.location.href
+								});
+								showShareSuccess();
+							} catch (err) {
+								console.log("Error sharing:", err);
+							}
+						} else {
+							try {
+								await navigator.clipboard.writeText(window.location.href);
+								showShareSuccess();
+							} catch (err) {
+								console.log("Error copying:", err);
+							}
+						}
+					},
+					{ signal: sessionModalSignal }
+				);
+				actionsContainer.appendChild(shareBtn);
+			}
 
-		refreshModalAd();
+			refreshModalAd();
 
-		// Reset container scroll to top (mobile full-height mode)
-		if (containerEl) {
-			containerEl.scrollTop = 0;
-			containerEl.classList.remove("ad-scrolled");
-		}
+			// Reset container scroll to top (mobile full-height mode)
+			if (containerEl) {
+				containerEl.scrollTop = 0;
+				containerEl.classList.remove("ad-scrolled");
+			}
 
-		// Show modal
-		modal?.classList.add("active");
-		document.body.style.overflow = "hidden";
+			// Show modal
+			modal?.classList.add("active");
+			document.body.style.overflow = "hidden";
 
-		// Stop Lenis scrolling when modal opens (prevents body scroll interference)
-		const lenis = (window as any).lenis;
-		if (lenis && typeof lenis.stop === "function") {
-			lenis.stop();
-		}
-	}) as EventListener);
+			// Stop Lenis scrolling when modal opens (prevents body scroll interference)
+			const lenis = (window as any).lenis;
+			if (lenis && typeof lenis.stop === "function") {
+				lenis.stop();
+			}
+		}) as EventListener,
+		{ signal: sessionModalSignal }
+	);
 
 	function writeBookmarks(bookmarks: Set<string>) {
 		try {
@@ -600,39 +637,55 @@ const initialAd = localizedAds[0] ?? null;
 	const bookmarkAreaEl = document.getElementById("modal-bookmark-area");
 	const BOOKMARKS_CHANGED_EVENT = "agendaBookmarksChanged";
 	if (bookmarkAreaEl && ribbonEl && modal) {
-		bookmarkAreaEl.addEventListener("mouseenter", () => {
-			modal.classList.add("bookmark-area-hovered");
-		});
-		bookmarkAreaEl.addEventListener("mouseleave", () => {
-			modal.classList.remove("bookmark-area-hovered");
-		});
-		bookmarkAreaEl.addEventListener("click", ev => {
-			ev.preventDefault();
-			ev.stopPropagation();
-			const sessionId = modal.getAttribute("data-session-id") ?? "";
-			if (!sessionId) return;
-			const bookmarks = readBookmarks();
-			if (bookmarks.has(sessionId)) {
-				bookmarks.delete(sessionId);
-				writeBookmarks(bookmarks);
-				ribbonEl.classList.remove("is-bookmarked");
-				ribbonEl.setAttribute("aria-hidden", "true");
-			} else {
-				bookmarks.add(sessionId);
-				writeBookmarks(bookmarks);
-				ribbonEl.classList.add("is-bookmarked");
-				ribbonEl.setAttribute("aria-hidden", "false");
-			}
-			document.dispatchEvent(new CustomEvent(BOOKMARKS_CHANGED_EVENT, { detail: { sessionId } }));
-		});
+		bookmarkAreaEl.addEventListener(
+			"mouseenter",
+			() => {
+				modal.classList.add("bookmark-area-hovered");
+			},
+			{ signal: sessionModalSignal }
+		);
+		bookmarkAreaEl.addEventListener(
+			"mouseleave",
+			() => {
+				modal.classList.remove("bookmark-area-hovered");
+			},
+			{ signal: sessionModalSignal }
+		);
+		bookmarkAreaEl.addEventListener(
+			"click",
+			ev => {
+				ev.preventDefault();
+				ev.stopPropagation();
+				const sessionId = modal.getAttribute("data-session-id") ?? "";
+				if (!sessionId) return;
+				const bookmarks = readBookmarks();
+				if (bookmarks.has(sessionId)) {
+					bookmarks.delete(sessionId);
+					writeBookmarks(bookmarks);
+					ribbonEl.classList.remove("is-bookmarked");
+					ribbonEl.setAttribute("aria-hidden", "true");
+				} else {
+					bookmarks.add(sessionId);
+					writeBookmarks(bookmarks);
+					ribbonEl.classList.add("is-bookmarked");
+					ribbonEl.setAttribute("aria-hidden", "false");
+				}
+				document.dispatchEvent(new CustomEvent(BOOKMARKS_CHANGED_EVENT, { detail: { sessionId } }));
+			},
+			{ signal: sessionModalSignal }
+		);
 	}
 
 	// Close on Escape key
-	document.addEventListener("keydown", e => {
-		if (e.key === "Escape" && modal?.classList.contains("active")) {
-			closeModal();
-		}
-	});
+	document.addEventListener(
+		"keydown",
+		e => {
+			if (e.key === "Escape" && modal?.classList.contains("active")) {
+				closeModal();
+			}
+		},
+		{ signal: sessionModalSignal }
+	);
 
 	// Phone: GSAP drag-to-dismiss on the handle — preload GSAP so it's ready on first touch
 	const containerEl = document.getElementById("modal-container");
@@ -725,12 +778,12 @@ const initialAd = localizedAds[0] ?? null;
 			container.classList.add("dragging");
 			if (gsapLib) gsapLib.killTweensOf(container);
 			handle.setPointerCapture?.(e.pointerId);
-			document.addEventListener("pointermove", onPointerMove, { passive: false });
-			document.addEventListener("pointerup", onPointerUp, { once: true });
-			document.addEventListener("pointercancel", onPointerUp, { once: true });
+			document.addEventListener("pointermove", onPointerMove, { passive: false, signal: sessionModalSignal });
+			document.addEventListener("pointerup", onPointerUp, { once: true, signal: sessionModalSignal });
+			document.addEventListener("pointercancel", onPointerUp, { once: true, signal: sessionModalSignal });
 		}
 
-		handle.addEventListener("pointerdown", onPointerDown, { passive: false });
+		handle.addEventListener("pointerdown", onPointerDown, { passive: false, signal: sessionModalSignal });
 	}
 
 	if (handleEl && containerEl) setupPhoneDrag();
@@ -745,6 +798,7 @@ const initialAd = localizedAds[0] ?? null;
 				{ root: containerEl, threshold: 0 }
 			);
 			adObserver.observe(adLink);
+			sessionModalSignal.addEventListener("abort", () => adObserver.disconnect(), { once: true });
 		} else {
 			containerEl.classList.add("ad-scrolled");
 		}
@@ -1443,6 +1497,126 @@ const initialAd = localizedAds[0] ?? null;
 			display: block;
 			height: 6rem;
 			width: 6rem;
+		}
+	}
+
+	.modal-overlay {
+		background: rgba(10, 9, 7, 0.72);
+		backdrop-filter: blur(0.75rem);
+		-webkit-backdrop-filter: blur(0.75rem);
+	}
+
+	.modal-container {
+		gap: 0.8rem;
+		border-radius: var(--metal-radius);
+		box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.46);
+	}
+
+	.ad-image-desktop,
+	.ad-image {
+		border-radius: var(--metal-radius);
+	}
+
+	.modal-right-panel {
+		border: 1px solid rgba(45, 33, 17, 0.14);
+		border-radius: var(--metal-radius);
+		background: rgba(244, 239, 229, 0.96);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.72),
+			0 1rem 2.5rem rgba(45, 33, 17, 0.08);
+	}
+
+	.modal-close,
+	.modal-close-mobile {
+		border: 1px solid rgba(45, 33, 17, 0.18);
+		background: rgba(45, 33, 17, 0.08);
+		color: var(--metal-ink);
+		transition:
+			background 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.modal-close:hover {
+		background: rgba(45, 33, 17, 0.14);
+		transform: translateY(-0.075rem);
+	}
+
+	.session-type-badge {
+		color: var(--metal-bronze);
+		font-family: "JetBrainsMono", monospace;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+	}
+
+	.session-title {
+		font-size: clamp(2rem, 4vw, 3.4rem);
+		line-height: 1.05;
+		color: var(--metal-ink);
+	}
+
+	.session-meta,
+	.meta-item,
+	.session-meta :global(.session-tag) {
+		color: rgba(45, 33, 17, 0.72);
+	}
+
+	.session-actions :global(.action-btn) {
+		border: 1px solid rgba(45, 33, 17, 0.18);
+		border-radius: 999px;
+		background: linear-gradient(145deg, var(--metal-cream), var(--metal-silver));
+		color: var(--metal-ink);
+		font-size: 1rem;
+		padding: 0.8rem 1.15rem;
+		box-shadow: 0 0.85rem 1.8rem rgba(45, 33, 17, 0.12);
+	}
+
+	.session-actions :global(.action-btn:hover) {
+		border-color: rgba(45, 33, 17, 0.3);
+		box-shadow: 0 1rem 2.2rem rgba(45, 33, 17, 0.16);
+	}
+
+	.session-actions :global(.action-btn span) {
+		font-size: 1rem;
+	}
+
+	.session-video-frame,
+	.session-speaker-detail :global(img) {
+		border-radius: var(--metal-radius);
+	}
+
+	.session-description,
+	.session-speaker-detail {
+		color: #2d2111;
+	}
+
+	.session-description :global(h2),
+	.session-description :global(h3),
+	.session-speaker-detail :global(h2) {
+		color: var(--metal-ink);
+		line-height: 1.2;
+	}
+
+	@media (max-width: 968px) {
+		.modal-right-panel {
+			border-radius: var(--metal-radius) var(--metal-radius) 0 0;
+			background: rgba(244, 239, 229, 0.98);
+		}
+
+		.modal-container.ad-scrolled {
+			background: rgba(244, 239, 229, 0.98);
+		}
+
+		.modal-close-mobile {
+			background: linear-gradient(145deg, var(--metal-cream), var(--metal-silver));
+			box-shadow: 0 0.85rem 1.8rem rgba(0, 0, 0, 0.18);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.modal-close,
+		.modal-close-mobile,
+		.session-actions :global(.action-btn) {
+			transition: none;
 		}
 	}
 </style>
