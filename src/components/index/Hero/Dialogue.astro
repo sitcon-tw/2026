@@ -81,13 +81,12 @@ const t = useTranslations(lang).dialogue;
 
 		const onWheel = (e: WheelEvent) => {
 			e.stopPropagation();
-			dialogContainer.scrollTop += e.deltaY;
 		};
 
 		dialogTrigger.addEventListener("click", openDialog);
 		dialogClose.addEventListener("click", closeDialog);
 		dialogContainer.addEventListener("click", onContainerClick);
-		dialogContainer.addEventListener("wheel", onWheel);
+		dialogContainer.addEventListener("wheel", onWheel, { passive: true });
 		document.addEventListener("keydown", onKeydown);
 
 		return () => {
@@ -184,6 +183,7 @@ const t = useTranslations(lang).dialogue;
 
 	.dialog-container {
 		overflow-y: scroll;
+		overscroll-behavior: contain;
 		pointer-events: all;
 		height: 100%;
 		padding: 2rem 1rem;
