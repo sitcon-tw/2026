@@ -20,7 +20,7 @@ const t = useTranslations(lang).landing;
 	<div class="bottom">
 		<!-- 左下角報名按鈕 -->
 		<div class="cta-container" id="cta-container">
-			<a href="https://tickets.sitcon.org/sitcon2026" target="_blank">
+			<a href="https://tickets.sitcon.org/sitcon2026" target="_blank" rel="noopener noreferrer">
 				<div class="cta-text-layer">
 					<span class="cta-text">{t.cta}</span>
 					<span class="arrow">›</span>
@@ -233,7 +233,7 @@ const t = useTranslations(lang).landing;
 		let hasMoved = false;
 		let startX = 0;
 		let currentX = 0;
-		let redirectTimeout: number | null = null;
+		const ticketUrl = "https://tickets.sitcon.org/sitcon2026";
 
 		const getX = (e: MouseEvent | TouchEvent) => {
 			return "touches" in e ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
@@ -276,9 +276,7 @@ const t = useTranslations(lang).landing;
 				const textLayer = container.querySelector(".cta-text-layer") as HTMLElement;
 				if (textLayer) textLayer.style.opacity = "0";
 
-				redirectTimeout = window.setTimeout(() => {
-					window.location.href = "https://tickets.sitcon.org/sitcon2026";
-				}, 300);
+				window.open(ticketUrl, "_blank", "noopener,noreferrer");
 			} else {
 				currentX = 0;
 				handle.style.transform = `translateX(0px)`;
@@ -304,9 +302,6 @@ const t = useTranslations(lang).landing;
 		window.addEventListener("touchend", onEnd);
 
 		return () => {
-			if (redirectTimeout !== null) {
-				clearTimeout(redirectTimeout);
-			}
 			container.removeEventListener("click", onClick);
 			handle.removeEventListener("mousedown", onStart as any);
 			window.removeEventListener("mousemove", onMove as any);
