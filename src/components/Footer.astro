@@ -1,4 +1,5 @@
 ---
+import AwwwardsBadge from "@/components/AwwwardsBadge.astro";
 import { getLangFromUrl, useTranslations, type Lang } from "@/utils/i18n";
 
 interface Props {
@@ -36,6 +37,7 @@ const socialLinks = [
 			))
 		}
 	</div>
+	<AwwwardsBadge />
 	<img src="/2026/img/SITCON-hero.svg" alt="SITCON 2026" class="largeLogo" />
 </footer>
 
